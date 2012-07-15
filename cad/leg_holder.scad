@@ -3,7 +3,7 @@
 
 $fn = 25;
 
-DEBUG = true;
+DEBUG = false;
 BODY_HEIGHT = 65.0;
 BODY_WIDTH = 27.5;
 
@@ -199,9 +199,7 @@ module support() {
     }
 }
 
-//translate([0, 0, 4]) rotate([0, 180, 0]) servo_holder();
-
-if (1) {
+if (0) {
     translate([-14, -10, 0]) {
         support();
 
@@ -212,5 +210,7 @@ if (1) {
                         futabas3003();
         }
     }
+} else {
+    translate([0, 0, 4]) rotate([0, 180, 0]) servo_holder();
 }
 

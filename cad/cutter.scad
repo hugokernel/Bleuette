@@ -85,6 +85,8 @@ module zip(width, count, teeth_height, teeth_thickness, clear = 0.1, this = true
  */
 module cutter(y, dimension, teeths, exclude_dimension, which = true) {
 
+    // Todo: test if child is present
+    
     difference() {
         child(0);
 
@@ -129,15 +131,17 @@ render() {
 */
 
 
-dim = [50, 50, 5];
+dim = [20, 20, 5];
 if (DEMO) {
     render() {
-        cutter(0, dim, [2, 10, CLEAR], dim) {
-            cube(size = dim, center = true);
-        }
-
-        cutter(0, dim, [2, 10, CLEAR], dim, false) {
-            cube(size = dim, center = true);
+        if (1) {
+            cutter(0, dim, [2, 4, CLEAR], dim) {
+                cube(size = dim, center = true);
+            }
+        } else {
+            cutter(0, dim, [2, 4, CLEAR], dim, false) {
+                cube(size = dim, center = true);
+            }
         }
     }
 }

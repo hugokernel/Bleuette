@@ -1,7 +1,7 @@
 
 $fn = 50;
 
-BODY_THICKNESS = 5;
+BODY_THICKNESS = 6;
 BODY_SERVO_HOLE_DIAMETER = 6;
 
 BODY_WIDTH = 100;
@@ -10,6 +10,10 @@ BODY_LENGTH = 320;
 SUPPORT_SPACE = 65.0;
 
 RADIUS = 7;
+
+SERVO_WIDTH = 20;
+SERVO_LENGTH = 40;
+SERVO_CLEAR = 1.5;
 
 module leg_support(length = 25, width = 30) {
 
@@ -76,7 +80,27 @@ module body() {
     length = BODY_LENGTH;
     thickness = BODY_THICKNESS;
 
-    rbox(width, length, thickness);
+    difference() {
+        rbox(width, length, thickness);
+    
+        // Servo hole
+        translate([length / 2 - 40, SERVO_WIDTH, 0]) {
+            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        }
+
+        translate([length / 2 - 40, - SERVO_WIDTH, 0]) {
+            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        }
+
+        // Servo hole
+        translate([- length / 2 + 40, SERVO_WIDTH, 0]) {
+            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        }
+
+        translate([- length / 2 + 40, - SERVO_WIDTH, 0]) {
+            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        }
+    }
 
     // Leg support
     translate([0, width / 2, 0]) {
