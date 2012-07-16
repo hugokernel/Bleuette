@@ -79,27 +79,29 @@ module zip(width, count, teeth_height, teeth_thickness, clear = 0.1, this = true
  *  Cutter
  *  - y position of cut
  *  - dimension (width, length, thickness)
- *  - teeths (count, height)
- *  - dimension of exclude object
+ *  - teeths (count, height, clear)
+ *  - dimension of excluded object
  *  - which parts ?
  */
-module cutter(y, dimension, teeths, exclude_dimension, which = true) {
+module cutter(position, rotation, dimension, teeths, exclude_dimension, which = true) {
 
     // Todo: test if child is present
     
     difference() {
         child(0);
 
-        translate([0, y, 0]) {
-            zip(dimension[0], teeths[0], teeths[1], dimension[2], teeths[2], which);
+        rotate(rotation) {
+            translate(position) {
+                zip(dimension[0], teeths[0], teeths[1], dimension[2], teeths[2], which);
 
-            if (which) {
-                translate([- exclude_dimension[0] / 2, - (teeths[1]/ 2 - 0.1) - exclude_dimension[1], - exclude_dimension[2] / 2]) {
-                    cube(size = exclude_dimension);
-                }
-            } else {
-                translate([- exclude_dimension[0] / 2, teeths[1] / 2 - 0.1, , - exclude_dimension[2] / 2]) {
-                    cube(size = exclude_dimension);
+                if (which) {
+                    translate([- exclude_dimension[0] / 2, - (teeths[1]/ 2 - 0.1) - exclude_dimension[1], - exclude_dimension[2] / 2]) {
+                        cube(size = exclude_dimension);
+                    }
+                } else {
+                    translate([- exclude_dimension[0] / 2, teeths[1] / 2 - 0.1, , - exclude_dimension[2] / 2]) {
+                        cube(size = exclude_dimension);
+                    }
                 }
             }
         }
@@ -135,11 +137,11 @@ dim = [20, 20, 5];
 if (DEMO) {
     render() {
         if (1) {
-            cutter(0, dim, [2, 4, CLEAR], dim) {
+            cutter([0, 0, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim) {
                 cube(size = dim, center = true);
             }
         } else {
-            cutter(0, dim, [2, 4, CLEAR], dim, false) {
+            cutter([0, 0, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim, false) {
                 cube(size = dim, center = true);
             }
         }
