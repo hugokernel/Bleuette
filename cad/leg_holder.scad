@@ -19,6 +19,7 @@ LEG_THICKNESS = 4;
 LEG_HOLE_DIAMETER = 2.5;
 
 CONNECTION_WIDTH = 8;
+CONNECTION_HEIGHT = 8;
 
 SERVO_HOLDER_HEIGHT = 11.5;
 SERVO_HOLDER_WIDTH = 16;
@@ -34,7 +35,7 @@ LEG_HOLDER_MAX_WALL_THICKNESS = 3;
  *  - Agrandir la fente des pattes pour limiter les frottements ?
  */
 
-module servo_holder() {
+module servo_holder(boolean = false) {
 
     rotate([0, 0, 0]) {
         translate([-(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, 0, - (SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2)]) {
@@ -48,21 +49,37 @@ module servo_holder() {
                 //translate([-20, 18, 8]) rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLE_DIAMETER);
 
                 // Servo holder chanfrein
-                translate([SERVO_WIDTH, 20, -0.1])
-                    rotate([0, -90, 0])
+                translate([SERVO_WIDTH, 20, -0.1]) {
+                    rotate([0, -90, 0]) {
                         linear_extrude(height = 30)
                             polygon([[0, 0], [0, -SERVO_WIDTH - 0.1], [4, -SERVO_WIDTH]]);
+                    }
+                }
             }
 
+            // Test
+            translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, 2]) {
+                linear_extrude(height = CONNECTION_HEIGHT) {
+                    if (boolean) {
+                        polygon([[-2,0],[4,0],[4,4],[-4,4],[-4,0]]);
+                    } else {
+                        polygon([[-2,0],[2,0],[4,4],[-4,4]]);
+                    }
+                }
+            }
+
+/*
             translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2]) {
                 difference() {
                     cube(size = [CONNECTION_WIDTH, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
                     cube(size = [CONNECTION_WIDTH / 2.5, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
                 }
             }
+*/
         }
     }
 }
+
 
 module leg_holder(slot = false) {
 
@@ -105,11 +122,19 @@ module support() {
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_LENGTH + 4]) {
             rotate([0, 180, 0]) {
                 servo_holder();
+
+                translate([0, 0, CONNECTION_HEIGHT]) {
+                    servo_holder(true);
+                }
             }
         }
 
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_HOLDER_HEIGHT - 3]) {
             servo_holder();
+
+            translate([0, 0, CONNECTION_HEIGHT]) {
+                servo_holder(true);
+            }
         }
     }
 
@@ -167,8 +192,30 @@ module support() {
             polygon([[0, 0], [0, CHANFREIN], [CHANFREIN, 0]]);
         }
 
+        // Front
         translate([BODY_WIDTH / 2, BODY_HEIGHT / 2, -1]) {
             cylinder(r = 10, h = BODY_HEIGHT + 1, $fn = 10);
+        }
+
+        // Hole for cable
+        /*
+        translate([BODY_WIDTH / 2, 0, BODY_HEIGHT / 2]) {
+            translate([0, 29, 0])
+            rotate([90, 0, 0]) {
+                cylinder(r = 2, h = 21, center = true);
+            }
+
+            translate([0, 20.5, 0])
+            rotate([90, 0, -30]) {
+                cylinder(r = 2, h = 35, center = false);
+            }
+        }
+        */
+
+        translate([BODY_WIDTH / 2 + 5.5, 0, 5]) {
+            rotate([90, 0, 0]) {
+                cylinder(r = 2, h = 100, center = true);
+            }
         }
     }
 
@@ -199,7 +246,7 @@ module support() {
     }
 }
 
-if (0) {
+if (1) {
     translate([-14, -10, 0]) {
         support();
 
