@@ -72,7 +72,6 @@ module zip(width, count, teeth_height, teeth_thickness, clear = 0.1, this = true
             }
         }
     }
-
 }
 
 /**
@@ -95,7 +94,7 @@ module cutter(position, rotation, dimension, teeths, exclude_dimension, which = 
                 zip(dimension[0], teeths[0], teeths[1], dimension[2], teeths[2], which);
 
                 if (which) {
-                    translate([- exclude_dimension[0] / 2, - (teeths[1]/ 2 - 0.1) - exclude_dimension[1], - exclude_dimension[2] / 2]) {
+                    translate([- exclude_dimension[0] / 2, - (teeths[1] / 2 - 0.1) - exclude_dimension[1], - exclude_dimension[2] / 2]) {
                         cube(size = exclude_dimension);
                     }
                 } else {
@@ -132,12 +131,78 @@ render() {
 };
 */
 
+dim = [20, 60, 5];
 
-dim = [20, 20, 5];
+module toto() {
+    cutter([0, 0, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim, false) {
+        cube(size = dim, center = true);
+    }
+}
+
+// % cube(dim, center = true);
+
+/*
+render() {
+    cutter([0, -10, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim, false) {
+        cutter([0, -10, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim, true) {
+            cube(size = dim, center = true);
+        }
+    }
+}
+*/
+
+module outer() {
+    translate([0, 10, 0]) {
+        zip(20, 3, 5, 5, CLEAR, true);
+    }
+
+    translate([0, -10, 0]) {
+        zip(20, 3, 5, 5, CLEAR, false);
+    }
+
+    translate([0, 0, 0]) {
+        cube(size = [40, 15, 50], center = true);
+    }
+}
+
+module inner() {
+    translate([0, 10, 0]) {
+        zip(20, 3, 5, 5, CLEAR, false);
+    }
+
+    translate([0, -10, 0]) {
+        zip(20, 3, 5, 5, CLEAR, true);
+    }
+
+    translate([0, 37.5, 0]) {
+        cube(size = [50, 50, 50], center = true);
+    }
+
+    translate([0, -37.5, 0]) {
+        cube(size = [50, 50, 50], center = true);
+    }
+}
+
+render() {
+    difference() {
+        cube(size = dim, center = true);
+        inner();
+    }
+
+    difference() {
+        cube(size = dim, center = true);
+        outer();
+    }
+}
+
+
+/*
+dim = [20, 60, 5];
 if (DEMO) {
     render() {
         if (1) {
-            cutter([0, 0, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim) {
+            //cutter([0, 10, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim, true)
+            cutter([0, 0, 0], [0, 0, 0], dim, [2, 4, CLEAR], dim, false) {
                 cube(size = dim, center = true);
             }
         } else {
@@ -147,4 +212,5 @@ if (DEMO) {
         }
     }
 }
+*/
 

@@ -51,26 +51,26 @@ module leg_support(length = 25, width = 30) {
     }
 }
 
-module rbox(width, length, thickness = BODY_THICKNESS) {
+module rbox(width, length, thickness, radius) {
 
-    cube(size = [length - RADIUS * 2, width, thickness], center = true);
-    cube(size = [length, width - RADIUS * 2, thickness], center = true);
+    cube(size = [length - radius * 2, width, thickness], center = true);
+    cube(size = [length, width - radius * 2, thickness], center = true);
 
     // Rounded corner
-    translate([ length / 2 - RADIUS, width / 2 - RADIUS, - thickness / 2 ]) {
-        cylinder(r = RADIUS, h = thickness);
+    translate([ length / 2 - radius, width / 2 - radius, - thickness / 2 ]) {
+        cylinder(r = radius, h = thickness);
     }
 
-    translate([ length / 2 - RADIUS, - (width / 2 - RADIUS), - thickness / 2 ]) {
-        cylinder(r = RADIUS, h = thickness);
+    translate([ length / 2 - radius, - (width / 2 - radius), - thickness / 2 ]) {
+        cylinder(r = radius, h = thickness);
     }
 
-    translate([ - (length / 2 - RADIUS), width / 2 - RADIUS, - thickness / 2 ]) {
-        cylinder(r = RADIUS, h = thickness);
+    translate([ - (length / 2 - radius), width / 2 - radius, - thickness / 2 ]) {
+        cylinder(r = radius, h = thickness);
     }
 
-    translate([ -(length / 2 - RADIUS), - (width / 2 - RADIUS), - thickness / 2 ]) {
-        cylinder(r = RADIUS, h = thickness);
+    translate([ -(length / 2 - radius), - (width / 2 - radius), - thickness / 2 ]) {
+        cylinder(r = radius, h = thickness);
     }
 }
 
@@ -81,7 +81,7 @@ module body() {
     thickness = BODY_THICKNESS;
 
     difference() {
-        rbox(width, length, thickness);
+        rbox(width, length, thickness, RADIUS);
     
         // Servo hole
         translate([length / 2 - 40, SERVO_WIDTH, 0]) {
@@ -142,7 +142,7 @@ module body_support() {
 
     leg_length = BODY_WIDTH / 2 - width / 2 + 25;
 
-    rbox(width, length, thickness);
+    rbox(width, length, thickness, RADIUS);
 
     // Leg support
     translate([0, width / 2, 0]) {
