@@ -246,7 +246,7 @@ module support() {
     }
 }
 
-if (1) {
+if (0) {
     translate([-14, -10, 0]) {
         support();
 

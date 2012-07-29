@@ -24,14 +24,14 @@ color("GREEN") intersection() {
 }
 
 //translate([22, 0, 0])
-color("RED") intersection() {
+%color("RED") intersection() {
     body_rotated();
     cutter([0, - BODY_LENGTH / (3 * 2), 0], dim, teeths, false);
     cutter([0, BODY_LENGTH / (3 * 2), 0], dim, teeths, true);
 }
 
 //translate([44, 0, 0])
-color("BLUE") intersection() {
+%color("BLUE") intersection() {
     body_rotated();
     cutter([0, BODY_LENGTH / (3 * 2), 0], dim, teeths, false);
 }
