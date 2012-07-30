@@ -3,6 +3,8 @@ $fn = 50;
 
 BODY_THICKNESS = 6;
 BODY_SERVO_HOLE_DIAMETER = 6;
+BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT = 2;
+BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER = 10;
 
 BODY_WIDTH = 100;
 BODY_LENGTH = 320;
@@ -15,7 +17,7 @@ SERVO_WIDTH = 20;
 SERVO_LENGTH = 40;
 SERVO_CLEAR = 1.5;
 
-module leg_support(length = 25, width = 30) {
+module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
     translate([0, length / 2 , 0]) {
         difference() {
@@ -47,29 +49,36 @@ module leg_support(length = 25, width = 30) {
             translate([0, length / 2, -1]) {
                 cylinder(r = BODY_SERVO_HOLE_DIAMETER / 2, h = BODY_THICKNESS + 5, center = true);
             }
+
+            // Head screw footprint
+            if (head_screw_footprint) {
+                translate([0, length / 2, BODY_THICKNESS / 2 - BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT + BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT / 2]) {
+                    cylinder(r1 = BODY_SERVO_HOLE_DIAMETER / 2, r2 = BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT, center = true);
+                }
+            }
         }
     }
 }
 
 module rbox(width, length, thickness, radius) {
 
-    cube(size = [length - radius * 2, width, thickness], center = true);
-    cube(size = [length, width - radius * 2, thickness], center = true);
+    cube(size = [width, length - radius * 2, thickness], center = true);
+    cube(size = [width - radius * 2, length, thickness], center = true);
 
     // Rounded corner
-    translate([ length / 2 - radius, width / 2 - radius, - thickness / 2 ]) {
+    translate([width / 2 - radius, length / 2 - radius, - thickness / 2 ]) {
         cylinder(r = radius, h = thickness);
     }
 
-    translate([ length / 2 - radius, - (width / 2 - radius), - thickness / 2 ]) {
+    translate([- (width / 2 - radius), length / 2 - radius, - thickness / 2 ]) {
         cylinder(r = radius, h = thickness);
     }
 
-    translate([ - (length / 2 - radius), width / 2 - radius, - thickness / 2 ]) {
+    translate([width / 2 - radius, - (length / 2 - radius), - thickness / 2 ]) {
         cylinder(r = radius, h = thickness);
     }
 
-    translate([ -(length / 2 - radius), - (width / 2 - radius), - thickness / 2 ]) {
+    translate([- (width / 2 - radius), -(length / 2 - radius), - thickness / 2 ]) {
         cylinder(r = radius, h = thickness);
     }
 }
@@ -81,7 +90,7 @@ module body() {
     thickness = BODY_THICKNESS;
 
     difference() {
-        rbox(width, length, thickness, RADIUS);
+        rbox(length, width, thickness, RADIUS);
     
         // Servo hole
         translate([length / 2 - 40, SERVO_WIDTH, 0]) {
@@ -104,32 +113,32 @@ module body() {
 
     // Leg support
     translate([0, width / 2, 0]) {
-        leg_support();
+        leg_support(head_screw_footprint = false);
     }
 
     translate([0, - width / 2, 0]) {
         rotate([0, 0, 180]) {
-            leg_support();
+            leg_support(head_screw_footprint = false);
         }
     }
 
     translate([length / 2 - 30, width / 2, 0]) {
-        leg_support();
+        leg_support(head_screw_footprint = false);
     }
 
     translate([length / 2 - 30, - width / 2, 0]) {
         rotate([0, 0, 180]) {
-            leg_support();
+            leg_support(head_screw_footprint = false);
         }
     }
 
     translate([- (length / 2 - 30), width / 2, 0]) {
-        leg_support();
+        leg_support(head_screw_footprint = false);
     }
 
     translate([- (length / 2 - 30), - width / 2, 0]) {
         rotate([0, 0, 180]) {
-            leg_support();
+            leg_support(head_screw_footprint = false);
         }
     }
 }
@@ -142,7 +151,7 @@ module body_support() {
 
     leg_length = BODY_WIDTH / 2 - width / 2 + 25;
 
-    rbox(width, length, thickness, RADIUS);
+    rbox(length, width, thickness, RADIUS);
 
     // Leg support
     translate([0, width / 2, 0]) {
