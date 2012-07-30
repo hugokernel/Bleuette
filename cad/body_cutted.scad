@@ -2,37 +2,55 @@
 use <body.scad>;
 use <cutter.scad>;
 
+PART = 0;
+SUPPORT = false;
+
 BODY_THICKNESS = 6;
 BODY_WIDTH = 100;
 BODY_LENGTH = 320;
-  
+ 
 CLEAR = 0.1;
-TEETHS_COUNT = 6;
+TEETHS_COUNT = (SUPPORT) ? 9 : 6;
 
-teeths = [TEETHS_COUNT, 10, CLEAR];
-dim = [BODY_WIDTH * 2, BODY_LENGTH, BODY_THICKNESS];
-
-% cube(size = dim, center = true);
-
-module body_rotated() {
-    rotate([0, 0, 90]) body();
+module body_rotated(support) {
+    rotate([0, 0, 90]) {
+        if (support) {
+            body_support();
+        } else {
+            body();
+        }
+    }
 }
 
-color("GREEN") intersection() {
-    body_rotated();
-    cutter([0, - BODY_LENGTH / (3 * 2), 0], dim, teeths, true);
+module show(part, support = false) {
+
+    teeths = [TEETHS_COUNT, 10, CLEAR];
+    dim = [BODY_WIDTH * 2, BODY_LENGTH, BODY_THICKNESS];
+
+    % cube(size = dim, center = true);
+
+    if (part == 0) {
+        color("GREEN") intersection() {
+            body_rotated(support);
+            cutter([0, - BODY_LENGTH / (3 * 2), 0], dim, teeths, true);
+        }
+    }
+
+    if (part == 1) {
+        color("RED") intersection() {
+            body_rotated(support);
+            cutter([0, - BODY_LENGTH / (3 * 2), 0], dim, teeths, false);
+            cutter([0, BODY_LENGTH / (3 * 2), 0], dim, teeths, true);
+        }
+    }
+
+    if (part == 2) {
+        color("BLUE") intersection() {
+            body_rotated(support);
+            cutter([0, BODY_LENGTH / (3 * 2), 0], dim, teeths, false);
+        }
+    }
 }
 
-//translate([22, 0, 0])
-%color("RED") intersection() {
-    body_rotated();
-    cutter([0, - BODY_LENGTH / (3 * 2), 0], dim, teeths, false);
-    cutter([0, BODY_LENGTH / (3 * 2), 0], dim, teeths, true);
-}
-
-//translate([44, 0, 0])
-%color("BLUE") intersection() {
-    body_rotated();
-    cutter([0, BODY_LENGTH / (3 * 2), 0], dim, teeths, false);
-}
+show(PART, SUPPORT);
 
