@@ -1,6 +1,6 @@
 
 use <body.scad>;
-use <cutter.scad>;
+use <dovetail.scad>;
 
 PART = 0;
 SUPPORT = false;
