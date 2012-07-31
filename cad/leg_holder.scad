@@ -96,15 +96,6 @@ module servo_holder(is_top = true, boolean = false) {
                 }
             }
         }
-
-/*
-        translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2]) {
-            difference() {
-                cube(size = [CONNECTION_WIDTH, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
-                cube(size = [CONNECTION_WIDTH / 2.5, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
-            }
-        }
-*/
     }
 }
 
