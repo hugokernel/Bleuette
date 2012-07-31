@@ -1,9 +1,9 @@
 
-//include <servos.scad>
+include <servos.scad>
 
 $fn = 25;
 
-DEBUG = false;
+DEBUG = true;
 BODY_HEIGHT = 65.0;
 BODY_WIDTH = 27.5;
 
@@ -24,6 +24,9 @@ CONNECTION_HEIGHT = 8;
 SERVO_HOLDER_HEIGHT = 11.5;
 SERVO_HOLDER_WIDTH = 16;
 
+SERVO_HOLDER_NUT_DIAMETER = 5;
+SERVO_HOLDER_NUT_HEIGHT = 1.5;
+
 WASHER_DIAMETER = 0;//17.7;
 WASHER_HEIGHT = 1.1;
 
@@ -35,48 +38,73 @@ LEG_HOLDER_MAX_WALL_THICKNESS = 3;
  *  - Agrandir la fente des pattes pour limiter les frottements ?
  */
 
-module servo_holder(boolean = false) {
+module servo_holder(is_top = true, boolean = false) {
 
-    rotate([0, 0, 0]) {
-        translate([-(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, 0, - (SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2)]) {
-            difference() {
-                // Servo holder
-                cube(size = [SERVO_HOLDER_WIDTH - CHANFREIN, SERVO_WIDTH, SERVO_HOLDER_HEIGHT]);
+    position_z = (is_top) ? 8 : 7.6;
 
-                // Servo hole
-                // Not precise...
-                //translate([-20, 8, 8]) rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLE_DIAMETER);
-                //translate([-20, 18, 8]) rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLE_DIAMETER);
+    module nut_holder(is_top) {
 
-                // Servo holder chanfrein
-                translate([SERVO_WIDTH, 20, -0.1]) {
-                    rotate([0, -90, 0]) {
-                        linear_extrude(height = 30)
-                            polygon([[0, 0], [0, -SERVO_WIDTH - 0.1], [4, -SERVO_WIDTH]]);
-                    }
+        position_x = (is_top) ? SERVO_HOLDER_WIDTH - CHANFREIN - SERVO_HOLDER_NUT_HEIGHT + 0.01 : - 0.01;
+
+        // Nut holder
+        translate([position_x, 8, position_z]) {
+            rotate([0, 90, 0]) {
+                rotate([0, 0, 90]) {
+                    cylinder(r = SERVO_HOLDER_NUT_DIAMETER / 2, h = SERVO_HOLDER_NUT_HEIGHT, $fn = 6);
                 }
             }
+        }
 
-            // Test
-            translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, 2]) {
-                linear_extrude(height = CONNECTION_HEIGHT) {
-                    if (boolean) {
-                        polygon([[-2,0],[4,0],[4,4],[-4,4],[-4,0]]);
-                    } else {
-                        polygon([[-2,0],[2,0],[4,4],[-4,4]]);
-                    }
+        // Nut holder
+        translate([position_x, 18, position_z]) {
+            rotate([0, 90, 0]) {
+                rotate([0, 0, 90]) {
+                    cylinder(r = SERVO_HOLDER_NUT_DIAMETER / 2, h = SERVO_HOLDER_NUT_HEIGHT, $fn = 6);
                 }
             }
+        }
+    }
+
+    translate([-(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, 0, - (SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2)]) {
+        difference() {
+            // Servo holder
+            cube(size = [SERVO_HOLDER_WIDTH - CHANFREIN, SERVO_WIDTH, SERVO_HOLDER_HEIGHT]);
+
+            // Servo hole
+            translate([-20, 8, position_z])  rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLE_DIAMETER);
+            translate([-20, 18, position_z]) rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLE_DIAMETER);
+
+            nut_holder(is_top);
+
+            // Servo holder chanfrein
+            translate([SERVO_WIDTH, 20, -0.1]) {
+                rotate([0, -90, 0]) {
+                    linear_extrude(height = 30)
+                        polygon([[0, 0], [0, -SERVO_WIDTH - 0.1], [4, -SERVO_WIDTH]]);
+                }
+            }
+        }
+
+        // Test
+        // @Todo: Replace value with CONNECTION_WIDTH
+        translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, 3.5]) {
+            linear_extrude(height = CONNECTION_HEIGHT) {
+                if (boolean) {
+                    polygon([[-2,0],[4,0],[4,4],[-4,4],[-4,0]]);
+                } else {
+                    polygon([[-2,0],[2,0],[4,4],[-4,4]]);
+                }
+            }
+        }
 
 /*
-            translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2]) {
-                difference() {
-                    cube(size = [CONNECTION_WIDTH, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
-                    cube(size = [CONNECTION_WIDTH / 2.5, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
-                }
+        translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2]) {
+            difference() {
+                cube(size = [CONNECTION_WIDTH, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
+                cube(size = [CONNECTION_WIDTH / 2.5, CONNECTION_WIDTH, CONNECTION_WIDTH], center = true);
             }
-*/
         }
+*/
     }
 }
 
@@ -86,8 +114,6 @@ module leg_holder(slot = false) {
     max_thickness = LEG_HOLDER_MAX_WALL_THICKNESS - LEG_HOLDER_MIN_WALL_THICKNESS;
 
     difference() {
-        //cube(size = [LEG_HOLDER_MIN_WALL_THICKNESS + LEG_THICKNESS, 19, BODY_HEIGHT]);
-
         linear_extrude(height = BODY_HEIGHT) {
             polygon([
                 [LEG_HOLDER_MIN_WALL_THICKNESS + LEG_THICKNESS, 19],
@@ -118,22 +144,26 @@ module leg_holder(slot = false) {
 
 module support() {
 
-    module support_servo_holder() {
+    module support_servo_holder(rail = true) {
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_LENGTH + 4]) {
             rotate([0, 180, 0]) {
-                servo_holder();
+                servo_holder(true);
 
-                translate([0, 0, CONNECTION_HEIGHT]) {
-                    servo_holder(true);
+                if (rail) {
+                    translate([0, 0, CONNECTION_HEIGHT]) {
+                        servo_holder(true, true);
+                    }
                 }
             }
         }
 
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_HOLDER_HEIGHT - 3]) {
-            servo_holder();
+            servo_holder(false);
 
-            translate([0, 0, CONNECTION_HEIGHT]) {
-                servo_holder(true);
+            if (rail) {
+                translate([0, 0, CONNECTION_HEIGHT]) {
+                    servo_holder(false, true);
+                }
             }
         }
     }
@@ -163,7 +193,7 @@ module support() {
             }
 
             if (DEBUG) {
-                support_servo_holder();
+                support_servo_holder(false);
             }
 
             // Right leg holder
@@ -198,20 +228,6 @@ module support() {
         }
 
         // Hole for cable
-        /*
-        translate([BODY_WIDTH / 2, 0, BODY_HEIGHT / 2]) {
-            translate([0, 29, 0])
-            rotate([90, 0, 0]) {
-                cylinder(r = 2, h = 21, center = true);
-            }
-
-            translate([0, 20.5, 0])
-            rotate([90, 0, -30]) {
-                cylinder(r = 2, h = 35, center = false);
-            }
-        }
-        */
-
         translate([BODY_WIDTH / 2 + 5.5, 0, 5]) {
             rotate([90, 0, 0]) {
                 cylinder(r = 2, h = 100, center = true);
@@ -246,7 +262,7 @@ module support() {
     }
 }
 
-if (0) {
+if (1) {
     translate([-14, -10, 0]) {
         support();
 
@@ -258,6 +274,7 @@ if (0) {
         }
     }
 } else {
-    translate([0, 0, 4]) rotate([0, 180, 0]) servo_holder();
+    translate([0, 0, 4])    rotate([0, 180, 0]) servo_holder(true);
+    translate([30, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
 }
 
