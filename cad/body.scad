@@ -1,13 +1,13 @@
 
 $fn = 50;
 
+BODY_WIDTH = 100;
+BODY_LENGTH = 320;
 BODY_THICKNESS = 6;
+
 BODY_SERVO_HOLE_DIAMETER = 6;
 BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT = 2;
 BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER = 10;
-
-BODY_WIDTH = 100;
-BODY_LENGTH = 320;
 
 SUPPORT_SPACE = 65.0;
 
@@ -16,6 +16,8 @@ RADIUS = 7;
 SERVO_WIDTH = 20;
 SERVO_LENGTH = 40;
 SERVO_CLEAR = 1.5;
+
+THREADED_ROD_DIAMETER = 4;
 
 module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
@@ -109,6 +111,17 @@ module body() {
         translate([- length / 2 + 40, - SERVO_WIDTH, 0]) {
             cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
         }
+
+        // Threaded rod
+        rotate([0, 90, 0]) {
+            translate([0, width / 2 - 11, 0]) {
+                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
+            }
+
+            translate([0, - width / 2 + 11, 0]) {
+                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
+            }
+        }
     }
 
     // Leg support
@@ -151,7 +164,20 @@ module body_support() {
 
     leg_length = BODY_WIDTH / 2 - width / 2 + 25;
 
-    rbox(length, width, thickness, RADIUS);
+    difference() {
+        rbox(length, width, thickness, RADIUS);
+
+        // Threaded rod
+        rotate([0, 90, 0]) {
+            translate([0, width / 2 - 11, 0]) {
+                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
+            }
+
+            translate([0, - width / 2 + 11, 0]) {
+                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
+            }
+        }
+    }
 
     // Leg support
     translate([0, width / 2, 0]) {
