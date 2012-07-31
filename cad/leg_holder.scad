@@ -4,6 +4,7 @@ include <servos.scad>
 $fn = 25;
 
 DEBUG = true;
+
 BODY_HEIGHT = 65.0;
 BODY_WIDTH = 27.5;
 
