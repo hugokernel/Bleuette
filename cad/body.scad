@@ -112,6 +112,15 @@ module body() {
             cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
         }
 
+        // Servo hole
+        translate([0, SERVO_WIDTH, 0]) {
+            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        }
+
+        translate([0, - SERVO_WIDTH, 0]) {
+            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        }
+
         // Threaded rod
         rotate([0, 90, 0]) {
             translate([0, width / 2 - 11, 0]) {
