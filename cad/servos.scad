@@ -110,7 +110,7 @@ module alignds420(position, rotation, screws = 0, axle_lenght = 0)
  * @param vector position The position vector
  * @param vector rotation The rotation vector
  */
-module futabas3003(position, rotation)
+module futabas3003(position, rotation, hole = false)
 {
 	translate(position)
 	{

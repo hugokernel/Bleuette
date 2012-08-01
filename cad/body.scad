@@ -1,4 +1,6 @@
 
+//use <servos.scad>
+
 $fn = 50;
 
 BODY_WIDTH = 100;
@@ -18,6 +20,8 @@ SERVO_LENGTH = 40;
 SERVO_CLEAR = 1.5;
 
 THREADED_ROD_DIAMETER = 4;
+THREADED_ROD_Z_POSITION = 1;
+
 
 module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
@@ -85,6 +89,34 @@ module rbox(width, length, thickness, radius) {
     }
 }
 
+module threaded_rod_holder(position, substract = false) {
+
+    module threaded_rod(diameter, length) {
+        // Threaded rod
+        translate([0, 0, position[2]]) {
+            rotate([0, 90, 0]) {
+                //translate([0, width / 2 - 11, 0]) {
+                translate([position[0], position[1], 0]) {
+                    cylinder(r = diameter, h = length, center = true);
+                }
+
+                //translate([0, - width / 2 + 11, 0]) {
+                //    cylinder(r = diameter, h = length, center = true);
+                //}
+            }
+        }
+    }
+
+    if (substract == true) {
+        threaded_rod(THREADED_ROD_DIAMETER / 2, BODY_LENGTH + 10);
+    } else {
+        difference() {
+            threaded_rod(THREADED_ROD_DIAMETER / 2 + 2, BODY_LENGTH);
+            threaded_rod(THREADED_ROD_DIAMETER / 2, BODY_LENGTH + 10);
+        }
+    }
+}
+
 module body() {
 
     width = BODY_WIDTH;
@@ -93,7 +125,11 @@ module body() {
 
     difference() {
         rbox(length, width, thickness, RADIUS);
-    
+
+        // Threaded rod
+        threaded_rod_holder([0, width / 2 - 11, THREADED_ROD_Z_POSITION], true);
+        threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION], true);
+
         // Servo hole
         translate([length / 2 - 40, SERVO_WIDTH, 0]) {
             cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
@@ -120,17 +156,6 @@ module body() {
         translate([0, - SERVO_WIDTH, 0]) {
             cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
         }
-
-        // Threaded rod
-        rotate([0, 90, 0]) {
-            translate([0, width / 2 - 11, 0]) {
-                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
-            }
-
-            translate([0, - width / 2 + 11, 0]) {
-                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
-            }
-        }
     }
 
     // Leg support
@@ -163,6 +188,10 @@ module body() {
             leg_support(head_screw_footprint = false);
         }
     }
+
+    // Threaded rod
+    threaded_rod_holder([0, width / 2 - 11, THREADED_ROD_Z_POSITION]);
+    threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION]);
 }
 
 module body_support() {
@@ -177,15 +206,8 @@ module body_support() {
         rbox(length, width, thickness, RADIUS);
 
         // Threaded rod
-        rotate([0, 90, 0]) {
-            translate([0, width / 2 - 11, 0]) {
-                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
-            }
-
-            translate([0, - width / 2 + 11, 0]) {
-                cylinder(r = THREADED_ROD_DIAMETER / 2, h = BODY_LENGTH + 10, center = true);
-            }
-        }
+        threaded_rod_holder([0, width / 2 - 11, - THREADED_ROD_Z_POSITION], true);
+        threaded_rod_holder([0, - width / 2 + 11, - THREADED_ROD_Z_POSITION], true);
     }
 
     // Leg support
@@ -218,6 +240,9 @@ module body_support() {
             leg_support(leg_length);
         }
     }
+
+    threaded_rod_holder([0, width / 2 - 11, - THREADED_ROD_Z_POSITION]);
+    threaded_rod_holder([0, - width / 2 + 11, - THREADED_ROD_Z_POSITION]);
 }
 
 if (1) {

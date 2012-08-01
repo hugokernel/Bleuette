@@ -5,7 +5,7 @@ use <dovetail.scad>;
 PART = 0;
 SUPPORT = false;
 
-BODY_THICKNESS = 6;
+BODY_THICKNESS = 10;
 BODY_WIDTH = 100;
 BODY_LENGTH = 320;
  
