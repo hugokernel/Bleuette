@@ -117,14 +117,16 @@ module threaded_rod_holder(position, substract = false) {
     }
 }
 
+module servo() {
+    rotate([0, 0, 90])
+        futabas3003(0, 0, 1);
+}
+
 module body() {
 
     width = BODY_WIDTH;
     length = BODY_LENGTH;
     thickness = BODY_THICKNESS;
-
-    rotate([0, 0, 90])
-        futabas3003(0, 0, 1);
 
     difference() {
         rbox(length, width, thickness, RADIUS);
@@ -134,33 +136,28 @@ module body() {
         threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION], true);
 
         // Servo hole
-
-
-
-        translate([length / 2 - 40, SERVO_WIDTH, 0]) {
-            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        translate([length / 2 - 20, 10, -23]) {
+            servo();
         }
 
-        translate([length / 2 - 40, - SERVO_WIDTH, 0]) {
-            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        translate([length / 2 - 20, -30, -23]) {
+            servo();
         }
 
-        // Servo hole
-        translate([- length / 2 + 40, SERVO_WIDTH, 0]) {
-            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        translate([- length / 2 + 60, -30, -23]) {
+            servo();
         }
 
-        translate([- length / 2 + 40, - SERVO_WIDTH, 0]) {
-            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        translate([- length / 2 + 60, 10, -23]) {
+            servo();
         }
 
-        // Servo hole
-        translate([0, SERVO_WIDTH, 0]) {
-            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        translate([20, 10, -23]) {
+            servo();
         }
 
-        translate([0, - SERVO_WIDTH, 0]) {
-            cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
+        translate([20, -30, -23]) {
+            servo();
         }
     }
 
