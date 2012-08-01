@@ -1,6 +1,6 @@
 
 use <body.scad>;
-use <dovetail.scad>;
+use <lib/dovetail.scad>;
 
 PART = 0;
 SUPPORT = false;

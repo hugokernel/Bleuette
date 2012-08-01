@@ -1,5 +1,5 @@
 
-use <servos.scad>
+use <lib/servos.scad>
 use <leg_holder.scad>
 use <leg.scad>
 

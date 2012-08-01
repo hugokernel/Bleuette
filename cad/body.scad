@@ -1,5 +1,6 @@
 
-use <servos.scad>
+use <lib/servos.scad>
+use <lib/arduino.scad>
 
 $fn = 50;
 
@@ -10,6 +11,10 @@ BODY_THICKNESS = 6;
 BODY_SERVO_HOLE_DIAMETER = 6;
 BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT = 2;
 BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER = 10;
+
+SERVO_HOLDER_SCREW_DIAMETER = 2;
+SERVO_HOLDER_NUT_DIAMETER = 5;
+SERVO_HOLDER_NUT_HEIGHT = 1.5;
 
 SUPPORT_SPACE = 65.0;
 
@@ -118,8 +123,22 @@ module threaded_rod_holder(position, substract = false) {
 }
 
 module servo() {
-    rotate([0, 0, 90])
-        futabas3003(0, 0, 1);
+    rotate([0, 0, 90]) {
+        futabas3003() {
+            translate([0, 0, - BODY_THICKNESS - 1]) cylinder(h = BODY_THICKNESS + 2, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
+            translate([0, 0, - BODY_THICKNESS - SERVO_HOLDER_NUT_HEIGHT]) {
+                cylinder(r = SERVO_HOLDER_NUT_DIAMETER / 2, h = SERVO_HOLDER_NUT_HEIGHT, $fn = 6);
+            }
+        }
+    }
+}
+
+module arduino(hole = 1) {
+    translate([35, -18, BODY_THICKNESS / 2 + 2]) {
+        rotate([0, 0, 90]) {
+            Arduino(hole);
+        }
+    }
 }
 
 module body() {
@@ -132,8 +151,8 @@ module body() {
         rbox(length, width, thickness, RADIUS);
 
         // Threaded rod
-        threaded_rod_holder([0, width / 2 - 11, THREADED_ROD_Z_POSITION], true);
-        threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION], true);
+        threaded_rod_holder([0, width / 2 - 11, - THREADED_ROD_Z_POSITION], true);
+        threaded_rod_holder([0, - width / 2 + 11, - THREADED_ROD_Z_POSITION], true);
 
         // Servo hole
         translate([length / 2 - 20, 10, -23]) {
@@ -159,6 +178,9 @@ module body() {
         translate([20, -30, -23]) {
             servo();
         }
+
+        // Arduino
+        arduino(1);
     }
 
     // Leg support
@@ -193,8 +215,8 @@ module body() {
     }
 
     // Threaded rod
-    threaded_rod_holder([0, width / 2 - 11, THREADED_ROD_Z_POSITION]);
-    threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION]);
+    threaded_rod_holder([0, width / 2 - 11, - THREADED_ROD_Z_POSITION]);
+    threaded_rod_holder([0, - width / 2 + 11, - THREADED_ROD_Z_POSITION]);
 }
 
 module body_support() {
@@ -209,8 +231,8 @@ module body_support() {
         rbox(length, width, thickness, RADIUS);
 
         // Threaded rod
-        threaded_rod_holder([0, width / 2 - 11, - THREADED_ROD_Z_POSITION], true);
-        threaded_rod_holder([0, - width / 2 + 11, - THREADED_ROD_Z_POSITION], true);
+        threaded_rod_holder([0, width / 2 - 11, THREADED_ROD_Z_POSITION], true);
+        threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION], true);
     }
 
     // Leg support
@@ -244,12 +266,15 @@ module body_support() {
         }
     }
 
-    threaded_rod_holder([0, width / 2 - 11, - THREADED_ROD_Z_POSITION]);
-    threaded_rod_holder([0, - width / 2 + 11, - THREADED_ROD_Z_POSITION]);
+    threaded_rod_holder([0, width / 2 - 11, THREADED_ROD_Z_POSITION]);
+    threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION]);
 }
 
 if (1) {
+
     body();
+
+    arduino(0);
 
     translate([0, 0, SUPPORT_SPACE]) {
         body_support();

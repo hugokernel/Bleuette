@@ -1,5 +1,5 @@
 
-include <servos.scad>
+include <lib/servos.scad>
 
 $fn = 25;
 
