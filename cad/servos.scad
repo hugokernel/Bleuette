@@ -110,7 +110,7 @@ module alignds420(position, rotation, screws = 0, axle_lenght = 0)
  * @param vector position The position vector
  * @param vector rotation The rotation vector
  */
-module futabas3003(position, rotation, hole = false)
+module futabas3003(position, rotation, screw_diameter = 0)
 {
 	translate(position)
 	{
@@ -129,6 +129,11 @@ module futabas3003(position, rotation, hole = false)
                             translate([4, 3.5, 0]) cylinder(100, 2);
                             translate([14, 3.5, 0]) cylinder(100, 2);
                         }
+
+                        if (screw_diameter) {
+                            translate([4, 3.5, -20]) cylinder(h = 20, r = screw_diameter / 2);
+                            translate([14, 3.5, -20]) cylinder(h = 20, r = screw_diameter / 2);
+                        }
 					}
 
 					translate([1.1, 39.9, 26.6])
@@ -137,6 +142,11 @@ module futabas3003(position, rotation, hole = false)
                             cube([18, 7.6, 2.5]);
                             translate([4, 4.5, 0]) cylinder(100, 2);
                             translate([14, 4.5, 0]) cylinder(100, 2);
+                        }
+
+                        if (screw_diameter) {
+                            translate([4, 4.5, -20]) cylinder(h = 20, r = screw_diameter / 2);
+                            translate([14, 4.5, -20]) cylinder(h = 20, r = screw_diameter / 2);
                         }
                     }
 				}

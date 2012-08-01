@@ -1,5 +1,5 @@
 
-//use <servos.scad>
+use <servos.scad>
 
 $fn = 50;
 
@@ -123,6 +123,9 @@ module body() {
     length = BODY_LENGTH;
     thickness = BODY_THICKNESS;
 
+    rotate([0, 0, 90])
+        futabas3003(0, 0, 1);
+
     difference() {
         rbox(length, width, thickness, RADIUS);
 
@@ -131,6 +134,9 @@ module body() {
         threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION], true);
 
         // Servo hole
+
+
+
         translate([length / 2 - 40, SERVO_WIDTH, 0]) {
             cube(size = [SERVO_LENGTH, SERVO_WIDTH, 10], center = true);
         }
