@@ -9,8 +9,8 @@ BODY_LENGTH = 320;
 BODY_THICKNESS = 6;
 
 BODY_SERVO_HOLE_DIAMETER = 6;
-BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT = 2;
-BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER = 10;
+BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT = 2;      // Todo: Verif
+BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER = 10;   // Todo: Verif
 
 SERVO_HOLDER_SCREW_DIAMETER = 2;
 SERVO_HOLDER_NUT_DIAMETER = 5;
@@ -63,7 +63,7 @@ module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
             // Head screw footprint
             if (head_screw_footprint) {
-                translate([0, length / 2, BODY_THICKNESS / 2 - BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT + BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT / 2]) {
+                translate([0, length / 2, BODY_THICKNESS / 2 - BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT + BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT / 2 + 0.01]) {
                     cylinder(r1 = BODY_SERVO_HOLE_DIAMETER / 2, r2 = BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT, center = true);
                 }
             }
