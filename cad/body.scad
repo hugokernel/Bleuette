@@ -21,17 +21,17 @@ RADIUS = 7;
 /**
  *  Body to leg parameters
  */
-BODY_LEG_HOLE_DIAMETER = 6;
-BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 2;      // Todo: Verif
-BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 10;   // Todo: Verif
-BODY_LEG_HOLE_NUT_DIAMETER = 10;          // ToDo: Verif
+BODY_LEG_HOLE_DIAMETER = 5;
+BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 3;
+BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 9;
+BODY_LEG_HOLE_NUT_DIAMETER = 9;
 
 /**
  *  Servo screw
  */
-SERVO_HOLDER_SCREW_DIAMETER = 2;    // Todo: Verif
-SERVO_HOLDER_NUT_DIAMETER = 6;      // Todo: Verif
-SERVO_HOLDER_NUT_HEIGHT = 1.5;      // Todo: Verif
+SERVO_HOLDER_SCREW_DIAMETER = 2;
+SERVO_HOLDER_NUT_DIAMETER = 5.5;
+SERVO_HOLDER_NUT_HEIGHT = 1.9;
 
 /**
  *  Servo information
@@ -43,8 +43,8 @@ SERVO_CLEAR = 1.5;
 /**
  *  Threaded rod parameters
  */
-THREADED_ROD_DIAMETER = 4;      // Todo: Verif
-THREADED_ROD_Z_POSITION = 1;    // Todo: Verif
+THREADED_ROD_DIAMETER = 3.9;
+THREADED_ROD_Z_POSITION = 1;
 
 
 module leg_support(length = 25, width = 30, head_screw_footprint = true) {
