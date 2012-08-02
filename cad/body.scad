@@ -43,8 +43,8 @@ SERVO_CLEAR = 1.5;
 /**
  *  Threaded rod parameters
  */
-THREADED_ROD_DIAMETER = 4;
-THREADED_ROD_Z_POSITION = 1;
+THREADED_ROD_DIAMETER = 4;      // Todo: Verif
+THREADED_ROD_Z_POSITION = 1;    // Todo: Verif
 
 
 module leg_support(length = 25, width = 30, head_screw_footprint = true) {
