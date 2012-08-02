@@ -4,26 +4,44 @@ use <lib/arduino.scad>
 
 $fn = 50;
 
+/**
+ *  Body information
+ */
 BODY_WIDTH = 100;
 BODY_LENGTH = 320;
 BODY_THICKNESS = 6;
 
-BODY_SERVO_HOLE_DIAMETER = 6;
-BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT = 2;      // Todo: Verif
-BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER = 10;   // Todo: Verif
-
-SERVO_HOLDER_SCREW_DIAMETER = 2;
-SERVO_HOLDER_NUT_DIAMETER = 5;
-SERVO_HOLDER_NUT_HEIGHT = 1.5;
-
+/**
+ *  Space between the 2 surface
+ */
 SUPPORT_SPACE = 65.0;
 
 RADIUS = 7;
 
+/**
+ *  Body to leg parameters
+ */
+BODY_LEG_HOLE_DIAMETER = 6;
+BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 2;      // Todo: Verif
+BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 10;   // Todo: Verif
+
+/**
+ *  Servo screw
+ */
+SERVO_HOLDER_SCREW_DIAMETER = 2;    // Todo: Verif
+SERVO_HOLDER_NUT_DIAMETER = 6;      // Todo: Verif
+SERVO_HOLDER_NUT_HEIGHT = 1.5;      // Todo: Verif
+
+/**
+ *  Servo information
+ */
 SERVO_WIDTH = 20;
 SERVO_LENGTH = 40;
 SERVO_CLEAR = 1.5;
 
+/**
+ *  Threaded rod parameters
+ */
 THREADED_ROD_DIAMETER = 4;
 THREADED_ROD_Z_POSITION = 1;
 
@@ -58,13 +76,13 @@ module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
             // Hole
             translate([0, length / 2, -1]) {
-                cylinder(r = BODY_SERVO_HOLE_DIAMETER / 2, h = BODY_THICKNESS + 5, center = true);
+                cylinder(r = BODY_LEG_HOLE_DIAMETER / 2, h = BODY_THICKNESS + 5, center = true);
             }
 
             // Head screw footprint
             if (head_screw_footprint) {
-                translate([0, length / 2, BODY_THICKNESS / 2 - BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT + BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT / 2 + 0.01]) {
-                    cylinder(r1 = BODY_SERVO_HOLE_DIAMETER / 2, r2 = BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT, center = true);
+                translate([0, length / 2, BODY_THICKNESS / 2 - BODY_LEG_HOLE_HEAD_SCREW_HEIGHT + BODY_LEG_HOLE_HEAD_SCREW_HEIGHT / 2 + 0.01]) {
+                    cylinder(r1 = BODY_LEG_HOLE_DIAMETER / 2, r2 = BODY_LEG_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_LEG_HOLE_HEAD_SCREW_HEIGHT, center = true);
                 }
             }
         }
@@ -125,7 +143,10 @@ module threaded_rod_holder(position, substract = false) {
 module servo() {
     rotate([0, 0, 90]) {
         color("BLACK") futabas3003() {
-            translate([0, 0, - BODY_THICKNESS - 1]) cylinder(h = BODY_THICKNESS + 2, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
+            translate([0, 0, - BODY_THICKNESS - 1]) {
+                cylinder(h = BODY_THICKNESS + 2, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
+            }
+
             translate([0, 0, - BODY_THICKNESS - SERVO_HOLDER_NUT_HEIGHT]) {
                 cylinder(r = SERVO_HOLDER_NUT_DIAMETER / 2, h = SERVO_HOLDER_NUT_HEIGHT, $fn = 6);
             }

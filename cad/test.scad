@@ -7,9 +7,9 @@ $fn = 50;
 SUPPORT_SPACE = 65.0;
 
 BODY_THICKNESS = 6;
-BODY_SERVO_HOLE_DIAMETER = 6;
-BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT = 2;
-BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER = 10;
+BODY_LEG_HOLE_DIAMETER = 6;
+BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 2;
+BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 10;
 
 module show() {
     intersection() {
@@ -25,21 +25,21 @@ module show() {
                 }
 
                 // Hole
-                translate([90, 0, - BODY_THICKNESS / 2 + BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT - 0.01]) {
-                    cylinder(r = BODY_SERVO_HOLE_DIAMETER / 2, h = 150, center = true);
+                translate([90, 0, - BODY_THICKNESS / 2 + BODY_LEG_HOLE_HEAD_SCREW_HEIGHT - 0.01]) {
+                    cylinder(r = BODY_LEG_HOLE_DIAMETER / 2, h = 150, center = true);
 
                     // Head screw footprint
                     rotate([180, 0, 0]) {
-                        cylinder(r1 = BODY_SERVO_HOLE_DIAMETER / 2, r2 = BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT);
+                        cylinder(r1 = BODY_LEG_HOLE_DIAMETER / 2, r2 = BODY_LEG_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_LEG_HOLE_HEAD_SCREW_HEIGHT);
                     }
                 }
 
-                translate([150, 0, - BODY_THICKNESS / 2 + BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT - 0.01]) {
-                    cylinder(r = BODY_SERVO_HOLE_DIAMETER / 2, h = 150, center = true);
+                translate([150, 0, - BODY_THICKNESS / 2 + BODY_LEG_HOLE_HEAD_SCREW_HEIGHT - 0.01]) {
+                    cylinder(r = BODY_LEG_HOLE_DIAMETER / 2, h = 150, center = true);
 
                     // Head screw footprint
                     rotate([180, 0, 0]) {
-                        cylinder(r1 = BODY_SERVO_HOLE_DIAMETER / 2, r2 = BODY_SERVO_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_SERVO_HOLE_HEAD_SCREW_HEIGHT);
+                        cylinder(r1 = BODY_LEG_HOLE_DIAMETER / 2, r2 = BODY_LEG_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_LEG_HOLE_HEAD_SCREW_HEIGHT);
                     }
                 }
             }
