@@ -24,6 +24,7 @@ RADIUS = 7;
 BODY_LEG_HOLE_DIAMETER = 6;
 BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 2;      // Todo: Verif
 BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 10;   // Todo: Verif
+BODY_LEG_HOLE_NUT_DIAMETER = 10;          // ToDo: Verif
 
 /**
  *  Servo screw
@@ -83,6 +84,10 @@ module leg_support(length = 25, width = 30, head_screw_footprint = true) {
             if (head_screw_footprint) {
                 translate([0, length / 2, BODY_THICKNESS / 2 - BODY_LEG_HOLE_HEAD_SCREW_HEIGHT + BODY_LEG_HOLE_HEAD_SCREW_HEIGHT / 2 + 0.01]) {
                     cylinder(r1 = BODY_LEG_HOLE_DIAMETER / 2, r2 = BODY_LEG_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_LEG_HOLE_HEAD_SCREW_HEIGHT, center = true);
+                }
+            } else {
+                translate([0, length / 2, - BODY_THICKNESS / 2]) {
+                    cylinder(r = BODY_LEG_HOLE_NUT_DIAMETER / 2, h = 3, center = true, $fn = 6);
                 }
             }
         }
