@@ -7,9 +7,9 @@ $fn = 50;
 SUPPORT_SPACE = 65.0;
 
 BODY_THICKNESS = 6;
-BODY_LEG_HOLE_DIAMETER = 5;
-BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 3;
-BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 9;
+BODY_LEG_HOLE_DIAMETER = 5.5;
+BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 3.3;
+BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 10;
 
 module show() {
     intersection() {
@@ -50,7 +50,7 @@ module show() {
 }
 
 
-if (0) {
+if (1) {
     rotate([180, 0, 0]) {
         show() {
             translate([140, 50, 0]) {
