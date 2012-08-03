@@ -147,12 +147,13 @@ module threaded_rod_holder(position, substract = false) {
 
 module servo() {
     rotate([0, 0, 90]) {
-        color("BLACK") futabas3003() {
+        //color("BLACK")
+        futabas3003() {
             translate([0, 0, - BODY_THICKNESS - 1]) {
                 cylinder(h = BODY_THICKNESS + 2, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
             }
 
-            translate([0, 0, - BODY_THICKNESS - SERVO_HOLDER_NUT_HEIGHT]) {
+            translate([0, 0, - BODY_THICKNESS - 0.65]) {
                 cylinder(r = SERVO_HOLDER_NUT_DIAMETER / 2, h = SERVO_HOLDER_NUT_HEIGHT, $fn = 6);
             }
         }

@@ -7,9 +7,27 @@ $fn = 50;
 SUPPORT_SPACE = 65.0;
 
 BODY_THICKNESS = 6;
+
 BODY_LEG_HOLE_DIAMETER = 5.5;
 BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 3.3;
 BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 10;
+BODY_LEG_HOLE_NUT_DIAMETER = 10.5;
+
+SERVO_HOLDER_SCREW_DIAMETER = 2;
+SERVO_HOLDER_NUT_DIAMETER = 5.5;
+SERVO_HOLDER_NUT_HEIGHT = 1.9;
+
+module servo_nut_test(screw_diameter, nut_diameter, nut_height = 20) {
+    rotate([0, 180, 0]) {
+        translate([0, 0, - BODY_THICKNESS - 1]) {
+            cylinder(h = BODY_THICKNESS + 2 + 10, r = screw_diameter / 2);
+        }
+
+        translate([0, 0, - BODY_THICKNESS + 3.1 - 0.2]) {
+            cylinder(r = nut_diameter / 2, h = nut_height, $fn = 6);
+        }
+    }
+}
 
 module show() {
     intersection() {
@@ -42,6 +60,21 @@ module show() {
                         cylinder(r1 = BODY_LEG_HOLE_DIAMETER / 2, r2 = BODY_LEG_HOLE_HEAD_SCREW_DIAMETER / 2, h = BODY_LEG_HOLE_HEAD_SCREW_HEIGHT);
                     }
                 }
+
+                // Nut test
+                translate([100, 0, SUPPORT_SPACE]) {
+                    servo_nut_test(SERVO_HOLDER_SCREW_DIAMETER, SERVO_HOLDER_NUT_DIAMETER, SERVO_HOLDER_NUT_HEIGHT);
+                }
+                translate([110, 0, SUPPORT_SPACE]) {
+                    servo_nut_test(2.5, 5.8, 2.1);
+                }
+                translate([120, 0, SUPPORT_SPACE]) {
+                    servo_nut_test(3, 6, 3.1);
+                }
+
+                translate([130, 0, SUPPORT_SPACE + 1.6]) {
+                    cylinder(r = BODY_LEG_HOLE_NUT_DIAMETER / 2, h = 3, center = true, $fn = 6);
+                }
             }
         }
 
@@ -50,7 +83,7 @@ module show() {
 }
 
 
-if (1) {
+if (0) {
     rotate([180, 0, 0]) {
         show() {
             translate([140, 50, 0]) {
@@ -59,9 +92,12 @@ if (1) {
         }
     }
 } else {
-    show() {
-        translate([140, 50, 50]) {
-            cube(size = [120, 120, 50], center = true);
+    difference() {
+        show() {
+            translate([140, 50, 50]) {
+
+                cube(size = [120, 120, 50], center = true);
+            }
         }
     }
 }
