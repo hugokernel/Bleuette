@@ -24,13 +24,13 @@ RADIUS = 7;
 BODY_LEG_HOLE_DIAMETER = 5.5;
 BODY_LEG_HOLE_HEAD_SCREW_HEIGHT = 3.3;
 BODY_LEG_HOLE_HEAD_SCREW_DIAMETER = 10;
-BODY_LEG_HOLE_NUT_DIAMETER = 10.5;
+BODY_LEG_HOLE_NUT_DIAMETER = 9.5;
 
 /**
  *  Servo screw
  */
-SERVO_HOLDER_SCREW_DIAMETER = 2;
-SERVO_HOLDER_NUT_DIAMETER = 5.5;
+SERVO_HOLDER_SCREW_DIAMETER = 2.7;
+SERVO_HOLDER_NUT_DIAMETER = 6;
 SERVO_HOLDER_NUT_HEIGHT = 1.9;
 
 /**
@@ -46,6 +46,13 @@ SERVO_CLEAR = 1.5;
 THREADED_ROD_DIAMETER = 3.8;
 THREADED_ROD_Z_POSITION = 1;
 
+/**
+ *  Todo:
+ *
+ *  - Middle servo position
+ *
+ *
+ */
 
 module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
@@ -146,6 +153,8 @@ module threaded_rod_holder(position, substract = false) {
 }
 
 module servo() {
+    clear = 1.5;
+
     rotate([0, 0, 90]) {
         //color("BLACK")
         futabas3003() {
@@ -157,6 +166,12 @@ module servo() {
                 cylinder(r = SERVO_HOLDER_NUT_DIAMETER / 2, h = SERVO_HOLDER_NUT_HEIGHT, $fn = 6);
             }
         }
+        
+        translate([ - clear / 2, - clear / 2, 0]) {
+            cube([20.1 + clear, 39.9 + clear, 36.1], false);
+        }
+        
+        %cube([20.1, 39.9, 36.1], false);
     }
 }
 

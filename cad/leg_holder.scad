@@ -10,7 +10,6 @@ BODY_WIDTH = 27.5;
 
 MAIN_HOLE_DIAMETER = 6;
 
-SERVO_HOLE_DIAMETER = 0.5;
 SERVO_WIDTH = 24;
 SERVO_LENGTH = 53.5;
 
@@ -25,8 +24,9 @@ CONNECTION_HEIGHT = 8;
 SERVO_HOLDER_HEIGHT = 11.5;
 SERVO_HOLDER_WIDTH = 16;
 
-SERVO_HOLDER_NUT_DIAMETER = 5;
-SERVO_HOLDER_NUT_HEIGHT = 1.5;
+SERVO_HOLDER_SCREW_DIAMETER = 2.7;
+SERVO_HOLDER_NUT_DIAMETER = 6;
+SERVO_HOLDER_NUT_HEIGHT = 1.9;
 
 WASHER_DIAMETER = 0;//17.7;
 WASHER_HEIGHT = 1.1;
@@ -72,8 +72,8 @@ module servo_holder(is_top = true, boolean = false) {
             cube(size = [SERVO_HOLDER_WIDTH - CHANFREIN, SERVO_WIDTH, SERVO_HOLDER_HEIGHT]);
 
             // Servo hole
-            translate([-20, 8, position_z])  rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLE_DIAMETER);
-            translate([-20, 18, position_z]) rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLE_DIAMETER);
+            translate([-20, 8, position_z])  rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
+            translate([-20, 18, position_z]) rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
 
             nut_holder(is_top);
 
@@ -230,16 +230,18 @@ module support() {
     // Rudder
     RUDDER_HEIGHT = 4;
     RUDDER_CYLINDER_HEIGHT = RUDDER_HEIGHT + 2;
+    RUDDER_LENGTH = 6;
     rotate([0, 0, 45]) {
-        translate([16.5, -21, 0]) {
+       //translate([16.5, -21, 0]) {
+        translate([16.5, -19 - RUDDER_LENGTH, 0]) {
 
             translate([2.5, 1, 0]) {
-                cube(size = [1, 5, RUDDER_CYLINDER_HEIGHT]);
+                cube(size = [1, RUDDER_LENGTH, RUDDER_CYLINDER_HEIGHT]);
             }
 
             difference() {
                 union() {
-                    cube(size = [6, 7, RUDDER_HEIGHT]);
+                    cube(size = [6, RUDDER_LENGTH + 3, RUDDER_HEIGHT]);
                     translate([3, 0, 0]) {
                         cylinder(r = 3, h = RUDDER_CYLINDER_HEIGHT);
                     }
