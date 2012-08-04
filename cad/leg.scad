@@ -66,6 +66,7 @@ module main_arm() {
 
     size = [ ARM_WIDTH, 120, ARM_THICKNESS ];
     radius = 5;
+    oblong_length = 3;
 
     difference() {
         union() {
@@ -80,8 +81,14 @@ module main_arm() {
 
         // Hole
         union() {
-            translate([ size[0] / 2 - 12, - size[1] / 2 + 7.5, -5]) {
-                cylinder(h = 10, r1 = 2.5, r2 = 2.5);
+            hull() {
+                translate([ size[0] / 2 - 12, - size[1] / 2 + 7.5, -5]) {
+                    cylinder(h = 10, r1 = 2.5, r2 = 2.5);
+                }
+
+                translate([ size[0] / 2 - 12 + oblong_length, - size[1] / 2 + 7.5, -5]) {
+                    cylinder(h = 10, r1 = 2.5, r2 = 2.5);
+                }
             }
 
             translate([ size[0] / 2 - 12, - size[1] / 2 + 47.5, -5]) {
