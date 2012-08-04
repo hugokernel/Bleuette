@@ -52,5 +52,6 @@ module show(part, support = false) {
     }
 }
 
+rotate([0, 180, 0])
 show(PART, SUPPORT);
 

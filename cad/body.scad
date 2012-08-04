@@ -1,6 +1,7 @@
 
 use <lib/servos.scad>
 use <lib/arduino.scad>
+use <lib/oshw.scad>
 
 $fn = 50;
 
@@ -48,8 +49,6 @@ THREADED_ROD_Z_POSITION = 1;
 
 /**
  *  Todo:
- *
- *  - Middle servo position
  *
  *
  */
@@ -213,11 +212,11 @@ module body() {
             servo();
         }
 
-        translate([20, 10, -23]) {
+        translate([10, 10, -23]) {
             servo();
         }
 
-        translate([20, -30, -23]) {
+        translate([10, -30, -23]) {
             servo();
         }
 
@@ -275,8 +274,14 @@ module body_support() {
         // Threaded rod
         threaded_rod_holder([0, width / 2 - 11, THREADED_ROD_Z_POSITION], true);
         threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION], true);
-    }
 
+        translate([0, 0, BODY_THICKNESS / 2 - 1]) {
+            rotate([0, 0, -90]) {
+                linear_extrude(height=2)
+                    oshw_logo_2d(20);
+            }
+        }
+    }
     // Leg support
     translate([0, width / 2, 0]) {
         leg_support(leg_length);
