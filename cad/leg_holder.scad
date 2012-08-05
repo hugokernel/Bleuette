@@ -231,6 +231,7 @@ module support() {
     RUDDER_HEIGHT = 4;
     RUDDER_CYLINDER_HEIGHT = RUDDER_HEIGHT + 2;
     RUDDER_LENGTH = 6;
+    RUDDER_HOLE_DIAMETER = 1.8;
     rotate([0, 0, 45]) {
        //translate([16.5, -21, 0]) {
         translate([16.5, -19 - RUDDER_LENGTH, 0]) {
@@ -248,7 +249,7 @@ module support() {
                 }
 
                 translate([3, 0, -1]) {
-                    cylinder(r = 0.7, h = 100);
+                    cylinder(r = RUDDER_HOLE_DIAMETER / 2, h = 100);
                 }
             }
 
@@ -256,19 +257,21 @@ module support() {
     }
 }
 
-if (1) {
-    translate([-14, -10, 0]) {
-        support();
+mirror([1, 0, 0]) {
+    if (0) {
+        translate([-14, -10, 0]) {
+            support();
 
-        if (DEBUG) {
-            color("GREY")
-                translate([SERVO_HOLDER_WIDTH - 27, -1, BODY_HEIGHT - SERVO_HOLDER_HEIGHT - 0.5])
-                    rotate([90, 180, 90])
-                        futabas3003();
+            if (DEBUG) {
+                color("GREY")
+                    translate([SERVO_HOLDER_WIDTH - 27, -1, BODY_HEIGHT - SERVO_HOLDER_HEIGHT - 0.5])
+                        rotate([90, 180, 90])
+                            futabas3003();
+            }
         }
+    } else {
+        translate([0, 0, 4])    rotate([0, 180, 0]) servo_holder(true);
+        //translate([30, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
     }
-} else {
-    translate([0, 0, 4])    rotate([0, 180, 0]) servo_holder(true);
-    translate([30, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
 }
 
