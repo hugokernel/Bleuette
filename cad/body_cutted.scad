@@ -3,7 +3,7 @@ use <body.scad>;
 use <lib/dovetail.scad>;
 
 PART = 0;
-SUPPORT = false;
+SUPPORT = true;
 
 BODY_THICKNESS = 10;
 BODY_WIDTH = 100;
@@ -52,6 +52,6 @@ module show(part, support = false) {
     }
 }
 
-rotate([0, 180, 0])
+//rotate([0, 180, 0])
 show(PART, SUPPORT);
 

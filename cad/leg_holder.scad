@@ -3,7 +3,7 @@ include <lib/servos.scad>
 
 $fn = 25;
 
-DEBUG = true;
+DEBUG = false;
 
 BODY_HEIGHT = 65.0;
 BODY_WIDTH = 27.5;
@@ -236,7 +236,7 @@ module support() {
         translate([16.5, -19 - RUDDER_LENGTH, 0]) {
 
             translate([2.5, 1, 0]) {
-                cube(size = [1, RUDDER_LENGTH, RUDDER_CYLINDER_HEIGHT]);
+                cube(size = [1, RUDDER_LENGTH + 1.5, RUDDER_CYLINDER_HEIGHT]);
             }
 
             difference() {
