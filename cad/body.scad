@@ -318,6 +318,40 @@ module body_support() {
     threaded_rod_holder([0, - width / 2 + 11, THREADED_ROD_Z_POSITION]);
 }
 
+module head() {
+
+    width = 30;
+    length = 15;
+    radius = 7;
+
+    rotate([0, 0, -90])
+    difference() {
+        union() {
+            union() {
+                cube(size = [width, length, BODY_THICKNESS], center = true);
+
+                translate([0, length / 2, 0]) {
+                    cylinder(r = width / 2, h = BODY_THICKNESS, center = true);
+                }
+            }
+
+            difference() {
+                translate([0, - length / 2 + radius / 2, 0]) {
+                    cube(size = [width + radius * 2, radius, BODY_THICKNESS], center = true);
+                }
+
+                translate([(width + radius * 2) / 2, (- length / 2 + radius / 2) + radius / 2, -5]) {
+                    cylinder(r = radius, h = 20);
+                }
+
+                translate([- (width + radius * 2) / 2, (- length / 2 + radius / 2) + radius / 2, -5]) {
+                    cylinder(r = radius, h = 20);
+                }
+            }
+        }
+    }
+}
+
 if (1) {
 
     body();
@@ -327,6 +361,11 @@ if (1) {
     translate([0, 0, SUPPORT_SPACE]) {
         body_support();
     }
+
+    translate([BODY_WIDTH + 67, 0, 0]) {
+        % head();
+    }
+
 } else {
     leg_support();
 }
