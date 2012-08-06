@@ -225,7 +225,7 @@ module body() {
     }
 
     // Leg support
-    translate([0, width / 2, 0]) {
+    translate([0, width / 2 - 0.01, 0]) {
         leg_support(head_screw_footprint = false);
     }
 
@@ -235,7 +235,7 @@ module body() {
         }
     }
 
-    translate([length / 2 - 30, width / 2, 0]) {
+    translate([length / 2 - 30, width / 2 - 0.01, 0]) {
         leg_support(head_screw_footprint = false);
     }
 
@@ -245,7 +245,7 @@ module body() {
         }
     }
 
-    translate([- (length / 2 - 30), width / 2, 0]) {
+    translate([- (length / 2 - 30), width / 2 - 0.01, 0]) {
         leg_support(head_screw_footprint = false);
     }
 
@@ -282,8 +282,9 @@ module body_support() {
             }
         }
     }
+
     // Leg support
-    translate([0, width / 2, 0]) {
+    translate([0, width / 2 - 0.01, 0]) {
         leg_support(leg_length);
     }
 
@@ -293,7 +294,7 @@ module body_support() {
         }
     }
 
-    translate([length / 2 - 30, width / 2, 0]) {
+    translate([length / 2 - 30, width / 2 - 0.01, 0]) {
         leg_support(leg_length);
     }
 
@@ -303,7 +304,7 @@ module body_support() {
         }
     }
 
-    translate([- (length / 2 - 30), width / 2, 0]) {
+    translate([- (length / 2 - 30), width / 2 - 0.01, 0]) {
         leg_support(leg_length);
     }
 
