@@ -182,6 +182,44 @@ module arduino(hole = 1) {
     }
 }
 
+module oblong(radius, length) {
+    hull() {
+        translate([0, - length / 2, 0]) {
+            cylinder(r = radius, h = 10, center = true);
+        }
+
+        translate([0, length / 2, 0]) {
+            cylinder(r = radius, h = 10, center = true);
+        }
+    }
+}
+
+module toolbox_support() {
+
+    radius = 2;
+    length = 12;
+
+    translate([0, -25, 0]) {
+        oblong(radius, length);
+    }
+
+    translate([0, -12.5, 0]) {
+        cylinder(r = 1, h = 10, center = true);
+    }
+
+    translate([0, 0, 0]) {
+        oblong(radius, length);
+    }
+
+    translate([0, 12.5, 0]) {
+        cylinder(r = 1, h = 10, center = true);
+    }
+
+    translate([0, 25, 0]) {
+        oblong(radius, length);
+    }
+}
+
 module body() {
 
     width = BODY_WIDTH;
@@ -222,6 +260,15 @@ module body() {
 
         // Arduino
         arduino(1);
+
+        // Toolbox
+        translate([BODY_LENGTH / 2 - 8, 0, 0]) {
+            toolbox_support();
+        }
+
+        translate([- BODY_LENGTH / 2 + 8, 0, 0]) {
+            toolbox_support();
+        }
     }
 
     // Leg support
@@ -280,6 +327,15 @@ module body_support() {
                 linear_extrude(height=2)
                     oshw_logo_2d(20);
             }
+        }
+
+        // Toolbox support
+        translate([BODY_LENGTH / 2 - 8, 0, 0]) {
+            oblong(2, 12);
+        }
+
+        translate([- BODY_LENGTH / 2 + 8, 0, 0]) {
+            oblong(2, 12);
         }
     }
 
@@ -360,10 +416,6 @@ if (1) {
 
     translate([0, 0, SUPPORT_SPACE]) {
         body_support();
-    }
-
-    translate([BODY_WIDTH + 67, 0, 0]) {
-        % head();
     }
 
 } else {
