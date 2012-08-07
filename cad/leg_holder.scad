@@ -343,21 +343,20 @@ module rudder(length = 8) {
 }
 
 
-mirror([0, 0, 0]) {
-    if (1) {
-        translate([-14, -10, 0]) {
-            support();
+if (1) {
+    translate([-14, -10, 0]) {
+        support();
 
-            if (DEBUG) {
-                color("GREY")
-                    translate([SERVO_HOLDER_WIDTH - 27, -1, BODY_HEIGHT - SERVO_HOLDER_HEIGHT - 0.5])
-                        rotate([90, 180, 90])
-                            futabas3003();
-            }
+        if (DEBUG) {
+            color("GREY")
+                translate([SERVO_HOLDER_WIDTH - 27, -1, BODY_HEIGHT - SERVO_HOLDER_HEIGHT - 0.5])
+                    rotate([90, 180, 90])
+                        futabas3003();
         }
-    } else {
-        translate([0, 0, 4])    rotate([0, 180, 0]) servo_holder(true);
-        //translate([30, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
     }
+} else {
+    rudder();
+    //translate([0, 0, 4])    rotate([0, 180, 0]) servo_holder(true);
+    //translate([30, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
 }
 
