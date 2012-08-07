@@ -321,7 +321,7 @@ module rudder(length = 8) {
     RUDDER_HEIGHT = 4;
     RUDDER_CYLINDER_HEIGHT = RUDDER_HEIGHT + 2;
     RUDDER_DIAMETER = 6;
-    RUDDER_HOLE_DIAMETER = 1.8;
+    RUDDER_HOLE_DIAMETER = 2;
 
     difference() {
         union() {
@@ -343,7 +343,7 @@ module rudder(length = 8) {
 }
 
 
-if (1) {
+if (0) {
     translate([-14, -10, 0]) {
         support();
 
