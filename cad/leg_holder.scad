@@ -3,7 +3,7 @@ include <lib/servos.scad>
 
 $fn = 25;
 
-DEBUG = false;
+DEBUG = true;
 
 BODY_HEIGHT = 65.0;
 BODY_WIDTH = 27.5;
@@ -161,6 +161,21 @@ module support() {
         }
     }
 
+    module rudder_holder() {
+        // Rudder holder
+        rotate([0, 0, -45]) {
+            translate([0, -5.1, 0]) {
+                color("RED") rudder();
+            }
+        }
+
+        rotate([0, 0, 45]) {
+            translate([19.45, -24.6, 0]) {
+                color("RED") rudder();
+            }
+        }
+    }
+
     difference() {
         union() {
             difference() {
@@ -227,18 +242,11 @@ module support() {
             }
         }
 
-        // Rudder holder
-        rotate([0, 0, -45]) {
-            translate([0, -5.2, 0]) {
-                color("RED") rudder();
-            }
-        }
+        rudder_holder();
+    }
 
-        rotate([0, 0, 45]) {
-            translate([19.5, -24.7, 0]) {
-                color("RED") rudder();
-            }
-        }
+    if (DEBUG) {
+        rudder_holder();
     }
 
 /*
