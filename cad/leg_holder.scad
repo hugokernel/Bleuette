@@ -18,7 +18,7 @@ CHANFREIN = 4;
 LEG_THICKNESS = 4;
 LEG_HOLE_DIAMETER = 2.5;
 
-CONNECTION_WIDTH = 8;
+CONNECTION_WIDTH = 6;
 CONNECTION_HEIGHT = 8;
 
 SERVO_HOLDER_HEIGHT = 11.5;
@@ -41,7 +41,8 @@ LEG_HOLDER_MAX_WALL_THICKNESS = 3;
 
 module servo_holder(is_top = true, boolean = false) {
 
-    position_z = (is_top) ? 8 : 7.6;
+    //position_z = (is_top) ? 8 : 7.6;
+    position_z = 7.8; // Average
 
     module nut_holder(is_top) {
 
@@ -66,7 +67,7 @@ module servo_holder(is_top = true, boolean = false) {
         }
     }
 
-    translate([-(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, 0, - (SERVO_HOLDER_HEIGHT - CONNECTION_WIDTH / 2)]) {
+    translate([-(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, 0, - (SERVO_HOLDER_HEIGHT - CONNECTION_HEIGHT / 2)]) {
         difference() {
             // Servo holder
             cube(size = [SERVO_HOLDER_WIDTH - CHANFREIN, SERVO_WIDTH, SERVO_HOLDER_HEIGHT]);
@@ -75,7 +76,9 @@ module servo_holder(is_top = true, boolean = false) {
             translate([-20, 8, position_z])  rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
             translate([-20, 18, position_z]) rotate([0, 90, 0]) cylinder(h = 50, r = SERVO_HOLDER_SCREW_DIAMETER / 2);
 
-            nut_holder(is_top);
+            nut_holder(false);
+            
+            nut_holder(true);
 
             // Servo holder chanfrein
             translate([SERVO_WIDTH, 20, -0.1]) {
@@ -87,14 +90,13 @@ module servo_holder(is_top = true, boolean = false) {
         }
 
         // Test
-        // @Todo: Replace value with CONNECTION_WIDTH
         translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, 3.5]) {
             linear_extrude(height = CONNECTION_HEIGHT) {
                 // Boolean is the slide connection part
                 if (boolean) {
-                    polygon([[-2,0],[4,0],[4,4],[-4,4],[-4,0]]);
+                    polygon([[-CONNECTION_WIDTH / 2,0],[CONNECTION_WIDTH / 2,0],[CONNECTION_WIDTH / 2,4],[-CONNECTION_WIDTH / 2,4],[-3,0]]);
                 } else {
-                    polygon([[-2,0],[2,0],[4,4],[-4,4]]);
+                    polygon([[-CONNECTION_WIDTH / 2 + 1,0],[CONNECTION_WIDTH / 2 - 1,0],[CONNECTION_WIDTH / 2,4],[-CONNECTION_WIDTH / 2,4]]);
                 }
             }
         }
@@ -124,7 +126,7 @@ module leg_holder(slot = false) {
 
         if (slot) {
             translate([0, LEG_THICKNESS - 5, BODY_HEIGHT / 2]) {
-                cube(size = [LEG_THICKNESS, 100, BODY_HEIGHT / 2 - 3]);
+                cube(size = [LEG_THICKNESS, 30, BODY_HEIGHT / 2 - 3]);
             }
         }
     }
@@ -138,9 +140,10 @@ module leg_holder(slot = false) {
 module support() {
 
     module support_servo_holder(rail = true) {
+        // Top
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_LENGTH + 4]) {
             rotate([0, 180, 0]) {
-                servo_holder(true);
+                color("RED") servo_holder(true);
 
                 if (rail) {
                     translate([0, 0, CONNECTION_HEIGHT]) {
@@ -150,8 +153,31 @@ module support() {
             }
         }
 
+        translate([CHANFREIN + SERVO_HOLDER_WIDTH - 2.5, -SERVO_WIDTH, SERVO_LENGTH + 4]) {
+            rotate([0, 180, 0]) {
+                color("BLUE") servo_holder(true);
+
+                if (rail) {
+                    translate([0, 0, CONNECTION_HEIGHT]) {
+                        servo_holder(true, true);
+                    }
+                }
+            }
+        }
+
+        // Bottom
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_HOLDER_HEIGHT - 3]) {
-            servo_holder(false);
+            color("RED") servo_holder(false);
+
+            if (rail) {
+                translate([0, 0, CONNECTION_HEIGHT]) {
+                    servo_holder(false, true);
+                }
+            }
+        }
+
+        translate([CHANFREIN + SERVO_HOLDER_WIDTH - 2.5, -SERVO_WIDTH, SERVO_HOLDER_HEIGHT - 3]) {
+            color("BLUE") servo_holder(true);
 
             if (rail) {
                 translate([0, 0, CONNECTION_HEIGHT]) {
@@ -164,13 +190,13 @@ module support() {
     module rudder_holder() {
         // Rudder holder
         rotate([0, 0, -45]) {
-            translate([0, -5.1, 0]) {
+            translate([0, -5.2, 0]) {
                 color("RED") rudder();
             }
         }
 
         rotate([0, 0, 45]) {
-            translate([19.45, -24.6, 0]) {
+            translate([19.45, -24.7, 0]) {
                 color("RED") rudder();
             }
         }
@@ -212,7 +238,7 @@ module support() {
             // Left leg holder
             translate([ 0, 4, 0]) {
                 mirror([1, 0, 0]) {
-                    leg_holder(false);
+                    leg_holder(true);
                 }
             }
         }
@@ -237,6 +263,13 @@ module support() {
 
         // Hole for cable
         translate([BODY_WIDTH / 2 + 5.5, 0, 5]) {
+            rotate([90, 0, 0]) {
+                cylinder(r = 2, h = 100, center = true);
+            }
+        }
+
+        // Hole for cable
+        translate([8.5, 0, 5]) {
             rotate([90, 0, 0]) {
                 cylinder(r = 2, h = 100, center = true);
             }
