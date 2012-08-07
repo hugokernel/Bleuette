@@ -3,7 +3,7 @@ include <lib/servos.scad>
 
 $fn = 25;
 
-DEBUG = true;
+DEBUG = false;
 
 BODY_HEIGHT = 65.0;
 BODY_WIDTH = 27.5;
