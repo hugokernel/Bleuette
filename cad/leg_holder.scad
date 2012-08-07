@@ -90,6 +90,7 @@ module servo_holder(is_top = true, boolean = false) {
         // @Todo: Replace value with CONNECTION_WIDTH
         translate([(SERVO_HOLDER_WIDTH - CHANFREIN) / 2, SERVO_WIDTH, 3.5]) {
             linear_extrude(height = CONNECTION_HEIGHT) {
+                // Boolean is the slide connection part
                 if (boolean) {
                     polygon([[-2,0],[4,0],[4,4],[-4,4],[-4,0]]);
                 } else {
@@ -225,8 +226,22 @@ module support() {
                 cylinder(r = 2, h = 100, center = true);
             }
         }
+
+        // Rudder holder
+        rotate([0, 0, -45]) {
+            translate([0, -5.2, 0]) {
+                color("RED") rudder();
+            }
+        }
+
+        rotate([0, 0, 45]) {
+            translate([19.5, -24.7, 0]) {
+                color("RED") rudder();
+            }
+        }
     }
 
+/*
     // Rudder
     RUDDER_HEIGHT = 4;
     RUDDER_CYLINDER_HEIGHT = RUDDER_HEIGHT + 2;
@@ -255,10 +270,40 @@ module support() {
 
         }
     }
+*/
+
 }
 
-mirror([1, 0, 0]) {
-    if (0) {
+module rudder(length = 8) {
+
+    // Rudder
+    RUDDER_HEIGHT = 4;
+    RUDDER_CYLINDER_HEIGHT = RUDDER_HEIGHT + 2;
+    RUDDER_DIAMETER = 6;
+    RUDDER_HOLE_DIAMETER = 1.8;
+
+    difference() {
+        union() {
+            translate([0, length / 2, RUDDER_HEIGHT / 2]) {
+                cube(size = [5.5, length, RUDDER_HEIGHT], center = true);
+            }
+            cylinder(r = RUDDER_DIAMETER / 2, h = RUDDER_CYLINDER_HEIGHT);
+        }
+
+        translate([0, 0, -1]) {
+            cylinder(r = RUDDER_HOLE_DIAMETER / 2, h = 100);
+        }
+    }
+
+    translate([0, length, 0])
+    linear_extrude(height = RUDDER_HEIGHT) {
+        polygon([[-1.25,0],[1.25,0],[2.25,2],[-2.25,2]]);
+    }
+}
+
+
+mirror([0, 0, 0]) {
+    if (1) {
         translate([-14, -10, 0]) {
             support();
 
