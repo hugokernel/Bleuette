@@ -48,10 +48,10 @@ THREADED_ROD_DIAMETER = 3.8;
 THREADED_ROD_Z_POSITION = 1;
 
 /**
- *  Todo:
- *
- *
+ *  Toolbox support
  */
+TOOLBOX_SCREW_DIAMETER = 2;
+
 
 module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
@@ -194,29 +194,41 @@ module oblong(radius, length) {
     }
 }
 
-module toolbox_support() {
+module toolbox_support(is_top = false) {
 
     radius = 2;
     length = 12;
 
-    translate([0, -25, 0]) {
-        oblong(radius, length);
-    }
+    if (is_top) {
+        translate([0, -8, 0]) {
+            cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
+        }
 
-    translate([0, -12.5, 0]) {
-        cylinder(r = 1, h = 10, center = true);
-    }
+        oblong(2, 6);
 
-    translate([0, 0, 0]) {
-        oblong(radius, length);
-    }
+        translate([0, 8, 0]) {
+            cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
+        }
+    } else {
+        translate([0, -25, 0]) {
+            oblong(radius, length);
+        }
 
-    translate([0, 12.5, 0]) {
-        cylinder(r = 1, h = 10, center = true);
-    }
+        translate([0, -12.5, 0]) {
+            cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
+        }
 
-    translate([0, 25, 0]) {
-        oblong(radius, length);
+        translate([0, 0, 0]) {
+            oblong(radius, length);
+        }
+
+        translate([0, 12.5, 0]) {
+            cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
+        }
+
+        translate([0, 25, 0]) {
+            oblong(radius, length);
+        }
     }
 }
 
@@ -331,11 +343,11 @@ module body_support() {
 
         // Toolbox support
         translate([BODY_LENGTH / 2 - 8, 0, 0]) {
-            oblong(2, 12);
+            toolbox_support(true);
         }
 
         translate([- BODY_LENGTH / 2 + 8, 0, 0]) {
-            oblong(2, 12);
+            toolbox_support(true);
         }
     }
 
