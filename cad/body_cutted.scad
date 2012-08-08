@@ -3,7 +3,7 @@ use <body.scad>;
 use <lib/dovetail.scad>;
 
 PART = 0;
-SUPPORT = true;
+SUPPORT = false;
 
 BODY_THICKNESS = 10;
 BODY_WIDTH = 100;

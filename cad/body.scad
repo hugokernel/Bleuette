@@ -5,6 +5,8 @@ use <lib/oshw.scad>
 
 $fn = 50;
 
+DEBUG = false;
+
 /**
  *  Body information
  */
@@ -100,6 +102,9 @@ module leg_support(length = 25, width = 30, head_screw_footprint = true) {
     }
 }
 
+/**
+ *  Rounded box
+ */
 module rbox(width, length, thickness, radius) {
 
     cube(size = [width, length - radius * 2, thickness], center = true);
@@ -165,12 +170,14 @@ module servo() {
                 cylinder(r = SERVO_HOLDER_NUT_DIAMETER / 2, h = SERVO_HOLDER_NUT_HEIGHT, $fn = 6);
             }
         }
-        
+
         translate([ - clear / 2, - clear / 2, 0]) {
             cube([20.1 + clear, 39.9 + clear, 36.1], false);
         }
-        
-        %cube([20.1, 39.9, 36.1], false);
+
+        if (DEBUG) {
+            %cube([20.1, 39.9, 36.1], false);
+        }
     }
 }
 
@@ -182,52 +189,59 @@ module arduino(hole = 1) {
     }
 }
 
-module oblong(radius, length) {
+/**
+ *  Make a slotted hole (oblong)
+ */
+module slotted_hole(radius, length) {
     hull() {
-        translate([0, - length / 2, 0]) {
+        translate([0, - length / 2 + radius, 0]) {
             cylinder(r = radius, h = 10, center = true);
         }
 
-        translate([0, length / 2, 0]) {
+        translate([0, length / 2 - radius, 0]) {
             cylinder(r = radius, h = 10, center = true);
         }
     }
 }
 
+/**
+ *  Toolbox support
+ *  @Todo: Explain measure
+ */
 module toolbox_support(is_top = false) {
 
     radius = 2;
-    length = 12;
 
     if (is_top) {
         translate([0, -8, 0]) {
             cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
         }
 
-        oblong(2, 6);
+        slotted_hole(2, 10);
 
         translate([0, 8, 0]) {
             cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
         }
     } else {
-        translate([0, -25, 0]) {
-            oblong(radius, length);
+
+        translate([0, -19, 0]) {
+            slotted_hole(radius, 10);
         }
 
-        translate([0, -12.5, 0]) {
+        translate([0, -11, 0]) {
             cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
         }
 
         translate([0, 0, 0]) {
-            oblong(radius, length);
+            slotted_hole(radius, 16);
         }
 
-        translate([0, 12.5, 0]) {
+        translate([0, 11, 0]) {
             cylinder(r = TOOLBOX_SCREW_DIAMETER / 2, h = 10, center = true);
         }
 
-        translate([0, 25, 0]) {
-            oblong(radius, length);
+        translate([0, 19, 0]) {
+            slotted_hole(radius, 10);
         }
     }
 }
@@ -280,6 +294,15 @@ module body() {
 
         translate([- BODY_LENGTH / 2 + 8, 0, 0]) {
             toolbox_support();
+        }
+
+        // Passe cable
+        translate([75, 0, 0]) {
+            slotted_hole(3, 20);
+        }
+
+        translate([-75, 0, 0]) {
+            slotted_hole(3, 20);
         }
     }
 
@@ -424,7 +447,9 @@ if (1) {
 
     body();
 
-    arduino(0);
+    if (DEBUG) {
+        arduino(0);
+    }
 
     translate([0, 0, SUPPORT_SPACE]) {
         body_support();
