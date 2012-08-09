@@ -62,6 +62,16 @@ module short_arm() {
     }
 }
 
+module connection() {
+    translate([0, -4, 0]) {
+        cube(size = [ ARM_THICKNESS, SPACER_LENGTH, 10 ], center = true);
+    }
+
+    cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
+
+    cylinder(r = SPACER_LENGTH / 2, h = 16, center = true);
+}
+
 module main_arm() {
 
     size = [ ARM_WIDTH, 120, ARM_THICKNESS ];
@@ -99,7 +109,8 @@ module main_arm() {
         // Spacer hole
         union() {
             translate([0, size[1] / 2 - 15, 0]) {
-                cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
+                //cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
+                connection();
             }
 
             translate([0, - size[1] / 2 + 27, 0]) {
@@ -128,6 +139,11 @@ module spacer(length, width, thickness) {
             translate([ 0, 0, thickness / 2]) {
                 cylinder(h = thickness, r1 = 5, r2 = 5);
             }
+
+            // Blocker
+            translate([ - (length + thickness) / 2 - 3, 0, -SPACE / 2 ]) {
+                cube(size = [ 2, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
+            }
         }
 
         translate([ 0, 0, -10 ]) {
@@ -137,7 +153,7 @@ module spacer(length, width, thickness) {
 }
 
 
-if (1) {
+if (0) {
     main_arm();
 
     translate([30, 0, 0]) {
@@ -164,6 +180,6 @@ if (1) {
 //main_arm();
 //long_arm();
 //short_arm();
-//spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
+spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
 //spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
 

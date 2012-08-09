@@ -1,6 +1,7 @@
 
 use <lib/servos.scad>
 use <body.scad>
+use <leg.scad>
 
 $fn = 50;
 
@@ -82,7 +83,7 @@ module show() {
     }
 }
 
-
+/*
 if (0) {
     rotate([180, 0, 0]) {
         show() {
@@ -99,6 +100,35 @@ if (0) {
                 cube(size = [120, 120, 50], center = true);
             }
         }
+    }
+}
+*/
+
+module test_arm() {
+    SPACER_LENGTH = 6;
+
+    ARMS_SPACING = 20;
+
+    ARM_THICKNESS = 4;
+    ARM_WIDTH = 20;
+
+    difference() {
+        spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
+        translate([6, 0, 0]) {
+            cube(size = [20, 30, 30], center = true);
+        }
+    }
+}
+
+if (0) {
+    test_arm();
+} else {
+
+    difference() {
+        main_arm();
+        translate([0, -17, 0]) {
+            cube(size = [30, 100, 30], center = true);
+        }   
     }
 }
 
