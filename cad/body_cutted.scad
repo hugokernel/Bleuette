@@ -2,7 +2,7 @@
 use <body.scad>;
 use <lib/dovetail.scad>;
 
-PART = 0;
+PART = 1;
 SUPPORT = false;
 
 BODY_THICKNESS = 10;

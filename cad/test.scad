@@ -120,7 +120,7 @@ module test_arm() {
     }
 }
 
-if (0) {
+if (1) {
     test_arm();
 } else {
 
