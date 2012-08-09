@@ -281,38 +281,6 @@ module support() {
     if (DEBUG) {
         rudder_holder();
     }
-
-/*
-    // Rudder
-    RUDDER_HEIGHT = 4;
-    RUDDER_CYLINDER_HEIGHT = RUDDER_HEIGHT + 2;
-    RUDDER_LENGTH = 6;
-    RUDDER_HOLE_DIAMETER = 1.8;
-    rotate([0, 0, 45]) {
-       //translate([16.5, -21, 0]) {
-        translate([16.5, -19 - RUDDER_LENGTH, 0]) {
-
-            translate([2.5, 1, 0]) {
-                cube(size = [1, RUDDER_LENGTH + 1.5, RUDDER_CYLINDER_HEIGHT]);
-            }
-
-            difference() {
-                union() {
-                    cube(size = [6, RUDDER_LENGTH + 3, RUDDER_HEIGHT]);
-                    translate([3, 0, 0]) {
-                        cylinder(r = 3, h = RUDDER_CYLINDER_HEIGHT);
-                    }
-                }
-
-                translate([3, 0, -1]) {
-                    cylinder(r = RUDDER_HOLE_DIAMETER / 2, h = 100);
-                }
-            }
-
-        }
-    }
-*/
-
 }
 
 module rudder(length = 8) {
