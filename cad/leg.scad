@@ -122,6 +122,7 @@ module main_arm() {
 
 module spacer(length, width, thickness) {
 
+    BLOCKER_THICKNESS = 2;
     SPACE = 0.3;
 
     difference() {
@@ -129,11 +130,11 @@ module spacer(length, width, thickness) {
             cube([ length, width, thickness ], center = true);
 
             translate([0, 0, - SPACE / 2]) {
-                cube(size = [ length + thickness * 2 + 2, SPACER_LENGTH - SPACE, ARM_THICKNESS - SPACE ], center = true);
+                cube(size = [ length + thickness * 2, SPACER_LENGTH - SPACE, ARM_THICKNESS - SPACE ], center = true);
             }
 
             translate([ 0, 0, thickness ]) {
-                cube(size = [ length, SPACER_LENGTH, ARM_THICKNESS ], center = true);
+                cube(size = [ length, SPACER_LENGTH, thickness ], center = true);
             }
 
             translate([ 0, 0, thickness / 2]) {
@@ -141,8 +142,12 @@ module spacer(length, width, thickness) {
             }
 
             // Blocker
-            translate([ - (length + thickness) / 2 - 3.7, 0, -SPACE / 2 ]) {
-                cube(size = [ 2, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
+            translate([ - (length + thickness * 2) / 2 - BLOCKER_THICKNESS / 2, 0, -SPACE / 2 ]) {
+                cube(size = [ BLOCKER_THICKNESS, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
+            }
+
+            translate([ (length + thickness * 2) / 2 + BLOCKER_THICKNESS / 2, 0, -SPACE / 2 ]) {
+                cube(size = [ BLOCKER_THICKNESS, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
             }
         }
 
