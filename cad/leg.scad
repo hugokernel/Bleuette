@@ -124,13 +124,14 @@ module spacer(length, width, thickness) {
 
     BLOCKER_THICKNESS = 2;
     SPACE = 0.3;
+    CLEAR = 0.7;
 
     difference() {
         union() {
             cube([ length, width, thickness ], center = true);
 
             translate([0, 0, - SPACE / 2]) {
-                cube(size = [ length + thickness * 2, SPACER_LENGTH - SPACE, ARM_THICKNESS - SPACE ], center = true);
+                cube(size = [ length + thickness * 2 + CLEAR * 2, SPACER_LENGTH - SPACE, ARM_THICKNESS - SPACE ], center = true);
             }
 
             translate([ 0, 0, thickness ]) {
@@ -142,11 +143,11 @@ module spacer(length, width, thickness) {
             }
 
             // Blocker
-            translate([ - (length + thickness * 2) / 2 - BLOCKER_THICKNESS / 2, 0, -SPACE / 2 ]) {
+            translate([ - (length + thickness * 2) / 2 - BLOCKER_THICKNESS / 2 - CLEAR, 0, -SPACE / 2 ]) {
                 cube(size = [ BLOCKER_THICKNESS, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
             }
 
-            translate([ (length + thickness * 2) / 2 + BLOCKER_THICKNESS / 2, 0, -SPACE / 2 ]) {
+            translate([ (length + thickness * 2) / 2 + BLOCKER_THICKNESS / 2 + CLEAR, 0, -SPACE / 2 ]) {
                 cube(size = [ BLOCKER_THICKNESS, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
             }
         }
@@ -158,7 +159,7 @@ module spacer(length, width, thickness) {
 }
 
 
-if (1) {
+if (0) {
     main_arm();
 
     translate([30, 0, 0]) {

@@ -13,8 +13,6 @@ BODY_HEIGHT = 65.0;
 
 ARM_WIDTH = 20;
 
-DEBUG = 1;
-
 $fn = 20;
 
 module mounted_arm() {
