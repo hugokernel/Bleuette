@@ -1,8 +1,6 @@
 
 $fn = 20;
 
-DEMO = true;
-
 SPACER_LENGTH = 6;
 
 ARMS_SPACING = 20;
@@ -22,10 +20,13 @@ module arm(width, length, height, hole = [5, 5], gap_width = 0, gap_length = 0) 
         }
 
         // Hole
-        translate([0, - length / 2, -1])
-            cylinder(h = height + 1, r1 = hole[0] / 2, r2 = hole[0] / 2);
-        translate([0, length / 2, -1])
-            cylinder(h = height + 1, r1 = hole[1] / 2, r2 = hole[1] / 2);
+        translate([0, - length / 2, -1]) {
+            cylinder(h = height + 2, r1 = hole[0] / 2, r2 = hole[0] / 2);
+        }
+
+        translate([0, length / 2, -1]) {
+            cylinder(h = height + 2, r1 = hole[1] / 2, r2 = hole[1] / 2);
+        }
 
         if (gap_width) {
             difference() {
@@ -43,7 +44,7 @@ module arm(width, length, height, hole = [5, 5], gap_width = 0, gap_length = 0) 
 // Long arm
 module long_arm() {
     difference() {
-        arm(15, 135, 4, [5, 1], 0, 0);
+        arm(15, 135, 4, [5, 2], 0, 0);
 
         translate([0, 12.5, -1]) {
             cylinder(h = 20, r1 = 2.5, r2 = 2.5);
