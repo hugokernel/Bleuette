@@ -50,7 +50,7 @@ module long_arm() {
         }
 
         translate([0, - 27, 0]) {
-            cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
+            connection();
         }
     }
 }
@@ -58,7 +58,7 @@ module long_arm() {
 module short_arm() {
     difference() {
         arm(15, 80, 4, [5, 5], 0, 0);
-        cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
+        connection();
     }
 }
 
@@ -109,12 +109,11 @@ module main_arm() {
         // Spacer hole
         union() {
             translate([0, size[1] / 2 - 15, 0]) {
-                //cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
                 connection();
             }
 
             translate([0, - size[1] / 2 + 27, 0]) {
-                cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
+                connection();
             }
         }
     }
@@ -158,7 +157,7 @@ module spacer(length, width, thickness) {
 }
 
 
-if (0) {
+if (1) {
     main_arm();
 
     translate([30, 0, 0]) {
@@ -170,7 +169,7 @@ if (0) {
         short_arm();
     }
 
-    translate([60, 40, 0]) {
+    translate([70, 40, 0]) {
         rotate([0, 0, 0]) {
             spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
 
@@ -179,12 +178,11 @@ if (0) {
             }
         }
     }
+} else {
+    //main_arm();
+    //long_arm();
+    //short_arm();
+    spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
+    //spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
 }
-
-
-//main_arm();
-//long_arm();
-//short_arm();
-spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
-//spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
 
