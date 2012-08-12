@@ -120,14 +120,14 @@ module test_arm() {
     }
 }
 
-if (1) {
+if (0) {
     test_arm();
 } else {
 
     difference() {
         main_arm();
-        translate([0, -17, 0]) {
-            cube(size = [30, 100, 30], center = true);
+        translate([0, -25, 0]) {
+            cube(size = [30, 80, 30], center = true);
         }   
     }
 }

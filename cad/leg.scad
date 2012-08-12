@@ -5,7 +5,7 @@ SPACER_LENGTH = 6;
 
 ARMS_SPACING = 20;
 
-ARM_THICKNESS = 4;
+ARM_THICKNESS = 3.8;
 ARM_WIDTH = 20;
 
 module arm(width, length, height, hole = [5, 5], gap_width = 0, gap_length = 0) {
@@ -183,8 +183,8 @@ if (0) {
 } else {
     //main_arm();
     //long_arm();
-    //short_arm();
-    spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
-    //spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
+    short_arm();
+    //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
+    //spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
 }
 
