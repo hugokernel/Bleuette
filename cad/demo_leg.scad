@@ -28,13 +28,13 @@ module mounted_arm() {
 
         translate([ 0, -33, ARMS_SPACING / 2 + ARM_THICKNESS / 2 ]) {
             rotate([ 0, 90, 90 ]) {
-                color("yellow") spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
+                color("white") spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS);
             }
         }
 
         translate([ 0, 45, ARMS_SPACING / 2 + ARM_THICKNESS / 2 ]) {
             rotate([ 0, 90, -90 ]) {
-                color("yellow") spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
+                color("white") spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
             }
         }
     }
@@ -48,7 +48,7 @@ module mounted_arm() {
 
             translate([ 27, 0, 18 ]) {
                 rotate([ 0, 90, 0 ]) {
-                    color("yellow") spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
+                    color("white") spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
                 }
             }
         }
@@ -75,7 +75,7 @@ module mounted_arm() {
 
             translate([ 0, 0, 18 ]) {
                 rotate([ 0, 90, 0 ]) {
-                    color("yellow") spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
+                    color("white") spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
                 }
             }
         }
