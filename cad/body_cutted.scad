@@ -2,14 +2,14 @@
 use <body.scad>;
 use <lib/dovetail.scad>;
 
-PART = 1;
+PART = 0;
 SUPPORT = true;
 
 BODY_THICKNESS = 10;
 BODY_WIDTH = 100;
 BODY_LENGTH = 320;
  
-CLEAR = 0.1;
+CLEAR = 0.3;
 TEETHS_COUNT = (SUPPORT) ? 9 : 6;
 
 module body_rotated(support) {
@@ -52,6 +52,12 @@ module show(part, support = false) {
     }
 }
 
-//rotate([0, 180, 0])
-show(PART, SUPPORT);
+intersection() {
+    translate([0, -60, 0]) {
+        cube(size = [60, 35, 10], center = true);
+    }
+
+    //rotate([0, 180, 0])
+    show(PART, SUPPORT);
+}
 
