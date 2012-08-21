@@ -146,7 +146,11 @@ module spacer(length, width, thickness, support = false) {
                 }
             } else {
                 translate([ 0, 0, thickness ]) {
-                    cube(size = [ length, 10, thickness ], center = true);
+                    cube(size = [ length, SPACER_LENGTH - SPACE, thickness ], center = true);
+                }
+                
+                translate([ 0, 0, thickness / 2]) {
+                    cylinder(r = 5, h = thickness);
                 }
             }
 
@@ -211,7 +215,7 @@ if (0) {
     //main_arm();
     //long_arm();
     //short_arm();
-    //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
-    spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
+    spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
+    //spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
 }
 
