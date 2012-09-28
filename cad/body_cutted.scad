@@ -3,7 +3,7 @@ use <body.scad>;
 use <lib/dovetail.scad>;
 
 PART = 0;
-SUPPORT = false;
+SUPPORT = true;
 
 BODY_THICKNESS = 10;
 BODY_WIDTH = 100;
@@ -52,8 +52,8 @@ module show(part, support = false) {
     }
 }
 
-intersection() {
-    translate([0, -55, 0]) {
+//intersection() {
+%    translate([0, -55, 0]) {
         cube(size = [110, 35, 10], center = true);
     }
 
@@ -63,5 +63,5 @@ intersection() {
     } else {
         show(PART, SUPPORT);
     }
-}
+//}
 
