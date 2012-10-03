@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="dots" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -6946,15 +6946,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </library>
 <library name="testpad">
 <packages>
-<package name="B2,54@1">
-<description>&lt;b&gt;TEST PAD&lt;/b&gt;</description>
-<wire x1="-0.635" y1="0" x2="0.635" y2="0" width="0.0024" layer="37"/>
-<wire x1="0" y1="-0.635" x2="0" y2="0.635" width="0.0024" layer="37"/>
-<circle x="0" y="0" radius="0.635" width="0.254" layer="37"/>
-<smd name="PP" x="0" y="0" dx="2.54" dy="2.54" layer="1" roundness="100"/>
-<text x="-1.27" y="1.651" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="-1.27" y="-1.397" size="0.0254" layer="27">&gt;VALUE</text>
-</package>
 <package name="B1,27">
 <description>&lt;b&gt;TEST PAD&lt;/b&gt;</description>
 <wire x1="-0.635" y1="0" x2="0.635" y2="0" width="0.0024" layer="37"/>
@@ -7240,16 +7231,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </package>
 </packages>
 <symbols>
-<symbol name="PPAD">
-<wire x1="0" y1="-2.54" x2="1.27" y2="-1.27" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="-1.27" x2="0" y2="0" width="0.1524" layer="94"/>
-<wire x1="0" y1="0" x2="-1.27" y2="-1.27" width="0.1524" layer="94"/>
-<wire x1="-1.27" y1="-1.27" x2="0" y2="-2.54" width="0.1524" layer="94"/>
-<circle x="0" y="-1.27" radius="0.635" width="0.1524" layer="94"/>
-<text x="-2.54" y="-4.445" size="1.778" layer="95">&gt;NAME</text>
-<text x="1.27" y="0.635" size="0.8636" layer="93" rot="R90">PP</text>
-<pin name="PP" x="0" y="2.54" visible="off" length="short" direction="pas" rot="R270"/>
-</symbol>
 <symbol name="TP">
 <wire x1="-0.762" y1="-0.762" x2="0" y2="0" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0.762" y2="-0.762" width="0.254" layer="94"/>
@@ -7261,22 +7242,6 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="B2,54" prefix="TP">
-<description>&lt;b&gt;TEST PIN&lt;/b&gt;</description>
-<gates>
-<gate name="1" symbol="PPAD" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="B2,54@1">
-<connects>
-<connect gate="1" pin="PP" pad="PP"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
 <deviceset name="TP" prefix="TP">
 <description>&lt;b&gt;Test pad&lt;/b&gt;</description>
 <gates>
@@ -10216,8 +10181,6 @@ SOT363 pin 2 goes to GND</description>
 <part name="VSS1" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS2" library="supply1" deviceset="VSS" device=""/>
 <part name="Q1" library="crystal" deviceset="CRYTAL" device="HC49UP"/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="M1206"/>
-<part name="DEBUG" library="testpad" deviceset="B2,54" device=""/>
 <part name="SERVO0" library="con-lstb" deviceset="MA03-1" device=""/>
 <part name="SERVO1" library="con-lstb" deviceset="MA03-1" device=""/>
 <part name="SERVO2" library="con-lstb" deviceset="MA03-1" device=""/>
@@ -10237,8 +10200,6 @@ SOT363 pin 2 goes to GND</description>
 <part name="SERVOY" library="con-lstb" deviceset="MA03-1" device=""/>
 <part name="RX" library="solpad" deviceset="SE14" device=""/>
 <part name="TX" library="solpad" deviceset="SE14" device=""/>
-<part name="SDA" library="solpad" deviceset="SE14" device=""/>
-<part name="SCL" library="solpad" deviceset="SE14" device=""/>
 <part name="C5" library="rcl" deviceset="C-EU" device="C1206"/>
 <part name="C7" library="rcl" deviceset="C-EU" device="C1206"/>
 <part name="C8" library="rcl" deviceset="C-EU" device="C1206"/>
@@ -10249,14 +10210,8 @@ SOT363 pin 2 goes to GND</description>
 <part name="P+3" library="supply1" deviceset="+5V" device=""/>
 <part name="P+4" library="supply1" deviceset="+5V" device=""/>
 <part name="P+5" library="supply1" deviceset="+5V" device=""/>
-<part name="P+6" library="supply1" deviceset="+5V" device=""/>
 <part name="P+7" library="supply1" deviceset="+5V" device=""/>
-<part name="GND1" library="supply1" deviceset="GND" device=""/>
-<part name="GND2" library="supply1" deviceset="GND" device=""/>
-<part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
-<part name="GND5" library="supply1" deviceset="GND" device=""/>
-<part name="GND6" library="supply1" deviceset="GND" device=""/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
 <part name="IC1" library="burr-brown" deviceset="REG1117" device="F"/>
 <part name="VSS3" library="supply1" deviceset="VSS" device=""/>
@@ -10304,6 +10259,17 @@ SOT363 pin 2 goes to GND</description>
 <part name="PGC" library="testpad" deviceset="TP" device="TP20R"/>
 <part name="SUPPLY5" library="supply2" deviceset="VEE" device="" value="SERVO"/>
 <part name="VSS16" library="supply1" deviceset="VSS" device=""/>
+<part name="VSS17" library="supply1" deviceset="VSS" device=""/>
+<part name="VSS18" library="supply1" deviceset="VSS" device=""/>
+<part name="VSS19" library="supply1" deviceset="VSS" device=""/>
+<part name="VSS20" library="supply1" deviceset="VSS" device=""/>
+<part name="VSS21" library="supply1" deviceset="VSS" device=""/>
+<part name="SDA" library="testpad" deviceset="TP" device="TP20R">
+<attribute name="TP_SIGNAL_NAME" value=""/>
+</part>
+<part name="SCL" library="testpad" deviceset="TP" device="TP20R">
+<attribute name="TP_SIGNAL_NAME" value=""/>
+</part>
 </parts>
 <sheets>
 <sheet>
@@ -10313,8 +10279,6 @@ SOT363 pin 2 goes to GND</description>
 <instance part="VSS1" gate="G$1" x="109.22" y="120.65"/>
 <instance part="VSS2" gate="G$1" x="111.76" y="33.02"/>
 <instance part="Q1" gate="G$1" x="73.66" y="69.85" rot="R90"/>
-<instance part="R1" gate="G$1" x="86.36" y="124.46" rot="R90"/>
-<instance part="DEBUG" gate="1" x="144.78" y="58.42"/>
 <instance part="SERVO0" gate="G$1" x="27.94" y="104.14" smashed="yes">
 <attribute name="NAME" x="13.97" y="104.902" size="1.778" layer="95"/>
 <attribute name="VALUE" x="26.67" y="96.52" size="1.778" layer="96"/>
@@ -10370,8 +10334,6 @@ SOT363 pin 2 goes to GND</description>
 <instance part="SERVOY" gate="G$1" x="152.4" y="35.56" rot="R180"/>
 <instance part="RX" gate="1" x="134.62" y="152.4"/>
 <instance part="TX" gate="1" x="139.7" y="152.4"/>
-<instance part="SDA" gate="1" x="152.4" y="152.4"/>
-<instance part="SCL" gate="1" x="157.48" y="152.4"/>
 <instance part="C5" gate="G$1" x="66.04" y="73.66" rot="R90"/>
 <instance part="C7" gate="G$1" x="66.04" y="66.04" rot="R90"/>
 <instance part="C8" gate="G$1" x="116.205" y="111.76" rot="R90"/>
@@ -10382,14 +10344,8 @@ SOT363 pin 2 goes to GND</description>
 <instance part="P+3" gate="1" x="111.76" y="116.84"/>
 <instance part="P+4" gate="1" x="190.5" y="243.84"/>
 <instance part="P+5" gate="1" x="190.5" y="215.9"/>
-<instance part="P+6" gate="1" x="86.36" y="134.62"/>
 <instance part="P+7" gate="1" x="96.52" y="134.62"/>
-<instance part="GND1" gate="1" x="43.18" y="25.4"/>
-<instance part="GND2" gate="1" x="66.04" y="17.78"/>
-<instance part="GND3" gate="1" x="139.7" y="20.32"/>
 <instance part="GND4" gate="1" x="274.32" y="137.16"/>
-<instance part="GND5" gate="1" x="180.34" y="25.4"/>
-<instance part="GND6" gate="1" x="60.96" y="60.96"/>
 <instance part="GND8" gate="1" x="264.16" y="43.18"/>
 <instance part="IC1" gate="G$1" x="96.52" y="236.22"/>
 <instance part="VSS3" gate="G$1" x="27.94" y="220.98"/>
@@ -10452,6 +10408,19 @@ SOT363 pin 2 goes to GND</description>
 </instance>
 <instance part="SUPPLY5" gate="G$1" x="73.66" y="193.04"/>
 <instance part="VSS16" gate="G$1" x="124.46" y="106.68"/>
+<instance part="VSS17" gate="G$1" x="43.18" y="25.4"/>
+<instance part="VSS18" gate="G$1" x="66.04" y="17.78"/>
+<instance part="VSS19" gate="G$1" x="139.7" y="20.32"/>
+<instance part="VSS20" gate="G$1" x="180.34" y="25.4"/>
+<instance part="VSS21" gate="G$1" x="60.96" y="60.96"/>
+<instance part="SDA" gate="G$1" x="152.4" y="152.4" smashed="yes">
+<attribute name="NAME" x="153.035" y="153.67" size="1.778" layer="95" rot="R90"/>
+<attribute name="TP_SIGNAL_NAME" x="153.67" y="151.13" size="1.778" layer="97"/>
+</instance>
+<instance part="SCL" gate="G$1" x="157.48" y="152.4" smashed="yes">
+<attribute name="NAME" x="158.115" y="153.67" size="1.778" layer="95" rot="R90"/>
+<attribute name="TP_SIGNAL_NAME" x="158.75" y="151.13" size="1.778" layer="97"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -10671,6 +10640,80 @@ SOT363 pin 2 goes to GND</description>
 <pinref part="C8" gate="G$1" pin="2"/>
 <pinref part="VSS16" gate="G$1" pin="VSS"/>
 </segment>
+<segment>
+<wire x1="35.56" y1="101.6" x2="43.18" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="101.6" x2="43.18" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="88.9" x2="43.18" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="76.2" x2="43.18" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="63.5" x2="43.18" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="50.8" x2="43.18" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="38.1" x2="43.18" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="50.8" x2="43.18" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="63.5" x2="35.56" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="76.2" x2="43.18" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="88.9" x2="35.56" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="38.1" x2="43.18" y2="27.94" width="0.1524" layer="91"/>
+<junction x="43.18" y="88.9"/>
+<junction x="43.18" y="76.2"/>
+<junction x="43.18" y="63.5"/>
+<junction x="43.18" y="50.8"/>
+<junction x="43.18" y="38.1"/>
+<pinref part="SERVO0" gate="G$1" pin="1"/>
+<pinref part="SERVO1" gate="G$1" pin="1"/>
+<pinref part="SERVO2" gate="G$1" pin="1"/>
+<pinref part="SERVO3" gate="G$1" pin="1"/>
+<pinref part="SERVO4" gate="G$1" pin="1"/>
+<pinref part="SERVO5" gate="G$1" pin="1"/>
+<pinref part="VSS17" gate="G$1" pin="VSS"/>
+</segment>
+<segment>
+<wire x1="60.96" y1="25.4" x2="66.04" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="25.4" x2="66.04" y2="20.32" width="0.1524" layer="91"/>
+<pinref part="SERVOX" gate="G$1" pin="1"/>
+<pinref part="VSS18" gate="G$1" pin="VSS"/>
+</segment>
+<segment>
+<wire x1="144.78" y1="38.1" x2="139.7" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="38.1" x2="139.7" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="SERVOY" gate="G$1" pin="1"/>
+<pinref part="VSS19" gate="G$1" pin="VSS"/>
+</segment>
+<segment>
+<wire x1="180.34" y1="43.18" x2="187.96" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="43.18" x2="180.34" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="55.88" x2="180.34" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="55.88" x2="180.34" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="68.58" x2="180.34" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="68.58" x2="180.34" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="81.28" x2="180.34" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="81.28" x2="180.34" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="106.68" x2="180.34" y2="106.68" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="106.68" x2="180.34" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="180.34" y1="93.98" x2="180.34" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="93.98" x2="180.34" y2="93.98" width="0.1524" layer="91"/>
+<junction x="180.34" y="43.18"/>
+<junction x="180.34" y="55.88"/>
+<junction x="180.34" y="68.58"/>
+<junction x="180.34" y="81.28"/>
+<junction x="180.34" y="93.98"/>
+<pinref part="SERVO6" gate="G$1" pin="1"/>
+<pinref part="SERVO7" gate="G$1" pin="1"/>
+<pinref part="SERVO8" gate="G$1" pin="1"/>
+<pinref part="SERVO9" gate="G$1" pin="1"/>
+<pinref part="SERVO11" gate="G$1" pin="1"/>
+<pinref part="SERVO10" gate="G$1" pin="1"/>
+<pinref part="VSS20" gate="G$1" pin="VSS"/>
+</segment>
+<segment>
+<wire x1="63.5" y1="73.66" x2="60.96" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="73.66" x2="60.96" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="66.04" x2="63.5" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="66.04" x2="60.96" y2="63.5" width="0.1524" layer="91"/>
+<junction x="60.96" y="66.04"/>
+<pinref part="C5" gate="G$1" pin="1"/>
+<pinref part="C7" gate="G$1" pin="1"/>
+<pinref part="VSS21" gate="G$1" pin="VSS"/>
+</segment>
 </net>
 <net name="N$25" class="0">
 <segment>
@@ -10709,10 +10752,7 @@ SOT363 pin 2 goes to GND</description>
 <net name="N$17" class="0">
 <segment>
 <wire x1="132.08" y1="60.96" x2="134.62" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="134.62" y1="60.96" x2="144.78" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="134.62" y1="149.86" x2="134.62" y2="60.96" width="0.1524" layer="91"/>
-<junction x="134.62" y="60.96"/>
-<pinref part="DEBUG" gate="1" pin="PP"/>
 <pinref part="IC2" gate="G$1" pin="RX/RC7"/>
 <pinref part="RX" gate="1" pin="MP"/>
 </segment>
@@ -10722,7 +10762,7 @@ SOT363 pin 2 goes to GND</description>
 <wire x1="152.4" y1="149.86" x2="152.4" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="152.4" y1="53.34" x2="132.08" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="IC2" gate="G$1" pin="SDI/RC4"/>
-<pinref part="SDA" gate="1" pin="MP"/>
+<pinref part="SDA" gate="G$1" pin="TP"/>
 </segment>
 </net>
 <net name="N$18" class="0">
@@ -10732,7 +10772,7 @@ SOT363 pin 2 goes to GND</description>
 <wire x1="78.74" y1="25.4" x2="78.74" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="78.74" y1="53.34" x2="88.9" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="IC2" gate="G$1" pin="RC3/SCK"/>
-<pinref part="SCL" gate="1" pin="MP"/>
+<pinref part="SCL" gate="G$1" pin="TP"/>
 </segment>
 </net>
 <net name="N$32" class="0">
@@ -10765,11 +10805,6 @@ SOT363 pin 2 goes to GND</description>
 </segment>
 </net>
 <net name="+5V" class="0">
-<segment>
-<wire x1="86.36" y1="129.54" x2="86.36" y2="132.08" width="0.1524" layer="91"/>
-<pinref part="R1" gate="G$1" pin="2"/>
-<pinref part="P+6" gate="1" pin="+5V"/>
-</segment>
 <segment>
 <wire x1="96.52" y1="132.08" x2="96.52" y2="129.54" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="129.54" x2="106.68" y2="129.54" width="0.1524" layer="91"/>
@@ -10840,80 +10875,6 @@ SOT363 pin 2 goes to GND</description>
 <wire x1="276.86" y1="152.4" x2="274.32" y2="152.4" width="0.1524" layer="91"/>
 <junction x="274.32" y="152.4"/>
 <pinref part="GND4" gate="1" pin="GND"/>
-</segment>
-<segment>
-<wire x1="180.34" y1="43.18" x2="187.96" y2="43.18" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="43.18" x2="180.34" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="55.88" x2="180.34" y2="43.18" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="55.88" x2="180.34" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="68.58" x2="180.34" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="68.58" x2="180.34" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="81.28" x2="180.34" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="81.28" x2="180.34" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="106.68" x2="180.34" y2="106.68" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="106.68" x2="180.34" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="93.98" x2="180.34" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="93.98" x2="180.34" y2="93.98" width="0.1524" layer="91"/>
-<junction x="180.34" y="43.18"/>
-<junction x="180.34" y="55.88"/>
-<junction x="180.34" y="68.58"/>
-<junction x="180.34" y="81.28"/>
-<junction x="180.34" y="93.98"/>
-<pinref part="SERVO6" gate="G$1" pin="1"/>
-<pinref part="SERVO7" gate="G$1" pin="1"/>
-<pinref part="SERVO8" gate="G$1" pin="1"/>
-<pinref part="SERVO9" gate="G$1" pin="1"/>
-<pinref part="SERVO11" gate="G$1" pin="1"/>
-<pinref part="SERVO10" gate="G$1" pin="1"/>
-<pinref part="GND5" gate="1" pin="GND"/>
-</segment>
-<segment>
-<wire x1="144.78" y1="38.1" x2="139.7" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="139.7" y1="38.1" x2="139.7" y2="22.86" width="0.1524" layer="91"/>
-<pinref part="SERVOY" gate="G$1" pin="1"/>
-<pinref part="GND3" gate="1" pin="GND"/>
-</segment>
-<segment>
-<wire x1="60.96" y1="25.4" x2="66.04" y2="25.4" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="25.4" x2="66.04" y2="20.32" width="0.1524" layer="91"/>
-<pinref part="SERVOX" gate="G$1" pin="1"/>
-<pinref part="GND2" gate="1" pin="GND"/>
-</segment>
-<segment>
-<wire x1="35.56" y1="101.6" x2="43.18" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="101.6" x2="43.18" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="88.9" x2="43.18" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="76.2" x2="43.18" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="63.5" x2="43.18" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="50.8" x2="43.18" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="38.1" x2="43.18" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="50.8" x2="43.18" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="63.5" x2="35.56" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="76.2" x2="43.18" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="88.9" x2="35.56" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="38.1" x2="43.18" y2="27.94" width="0.1524" layer="91"/>
-<junction x="43.18" y="88.9"/>
-<junction x="43.18" y="76.2"/>
-<junction x="43.18" y="63.5"/>
-<junction x="43.18" y="50.8"/>
-<junction x="43.18" y="38.1"/>
-<pinref part="SERVO0" gate="G$1" pin="1"/>
-<pinref part="SERVO1" gate="G$1" pin="1"/>
-<pinref part="SERVO2" gate="G$1" pin="1"/>
-<pinref part="SERVO3" gate="G$1" pin="1"/>
-<pinref part="SERVO4" gate="G$1" pin="1"/>
-<pinref part="SERVO5" gate="G$1" pin="1"/>
-<pinref part="GND1" gate="1" pin="GND"/>
-</segment>
-<segment>
-<wire x1="63.5" y1="73.66" x2="60.96" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="73.66" x2="60.96" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="66.04" x2="63.5" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="66.04" x2="60.96" y2="63.5" width="0.1524" layer="91"/>
-<junction x="60.96" y="66.04"/>
-<pinref part="C5" gate="G$1" pin="1"/>
-<pinref part="C7" gate="G$1" pin="1"/>
-<pinref part="GND6" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="VDD" class="0">
@@ -11012,13 +10973,11 @@ SOT363 pin 2 goes to GND</description>
 <wire x1="86.36" y1="96.52" x2="86.36" y2="116.84" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="116.84" x2="104.14" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="86.36" y1="116.84" x2="104.14" y2="116.84" width="0.1524" layer="91"/>
-<wire x1="86.36" y1="116.84" x2="86.36" y2="119.38" width="0.1524" layer="91"/>
 <junction x="86.36" y="116.84"/>
 <pinref part="IC2" gate="G$1" pin="!MCLR/THV"/>
-<pinref part="R1" gate="G$1" pin="1"/>
-<label x="81.28" y="116.84" size="1.778" layer="95" rot="R180"/>
-<wire x1="86.36" y1="116.84" x2="83.82" y2="116.84" width="0.1524" layer="91"/>
-<junction x="83.82" y="116.84"/>
+<label x="86.36" y="124.46" size="1.778" layer="95" rot="R180"/>
+<wire x1="86.36" y1="116.84" x2="86.36" y2="119.38" width="0.1524" layer="91"/>
+<junction x="86.36" y="119.38"/>
 <pinref part="RESET" gate="G$1" pin="TP"/>
 </segment>
 </net>
