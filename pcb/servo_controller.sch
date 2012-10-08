@@ -16491,60 +16491,6 @@ SOT363 pin 2 goes to GND</description>
 </deviceset>
 </devicesets>
 </library>
-<library name="resistor-shunt">
-<description>&lt;b&gt;Isabellenhuette SMD Shunt Resistors&lt;/b&gt;&lt;p&gt;
-www.isabellenhuette.de&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-<package name="PMD">
-<description>&lt;b&gt;SMD SHUNT RESISTOR&lt;/b&gt;</description>
-<wire x1="-4.9" y1="-2.9" x2="4.9" y2="-2.9" width="0.2032" layer="21"/>
-<wire x1="4.9" y1="-2.9" x2="4.9" y2="2.9" width="0.2032" layer="21"/>
-<wire x1="4.9" y1="2.9" x2="-4.9" y2="2.9" width="0.2032" layer="21"/>
-<wire x1="-4.9" y1="2.9" x2="-4.9" y2="-2.9" width="0.2032" layer="21"/>
-<smd name="2" x="-3.8608" y="0" dx="1.7" dy="5.4" layer="1"/>
-<smd name="1" x="3.8608" y="0" dx="1.7" dy="5.4" layer="1"/>
-<text x="-2.6924" y="1.016" size="1.27" layer="25">&gt;NAME</text>
-<text x="-2.7432" y="-1.9304" size="1.27" layer="27">&gt;VALUE</text>
-</package>
-</packages>
-<symbols>
-<symbol name="R">
-<wire x1="2.54" y1="0.889" x2="-2.54" y2="0.889" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-0.889" x2="2.54" y2="-0.889" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="0.889" x2="-2.54" y2="-0.889" width="0.254" layer="94"/>
-<wire x1="2.54" y1="0.889" x2="2.54" y2="-0.889" width="0.254" layer="94"/>
-<text x="-3.81" y="1.3716" size="1.778" layer="95">&gt;NAME</text>
-<text x="-3.81" y="-2.921" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="2" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
-<pin name="1" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="PMD" prefix="R" uservalue="yes">
-<description>&lt;b&gt;SMD SHUNT RESISTOR&lt;/b&gt;</description>
-<gates>
-<gate name="G$1" symbol="R" x="0" y="0" swaplevel="2"/>
-</gates>
-<devices>
-<device name="" package="PMD">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="MF" value="" constant="no"/>
-<attribute name="MPN" value="" constant="no"/>
-<attribute name="OC_FARNELL" value="unknown" constant="no"/>
-<attribute name="OC_NEWARK" value="unknown" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="linear">
 <description>&lt;b&gt;Linear Devices&lt;/b&gt;&lt;p&gt;
 Operational amplifiers,  comparators, voltage regulators, ADCs, DACs, etc.&lt;p&gt;
@@ -16782,7 +16728,6 @@ Source: http://www.onsemi.com/pub_link/Collateral/MBRA340T3-D.PDF</description>
 <part name="SCL" library="testpad" deviceset="TP" device="TP20R">
 <attribute name="TP_SIGNAL_NAME" value=""/>
 </part>
-<part name="R1" library="resistor-shunt" deviceset="PMD" device=""/>
 <part name="IC4" library="linear" deviceset="LM2937" device=""/>
 <part name="D1" library="diode" deviceset="MBRA340T3" device=""/>
 <part name="C1" library="rcl" deviceset="C-EU" device="C1206" value="100nf"/>
@@ -16791,6 +16736,7 @@ Source: http://www.onsemi.com/pub_link/Collateral/MBRA340T3-D.PDF</description>
 <part name="SV1" library="con-lstb" deviceset="MA03-2" device=""/>
 <part name="C2" library="rcl" deviceset="CPOL-EU" device="D"/>
 <part name="VSS22" library="supply1" deviceset="VSS" device=""/>
+<part name="RSENSE" library="rcl" deviceset="R-EU_" device="R4527"/>
 </parts>
 <sheets>
 <sheet>
@@ -16937,7 +16883,6 @@ Source: http://www.onsemi.com/pub_link/Collateral/MBRA340T3-D.PDF</description>
 <attribute name="NAME" x="158.115" y="153.67" size="1.778" layer="95" rot="R90"/>
 <attribute name="TP_SIGNAL_NAME" x="158.75" y="151.13" size="1.778" layer="97"/>
 </instance>
-<instance part="R1" gate="G$1" x="55.88" y="187.96"/>
 <instance part="IC4" gate="G$1" x="96.52" y="236.22"/>
 <instance part="D1" gate="G$1" x="114.3" y="236.22"/>
 <instance part="C1" gate="G$1" x="27.94" y="170.18"/>
@@ -16946,6 +16891,7 @@ Source: http://www.onsemi.com/pub_link/Collateral/MBRA340T3-D.PDF</description>
 <instance part="SV1" gate="1" x="187.96" y="170.18"/>
 <instance part="C2" gate="G$1" x="73.66" y="182.88"/>
 <instance part="VSS22" gate="G$1" x="73.66" y="172.72"/>
+<instance part="RSENSE" gate="G$1" x="55.88" y="187.96"/>
 </instances>
 <busses>
 </busses>
@@ -17451,9 +17397,9 @@ Source: http://www.onsemi.com/pub_link/Collateral/MBRA340T3-D.PDF</description>
 <wire x1="38.1" y1="187.96" x2="48.26" y2="187.96" width="0.1524" layer="91"/>
 <pinref part="IC3" gate="G$1" pin="R+"/>
 <wire x1="48.26" y1="187.96" x2="48.26" y2="185.42" width="0.1524" layer="91"/>
-<pinref part="R1" gate="G$1" pin="2"/>
 <wire x1="48.26" y1="187.96" x2="50.8" y2="187.96" width="0.1524" layer="91"/>
 <junction x="48.26" y="187.96"/>
+<pinref part="RSENSE" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="N$7" class="0">
@@ -17643,12 +17589,12 @@ Source: http://www.onsemi.com/pub_link/Collateral/MBRA340T3-D.PDF</description>
 <wire x1="63.5" y1="187.96" x2="73.66" y2="187.96" width="0.1524" layer="91"/>
 <pinref part="SUPPLY5" gate="G$1" pin="VEE"/>
 <wire x1="73.66" y1="187.96" x2="73.66" y2="190.5" width="0.1524" layer="91"/>
-<pinref part="R1" gate="G$1" pin="1"/>
 <wire x1="60.96" y1="187.96" x2="63.5" y2="187.96" width="0.1524" layer="91"/>
 <junction x="63.5" y="187.96"/>
 <pinref part="C2" gate="G$1" pin="+"/>
 <wire x1="73.66" y1="187.96" x2="73.66" y2="185.42" width="0.1524" layer="91"/>
 <junction x="73.66" y="187.96"/>
+<pinref part="RSENSE" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$15" class="0">
