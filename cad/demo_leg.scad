@@ -44,6 +44,12 @@ module mounted_arm() {
         translate([ -69, -52, - ARM_THICKNESS]) {
             rotate([ 0, 0, 90]) {
                 color("black") long_arm();
+
+                // Spring
+                translate([0, -47, ARM_THICKNESS]) {
+                    color("YELLOW")
+                        spring();
+                }
             }
 
             translate([ 27, 0, 18 ]) {
@@ -56,6 +62,13 @@ module mounted_arm() {
         translate([ -42, -52, ARMS_SPACING + ARM_THICKNESS * 2]) {
             rotate([ 0, 0, 90]) {
                 color("black") short_arm();
+
+                // Spring
+                rotate([0, 180, 0])
+                translate([0, -20, 0]) {
+                    color("YELLOW")
+                        spring();
+                }
             }
         }
     }

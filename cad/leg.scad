@@ -55,20 +55,9 @@ module long_arm() {
             connection();
         }
 
-        translate([0, -27 + -13, -1]) {
-            spring_connection();
+        translate([0, -47, ARM_THICKNESS]) {
+            spring(true);
         }
-    }
-}
-
-module spring_connection() {
-    spring_connection_radius = 1.2;
-
-    // Spring connection
-    cylinder(h = 20, r = spring_connection_radius);
-
-    translate([0, -5, 0]) {
-        cylinder(h = 20, r = spring_connection_radius);
     }
 }
 
@@ -77,8 +66,8 @@ module short_arm() {
         arm(15, 80, ARM_THICKNESS, [5, 5], 0, 0);
         connection();
 
-        translate([0, -13, -1]) {
-            spring_connection();
+        translate([0, -20, ARM_THICKNESS]) {
+            spring(true);
         }
     }
 }
@@ -90,7 +79,7 @@ module connection() {
 
     cube(size = [ SPACER_LENGTH, ARM_THICKNESS, 10 ], center = true);
 
-    cylinder(r = SPACER_LENGTH / 2+0.3, h = 16, center = true);
+    cylinder(r = SPACER_LENGTH / 2 + 0.3, h = 16, center = true);
 }
 
 module main_arm() {
@@ -209,14 +198,39 @@ module spacer(length, width, thickness, support = false) {
     }
 }
 
-module spring() {
-    translate([5, 7, 0]) {
-        linear_extrude(height = 2) {
-            polygon([[-10,0],[-10,6],[-6,10],[-4,10],[0,6],[0,0]]);
+module spring(only_connection = false) {
+    thickness = ARM_THICKNESS;
+    connection_radius = 1.2;
+    connection_height = ARM_THICKNESS + (only_connection ? 5 : 0);
+    offset = only_connection ? 10 : 0;
+
+    if (!only_connection) {
+        translate([5, 0, 0]) {
+            linear_extrude(height = thickness) {
+                polygon([[-10,0],[-10,6],[-6,10],[-4,10],[0,6],[0,0]]);
+            }
+        }
+
+        difference() {
+            translate([0, -7, thickness / 2]) {
+                spring_square(fid=1, th=1, folds=7, lx=14.2, lz=thickness, drill=0);
+            }
+
+            /*
+            translate([-7.5, 1, 1]) {
+                cube(size = [5, 3, thickness * 2], center = true);
+            }
+            */
         }
     }
-    translate([0, 0, 1]) {
-        spring_square(fid=1, th=1, folds=7, lx=10.2, lz=2, drill=0);
+
+    translate([0, 7.5, -connection_height]) {
+        // Spring connection
+       cylinder(h = connection_height + offset, r = connection_radius);
+
+        translate([0, -5, 0]) {
+            cylinder(h = connection_height + offset, r = connection_radius);
+        }
     }
 }
 
@@ -246,7 +260,7 @@ if (0) {
     //long_arm();
     short_arm();
 
-    translate([0, -27, ARM_THICKNESS]) {
+    translate([0, -20, ARM_THICKNESS]) {
         color("BLUE")
         spring();
     }
