@@ -1,4 +1,5 @@
 
+use <lib/spring.scad>
 $fn = 30;
 
 SPACER_LENGTH = 6;
@@ -50,9 +51,24 @@ module long_arm() {
             cylinder(h = 20, r1 = 2.5, r2 = 2.5);
         }
 
-        translate([0, - 27, 0]) {
+        translate([0, -27, 0]) {
             connection();
         }
+
+        translate([0, -27 + -13, -1]) {
+            spring_connection();
+        }
+    }
+}
+
+module spring_connection() {
+    spring_connection_radius = 1.2;
+
+    // Spring connection
+    cylinder(h = 20, r = spring_connection_radius);
+
+    translate([0, -5, 0]) {
+        cylinder(h = 20, r = spring_connection_radius);
     }
 }
 
@@ -60,6 +76,10 @@ module short_arm() {
     difference() {
         arm(15, 80, ARM_THICKNESS, [5, 5], 0, 0);
         connection();
+
+        translate([0, -13, -1]) {
+            spring_connection();
+        }
     }
 }
 
@@ -189,6 +209,16 @@ module spacer(length, width, thickness, support = false) {
     }
 }
 
+module spring() {
+    translate([5, 7, 0]) {
+        linear_extrude(height = 2) {
+            polygon([[-10,0],[-10,6],[-6,10],[-4,10],[0,6],[0,0]]);
+        }
+    }
+    translate([0, 0, 1]) {
+        spring_square(fid=1, th=1, folds=7, lx=10.2, lz=2, drill=0);
+    }
+}
 
 if (0) {
     main_arm();
@@ -214,8 +244,14 @@ if (0) {
 } else {
     //main_arm();
     //long_arm();
-    //short_arm();
-    spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
+    short_arm();
+
+    translate([0, -27, ARM_THICKNESS]) {
+        color("BLUE")
+        spring();
+    }
+
+    //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
     //spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
 }
 
