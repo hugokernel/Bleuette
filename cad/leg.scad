@@ -200,7 +200,7 @@ module spacer(length, width, thickness, support = false) {
 
 module spring(only_connection = false) {
     thickness = ARM_THICKNESS;
-    connection_radius = 1.2;
+    connection_radius = 1.5; // Todo: voir la taille des vis / foret
     connection_height = ARM_THICKNESS + (only_connection ? 5 : 0);
     offset = only_connection ? 10 : 0;
 
@@ -258,10 +258,10 @@ if (0) {
 } else {
     //main_arm();
     //long_arm();
-    short_arm();
+    //short_arm();
 
     translate([0, -20, ARM_THICKNESS]) {
-        color("BLUE")
+        rotate([0, 180, 0])
         spring();
     }
 
