@@ -14,4 +14,4 @@ Plus d'informations : http://www.digitalspirit.org/wiki/index.php/Bleuette
 
 ## Comment ?
 
-En imprimant les pièces ou en les découpant, pour cela, ça se passe par ici https://github.com/hugokernel/Bleuette/wiki/Fabriquer
+https://github.com/hugokernel/Bleuette/wiki/Home
