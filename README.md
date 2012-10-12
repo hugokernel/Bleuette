@@ -1,6 +1,8 @@
 Bleuette
 ========
 
+![Vue de Bleuette](https://github.com/hugokernel/Bleuette/blob/master/export/img/bleuette.png?raw=true)
+
 ## C'est quoi ?
 
 Ce projet à pour but de fabriquer une bestiole à 6 pattes et de la faire marcher sans l'aide de quiconque.
