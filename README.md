@@ -1,7 +1,7 @@
 Bleuette
 ========
 
-![Vue de Bleuette](https://github.com/hugokernel/Bleuette/blob/master/export/img/bleuette.png?raw=true)
+![Vue de Bleuette](https://github.com/hugokernel/Bleuette/blob/master/export/img/thumbs/bleuette.png?raw=true)
 
 ## C'est quoi ?
 
