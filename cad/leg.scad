@@ -213,7 +213,8 @@ module spring(only_connection = false) {
 
         difference() {
             translate([0, -7, thickness / 2]) {
-                spring_square(fid=1, th=1, folds=7, lx=14.2, lz=thickness, drill=0);
+                //spring_square(fid=1, th=1, folds=7, lx=14.2, lz=thickness, drill=0);
+                spring_square(fid=1, th=2, folds=4, lx=14.2, lz=thickness, drill=0);
             }
 
             /*
@@ -234,7 +235,7 @@ module spring(only_connection = false) {
     }
 }
 
-if (1) {
+if (0) {
     // View all piece...
 
     translate([-30, 0, 0]) {
