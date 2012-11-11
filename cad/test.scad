@@ -126,8 +126,8 @@ if (0) {
 
     difference() {
         main_arm();
-        translate([0, -25, 0]) {
-            cube(size = [30, 80, 30], center = true);
+        translate([0, 20, 0]) {
+            cube(size = [30, 90, 30], center = true);
         }   
     }
 }

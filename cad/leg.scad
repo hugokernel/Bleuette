@@ -97,9 +97,27 @@ module main_arm() {
                    y = [radius-size[1]/2, -radius+size[1]/2]) {
                 translate([x,y,0]) cylinder(r=radius, h=size[2], center=true);
             }
+            
+            difference() {
+                translate([ size[0] / 2 - 12, - size[1] / 2 + 7.5, - ARM_THICKNESS / 2]) {
+                    cylinder(h = ARM_THICKNESS, r1 = 17, r2 = 17);
+                }
+
+                translate([ size[0] / 2 - 30, - size[1] / 2 - 10, - ARM_THICKNESS / 2 - 0.1]) {
+                    cube(size = [10, 50, 10]);
+                }
+
+                translate([ size[0] / 2 - 30, - size[1] / 2 - 15, - ARM_THICKNESS / 2 - 0.1]) {
+                    cube(size = [50, 10, 10]);
+                }
+            }
+
+            translate([0, - 60, - ARM_THICKNESS / 2]) {
+                arm(ARM_WIDTH, 10, ARM_THICKNESS, [0, 0]);
+            }
         }
 
-        // Hole
+        // Hole : oblong
         union() {
             hull() {
                 translate([ size[0] / 2 - 12, - size[1] / 2 + 7.5, -5]) {
@@ -198,7 +216,7 @@ module spacer(length, width, thickness, support = false) {
     }
 }
 
-module spring(only_connection = false) {
+module spring_legacy(only_connection = false) {
     thickness = ARM_THICKNESS;
     connection_radius = 1.5; // Todo: voir la taille des vis / foret
     connection_height = ARM_THICKNESS + (only_connection ? 5 : 0);
@@ -215,6 +233,7 @@ module spring(only_connection = false) {
             translate([0, -7, thickness / 2]) {
                 //spring_square(fid=1, th=1, folds=7, lx=14.2, lz=thickness, drill=0);
                 spring_square(fid=1, th=2, folds=4, lx=14.2, lz=thickness, drill=0);
+                //spring_square(fid=3, th=3, folds=2, lx=14.2, lz=thickness, drill=0);
             }
 
             /*
@@ -225,12 +244,43 @@ module spring(only_connection = false) {
         }
     }
 
+/*
     translate([0, 7.5, -connection_height]) {
         // Spring connection
        cylinder(h = connection_height + offset, r = connection_radius);
 
         translate([0, -5, 0]) {
             cylinder(h = connection_height + offset, r = connection_radius);
+        }
+    }
+*/
+}
+
+module spring(only_connection = false) {
+    thickness = ARM_THICKNESS;
+    connection_radius = 1.5; // Todo: voir la taille des vis / foret
+    connection_height = ARM_THICKNESS + (only_connection ? 5 : 0);
+    offset = only_connection ? 10 : 0;
+
+    if (!only_connection) {
+
+        difference() {
+            translate([0, 6, ARM_THICKNESS / 2]) {
+                cube(size = [15, 7, ARM_THICKNESS], center = true);
+            }
+
+            rotate([0, 90, -90]) {
+                translate([9.9, 0, -11.4]) {
+                    color("red")
+                    spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
+                }
+            }
+        }
+
+        difference() {
+            translate([0, -6, thickness / 2]) {
+                spring_square(fid=1, th=2, folds=6, lx=14.2, lz=thickness, drill=0);
+            }
         }
     }
 }
@@ -298,8 +348,10 @@ if (0) {
     //short_arm();
 
     translate([0, -20, ARM_THICKNESS]) {
-        rotate([0, 180, 0])
-        spring();
+        rotate([0, 180, 0]) {
+           translate([20, 0, 0])
+           spring();
+        }
     }
 
     //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
