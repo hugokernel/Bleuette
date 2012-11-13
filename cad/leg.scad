@@ -1,5 +1,6 @@
 
-use <lib/spring.scad>
+use <spring.scad>
+use <spacer.scad>
 $fn = 30;
 
 SPACER_LENGTH = 6;
@@ -147,144 +148,6 @@ module main_arm() {
     }
 }
 
-module spacer(length, width, thickness, support = false) {
-
-    BLOCKER_THICKNESS = 2;
-    SPACE = 0.3;
-    CLEAR = 0.7;
-
-    MAIN_HOLE_DIAMETER = 2.5;
-
-    SCREW_DIAMETER = 2.7;
-    NUT_DIAMETER = 6;
-    NUT_HEIGHT = 1.9;
-
-    difference() {
-        union() {
-            cube([ length, width, thickness ], center = true);
-
-            translate([0, 0, - SPACE / 2]) {
-                cube(size = [ length + thickness * 2 + CLEAR * 2, SPACER_LENGTH - SPACE, ARM_THICKNESS - SPACE ], center = true);
-            }
-
-            if (support) {
-                translate([ 0, 0, thickness / 2]) {
-                    cylinder(r = 10, h = thickness);
-                }
-            } else {
-                translate([ 0, 0, thickness ]) {
-                    cube(size = [ length, SPACER_LENGTH - SPACE, thickness ], center = true);
-                }
-
-                translate([ 0, 0, thickness / 2]) {
-                    cylinder(r = 5, h = thickness);
-                }
-            }
-
-            // Blocker
-            translate([ - (length + thickness * 2) / 2 - BLOCKER_THICKNESS / 2 - CLEAR, 0, -SPACE / 2 ]) {
-                cube(size = [ BLOCKER_THICKNESS, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
-            }
-
-            translate([ (length + thickness * 2) / 2 + BLOCKER_THICKNESS / 2 + CLEAR, 0, -SPACE / 2 ]) {
-                cube(size = [ BLOCKER_THICKNESS, SPACER_LENGTH - SPACE + 2, ARM_THICKNESS - SPACE ], center = true);
-            }
-        }
-
-        // Main hole
-        translate([ 0, 0, -10]) {
-            cylinder(r = MAIN_HOLE_DIAMETER, h = 20);
-        }
-
-        if (support) {
-            // Small hole
-            for (i = [0 : 3]) {
-                rotate([0, 0, i * 90]) {
-
-                    translate([-(length / 4 + MAIN_HOLE_DIAMETER / 2), 0, -5]) {
-                        cylinder(r = SCREW_DIAMETER / 2, h = 20);
-
-                        // Nut
-                        translate([0, 0, ARM_THICKNESS + 5 + 0.01]) {
-                            rotate([0, 0, 90])
-                                cylinder(r = NUT_DIAMETER / 2, h = NUT_HEIGHT, $fn = 6);
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-module spring_legacy(only_connection = false) {
-    thickness = ARM_THICKNESS;
-    connection_radius = 1.5; // Todo: voir la taille des vis / foret
-    connection_height = ARM_THICKNESS + (only_connection ? 5 : 0);
-    offset = only_connection ? 10 : 0;
-
-    if (!only_connection) {
-        translate([5, 0, 0]) {
-            linear_extrude(height = thickness) {
-                polygon([[-10,0],[-10,6],[-6,10],[-4,10],[0,6],[0,0]]);
-            }
-        }
-
-        difference() {
-            translate([0, -7, thickness / 2]) {
-                //spring_square(fid=1, th=1, folds=7, lx=14.2, lz=thickness, drill=0);
-                spring_square(fid=1, th=2, folds=4, lx=14.2, lz=thickness, drill=0);
-                //spring_square(fid=3, th=3, folds=2, lx=14.2, lz=thickness, drill=0);
-            }
-
-            /*
-            translate([-7.5, 1, 1]) {
-                cube(size = [5, 3, thickness * 2], center = true);
-            }
-            */
-        }
-    }
-
-/*
-    translate([0, 7.5, -connection_height]) {
-        // Spring connection
-       cylinder(h = connection_height + offset, r = connection_radius);
-
-        translate([0, -5, 0]) {
-            cylinder(h = connection_height + offset, r = connection_radius);
-        }
-    }
-*/
-}
-
-module spring(only_connection = false) {
-    thickness = ARM_THICKNESS;
-    connection_radius = 1.5; // Todo: voir la taille des vis / foret
-    connection_height = ARM_THICKNESS + (only_connection ? 5 : 0);
-    offset = only_connection ? 10 : 0;
-
-    if (!only_connection) {
-
-        difference() {
-            translate([0, 6, ARM_THICKNESS / 2]) {
-                cube(size = [15, 7, ARM_THICKNESS], center = true);
-            }
-
-            rotate([0, 90, -90]) {
-                translate([9.9, 0, -11.4]) {
-                    color("red")
-                    spacer(ARMS_SPACING + ARM_THICKNESS * 2, 15, ARM_THICKNESS);
-                }
-            }
-        }
-
-        difference() {
-            translate([0, -6, thickness / 2]) {
-                spring_square(fid=1, th=2, folds=6, lx=14.2, lz=thickness, drill=0);
-            }
-        }
-    }
-}
-
 if (0) {
     // View all piece...
 
@@ -346,15 +209,5 @@ if (0) {
     //main_arm();
     //long_arm();
     //short_arm();
-
-    translate([0, -20, ARM_THICKNESS]) {
-        rotate([0, 180, 0]) {
-           translate([20, 0, 0])
-           spring();
-        }
-    }
-
-    //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
-    //spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
 }
 
