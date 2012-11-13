@@ -84,9 +84,20 @@ module spacer(length, width, thickness, support = false) {
 }
 
 if (1) {
+    // Small
     //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
 
     // Large
-    spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
+    difference() {
+        intersection() {
+            translate([15, 0, 0]) {
+                cube(size = [ 15, 30, 20 ], center = true);
+            }
+            spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
+        }
+        translate([20, 0, 0]) {
+            cube(size = [ 15, 30, 20 ], center = true);
+        }
+    }
 }
 

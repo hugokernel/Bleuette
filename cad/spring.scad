@@ -44,6 +44,11 @@ module spring(only_connection = false) {
 }
 
 if (1) {
-   spring();
+    intersection() {
+        translate([0, 8, 0]) {
+            cube(size = [20, 10, 10], center = true);
+        }
+        spring();
+    }
 }
 
