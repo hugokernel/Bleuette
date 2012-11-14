@@ -36,10 +36,10 @@ module spacer(length, width, thickness, support = false) {
                     //%cube(size = [ length, SPACER_LENGTH - SPACE, thickness ], center = true);
                 }
 
-                translate([ - length / 2, 0, thickness / 2 ]) {
+                translate([ - length / 2, 0, thickness / 2 - 0.01 ]) {
                     rotate([90, 0, 90])
                     linear_extrude(height = length) {
-                        polygon([[-1.5,0],[-(SPACER_LENGTH - SPACE) / 2,thickness],[(SPACER_LENGTH - SPACE) / 2,thickness],[1.5,0]]);
+                        polygon([[-1.5,0],[-(SPACER_LENGTH - SPACE) / 2, thickness + 0.01],[(SPACER_LENGTH - SPACE) / 2,thickness + 0.01],[1.5,0]]);
                     }
                 }
 
@@ -88,6 +88,7 @@ if (1) {
     //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
 
     // Large
+    /*
     difference() {
         intersection() {
             translate([15, 0, 0]) {
@@ -99,5 +100,8 @@ if (1) {
             cube(size = [ 15, 30, 20 ], center = true);
         }
     }
+    */
+
+            spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);
 }
 

@@ -10,8 +10,6 @@ DEBUG = true;
 
 module spring(only_connection = false) {
     thickness = ARM_THICKNESS;
-    connection_radius = 1.5; // Todo: voir la taille des vis / foret
-    connection_height = ARM_THICKNESS + (only_connection ? 5 : 0);
     offset = only_connection ? 10 : 0;
     clear = 1.03;
 
