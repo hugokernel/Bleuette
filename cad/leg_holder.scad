@@ -40,7 +40,7 @@ LEG_HOLDER_MAX_WALL_THICKNESS = 3;
  *  - Agrandir la fente des pattes pour limiter les frottements ?
  */
 
-module servo_holder(is_top = true, boolean = false) {
+module servo_holder(boolean = false) {
 
     //position_z = (is_top) ? 8 : 7.6;
     position_z = 7.8; // Average
@@ -144,11 +144,11 @@ module support() {
         // Top
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_LENGTH + 4]) {
             rotate([0, 180, 0]) {
-                color("RED") servo_holder(true);
+                color("RED") servo_holder();
 
                 if (rail) {
                     translate([0, 0, CONNECTION_HEIGHT]) {
-                        servo_holder(true, true);
+                        servo_holder(true);
                     }
                 }
             }
@@ -156,11 +156,11 @@ module support() {
 
         translate([CHANFREIN + SERVO_HOLDER_WIDTH - 2.5, -SERVO_WIDTH, SERVO_LENGTH + 4]) {
             rotate([0, 180, 0]) {
-                color("BLUE") servo_holder(true);
+                color("BLUE") servo_holder();
 
                 if (rail) {
                     translate([0, 0, CONNECTION_HEIGHT]) {
-                        servo_holder(true, true);
+                        servo_holder(true);
                     }
                 }
             }
@@ -168,21 +168,21 @@ module support() {
 
         // Bottom
         translate([CHANFREIN + SERVO_HOLDER_WIDTH / 2 - 2, -SERVO_WIDTH, SERVO_HOLDER_HEIGHT - 3]) {
-            color("RED") servo_holder(false);
+            color("RED") servo_holder();
 
             if (rail) {
                 translate([0, 0, CONNECTION_HEIGHT]) {
-                    servo_holder(false, true);
+                    servo_holder(true);
                 }
             }
         }
 
         translate([CHANFREIN + SERVO_HOLDER_WIDTH - 2.5, -SERVO_WIDTH, SERVO_HOLDER_HEIGHT - 3]) {
-            color("BLUE") servo_holder(true);
+            color("BLUE") servo_holder();
 
             if (rail) {
                 translate([0, 0, CONNECTION_HEIGHT]) {
-                    servo_holder(false, true);
+                    servo_holder(true);
                 }
             }
         }
@@ -312,7 +312,7 @@ module rudder(length = 8) {
 }
 
 
-if (1) {
+if (0) {
     translate([-14, -40, 0]) {
         support();
 
@@ -325,15 +325,14 @@ if (1) {
     }
 
     if (DEMO) {
-        translate([-20, 0, 4])  rotate([0, 180, 0]) servo_holder(true);
-        translate([10, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
+        translate([-20, 0, 4])  rotate([0, 180, 0]) servo_holder();
+        translate([10, 0, 4])   rotate([0, 180, 0]) servo_holder();
 
         translate([30, 0, 0])   rudder();
     }
 
 } else {
     rudder();
-    //translate([0, 0, 4])    rotate([0, 180, 0]) servo_holder(true);
-    //translate([30, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
+    //rotate([0, 180, 0]) servo_holder();
 }
 

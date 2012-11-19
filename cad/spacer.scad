@@ -85,8 +85,8 @@ module spacer(length, width, thickness, support = false) {
 
 if (1) {
     // Small
-    //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
-    spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, false);
+    spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, true);
+    //spacer(ARMS_SPACING, ARM_WIDTH, ARM_THICKNESS, false);
 
     // Large
     //spacer(ARMS_SPACING + ARM_THICKNESS * 2 - 1, 15, ARM_THICKNESS);

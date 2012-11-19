@@ -148,7 +148,7 @@ module main_arm() {
     }
 }
 
-if (1) {
+if (0) {
     // View all piece...
 
     translate([-30, 0, 0]) {
@@ -203,6 +203,6 @@ if (1) {
 
     //main_arm();
     //long_arm();
-    //short_arm();
+    short_arm();
 }
 
