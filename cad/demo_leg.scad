@@ -2,6 +2,8 @@
 use <lib/servos.scad>
 use <leg_holder.scad>
 use <leg.scad>
+use <spacer.scad>
+use <spring.scad>
 
 $fn = 20;
 
@@ -18,10 +20,12 @@ ARM_WIDTH = 20;
 module mounted_arm() {
 
     translate([ 0, 0, ARM_THICKNESS / 2 ]) {
-        color("black") main_arm();
+        rotate([ 0, 180, 0 ]) {
+            color("black") main_arm();
+        }
 
         translate([ 0, 0, ARMS_SPACING + ARM_THICKNESS]) {
-            rotate([ 0, 0, 0 ]) {
+            rotate([ 0, 180, 0 ]) {
                 color("black") main_arm();
             }
         }
@@ -45,11 +49,13 @@ module mounted_arm() {
             rotate([ 0, 0, 90]) {
                 color("black") long_arm();
 
+/*
                 // Spring
-                translate([0, -47, ARM_THICKNESS]) {
+                translate([0, -38, ARM_THICKNESS]) {
                     color("YELLOW")
                         spring();
                 }
+*/
             }
 
             translate([ 27, 0, 18 ]) {
@@ -65,7 +71,7 @@ module mounted_arm() {
 
                 // Spring
                 rotate([0, 180, 0])
-                translate([0, -20, 0]) {
+                translate([0, -11, 0]) {
                     color("YELLOW")
                         spring();
                 }
@@ -102,7 +108,7 @@ module leg() {
 
             translate([SERVO_HOLDER_WIDTH - 27, -1, BODY_HEIGHT - SERVO_HOLDER_HEIGHT - 0.5]) {
                 rotate([90, 180, 90]) {
-                    color("black") futabas3003();
+                    %color("black") futabas3003();
                 }
             }
         }

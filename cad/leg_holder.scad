@@ -4,6 +4,7 @@ include <lib/servos.scad>
 $fn = 25;
 
 DEBUG = false;
+DEMO = false;
 
 BODY_HEIGHT = 65.0;
 BODY_WIDTH = 27.5;
@@ -311,8 +312,8 @@ module rudder(length = 8) {
 }
 
 
-if (0) {
-    translate([-14, -10, 0]) {
+if (1) {
+    translate([-14, -40, 0]) {
         support();
 
         if (DEBUG) {
@@ -322,6 +323,14 @@ if (0) {
                         futabas3003();
         }
     }
+
+    if (DEMO) {
+        translate([-20, 0, 4])  rotate([0, 180, 0]) servo_holder(true);
+        translate([10, 0, 4])   rotate([0, 180, 0]) servo_holder(false);
+
+        translate([30, 0, 0])   rudder();
+    }
+
 } else {
     rudder();
     //translate([0, 0, 4])    rotate([0, 180, 0]) servo_holder(true);

@@ -148,7 +148,7 @@ module main_arm() {
     }
 }
 
-if (0) {
+if (1) {
     // View all piece...
 
     translate([-30, 0, 0]) {
@@ -177,11 +177,6 @@ if (0) {
     }
 
     translate([50, 55, ARM_THICKNESS]) {
-        rotate([0, 180, 0])
-            spring();
-    }
-
-    translate([50, 85, ARM_THICKNESS]) {
         rotate([0, 180, 0])
             spring();
     }
