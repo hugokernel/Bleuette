@@ -1,0 +1,32 @@
+
+servo = new Servo24(serial);
+
+/* 	Configuration : Set mode
+ */
+servo->setMode(SERVO24_MODE_MASK_3BLOCK);
+
+/* 	Configuration : When position is reached
+ * 	Not sure if possible...
+ */
+servo->setCallback(&callback);
+
+/* 	Set servo limit
+ */
+servo->limit(0, [55, 200]);
+servo->limits([
+	0, [55, 200],
+	1, [55, 200],
+ 	2, [55, 200]
+]);
+
+/* 	Set servo position, one by one
+ * 	SERVO_MODE_CMD_UNIT
+ */
+servo->init();
+servo->set(0, 20);
+servo->go();
+
+/* 	Set servo position, multiple
+ * 	SERVO_MODE_CMD_MASK_3BLOCK
+ */
+servo->block([SERVO0 & SERVO2, SERVO5, 0], [200, 55, 0]);
