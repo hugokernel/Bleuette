@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
     The latest version of this library can always be found at
-    http://www.digitalspirit.org/ 
+    http://www.digitalspirit.org/
 */
 
 //#define ENABLE_NEW_SOFT_SERIAL
@@ -49,7 +49,21 @@ enum SERVO24_LIST {
     SERVO24_SERVO6 = 64,
     SERVO24_SERVO7 = 128,
 
+    SERVO24_SERVO8 = 256,
+    SERVO24_SERVO8 = 512,
+    SERVO24_SERVO8 = 1024,
+    SERVO24_SERVO8 = 2048,
+    SERVO24_SERVO8 = 4096,
+    SERVO24_SERVO8 = 8192,
+    SERVO24_SERVO8 = 16843,
+    SERVO24_SERVO8 = 32768,
 /*
+65536
+131072
+262144
+524288
+1048576
+
     SERVO24_SERVO8,
     SERVO24_SERVO9,
     SERVO24_SERVO10,
@@ -73,6 +87,30 @@ enum SERVO24_LIST {
 //struct Servo24 {
 //};
 
+/*
+    Mapping Bleuette
+
+    RA0 SRV0
+    RA1 SRV1
+
+    RA2 SRV2
+    RA3 SRV3
+
+    RA4 SRV4
+    RC0 SRV5
+
+
+    RB0 SRV6
+    RB1 SRV7
+
+    RB2 SRV8
+    RB3 SRV9
+
+    RB4 SRV10
+    RB5 SRV11
+
+ */
+
 template <class T>
 class Servo24
 {
@@ -89,12 +127,15 @@ public:
 
     void setMode(SERVO24_MODE);
 
+    // Limits
+    void setLimit(char, unsigned char, unsigned char) {
     void setLimits(char *);
+    void getLimits(unsigned char, unsigned char *)
 
     void command(char [], unsigned char);
 
     void block(char, char, char, char, char, char);
-    
+
 /*
     void init();
     void reset();
@@ -132,9 +173,30 @@ void Servo24<T>::setMode(SERVO24_MODE mode)
 };
 
 template <class T>
-void Servo24<T>::setLimits(char * limits)
+void Servo24<T>::setLimit(char servo, unsigned char min, unsigned char max)
 {
-    memcpy(limits, _limits, sizeof(limits));
+    unsigned char c = 0;
+
+    // Test limits
+    for (c = 0; c < 8; c++) {
+        if (CHECK_BIT(servo, c)) {
+            _limits[c * 2] = min;
+            _limits[c * 2 + 1] = max;
+        }
+    }
+}
+
+template <class T>
+void Servo24<T>::setLimits(unsigned char * limits)
+{
+    memcpy(_limits, limits, sizeof(_limits));
+}
+
+template <class T>
+void Servo24<T>::getLimits(unsigned char servo, unsigned char * limits)
+{
+    limits[0] = _limits[servo * 3];
+    limits[1] = _limits[servo * 3 + 1];
 }
 
 template <class T>
@@ -143,7 +205,7 @@ void Servo24<T>::command(char data[], unsigned char size)
     int i = 0;
     _serial.print(255);
 
-    for (; i < size; i++) {
+    for (i = 0; i < size; i++) {
         _serial.print(data[i]);
     }
 
@@ -199,7 +261,7 @@ void Servo24<T>::block(char val0[], char val1[], char val2[])
     testLimits(&val0);
     testLimits(&val1);
     testLimits(&val2);
-    
+
     /*
     data = {
         servos2, servos1, servos0,
@@ -209,5 +271,14 @@ void Servo24<T>::block(char val0[], char val1[], char val2[])
 
     command(data, 6);
 };
+
+template <class T>
+void Servo24<T>::set(unsigned char servo, unsigned char position)
+{
+    char data[2];
+    data[0] = servo;
+    data[1] = position;
+    command(data, 2);
+}
 
 #endif

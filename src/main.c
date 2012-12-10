@@ -3,6 +3,19 @@
 
 #define CHECK_BIT(var, pos) (var & (1 << pos))
 
+enum SERVO24_LIST {
+
+    SERVO24_SERVO0 = 1,
+    SERVO24_SERVO1 = 2,
+    SERVO24_SERVO2 = 4,
+    SERVO24_SERVO3 = 8,
+    SERVO24_SERVO4 = 16,
+    SERVO24_SERVO5 = 32,
+    SERVO24_SERVO6 = 64,
+    SERVO24_SERVO7 = 128,
+
+};
+
 unsigned char _limits[] = {
     5, 50,
     5, 50,
@@ -32,10 +45,31 @@ unsigned char _limits[] = {
     30, 200
 };
 
+void setLimit(char servo, unsigned char min, unsigned char max) {
+
+    unsigned char c = 0;
+
+    // Test limits
+    for (c = 0; c < 8; c++) {
+        if (CHECK_BIT(servo, c)) {
+            _limits[c * 2] = min;
+            _limits[c * 2 + 1] = max;
+        }
+    }
+}
+
+void setLimits(unsigned char * limits) {
+    memcpy(_limits, limits, sizeof(_limits));
+}
+
 void getLimits(unsigned char servo, unsigned char * limits)
 {
     limits[0] = _limits[servo * 3];
     limits[1] = _limits[servo * 3 + 1];
+}
+
+void testLimit(unsigned char data[], unsigned char index) {
+
 }
 
 void testLimits(unsigned char data[], unsigned char index) {
@@ -71,6 +105,7 @@ printf("%u (min: %u, max: %u) (%u)\n", data[1], limits[0], limits[1], c + index 
 
 int main() {
 
+/*
     unsigned char val0[] = {
         255, 230
     };
@@ -85,12 +120,17 @@ int main() {
 
     testLimits(&val0, 0);
     printf("Val0: %u\n", val0[1]);
-    
+
     testLimits(&val1, 1);
     printf("Val1: %u\n", val1[1]);
 
     testLimits(&val2, 2);
     printf("Val2: %u\n", val2[1]);
+*/
+
+    setLimit(2, 11, 211);
+
+    printf("Limit: %u, %u\n", _limits[2], _limits[3]);
 
     return 0;
 }
