@@ -3,17 +3,37 @@
 
 #define CHECK_BIT(var, pos) (var & (1 << pos))
 
+#define SERVO24_COUNT 14
+
 enum SERVO24_LIST {
 
-    SERVO24_SERVO0 = 1,
-    SERVO24_SERVO1 = 2,
-    SERVO24_SERVO2 = 4,
-    SERVO24_SERVO3 = 8,
-    SERVO24_SERVO4 = 16,
-    SERVO24_SERVO5 = 32,
-    SERVO24_SERVO6 = 64,
-    SERVO24_SERVO7 = 128,
+    SERVO24_SERVO0 = 1,     // RA0
+    SERVO24_SERVO1 = 2,     // RA1
 
+    SERVO24_SERVO2 = 4,     // RA2
+    SERVO24_SERVO3 = 8,     // RA3
+
+    SERVO24_SERVO4 = 16,    // RA4
+    SERVO24_SERVO5 = 32,    // RC0
+
+    SERVO24_SERVO6 = 64,    // RB0
+    SERVO24_SERVO7 = 128,   // RB1
+
+    SERVO24_SERVO8 = 256,   // RB2
+    SERVO24_SERVO9 = 512,   // RB3
+
+    SERVO24_SERVO10 = 1024,  // RB4
+    SERVO24_SERVO11 = 2048,  // RB5
+
+    SERVO24_SERVO12 = 4096,  // RD0
+    SERVO24_SERVO13 = 8192,  // RD1
+
+};
+
+unsigned char _values[] = {
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
 };
 
 unsigned char _limits[] = {
@@ -103,6 +123,17 @@ printf("%u (min: %u, max: %u) (%u)\n", data[1], limits[0], limits[1], c + index 
     }
 }
 
+void setValues(long servos, unsigned char * values)
+{
+    unsigned char b, c = 0;
+    for (b = 0; b < SERVO24_COUNT; b++) {
+        if (CHECK_BIT(servos, b)) {
+            printf("%u : %u\n", b, values[c]);
+            _values[b] = values[c];
+        }
+    }
+}
+
 int main() {
 
 /*
@@ -128,9 +159,15 @@ int main() {
     printf("Val2: %u\n", val2[1]);
 */
 
+/*
     setLimit(2, 11, 211);
-
     printf("Limit: %u, %u\n", _limits[2], _limits[3]);
+*/
+
+    printf("Values: %u, %u\n", _values[0], _values[1]);
+    unsigned char toto[] = { 200 };
+    setValues(1, toto);
+    printf("Values: %u, %u\n", _values[0], _values[1]);
 
     return 0;
 }
