@@ -44,30 +44,30 @@ enum SERVO24_MODE {
 #define CHECK_BIT(var, pos) (var & (1 << pos))
 
 #ifdef SERVO24_MODE_IS_BLEUETTE
-#define SERVO24_COUNT = 14;
+#define SERVO24_COUNT   14
 
 enum SERVO24_LIST {
 
-    SERVO24_SERVO0 = 1,     // RA0
-    SERVO24_SERVO1 = 2,     // RA1
+    SERVO24_0 = 1,      // RA0
+    SERVO24_1 = 2,      // RA1
 
-    SERVO24_SERVO2 = 4,     // RA2
-    SERVO24_SERVO3 = 8,     // RA3
+    SERVO24_2 = 4,      // RA2
+    SERVO24_3 = 8,      // RA3
 
-    SERVO24_SERVO4 = 16,    // RA4
-    SERVO24_SERVO5 = 32,    // RC0
+    SERVO24_4 = 16,     // RA4
+    SERVO24_5 = 32,     // RC0
 
-    SERVO24_SERVO6 = 64,    // RB0
-    SERVO24_SERVO7 = 128,   // RB1
+    SERVO24_6 = 64,     // RB0
+    SERVO24_7 = 128,    // RB1
 
-    SERVO24_SERVO8 = 256,   // RB2
-    SERVO24_SERVO9 = 512,   // RB3
+    SERVO24_8 = 256,    // RB2
+    SERVO24_9 = 512,    // RB3
 
-    SERVO24_SERVO10 = 1024,  // RB4
-    SERVO24_SERVO11 = 2048,  // RB5
+    SERVO24_10 = 1024,  // RB4
+    SERVO24_11 = 2048,  // RB5
 
-    SERVO24_SERVO12 = 4096,  // RD0
-    SERVO24_SERVO13 = 8192,  // RD1
+    SERVO24_12 = 4096,  // RD0
+    SERVO24_13 = 8192,  // RD1
 
 };
 #endif
@@ -98,7 +98,7 @@ public:
 #endif
 
 #ifdef SERVO24_MODE_IS_BLEUETTE
-    void setValues(long, char *);
+    void setValues(unsigned long, char *);
     void send();
 #else
     // Limits
@@ -238,7 +238,7 @@ void Servo24<T>::block(char val0[], char val1[], char val2[])
 template <class T>
 void Servo24<T>::command(char data[], unsigned char size)
 {
-    int i = 0;
+    unsigned char i = 0;
 
     for (i = 0; i < size; i++) {
         _serial.print(data[i]);
@@ -271,7 +271,7 @@ void Servo24<T>::command(char data[], unsigned char size)
  *
  */
 template <class T>
-void Servo24<T>::setValues(long servos, char * values)
+void Servo24<T>::setValues(unsigned long servos, char * values)
 {
     unsigned char b, c = 0;
     for (b = 0; b < SERVO24_COUNT; b++) {
@@ -284,11 +284,11 @@ void Servo24<T>::setValues(long servos, char * values)
 template <class T>
 void Servo24<T>::send()
 {
-    char data[15] = {
-        255,
-        1,
-        _values[0],
-        _values[1],
+    char data[] = {
+        255,            // Header
+        1,              // Mode : 15 values
+        _values[0],     // First servo
+        _values[1],     // Etc...
         _values[2],
         _values[3],
         _values[4],
