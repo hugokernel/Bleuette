@@ -1148,11 +1148,11 @@ design rules under a new name.</description>
 <attribute name="NAME" x="15.875" y="5.3975" size="1.27" layer="25" rot="R270"/>
 <attribute name="VALUE" x="20.6375" y="1.905" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R3" library="rcl" package="M0805" value="" x="22.86" y="3.175" smashed="yes" rot="R270">
+<element name="R3" library="rcl" package="M0805" value="1k" x="22.86" y="3.175" smashed="yes" rot="R270">
 <attribute name="NAME" x="21.9075" y="5.3975" size="1.27" layer="25"/>
 <attribute name="VALUE" x="20.32" y="4.445" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="R4" library="rcl" package="M0805" value="" x="20.32" y="3.175" smashed="yes" rot="R270">
+<element name="R4" library="rcl" package="M0805" value="1k" x="20.32" y="3.175" smashed="yes" rot="R270">
 <attribute name="NAME" x="19.05" y="5.3975" size="1.27" layer="25"/>
 <attribute name="VALUE" x="17.78" y="4.445" size="1.27" layer="27" rot="R270"/>
 </element>

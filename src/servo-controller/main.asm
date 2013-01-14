@@ -20,7 +20,7 @@
 	#include		"macro.inc"
 
 ; Program Configuration Registers
-;	__CONFIG    _CONFIG1H, _HSPLL_OSC_1H	; _OSCS_OFF_1H & _EC_OSC_1H & 
+	__CONFIG    _CONFIG1H, _HSPLL_OSC_1H	; _OSCS_OFF_1H & _EC_OSC_1H & 
 	__CONFIG    _CONFIG2L, _BOR_OFF_2L & _PWRT_OFF_2L
 	__CONFIG    _CONFIG2H, _WDT_OFF_2H
 ;	__CONFIG    _CONFIG3H, _CCP2MX_OFF_3H
@@ -183,6 +183,8 @@
         pos_13   : 1
         pos_14   : 1
 
+		reception_control : 1
+
 ;		cmpt_word		: 1		; Compteur d'octets
 
 ;		cmpt_maj		: 1
@@ -338,169 +340,177 @@ intl
 ; Interruption venant de l'USART
 _intl_usart
 
-;    movlw   cmpt_word
-;    sublw   0
-;    btfsc   STATUS, Z
-;    bra     received_header
-;    bra     _intl_usart_end
-
-;	btfsc	cmpt_word, 0
-;	bra		received_header
-;	btfsc	cmpt_word, 1
-;	bra		received_mode
-
-;	btfsc	cmpt_word, 2
-;	bra		recept_phase2
-;	btfsc	cmpt_word, 3
-;	bra		recept_phase3
-;	btfsc	cmpt_word, 4
-;	bra		recept_phase4
-;	btfsc	cmpt_word, 5
-;	bra		recept_phase5
-;	btfsc	cmpt_word, 6
-;	bra		recept_phase6
-
-;TODO: Remplacer les pos_0 directement par les consignes
+; 0: Reception de l'entete
 	movlw 0
 	cpfseq received_counter
 	goto _intl_usart_received_test_mode
-	; TODO: tester si c'est bien egal a 255
-	nop
-	goto _intl_usart_received_test_end
+
+	; Test si le premier est bien egal a 255
+	movlw .255
+	cpfseq RCREG
+	goto _int1_usart_clear
+	goto _intl_usart_end
+
+; 1: Mode
 _intl_usart_received_test_mode
 	movlw .1
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos0
-	; TODO: tester le mode
-	nop
-	goto _intl_usart_received_test_end
+
+	; Si mode n'est pas egal a 1, on clear et on quitte
+	movlw .1
+	cpfseq RCREG
+	goto _int1_usart_clear
+	goto _intl_usart_end
+
+_int1_usart_clear
+	clrf received_counter
+	goto _intl_usart_exit
+
+; 2: Position 0
 _intl_usart_received_test_pos0
 	movlw .2
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos1
 	movf RCREG, W
 	movwf pos_0
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 3: Position 1
 _intl_usart_received_test_pos1
 	movlw .3
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos2
 	movf RCREG, W
 	movwf pos_1
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 4: Position 2
 _intl_usart_received_test_pos2
 	movlw .4
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos3
 	movf RCREG, W
 	movwf pos_2
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 5: Position 3
 _intl_usart_received_test_pos3
 	movlw .5
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos4
 	movf RCREG, W
 	movwf pos_3
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 6: Position 4
 _intl_usart_received_test_pos4
 	movlw 6
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos5
 	movf RCREG, W
 	movwf pos_4
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 7: Position 5
 _intl_usart_received_test_pos5
 	movlw .7
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos6
 	movf RCREG, W
 	movwf pos_5
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 8: Position 6
 _intl_usart_received_test_pos6
 	movlw .8
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos7
 	movf RCREG, W
 	movwf pos_6
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 9: Position 7
 _intl_usart_received_test_pos7
 	movlw .9
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos8
 	movf RCREG, W
 	movwf pos_7
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 10: Position 8
 _intl_usart_received_test_pos8
 	movlw .10
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos9
 	movf RCREG, W
 	movwf pos_8
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 11: Position 9
 _intl_usart_received_test_pos9
 	movlw .11
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos10
 	movf RCREG, W
 	movwf pos_9
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 12: Position 10
 _intl_usart_received_test_pos10
 	movlw .12
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos11
 	movf RCREG, W
 	movwf pos_10
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 13: Position 11
 _intl_usart_received_test_pos11
 	movlw .13
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos12
 	movf RCREG, W
 	movwf pos_11
-	goto _intl_usart_received_test_end
+	goto _intl_usart_end
+
+; 14: Position 12
 _intl_usart_received_test_pos12
 	movlw .14
 	cpfseq received_counter
-	goto _intl_usart_received_test_end
+	goto _intl_usart_received_test_pos13
 	movf RCREG, W
 	movwf pos_12
+	goto _intl_usart_end
 
-; All done !
-	clrf received_counter
+; 15: Position 13
+_intl_usart_received_test_pos13
+	movlw .15
+	cpfseq received_counter
+	goto _intl_usart_received_test_pos14
+	movf RCREG, W
+	movwf pos_13
+	goto _intl_usart_end
 
-_intl_usart_received_test_end
+; 16: Position 14
+_intl_usart_received_test_pos14
+	movlw .16
+	cpfseq received_counter
+	goto _intl_usart_received_test_control
+	movf RCREG, W
+	movwf pos_14
+	goto _intl_usart_end
 
-
-; Erreur !
-pouf	bra		pouf
-
-; L'entête doit être un 0xFF
-received_header
-	movf	RCREG, W
-	sublw	0xFF
-	btfss	STATUS, Z
-	bra		_intl_usart_end2
-	bra		_intl_usart_end
-
-; On vérifie le mode
-received_mode
-	movf	RCREG, W
-    ; Todo: Tester si W vaut bien 1
-    bra		_intl_usart_end2
-	bra		_intl_usart_end
-
-recept_phase2
-	movf	RCREG, W
-
-;recept_phase6
-;	movf	RCREG, W
-;	movwf	pos_recept2
+; 17: Control byte
+_intl_usart_received_test_control
+	movf RCREG, W
+	movwf reception_control
 
 _intl_usart_end
-;	rlncf	cmpt_word
 	incf received_counter
 
-_intl_usart_end2
+_intl_usart_exit
 	bcf		PIR1, RCIF
 	retfie
 
@@ -661,14 +671,14 @@ inth_end
 
 
 ; ---------------------
-start_test
+;start_test
 
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
+	;nop
+	;nop
+	;nop
+	;nop
+	;nop
+	;nop
 
 	;goto start_test
 
@@ -682,8 +692,10 @@ start_test
 	;SEND	'K'
 	;SEND	'\n'
 
-	movlw	0
-	call	setValue
+	;movlw	0
+	;call	setValue
+
+	clrf received_counter
 
 ; Routine principale
 
@@ -692,6 +704,9 @@ start_test
 	bsf		INTCON, GIEL
 
 main	
+	;MOVLF	.20, servo_cons0
+	;MOVLF	.100, servo_cons1
+
 	; On boucle temps que 17 octets ne sont pas recu
 	movlw .17
 	cpfseq received_counter
@@ -699,7 +714,28 @@ main
 
 	clrf received_counter
 
-_main_next
+	; Control received bytes
+	movlw 0
+	addwf pos_0
+	addwf pos_1
+	addwf pos_2
+	addwf pos_3
+	addwf pos_4
+	addwf pos_5
+	addwf pos_6
+	addwf pos_7
+	addwf pos_8
+	addwf pos_9
+	addwf pos_10
+	addwf pos_11
+	addwf pos_12
+	addwf pos_13
+
+	cpfseq reception_control
+	goto nack
+
+; Tout est bon, on envoie !
+ack
 	; RA0, RA1, RA2, RA3, RA4, RC0, RC1, RC2	-> Servo 0 à 7
 	; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1	-> Servo 8 à 15 
 	; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7	-> Servo 16 à 23
@@ -737,8 +773,12 @@ _main_next
 	movff pos_12, servo_cons16
 	movff pos_13, servo_cons17
 
-	bra		main
+	SEND 'O'
+	bra	main
 
+nack
+	SEND 'N'
+	goto main
 
 
 ; Met toutes les consignes à la valeur voulues (dans WREG)
