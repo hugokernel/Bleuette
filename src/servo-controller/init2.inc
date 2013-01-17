@@ -11,11 +11,11 @@
 ; | écrivez à la Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, États-Unis. 				|
 ; +-----------------------------------------------------------------------------------------------------------------------------+
 
-;#DEFINE	CONS_ALL_0
+#DEFINE	CONS_ALL_0
 ;#DEFINE	CONS_ALL_1
 ;#DEFINE	CONS_ALL_254
 ;#DEFINE	CONS_DEC
-#DEFINE	CONS_INC
+;#DEFINE	CONS_INC
 
 #IFDEF	CONS_ALL_0
 	MOVLF	.0, servo_cons0		; 00

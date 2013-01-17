@@ -33,44 +33,6 @@
 ;	__CONFIG    _CONFIG7H, _EBTRB_OFF_7H
 
 
-; +-----------------------------------------------+
-; | Configuration du mode de réception des ordres |
-; +-----------------------------------------------+
-; 2 modes de fonctionnement :
-; * Mode SERVO_MODE_CMD_UNIT (ServoCmdParServo) : On envoie une trame contenant 3 octets :
-; 	- 0xFF : Début de la trame
-;	- OxXX : Le numéro du servo qui concerne la trame
-;	- 0xXX : La position DU servo
-; Le mode SERVO_MODE_CMD_UNIT permet de garder une compatibilité pour les autres systèmes
-;
-; * Mode SERVO_MODE_CMD_MASK (ServoCmdMask) : On envoie un mask de bit
-;	- 0xFF : Début de la trame
-;	- 0xXX : Masque de bit des servos 16 à 23
-;	- 0xXX : Masque de bit des servos 8 à 15
-;	- 0xXX : Masque de bit des servos 0 à 7
-;	- 0xZZ : La position DES servos
-; L'avantage du mode SERVO_MODE_CMD_MASK est qu'il permet de donner une position à plusieurs
-; servos en même temps et permet d'être parfaitement synhcrone très utile dans le cas de pilotage
-; de patte pour des robots hexapodes...
-;
-; * Mode SERVO_MODE_CMD_MASK_3BLOCK
-;	- 0xFF : Début de la trame
-;	- 0xXX : Masque de bit des servos 16 à 23
-;	- 0xXX : Masque de bit des servos 8 à 15
-;	- 0xXX : Masque de bit des servos 0 à 7
-;	- 0xZZ : La position des servos 16 à 23
-;	- 0xZZ : La position des servos 8 à 15
-;	- 0xZZ : La position des servos 0 à 7
-; Ce mode permet de donner des positions différentes à différents servos en même temps
-;
-
-
-;#DEFINE	SERVO_MODE_CMD_UNIT
-;#DEFINE	SERVO_MODE_CMD_MASK
-#DEFINE	SERVO_MODE_CMD_MASK_3BLOCK
-
-
-
 ; +--------------------------+
 ; | Définition de constantes |
 ; +--------------------------+
@@ -82,6 +44,13 @@
 #DEFINE		PHASE_3		0x02
 #DEFINE		PHASE_4		0x03
 
+#DEFINE 	HEADER 		0xFF 	; 0xAA (0b10101010)
+
+#DEFINE    	COMMAND_INIT 	'I'
+#DEFINE		COMMAND_PAUSE   'P'
+#DEFINE 	COMMAND_RESUME  'R'
+#DEFINE 	COMMAND_CLEAR   'C'
+#DEFINE 	COMMAND_SET     'S'
 
 	CBLOCK	0x00	; zone access ram de la banque 0
 		servo_cons0 	: 1
@@ -186,8 +155,9 @@
 		reception_control : 1
 
 ;		cmpt_word		: 1		; Compteur d'octets
-
 ;		cmpt_maj		: 1
+
+		wreg_backup : 1
 
 		csaving_IN_FSR2L	: 1		; Context saving
 		csaving_IN_FSR2H	: 1
@@ -333,36 +303,88 @@ inth
 intl
 	btfsc   PIR1, RCIF
 	goto	_intl_usart
-
 	retfie
 
 
 ; Interruption venant de l'USART
 _intl_usart
+	; Backup WREG
+	movwf wreg_backup
 
 ; 0: Reception de l'entete
 	movlw 0
 	cpfseq received_counter
-	goto _intl_usart_received_test_mode
+	goto _intl_usart_received_test_command
 
 	; Test si le premier est bien egal a 255
-	movlw .255
+	movlw HEADER
 	cpfseq RCREG
 	goto _int1_usart_clear
 	goto _intl_usart_end
 
-; 1: Mode
-_intl_usart_received_test_mode
+; 1: Command
+_intl_usart_received_test_command
 	movlw .1
 	cpfseq received_counter
 	goto _intl_usart_received_test_pos0
 
-	; Si mode n'est pas egal a 1, on clear et on quitte
+; Test for set command
+_int1_usart_received_test_set
+	movlw COMMAND_SET
+	cpfseq RCREG
+	goto _int1_usart_received_test_init
+	goto _intl_usart_end
+
+; Test for init command
+_int1_usart_received_test_init
+	movlw COMMAND_INIT
+	cpfseq RCREG
+	goto _int1_usart_received_test_pause
+	; Set all value to 0
+	movlw	0
+	call	setValue
+	bsf INTCON, TMR0IE
+	goto _int1_usart_received_send_ack
+
+; Test for pause command
+_int1_usart_received_test_pause
+	movlw COMMAND_PAUSE
+	cpfseq RCREG
+	goto _int1_usart_received_test_resume
+	bcf INTCON, TMR0IE
+	goto _int1_usart_received_send_ack
+
+; Test for resume command
+_int1_usart_received_test_resume
+	movlw COMMAND_RESUME
+	cpfseq RCREG
+	goto _int1_usart_received_test_clear
+	bsf INTCON, TMR0IE
+	goto _int1_usart_received_send_ack
+
+; Test for clear command
+_int1_usart_received_test_clear
+	movlw COMMAND_CLEAR
+	cpfseq RCREG
+	goto _intl_usart_unknow_command
+
+	; Set all value to 0
+	movlw	0
+	call	setValue
+	goto _int1_usart_received_send_ack
+
+	; Si command n'est pas egal a 1, on clear et on quitte
 	movlw .1
 	cpfseq RCREG
 	goto _int1_usart_clear
 	goto _intl_usart_end
 
+_int1_usart_received_send_ack
+	SEND 'O'
+	goto _intl_usart_exit
+
+_intl_usart_unknow_command
+	SEND 'N'
 _int1_usart_clear
 	clrf received_counter
 	goto _intl_usart_exit
@@ -511,6 +533,8 @@ _intl_usart_end
 	incf received_counter
 
 _intl_usart_exit
+	; Restore WREG
+	movlw wreg_backup
 	bcf		PIR1, RCIF
 	retfie
 
@@ -595,13 +619,10 @@ phase2
 	nop		; "
 	nop		; "
 
-#IFDEF	SERVO_MODE_CMD_MASK_3BLOCK
 	nop
 	nop
 	nop
 	nop
-#ENDIF
-
 
 ; ###########
 ; # PHASE 3 #
@@ -662,35 +683,10 @@ inth_end
 	retfie	FAST
 
 
-
-
-
-
 	#include "init.inc"
 	#include "init2.inc"
 
 
-; ---------------------
-;start_test
-
-	;nop
-	;nop
-	;nop
-	;nop
-	;nop
-	;nop
-
-	;goto start_test
-
-
-;----------------------
-
-	;SEND	'\n'
-	;SEND	'O'
-	;SEND	'O'
-	;SEND	'K'
-	;SEND	'K'
-	;SEND	'\n'
 
 	;movlw	0
 	;call	setValue
@@ -700,15 +696,17 @@ inth_end
 ; Routine principale
 
 	; Activation des interruptions
-	bsf		INTCON, GIEH
-	bsf		INTCON, GIEL
+	bsf	INTCON, GIEH
+	bsf	INTCON, GIEL
+
+	;goto _intl_usart
 
 main	
 	;MOVLF	.20, servo_cons0
 	;MOVLF	.100, servo_cons1
 
-	; On boucle temps que 17 octets ne sont pas recu
-	movlw .17
+	; On boucle temps que 18 octets ne sont pas recu
+	movlw .18
 	cpfseq received_counter
 	goto main
 
@@ -716,20 +714,20 @@ main
 
 	; Control received bytes
 	movlw 0
-	addwf pos_0
-	addwf pos_1
-	addwf pos_2
-	addwf pos_3
-	addwf pos_4
-	addwf pos_5
-	addwf pos_6
-	addwf pos_7
-	addwf pos_8
-	addwf pos_9
-	addwf pos_10
-	addwf pos_11
-	addwf pos_12
-	addwf pos_13
+	addwf pos_0, 0
+	addwf pos_1, 0
+	addwf pos_2, 0
+	addwf pos_3, 0
+	addwf pos_4, 0
+	addwf pos_5, 0
+	addwf pos_6, 0
+	addwf pos_7, 0
+	addwf pos_8, 0
+	addwf pos_9, 0
+	addwf pos_10, 0
+	addwf pos_11, 0
+	addwf pos_12, 0
+	addwf pos_13, 0
 
 	cpfseq reception_control
 	goto nack
