@@ -1,4 +1,4 @@
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  1
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                             r vous).                                |
                       00006 ; | Ce programme est distribué car potentiellement utile, mais SANS AUCUNE GARANTIE, ni explicite ni imp
                             licite,                                 |
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  2
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  2
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00051 ;       LIST
                       00021 
                       00022 ; Program Configuration Registers
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  3
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  3
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -175,7 +175,7 @@ Warning[230]: __CONFIG has been deprecated for PIC18 devices.  Use directive CON
   0000000A            00066                 servo_cons10    : 1
   0000000B            00067                 servo_cons11    : 1
   0000000C            00068                 servo_cons12    : 1
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  4
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  4
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -234,7 +234,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00119 
   00000054            00120                 tmp_FSR2L               : 1
                       00121 ;               tmp_FSR2H               : 1
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  5
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  5
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -271,9 +271,9 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000063            00150         pos_11   : 1
   00000064            00151         pos_12   : 1
   00000065            00152         pos_13   : 1
-  00000066            00153         pos_14   : 1
-                      00154 
-  00000067            00155                 reception_control : 1
+                      00153 
+  00000066            00154                 reception_control : 1
+  00000067            00155                 pause_mode : 1
                       00156 
                       00157 ;               cmpt_word               : 1             ; Compteur d'octets
                       00158 ;               cmpt_maj                : 1
@@ -293,7 +293,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000102            00172                 servo_nbr02     : 1
   00000103            00173                 servo_nbr03     : 1
   00000104            00174                 servo_nbr04     : 1
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  6
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  6
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -352,7 +352,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000136            00225                 servo_val30 : 1
   00000137            00226                 servo_val31 : 1
   00000138            00227                 servo_val32 : 1
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  7
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  7
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -402,7 +402,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00269         ; Reset Vector
 000000                00270         org             0
 000000 0000           00271         nop
-000002 D15D           00272         bra             _init
+000002 D15C           00272         bra             _init
                       00273 
                       00274 
                       00275         ; High Priority Vector
@@ -411,7 +411,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 00000A D008           00278         bra             inth
                       00279 
                       00280         ; Low Priority Vector
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  8
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  8
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -419,463 +419,462 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 
 000018                00281         org             0x18
 000018 0000           00282         nop
-00001A D009           00283         bra             intl
+00001A D00D           00283         bra             intl
                       00284 
                       00285 
                       00286 
                       00287 ; High Priority Vector
 00001C                00288 inth
-                      00289 
-                      00290         ; "Switch" des interruptions
-00001C B4F2           00291         btfsc   INTCON, TMR0IF
-00001E EFE4 F000      00292         goto    _inth_Timer
+                      00289         ; Pause ?
+00001C 0E00           00290         movlw   0
+00001E 6267           00291         cpfseq  pause_mode
+000020 EF5B F001      00292         goto    inth_end
                       00293 
-000022 90CD           00294         bcf             T1CON, TMR1ON
-000024 8ED5           00295         bsf             T0CON, TMR0ON
-000026 B09E           00296         btfsc   PIR1, TMR1IF
-000028 EFE4 F000      00297         goto    _inth_Timer
-                      00298 
-00002C 0011           00299         retfie  FAST
-                      00300 
-                      00301 
-                      00302 ; Low Priority Vector
-00002E                00303 intl
-00002E BA9E           00304         btfsc   PIR1, RCIF
-000030 EF1B F000      00305         goto    _intl_usart
-000034 0010           00306         retfie
-                      00307 
-                      00308 
-                      00309 ; Interruption venant de l'USART
-000036                00310 _intl_usart
-                      00311         ; Backup WREG
-000036 6E68           00312         movwf wreg_backup
-                      00313 
-                      00314 ; 0: Reception de l'entete
-000038 0E00           00315         movlw 0
-00003A 6257           00316         cpfseq received_counter
-00003C EF26 F000      00317         goto _intl_usart_received_test_command
-                      00318 
-                      00319         ; Test si le premier est bien egal a 255
-000040 0EFF           00320         movlw HEADER
-000042 62AE           00321         cpfseq RCREG
-000044 EF63 F000      00322         goto _int1_usart_clear
-000048 EFE0 F000      00323         goto _intl_usart_end
-                      00324 
-                      00325 ; 1: Command
+                      00294         ; "Switch" des interruptions
+000024 B4F2           00295         btfsc   INTCON, TMR0IF
+000026 EFE3 F000      00296         goto    _inth_Timer
+                      00297 
+00002A 90CD           00298         bcf             T1CON, TMR1ON
+00002C 8ED5           00299         bsf             T0CON, TMR0ON
+00002E B09E           00300         btfsc   PIR1, TMR1IF
+000030 EFE3 F000      00301         goto    _inth_Timer
+                      00302 
+000034 0011           00303         retfie  FAST
+                      00304 
+                      00305 
+                      00306 ; Low Priority Vector
+000036                00307 intl
+000036 BA9E           00308         btfsc   PIR1, RCIF
+000038 EF1F F000      00309         goto    _intl_usart
+00003C 0010           00310         retfie
+                      00311 
+                      00312 
+                      00313 ; Interruption venant de l'USART
+00003E                00314 _intl_usart
+                      00315         ; Backup WREG
+00003E 6E68           00316         movwf   wreg_backup
+                      00317 
+                      00318 ; 0: Reception de l'entete
+000040 0E00           00319         movlw   0
+000042 6257           00320         cpfseq  received_counter
+000044 EF2A F000      00321         goto    _intl_usart_received_test_command
+                      00322 
+                      00323         ; Test si le premier est bien egal a 255
+000048 0EFF           00324         movlw   HEADER
+00004A 62AE           00325         cpfseq  RCREG
+00004C EF6A F000      00326         goto    _int1_usart_clear
+000050 EFDF F000      00327         goto    _intl_usart_end
+                      00328 
+                      00329 ; 1: Command
 Warning[208]: Label truncated at 32 characters. (_intl_usart_received_test_command)
-00004C                00326 _intl_usart_received_test_command
-00004C 0E01           00327         movlw .1
-00004E 6257           00328         cpfseq received_counter
-000050 EF66 F000      00329         goto _intl_usart_received_test_pos0
-                      00330 
-                      00331 ; Test for set command
-000054                00332 _int1_usart_received_test_set
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE  9
+000054                00330 _intl_usart_received_test_command
+000054 0E01           00331         movlw   .1
+000056 6257           00332         cpfseq  received_counter
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE  9
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000054 0E53           00333         movlw COMMAND_SET
-000056 62AE           00334         cpfseq RCREG
-000058 EF30 F000      00335         goto _int1_usart_received_test_init
-00005C EFE0 F000      00336         goto _intl_usart_end
-                      00337 
-                      00338 ; Test for init command
-000060                00339 _int1_usart_received_test_init
-000060 0E49           00340         movlw COMMAND_INIT
-000062 62AE           00341         cpfseq RCREG
-000064 EF3A F000      00342         goto _int1_usart_received_test_pause
-                      00343         ; Set all value to 0
-000068 0E00           00344         movlw   0
-00006A ECC9 F002      00345         call    setValue
-00006E 8AF2           00346         bsf INTCON, TMR0IE
-000070 EF57 F000      00347         goto _int1_usart_received_send_ack
-                      00348 
-                      00349 ; Test for pause command
-000074                00350 _int1_usart_received_test_pause
-000074 0E50           00351         movlw COMMAND_PAUSE
-000076 62AE           00352         cpfseq RCREG
-000078 EF41 F000      00353         goto _int1_usart_received_test_resume
-00007C 9AF2           00354         bcf INTCON, TMR0IE
-00007E EF57 F000      00355         goto _int1_usart_received_send_ack
-                      00356 
-                      00357 ; Test for resume command
-000082                00358 _int1_usart_received_test_resume
-000082 0E52           00359         movlw COMMAND_RESUME
-000084 62AE           00360         cpfseq RCREG
-000086 EF48 F000      00361         goto _int1_usart_received_test_clear
-00008A 8AF2           00362         bsf INTCON, TMR0IE
-00008C EF57 F000      00363         goto _int1_usart_received_send_ack
-                      00364 
-                      00365 ; Test for clear command
-000090                00366 _int1_usart_received_test_clear
-000090 0E43           00367         movlw COMMAND_CLEAR
-000092 62AE           00368         cpfseq RCREG
-000094 EF5E F000      00369         goto _intl_usart_unknow_command
-                      00370 
-                      00371         ; Set all value to 0
-000098 0E00           00372         movlw   0
-00009A ECC9 F002      00373         call    setValue
-00009E EF57 F000      00374         goto _int1_usart_received_send_ack
-                      00375 
-                      00376         ; Si command n'est pas egal a 1, on clear et on quitte
-0000A2 0E01           00377         movlw .1
-0000A4 62AE           00378         cpfseq RCREG
-0000A6 EF63 F000      00379         goto _int1_usart_clear
-0000AA EFE0 F000      00380         goto _intl_usart_end
-                      00381 
-0000AE                00382 _int1_usart_received_send_ack
-                      00383         SEND 'O'
-0000AE 0E4F               M                 movlw   'O'
-0000B0 6EAD               M                 movwf   TXREG
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 10
+000058 EF6D F000      00333         goto    _intl_usart_received_test_pos0
+                      00334 
+                      00335 ; Test for set command
+00005C                00336 _int1_usart_received_test_set
+00005C 0E53           00337         movlw   COMMAND_SET
+00005E 62AE           00338         cpfseq  RCREG
+000060 EF34 F000      00339         goto    _int1_usart_received_test_init
+000064 EFDF F000      00340         goto    _intl_usart_end
+                      00341 
+                      00342 ; Test for init command
+000068                00343 _int1_usart_received_test_init
+000068 0E49           00344         movlw   COMMAND_INIT
+00006A 62AE           00345         cpfseq  RCREG
+00006C EF3E F000      00346         goto    _int1_usart_received_test_pause
+                      00347         ; Set all value to 0
+000070 0E00           00348         movlw   0
+000072 ECC9 F002      00349         call    setValue
+000076 8AF2           00350         bsf     INTCON, TMR0IE
+000078 EF5E F000      00351         goto    _int1_usart_received_send_ack
+                      00352 
+                      00353 ; Test for pause command
+00007C                00354 _int1_usart_received_test_pause
+00007C 0E50           00355         movlw   COMMAND_PAUSE
+00007E 62AE           00356         cpfseq  RCREG
+000080 EF47 F000      00357         goto    _int1_usart_received_test_resume
+                      00358 
+000084 6967           00359         setf    pause_mode, 1
+000086 ECE2 F002      00360         call    clearAllOut
+00008A EF5E F000      00361         goto    _int1_usart_received_send_ack
+                      00362 
+                      00363 ; Test for resume command
+00008E                00364 _int1_usart_received_test_resume
+00008E 0E52           00365         movlw   COMMAND_RESUME
+000090 62AE           00366         cpfseq  RCREG
+000092 EF4E F000      00367         goto    _int1_usart_received_test_clear
+                      00368 
+000096 6A67           00369         clrf    pause_mode
+000098 EF5E F000      00370         goto    _int1_usart_received_send_ack
+                      00371 
+                      00372 ; Test for clear command
+00009C                00373 _int1_usart_received_test_clear
+00009C 0E43           00374         movlw   COMMAND_CLEAR
+00009E 62AE           00375         cpfseq  RCREG
+0000A0 EF65 F000      00376         goto    _intl_usart_unknow_command
+                      00377 
+0000A4 6A67           00378         clrf    pause_mode
+                      00379         ; Set all value to 0
+0000A6 0E00           00380         movlw   0
+0000A8 ECC9 F002      00381         call    setValue
+0000AC EF5E F000      00382         goto    _int1_usart_received_send_ack
+                      00383 
+                      00384         ; Si command n'est pas egal a 1, on clear et on quitte
+0000B0 0E01           00385         movlw .1
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 10
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0000B2 A89E               M                 btfss   PIR1, TXIF
-0000B4 EF59 F000          M                 goto    $ - 2
-0000B8 EFE1 F000      00384         goto _intl_usart_exit
-                      00385 
-0000BC                00386 _intl_usart_unknow_command
-                      00387         SEND 'N'
-0000BC 0E4E               M                 movlw   'N'
+0000B2 62AE           00386         cpfseq RCREG
+0000B4 EF6A F000      00387         goto _int1_usart_clear
+0000B8 EFDF F000      00388         goto _intl_usart_end
+                      00389 
+0000BC                00390 _int1_usart_received_send_ack
+                      00391         SEND 'O'
+0000BC 0E4F               M                 movlw   'O'
 0000BE 6EAD               M                 movwf   TXREG
 0000C0 A89E               M                 btfss   PIR1, TXIF
 0000C2 EF60 F000          M                 goto    $ - 2
-0000C6                00388 _int1_usart_clear
-0000C6 6A57           00389         clrf received_counter
-0000C8 EFE1 F000      00390         goto _intl_usart_exit
-                      00391 
-                      00392 ; 2: Position 0
-0000CC                00393 _intl_usart_received_test_pos0
-0000CC 0E02           00394         movlw .2
-0000CE 6257           00395         cpfseq received_counter
-0000D0 EF6E F000      00396         goto _intl_usart_received_test_pos1
-0000D4 50AE           00397         movf RCREG, W
-0000D6 6E58           00398         movwf pos_0
-0000D8 EFE0 F000      00399         goto _intl_usart_end
-                      00400 
-                      00401 ; 3: Position 1
-0000DC                00402 _intl_usart_received_test_pos1
-0000DC 0E03           00403         movlw .3
-0000DE 6257           00404         cpfseq received_counter
-0000E0 EF76 F000      00405         goto _intl_usart_received_test_pos2
-0000E4 50AE           00406         movf RCREG, W
-0000E6 6E59           00407         movwf pos_1
-0000E8 EFE0 F000      00408         goto _intl_usart_end
-                      00409 
-                      00410 ; 4: Position 2
-0000EC                00411 _intl_usart_received_test_pos2
-0000EC 0E04           00412         movlw .4
-0000EE 6257           00413         cpfseq received_counter
-0000F0 EF7E F000      00414         goto _intl_usart_received_test_pos3
-0000F4 50AE           00415         movf RCREG, W
-0000F6 6E5A           00416         movwf pos_2
-0000F8 EFE0 F000      00417         goto _intl_usart_end
-                      00418 
-                      00419 ; 5: Position 3
-0000FC                00420 _intl_usart_received_test_pos3
-0000FC 0E05           00421         movlw .5
-0000FE 6257           00422         cpfseq received_counter
-000100 EF86 F000      00423         goto _intl_usart_received_test_pos4
-000104 50AE           00424         movf RCREG, W
-000106 6E5B           00425         movwf pos_3
-000108 EFE0 F000      00426         goto _intl_usart_end
-                      00427 
-                      00428 ; 6: Position 4
-00010C                00429 _intl_usart_received_test_pos4
-00010C 0E06           00430         movlw 6
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 11
+0000C6 EF6A F000      00392         goto _int1_usart_clear
+                      00393 
+0000CA                00394 _intl_usart_unknow_command
+                      00395         SEND 'N'
+0000CA 0E4E               M                 movlw   'N'
+0000CC 6EAD               M                 movwf   TXREG
+0000CE A89E               M                 btfss   PIR1, TXIF
+0000D0 EF67 F000          M                 goto    $ - 2
+0000D4                00396 _int1_usart_clear
+0000D4 6A57           00397         clrf received_counter
+0000D6 EFE0 F000      00398         goto _intl_usart_exit
+                      00399 
+                      00400 ; 2: Position 0
+0000DA                00401 _intl_usart_received_test_pos0
+0000DA 0E02           00402         movlw .2
+0000DC 6257           00403         cpfseq received_counter
+0000DE EF75 F000      00404         goto _intl_usart_received_test_pos1
+0000E2 50AE           00405         movf RCREG, W
+0000E4 6E58           00406         movwf pos_0
+0000E6 EFDF F000      00407         goto _intl_usart_end
+                      00408 
+                      00409 ; 3: Position 1
+0000EA                00410 _intl_usart_received_test_pos1
+0000EA 0E03           00411         movlw .3
+0000EC 6257           00412         cpfseq received_counter
+0000EE EF7D F000      00413         goto _intl_usart_received_test_pos2
+0000F2 50AE           00414         movf RCREG, W
+0000F4 6E59           00415         movwf pos_1
+0000F6 EFDF F000      00416         goto _intl_usart_end
+                      00417 
+                      00418 ; 4: Position 2
+0000FA                00419 _intl_usart_received_test_pos2
+0000FA 0E04           00420         movlw .4
+0000FC 6257           00421         cpfseq received_counter
+0000FE EF85 F000      00422         goto _intl_usart_received_test_pos3
+000102 50AE           00423         movf RCREG, W
+000104 6E5A           00424         movwf pos_2
+000106 EFDF F000      00425         goto _intl_usart_end
+                      00426 
+                      00427 ; 5: Position 3
+00010A                00428 _intl_usart_received_test_pos3
+00010A 0E05           00429         movlw .5
+00010C 6257           00430         cpfseq received_counter
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 11
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00010E 6257           00431         cpfseq received_counter
-000110 EF8E F000      00432         goto _intl_usart_received_test_pos5
-000114 50AE           00433         movf RCREG, W
-000116 6E5C           00434         movwf pos_4
-000118 EFE0 F000      00435         goto _intl_usart_end
-                      00436 
-                      00437 ; 7: Position 5
-00011C                00438 _intl_usart_received_test_pos5
-00011C 0E07           00439         movlw .7
-00011E 6257           00440         cpfseq received_counter
-000120 EF96 F000      00441         goto _intl_usart_received_test_pos6
-000124 50AE           00442         movf RCREG, W
-000126 6E5D           00443         movwf pos_5
-000128 EFE0 F000      00444         goto _intl_usart_end
-                      00445 
-                      00446 ; 8: Position 6
-00012C                00447 _intl_usart_received_test_pos6
-00012C 0E08           00448         movlw .8
-00012E 6257           00449         cpfseq received_counter
-000130 EF9E F000      00450         goto _intl_usart_received_test_pos7
-000134 50AE           00451         movf RCREG, W
-000136 6E5E           00452         movwf pos_6
-000138 EFE0 F000      00453         goto _intl_usart_end
-                      00454 
-                      00455 ; 9: Position 7
-00013C                00456 _intl_usart_received_test_pos7
-00013C 0E09           00457         movlw .9
-00013E 6257           00458         cpfseq received_counter
-000140 EFA6 F000      00459         goto _intl_usart_received_test_pos8
-000144 50AE           00460         movf RCREG, W
-000146 6E5F           00461         movwf pos_7
-000148 EFE0 F000      00462         goto _intl_usart_end
-                      00463 
-                      00464 ; 10: Position 8
-00014C                00465 _intl_usart_received_test_pos8
-00014C 0E0A           00466         movlw .10
-00014E 6257           00467         cpfseq received_counter
-000150 EFAE F000      00468         goto _intl_usart_received_test_pos9
-000154 50AE           00469         movf RCREG, W
-000156 6E60           00470         movwf pos_8
-000158 EFE0 F000      00471         goto _intl_usart_end
-                      00472 
-                      00473 ; 11: Position 9
-00015C                00474 _intl_usart_received_test_pos9
-00015C 0E0B           00475         movlw .11
-00015E 6257           00476         cpfseq received_counter
-000160 EFB6 F000      00477         goto _intl_usart_received_test_pos10
-000164 50AE           00478         movf RCREG, W
-000166 6E61           00479         movwf pos_9
-000168 EFE0 F000      00480         goto _intl_usart_end
-                      00481 
-                      00482 ; 12: Position 10
-00016C                00483 _intl_usart_received_test_pos10
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 12
+00010E EF8D F000      00431         goto _intl_usart_received_test_pos4
+000112 50AE           00432         movf RCREG, W
+000114 6E5B           00433         movwf pos_3
+000116 EFDF F000      00434         goto _intl_usart_end
+                      00435 
+                      00436 ; 6: Position 4
+00011A                00437 _intl_usart_received_test_pos4
+00011A 0E06           00438         movlw 6
+00011C 6257           00439         cpfseq received_counter
+00011E EF95 F000      00440         goto _intl_usart_received_test_pos5
+000122 50AE           00441         movf RCREG, W
+000124 6E5C           00442         movwf pos_4
+000126 EFDF F000      00443         goto _intl_usart_end
+                      00444 
+                      00445 ; 7: Position 5
+00012A                00446 _intl_usart_received_test_pos5
+00012A 0E07           00447         movlw .7
+00012C 6257           00448         cpfseq received_counter
+00012E EF9D F000      00449         goto _intl_usart_received_test_pos6
+000132 50AE           00450         movf RCREG, W
+000134 6E5D           00451         movwf pos_5
+000136 EFDF F000      00452         goto _intl_usart_end
+                      00453 
+                      00454 ; 8: Position 6
+00013A                00455 _intl_usart_received_test_pos6
+00013A 0E08           00456         movlw .8
+00013C 6257           00457         cpfseq received_counter
+00013E EFA5 F000      00458         goto _intl_usart_received_test_pos7
+000142 50AE           00459         movf RCREG, W
+000144 6E5E           00460         movwf pos_6
+000146 EFDF F000      00461         goto _intl_usart_end
+                      00462 
+                      00463 ; 9: Position 7
+00014A                00464 _intl_usart_received_test_pos7
+00014A 0E09           00465         movlw .9
+00014C 6257           00466         cpfseq received_counter
+00014E EFAD F000      00467         goto _intl_usart_received_test_pos8
+000152 50AE           00468         movf RCREG, W
+000154 6E5F           00469         movwf pos_7
+000156 EFDF F000      00470         goto _intl_usart_end
+                      00471 
+                      00472 ; 10: Position 8
+00015A                00473 _intl_usart_received_test_pos8
+00015A 0E0A           00474         movlw .10
+00015C 6257           00475         cpfseq received_counter
+00015E EFB5 F000      00476         goto _intl_usart_received_test_pos9
+000162 50AE           00477         movf RCREG, W
+000164 6E60           00478         movwf pos_8
+000166 EFDF F000      00479         goto _intl_usart_end
+                      00480 
+                      00481 ; 11: Position 9
+00016A                00482 _intl_usart_received_test_pos9
+00016A 0E0B           00483         movlw .11
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 12
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00016C 0E0C           00484         movlw .12
-00016E 6257           00485         cpfseq received_counter
-000170 EFBE F000      00486         goto _intl_usart_received_test_pos11
-000174 50AE           00487         movf RCREG, W
-000176 6E62           00488         movwf pos_10
-000178 EFE0 F000      00489         goto _intl_usart_end
-                      00490 
-                      00491 ; 13: Position 11
-00017C                00492 _intl_usart_received_test_pos11
-00017C 0E0D           00493         movlw .13
-00017E 6257           00494         cpfseq received_counter
-000180 EFC6 F000      00495         goto _intl_usart_received_test_pos12
-000184 50AE           00496         movf RCREG, W
-000186 6E63           00497         movwf pos_11
-000188 EFE0 F000      00498         goto _intl_usart_end
-                      00499 
-                      00500 ; 14: Position 12
-00018C                00501 _intl_usart_received_test_pos12
-00018C 0E0E           00502         movlw .14
-00018E 6257           00503         cpfseq received_counter
-000190 EFCE F000      00504         goto _intl_usart_received_test_pos13
-000194 50AE           00505         movf RCREG, W
-000196 6E64           00506         movwf pos_12
-000198 EFE0 F000      00507         goto _intl_usart_end
-                      00508 
-                      00509 ; 15: Position 13
-00019C                00510 _intl_usart_received_test_pos13
-00019C 0E0F           00511         movlw .15
-00019E 6257           00512         cpfseq received_counter
-0001A0 EFD6 F000      00513         goto _intl_usart_received_test_pos14
-0001A4 50AE           00514         movf RCREG, W
-0001A6 6E65           00515         movwf pos_13
-0001A8 EFE0 F000      00516         goto _intl_usart_end
-                      00517 
-                      00518 ; 16: Position 14
-0001AC                00519 _intl_usart_received_test_pos14
-0001AC 0E10           00520         movlw .16
-0001AE 6257           00521         cpfseq received_counter
-0001B0 EFDE F000      00522         goto _intl_usart_received_test_control
-0001B4 50AE           00523         movf RCREG, W
-0001B6 6E66           00524         movwf pos_14
-0001B8 EFE0 F000      00525         goto _intl_usart_end
-                      00526 
-                      00527 ; 17: Control byte
+00016C 6257           00484         cpfseq received_counter
+00016E EFBD F000      00485         goto _intl_usart_received_test_pos10
+000172 50AE           00486         movf RCREG, W
+000174 6E61           00487         movwf pos_9
+000176 EFDF F000      00488         goto _intl_usart_end
+                      00489 
+                      00490 ; 12: Position 10
+00017A                00491 _intl_usart_received_test_pos10
+00017A 0E0C           00492         movlw .12
+00017C 6257           00493         cpfseq received_counter
+00017E EFC5 F000      00494         goto _intl_usart_received_test_pos11
+000182 50AE           00495         movf RCREG, W
+000184 6E62           00496         movwf pos_10
+000186 EFDF F000      00497         goto _intl_usart_end
+                      00498 
+                      00499 ; 13: Position 11
+00018A                00500 _intl_usart_received_test_pos11
+00018A 0E0D           00501         movlw .13
+00018C 6257           00502         cpfseq received_counter
+00018E EFCD F000      00503         goto _intl_usart_received_test_pos12
+000192 50AE           00504         movf RCREG, W
+000194 6E63           00505         movwf pos_11
+000196 EFDF F000      00506         goto _intl_usart_end
+                      00507 
+                      00508 ; 14: Position 12
+00019A                00509 _intl_usart_received_test_pos12
+00019A 0E0E           00510         movlw .14
+00019C 6257           00511         cpfseq received_counter
+00019E EFD5 F000      00512         goto _intl_usart_received_test_pos13
+0001A2 50AE           00513         movf RCREG, W
+0001A4 6E64           00514         movwf pos_12
+0001A6 EFDF F000      00515         goto _intl_usart_end
+                      00516 
+                      00517 ; 15: Position 13
+0001AA                00518 _intl_usart_received_test_pos13
+0001AA 0E0F           00519         movlw .15
+0001AC 6257           00520         cpfseq received_counter
+0001AE EFDD F000      00521         goto _intl_usart_received_test_control
+0001B2 50AE           00522         movf RCREG, W
+0001B4 6E65           00523         movwf pos_13
+0001B6 EFDF F000      00524         goto _intl_usart_end
+                      00525 
+                      00526 ; 17: Control byte
 Warning[208]: Label truncated at 32 characters. (_intl_usart_received_test_control)
-0001BC                00528 _intl_usart_received_test_control
-0001BC 50AE           00529         movf RCREG, W
-0001BE 6E67           00530         movwf reception_control
-                      00531 
-0001C0                00532 _intl_usart_end
-0001C0 2A57           00533         incf received_counter
-                      00534 
-0001C2                00535 _intl_usart_exit
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 13
+0001BA                00527 _intl_usart_received_test_control
+0001BA 50AE           00528         movf RCREG, W
+0001BC 6E66           00529         movwf reception_control
+                      00530 
+0001BE                00531 _intl_usart_end
+0001BE 2A57           00532         incf received_counter
+                      00533 
+0001C0                00534 _intl_usart_exit
+                      00535         ; Restore WREG
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 13
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00536         ; Restore WREG
-0001C2 0E68           00537         movlw wreg_backup
-0001C4 9A9E           00538         bcf             PIR1, RCIF
-0001C6 0010           00539         retfie
+0001C0 0E68           00536         movlw   wreg_backup
+0001C2 9A9E           00537         bcf             PIR1, RCIF
+0001C4 0010           00538         retfie
+                      00539 
                       00540 
                       00541 
                       00542 
-                      00543 
-                      00544 ; Interruption du Timer
-0001C8                00545 _inth_Timer
-                      00546 
-                      00547         ; Aiguillage vers la bonne phase
-0001C8 B248           00548         btfsc   phase_cmpt, .1
-0001CA EF47 F001      00549         goto    phase3
+                      00543 ; Interruption du Timer
+0001C6                00544 _inth_Timer
+                      00545 
+                      00546         ; Aiguillage vers la bonne phase
+0001C6 B248           00547         btfsc   phase_cmpt, .1
+0001C8 EF46 F001      00548         goto    phase3
+                      00549 
                       00550 
-                      00551 
-                      00552 ; ###########
-                      00553 ; # PHASE 1 #
-                      00554 ; ###########
-                      00555 
-0001CE EC99 F003      00556         call    sort
-                      00557 
-0001D2 0E48           00558         movlw   0x48                            ; Ajout hugo, le 10/02/2005
-0001D4 6ECF           00559         movwf   TMR1H                           ; Pour être sûr que la période soit de 20ms
-0001D6 0EA0           00560         movlw   0xA0
-0001D8 6ECE           00561         movwf   TMR1L
-0001DA 80CD           00562         bsf             T1CON, TMR1ON           ; Pour revenir dans 20ms
-                      00563 
-0001DC ECE2 F002      00564         call    setAllPort                      ; Allumage des ports !
+                      00551 ; ###########
+                      00552 ; # PHASE 1 #
+                      00553 ; ###########
+                      00554 
+0001CC ECA3 F003      00555         call    sort
+                      00556 
+0001D0 0E48           00557         movlw   0x48                            ; Ajout hugo, le 10/02/2005
+0001D2 6ECF           00558         movwf   TMR1H                           ; Pour être sûr que la période soit de 20ms
+0001D4 0EA0           00559         movlw   0xA0
+0001D6 6ECE           00560         movwf   TMR1L
+0001D8 80CD           00561         bsf             T1CON, TMR1ON           ; Pour revenir dans 20ms
+                      00562 
+0001DA ECEC F002      00563         call    setAllPort                      ; Allumage des ports !
+                      00564 
                       00565 
-                      00566 
-                      00567         ; Tempo de 400us, oui, c'est dommage ...
-                      00568         ; ... on pourrait se servir de ce temps pour autre chose ...
-                      00569         ; ... il faut donc refaire la routine de tri !
-0001E0 0EFF           00570         movlw   0xFF
-0001E2 6E50           00571         movwf   cmpt_bcl
-0001E4                00572 bcl_toto
+                      00566         ; Tempo de 400us, oui, c'est dommage ...
+                      00567         ; ... on pourrait se servir de ce temps pour autre chose ...
+                      00568         ; ... il faut donc refaire la routine de tri !
+0001DE 0EFF           00569         movlw   0xFF
+0001E0 6E50           00570         movwf   cmpt_bcl
+0001E2                00571 bcl_toto
+0001E2 D000           00572         bra             $ + 2
 0001E4 D000           00573         bra             $ + 2
 0001E6 D000           00574         bra             $ + 2
 0001E8 D000           00575         bra             $ + 2
 0001EA D000           00576         bra             $ + 2
 0001EC D000           00577         bra             $ + 2
-0001EE D000           00578         bra             $ + 2
-0001F0 2E50           00579         decfsz  cmpt_bcl
-0001F2 D7F8           00580         bra             bcl_toto
-                      00581 
-0001F4 D0             00582         fill(bra        $ + 2), 64      ; 64 -> Passage en repos à l'état bas
+0001EE 2E50           00578         decfsz  cmpt_bcl
+0001F0 D7F8           00579         bra             bcl_toto
+                      00580 
+0001F2 D0             00581         fill(bra        $ + 2), 64      ; 64 -> Passage en repos à l'état bas
+                      00582 
                       00583 
-                      00584 
-                      00585 ; ###########
-                      00586 ; # PHASE 2 #
-                      00587 ; ###########
-                      00588         
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 14
+                      00584 ; ###########
+                      00585 ; # PHASE 2 #
+                      00586 ; ###########
+                      00587         
+000256 EE00 F018      00588         lfsr    FSR0, servo_sorted      ; Pointeur de consignes
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 14
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000258 EE00 F018      00589         lfsr    FSR0, servo_sorted      ; Pointeur de consignes
-00025C EE11 F018      00590         lfsr    FSR1, servo_val00       ; Pointeur des ports actifs
-000260 EE21 F000      00591         lfsr    FSR2, servo_nbr00       ; Pointeur de la quantité courante
-                      00592 
-000264 6A40           00593         clrf    total_qnt
-000266 6A41           00594         clrf    cons_prec
-                      00595 
-000268                00596 phase2
-000268 50EF           00597         movf    INDF0, W
-00026A 6E3D           00598         movwf   current_cons            ; La consigne courante
-                      00599 
-00026C 5041           00600         movf    cons_prec, W
-00026E 5E3D           00601         subwf   current_cons, F         ; On ne compte que le décalage par rapport au précédent
-                      00602 
-000270 E019           00603         bz              phase4                          ; Consigne courante à 0 ?
-                      00604 
-000272 50EF           00605         movf    INDF0, W
-000274 6E41           00606         movwf   cons_prec
-                      00607 
-000276 0E01           00608         movlw   .1
-000278 6E3C           00609         movwf   cmpt_pass
+00025A EE11 F018      00589         lfsr    FSR1, servo_val00       ; Pointeur des ports actifs
+00025E EE21 F000      00590         lfsr    FSR2, servo_nbr00       ; Pointeur de la quantité courante
+                      00591 
+000262 6A40           00592         clrf    total_qnt
+000264 6A41           00593         clrf    cons_prec
+                      00594 
+000266                00595 phase2
+000266 50EF           00596         movf    INDF0, W
+000268 6E3D           00597         movwf   current_cons            ; La consigne courante
+                      00598 
+00026A 5041           00599         movf    cons_prec, W
+00026C 5E3D           00600         subwf   current_cons, F         ; On ne compte que le décalage par rapport au précédent
+                      00601 
+00026E E019           00602         bz              phase4                          ; Consigne courante à 0 ?
+                      00603 
+000270 50EF           00604         movf    INDF0, W
+000272 6E41           00605         movwf   cons_prec
+                      00606 
+000274 0E01           00607         movlw   .1
+000276 6E3C           00608         movwf   cmpt_pass
+                      00609 
                       00610 
-                      00611 
-00027A 6848           00612         setf    phase_cmpt                      ; Phase de comptage
+000278 6848           00611         setf    phase_cmpt                      ; Phase de comptage
+                      00612 
                       00613 
-                      00614 
-00027C 0000           00615         nop                                                     ; Très important pour la précision !
-00027E 0000           00616         nop                                                     ; Ne pas toucher !!
-                      00617 
-000280 0000           00618         nop             ; Ajout pour passage en mode repos niveau haut
+00027A 0000           00614         nop                                                     ; Très important pour la précision !
+00027C 0000           00615         nop                                                     ; Ne pas toucher !!
+                      00616 
+00027E 0000           00617         nop             ; Ajout pour passage en mode repos niveau haut
+000280 0000           00618         nop             ; "
 000282 0000           00619         nop             ; "
-000284 0000           00620         nop             ; "
-                      00621 
+                      00620 
+000284 0000           00621         nop
 000286 0000           00622         nop
 000288 0000           00623         nop
 00028A 0000           00624         nop
-00028C 0000           00625         nop
-                      00626 
-                      00627 ; ###########
-                      00628 ; # PHASE 3 #
-                      00629 ; ###########
-00028E                00630 phase3
-00028E 0EFF           00631         movlw   0xFF
-000290 6ED7           00632         movwf   TMR0H
-                      00633 
-000292 0EE1           00634         movlw   0xE1
-                      00635 
-000294 6ED6           00636         movwf   TMR0L
-                      00637 
-000296 0000           00638         nop
-                      00639 
-000298 2A3C           00640         incf    cmpt_pass                       ; Incrémente le compteur
-                      00641 
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 15
+                      00625 
+                      00626 ; ###########
+                      00627 ; # PHASE 3 #
+                      00628 ; ###########
+00028C                00629 phase3
+00028C 0EFF           00630         movlw   0xFF
+00028E 6ED7           00631         movwf   TMR0H
+                      00632 
+000290 0EE1           00633         movlw   0xE1
+                      00634 
+000292 6ED6           00635         movwf   TMR0L
+                      00636 
+000294 0000           00637         nop
+                      00638 
+000296 2A3C           00639         incf    cmpt_pass                       ; Incrémente le compteur
+                      00640 
+000298 503D           00641         movf    current_cons, W
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 15
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00029A 503D           00642         movf    current_cons, W
-00029C 643C           00643         cpfsgt  cmpt_pass                       ; Si cmpt est supérieur à la consigne courante, on skip
-00029E D00C           00644         bra             inth_end
-                      00645 
-0002A0 6A48           00646         clrf    phase_cmpt                      ; Sinon, on a fini de compter
+00029A 643C           00642         cpfsgt  cmpt_pass                       ; Si cmpt est supérieur à la consigne courante, on skip
+00029C D00C           00643         bra             inth_end
+                      00644 
+00029E 6A48           00645         clrf    phase_cmpt                      ; Sinon, on a fini de compter
+                      00646 
                       00647 
-                      00648 
-                      00649 ; ###########
-                      00650 ; # PHASE 4 #
-                      00651 ; ###########
-0002A2 0000           00652         nop
-0002A4                00653 phase4
-0002A4 EC52 F003      00654         call    clrPort                         ; Extinction du ou des servos courants
-                      00655 
-0002A8 50DE           00656         movf    POSTINC2, W                     ; Addition de la quantité courante ...
-0002AA 2640           00657         addwf   total_qnt, F            ; ... et de la quantité de servos déjà passés
-                      00658 
-0002AC 2AE9           00659         incf    FSR0L
-0002AE 0000           00660         nop
-                      00661 
-0002B0 0E17           00662         movlw   NBR_SERVO - 1
-0002B2 6440           00663         cpfsgt  total_qnt                       ; Si le total de servo déjà passé est égal au nombre de 
+                      00648 ; ###########
+                      00649 ; # PHASE 4 #
+                      00650 ; ###########
+0002A0 0000           00651         nop
+0002A2                00652 phase4
+0002A2 EC5C F003      00653         call    clrPort                         ; Extinction du ou des servos courants
+                      00654 
+0002A6 50DE           00655         movf    POSTINC2, W                     ; Addition de la quantité courante ...
+0002A8 2640           00656         addwf   total_qnt, F            ; ... et de la quantité de servos déjà passés
+                      00657 
+0002AA 2AE9           00658         incf    FSR0L
+0002AC 0000           00659         nop
+                      00660 
+0002AE 0E17           00661         movlw   NBR_SERVO - 1
+0002B0 6440           00662         cpfsgt  total_qnt                       ; Si le total de servo déjà passé est égal au nombre de 
                             servo, on skip !
-0002B4 D7D9           00664         bra             phase2
+0002B2 D7D9           00663         bra             phase2
+                      00664 
                       00665 
-                      00666 
-                      00667 ; ###########
-                      00668 ; # PHASE 5 #
-                      00669 ; ###########
-                      00670 
-                      00671 ;       movlw   0x61                            ; Supprimé hugo, le 10/02/2005
-                      00672 ;       movwf   TMR1H                           ; Pour être sûr que la période soit de 20ms
-                      00673 ;       movlw   0xFF                            ; ... 0xFF pour 20ms pile poil !
-                      00674 ;       movwf   TMR1L
-                      00675 
-0002B6 9ED5           00676         bcf             T0CON, TMR0ON
-                      00677 ;       bsf             T1CON, TMR1ON           ; Supprimé hugo, le 10/02/2005
-                      00678 
-                      00679 ; On sort de l'interruption
-0002B8                00680 inth_end
-0002B8 909E           00681         bcf             PIR1, TMR1IF
-0002BA 94F2           00682         bcf             INTCON, TMR0IF
-0002BC 0011           00683         retfie  FAST
+                      00666 ; ###########
+                      00667 ; # PHASE 5 #
+                      00668 ; ###########
+                      00669 
+                      00670 ;       movlw   0x61                            ; Supprimé hugo, le 10/02/2005
+                      00671 ;       movwf   TMR1H                           ; Pour être sûr que la période soit de 20ms
+                      00672 ;       movlw   0xFF                            ; ... 0xFF pour 20ms pile poil !
+                      00673 ;       movwf   TMR1L
+                      00674 
+0002B4 9ED5           00675         bcf             T0CON, TMR0ON
+                      00676 ;       bsf             T1CON, TMR1ON           ; Supprimé hugo, le 10/02/2005
+                      00677 
+                      00678 ; On sort de l'interruption
+0002B6                00679 inth_end
+0002B6 909E           00680         bcf             PIR1, TMR1IF
+0002B8 94F2           00681         bcf             INTCON, TMR0IF
+0002BA 0011           00682         retfie  FAST
+                      00683 
                       00684 
-                      00685 
-                      00686         #include "init.inc"
+                      00685         #include "init.inc"
                       00001 ; +-----------------------------------------------------------------------------------------------------
                             ------------------------+
                       00002 ; | Gestion de 24 servos avec un PIC18F452                                                              
@@ -883,13 +882,13 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00003 ; | Copyright (C) 2012 Charles RINCHEVAL (contact@digitalspirit.org)                                    
                                                                                                             |
                       00004 ; | Ce programme est libre, vous pouvez le redistribuer et/ou le modifier selon les termes de la Licence
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 16
+                             Publique Générale GNU  |
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 16
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                             Publique Générale GNU  |
                       00005 ; | publiée par la Free Software Foundation (version 2 ou bien toute autre version ultérieure choisie pa
                             r vous).                                |
                       00006 ; | Ce programme est distribué car potentiellement utile, mais SANS AUCUNE GARANTIE, ni explicite ni imp
@@ -908,47 +907,47 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                             ------------------------+
                       00013 ; Initialisation du bouzin !
                       00014 
-0002BE                00015 _init
+0002BC                00015 _init
                       00016 
                       00017         ; Configuration des ports
                       00018         MOVLF   b'00000000', TRISA
-0002BE 0E00               M                 movlw   b'00000000'
-0002C0 6E92               M                 movwf   TRISA
+0002BC 0E00               M                 movlw   b'00000000'
+0002BE 6E92               M                 movwf   TRISA
                       00019         MOVLF   b'00000000', TRISB
-0002C2 0E00               M                 movlw   b'00000000'
-0002C4 6E93               M                 movwf   TRISB
+0002C0 0E00               M                 movlw   b'00000000'
+0002C2 6E93               M                 movwf   TRISB
                       00020         MOVLF   b'10000000', TRISC
-0002C6 0E80               M                 movlw   b'10000000'
-0002C8 6E94               M                 movwf   TRISC
+0002C4 0E80               M                 movlw   b'10000000'
+0002C6 6E94               M                 movwf   TRISC
                       00021         MOVLF   b'00000000', TRISD
-0002CA 0E00               M                 movlw   b'00000000'
-0002CC 6E95               M                 movwf   TRISD
+0002C8 0E00               M                 movlw   b'00000000'
+0002CA 6E95               M                 movwf   TRISD
                       00022         MOVLF   b'00000000', TRISE
-0002CE 0E00               M                 movlw   b'00000000'
-0002D0 6E96               M                 movwf   TRISE
+0002CC 0E00               M                 movlw   b'00000000'
+0002CE 6E96               M                 movwf   TRISE
                       00023 
                       00024         ; Initialisation des ports
                       00025         MOVLF   b'00000000', PORTA
-0002D2 0E00               M                 movlw   b'00000000'
-0002D4 6E80               M                 movwf   PORTA
+0002D0 0E00               M                 movlw   b'00000000'
+0002D2 6E80               M                 movwf   PORTA
                       00026         MOVLF   b'00000000', PORTB
-0002D6 0E00               M                 movlw   b'00000000'
-0002D8 6E81               M                 movwf   PORTB
+0002D4 0E00               M                 movlw   b'00000000'
+0002D6 6E81               M                 movwf   PORTB
                       00027         MOVLF   b'00000000', PORTC
-0002DA 0E00               M                 movlw   b'00000000'
-0002DC 6E82               M                 movwf   PORTC
+0002D8 0E00               M                 movlw   b'00000000'
+0002DA 6E82               M                 movwf   PORTC
                       00028         MOVLF   b'00000000', PORTD
-0002DE 0E00               M                 movlw   b'00000000'
-0002E0 6E83               M                 movwf   PORTD
+0002DC 0E00               M                 movlw   b'00000000'
+0002DE 6E83               M                 movwf   PORTD
                       00029         MOVLF   b'00000000', PORTE
-0002E2 0E00               M                 movlw   b'00000000'
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 17
+0002E0 0E00               M                 movlw   b'00000000'
+0002E2 6E84               M                 movwf   PORTE
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 17
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0002E4 6E84               M                 movwf   PORTE
                       00030 
                       00031         ; RCON REGISTER
                       00032         ; +------+---+---+----+----+----+-----+-----+
@@ -978,8 +977,8 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00056         ;       0 = A Brown-out Reset occurred
                       00057         ;       (must be set in software after a Brown-out Reset occurs)
                       00058         MOVLF   b'10000000', RCON
-0002E6 0E80               M                 movlw   b'10000000'
-0002E8 6ED0               M                 movwf   RCON
+0002E4 0E80               M                 movlw   b'10000000'
+0002E6 6ED0               M                 movwf   RCON
                       00059 
                       00060         ; INTCON Register
                       00061         ; +----------+-----------+--------+--------+------+--------+--------+------+
@@ -1001,13 +1000,13 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00077         ;               0 = Disables all low priority peripheral interrupts
                       00078         ; bit 5 TMR0IE: TMR0 Overflow Interrupt Enable bit
                       00079         ;       1 = Enables the TMR0 overflow interrupt
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 18
+                      00080         ;       0 = Disables the TMR0 overflow interrupt
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 18
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00080         ;       0 = Disables the TMR0 overflow interrupt
                       00081         ; bit 4 INT0IE: INT0 External Interrupt Enable bit
                       00082         ;       1 = Enables the INT0 external interrupt
                       00083         ;       0 = Disables the INT0 external interrupt
@@ -1024,8 +1023,8 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00094         ;       1 = At least one of the RB7:RB4 pins changed state (must be cleared in software)
                       00095         ;       0 = None of the RB7:RB4 pins have changed state
                       00096         MOVLF   b'00100100', INTCON
-0002EA 0E24               M                 movlw   b'00100100'
-0002EC 6EF2               M                 movwf   INTCON
+0002E8 0E24               M                 movlw   b'00100100'
+0002EA 6EF2               M                 movwf   INTCON
                       00097         ;bsf            INTCON, TMR0IF
                       00098 
                       00099         ; INTCON2 Register
@@ -1053,20 +1052,20 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00121         ;       1 = RB Port Change Interrupt is a high priority event
                       00122         ;       0 = RB Port Change Interrupt is a low priority event
                       00123         MOVLF   b'10001110', INTCON2
-0002EE 0E8E               M                 movlw   b'10001110'
-0002F0 6EF1               M                 movwf   INTCON2
+0002EC 0E8E               M                 movlw   b'10001110'
+0002EE 6EF1               M                 movwf   INTCON2
                       00124 
                       00125 
                       00126         ; T0CON: TIMER0 CONTROL REGISTER
                       00127         ; +--------+--------+------+------+-----+-------+-------+-------+
                       00128         ; | TMR0ON | T08BIT | T0CS | T0SE | PSA | T0PS2 | T0PS1 | T0PS0 |
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 19
+                      00129         ; +--------+--------+------+------+-----+-------+-------+-------+
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 19
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00129         ; +--------+--------+------+------+-----+-------+-------+-------+
                       00130         ; bit 7 TMR0ON: Timer0 On/Off Control bit
                       00131         ;       1 = Enables Timer0
                       00132         ;       0 = Stops Timer0
@@ -1095,8 +1094,8 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00155 ;#DEFINE        T0CON_VALUE     b'10010000'
                       00156 ;       MOVLF   T0CON_VALUE, T0CON
                       00157         MOVLF   b'10010000', T0CON
-0002F2 0E90               M                 movlw   b'10010000'
-0002F4 6ED5               M                 movwf   T0CON
+0002F0 0E90               M                 movlw   b'10010000'
+0002F2 6ED5               M                 movwf   T0CON
                       00158 
                       00159 
                       00160         ; T2CON Register
@@ -1119,14 +1118,14 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00177         ;       01 = Prescaler is 4
                       00178         ;       1x = Prescaler is 16
                       00179         MOVLF   b'00000000', T2CON
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 20
+0002F4 0E00               M                 movlw   b'00000000'
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 20
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0002F6 0E00               M                 movlw   b'00000000'
-0002F8 6ECA               M                 movwf   T2CON
+0002F6 6ECA               M                 movwf   T2CON
                       00180 
                       00181 ;       bsf             PIE1, TMR2IE
                       00182 ;       MOVLF   b'11111111', PR2
@@ -1170,31 +1169,31 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00219 
                       00220 
                       00221         MOVLF   b'10100000', T1CON
-0002FA 0EA0               M                 movlw   b'10100000'
-0002FC 6ECD               M                 movwf   T1CON
-0002FE 809D           00222         bsf             PIE1, TMR1IE
-000300 809F           00223         bsf             IPR1, TMR1IP
+0002F8 0EA0               M                 movlw   b'10100000'
+0002FA 6ECD               M                 movwf   T1CON
+0002FC 809D           00222         bsf             PIE1, TMR1IE
+0002FE 809F           00223         bsf             IPR1, TMR1IP
                       00224 
                       00225 
                       00226         ; ##################
-000302 0E01           00227         movlw   .1
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 21
+000300 0E01           00227         movlw   .1
+000302 6E47           00228         movwf   phase
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 21
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000304 6E47           00228         movwf   phase
                       00229 
-000306 6A48           00230         clrf    phase_cmpt
+000304 6A48           00230         clrf    phase_cmpt
                       00231 
-000308 6A3C           00232         clrf    cmpt_pass
-00030A 0E80           00233         movlw   .128
-00030C 6E3D           00234         movwf   current_cons
+000306 6A3C           00232         clrf    cmpt_pass
+000308 0E80           00233         movlw   .128
+00030A 6E3D           00234         movwf   current_cons
                       00235 
                       00236 ;       movlw   .1
                       00237 ;       movwf   cmpt_word
-00030E 6A57           00238         clrf    received_counter
+00030C 6A57           00238         clrf    received_counter
                       00239 
                       00240 ;       movwf   pos_recept
                       00241         
@@ -1211,39 +1210,39 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00252 ;messg X
                       00253 
                       00254         MOVLF   .64, SPBRG
-000310 0E40               M                 movlw   .64
-000312 6EAF               M                 movwf   SPBRG
+00030E 0E40               M                 movlw   .64
+000310 6EAF               M                 movwf   SPBRG
                       00255 ;       MOVLF   X, SPBRG
                       00256 
-000314 98AC           00257         bcf             TXSTA, SYNC
+000312 98AC           00257         bcf             TXSTA, SYNC
                       00258 
-000316 8EAB           00259         bsf             RCSTA, SPEN
-000318 9CAB           00260         bcf             RCSTA, RX9
-00031A 88AB           00261         bsf             RCSTA, CREN
+000314 8EAB           00259         bsf             RCSTA, SPEN
+000316 9CAB           00260         bcf             RCSTA, RX9
+000318 88AB           00261         bsf             RCSTA, CREN
                       00262 
-00031C 8A9D           00263         bsf             PIE1, RCIE
-00031E 9A9F           00264         bcf             IPR1, RCIP
+00031A 8A9D           00263         bsf             PIE1, RCIE
+00031C 9A9F           00264         bcf             IPR1, RCIP
                       00265 
                       00266         ; Ajout hugo, le 11/01/2006
                       00267         MOVLF   b'00100001', TXSTA
-000320 0E21               M                 movlw   b'00100001'
-000322 6EAC               M                 movwf   TXSTA
+00031E 0E21               M                 movlw   b'00100001'
+000320 6EAC               M                 movwf   TXSTA
                       00268 
-000324 8A9D           00269         bsf             PIE1, RCIE
-000326 989F           00270         bcf             IPR1, TXIP
+000322 8A9D           00269         bsf             PIE1, RCIE
+000324 989F           00270         bcf             IPR1, TXIP
                       00271         ; Fin ajout hugo
                       00272 
                       00273 ;;;;;;;;;;clrf  ADCON0
                       00274 
                       00275 
                       00276 ;; SEND A CHAR
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 22
+                      00277 ;;      MOVLF   .51, SPBRG
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 22
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00277 ;;      MOVLF   .51, SPBRG
                       00278 ;       MOVLF   X, SPBRG
                       00279 ;
                       00280 ;       MOVLF   b'00100001', TXSTA
@@ -1265,7 +1264,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00296 ;
                       00297 ;       MOVLW   0x90 ; 8-bit receive, receiver enabled,
                       00298 ;       MOVWF   RCSTA ; continuous receive, serial port enabled
-                      00687         #include "init2.inc"
+                      00686         #include "init2.inc"
                       00001 ; +-----------------------------------------------------------------------------------------------------
                             ------------------------+
                       00002 ; | Gestion de 24 servos avec un PIC18F452                                                              
@@ -1296,92 +1295,92 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00016 ;#DEFINE        CONS_ALL_254
                       00017 ;#DEFINE        CONS_DEC
                       00018 ;#DEFINE        CONS_INC
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 23
+                      00019 
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 23
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00019 
                       00020 #IFDEF  CONS_ALL_0
                       00021         MOVLF   .0, servo_cons0         ; 00
-000328 0E00               M                 movlw   .0
-00032A 6E00               M                 movwf   servo_cons0
+000326 0E00               M                 movlw   .0
+000328 6E00               M                 movwf   servo_cons0
                       00022         MOVLF   .0, servo_cons1         ; 01
-00032C 0E00               M                 movlw   .0
-00032E 6E01               M                 movwf   servo_cons1
+00032A 0E00               M                 movlw   .0
+00032C 6E01               M                 movwf   servo_cons1
                       00023         MOVLF   .0, servo_cons2         ; 02
-000330 0E00               M                 movlw   .0
-000332 6E02               M                 movwf   servo_cons2
+00032E 0E00               M                 movlw   .0
+000330 6E02               M                 movwf   servo_cons2
                       00024         MOVLF   .0, servo_cons3         ; 03
-000334 0E00               M                 movlw   .0
-000336 6E03               M                 movwf   servo_cons3
+000332 0E00               M                 movlw   .0
+000334 6E03               M                 movwf   servo_cons3
                       00025         MOVLF   .0, servo_cons4         ; 04
-000338 0E00               M                 movlw   .0
-00033A 6E04               M                 movwf   servo_cons4
+000336 0E00               M                 movlw   .0
+000338 6E04               M                 movwf   servo_cons4
                       00026         MOVLF   .0, servo_cons5         ; 05
-00033C 0E00               M                 movlw   .0
-00033E 6E05               M                 movwf   servo_cons5
+00033A 0E00               M                 movlw   .0
+00033C 6E05               M                 movwf   servo_cons5
                       00027         MOVLF   .0, servo_cons6         ; 06
-000340 0E00               M                 movlw   .0
-000342 6E06               M                 movwf   servo_cons6
+00033E 0E00               M                 movlw   .0
+000340 6E06               M                 movwf   servo_cons6
                       00028         MOVLF   .0, servo_cons7         ; 07
-000344 0E00               M                 movlw   .0
-000346 6E07               M                 movwf   servo_cons7
+000342 0E00               M                 movlw   .0
+000344 6E07               M                 movwf   servo_cons7
                       00029         MOVLF   .0, servo_cons8         ; 08
-000348 0E00               M                 movlw   .0
-00034A 6E08               M                 movwf   servo_cons8
+000346 0E00               M                 movlw   .0
+000348 6E08               M                 movwf   servo_cons8
                       00030         MOVLF   .0, servo_cons9         ; 09
-00034C 0E00               M                 movlw   .0
-00034E 6E09               M                 movwf   servo_cons9
+00034A 0E00               M                 movlw   .0
+00034C 6E09               M                 movwf   servo_cons9
                       00031         MOVLF   .0, servo_cons10        ; 0A
-000350 0E00               M                 movlw   .0
-000352 6E0A               M                 movwf   servo_cons10
+00034E 0E00               M                 movlw   .0
+000350 6E0A               M                 movwf   servo_cons10
                       00032         MOVLF   .0, servo_cons11        ; 0B
-000354 0E00               M                 movlw   .0
-000356 6E0B               M                 movwf   servo_cons11
+000352 0E00               M                 movlw   .0
+000354 6E0B               M                 movwf   servo_cons11
                       00033         MOVLF   .0, servo_cons12        ; 0C
-000358 0E00               M                 movlw   .0
-00035A 6E0C               M                 movwf   servo_cons12
+000356 0E00               M                 movlw   .0
+000358 6E0C               M                 movwf   servo_cons12
                       00034         MOVLF   .0, servo_cons13        ; 0D
-00035C 0E00               M                 movlw   .0
-00035E 6E0D               M                 movwf   servo_cons13
+00035A 0E00               M                 movlw   .0
+00035C 6E0D               M                 movwf   servo_cons13
                       00035         MOVLF   .0, servo_cons14        ; 0E
-000360 0E00               M                 movlw   .0
-000362 6E0E               M                 movwf   servo_cons14
+00035E 0E00               M                 movlw   .0
+000360 6E0E               M                 movwf   servo_cons14
                       00036         MOVLF   .0, servo_cons15        ; 0F
-000364 0E00               M                 movlw   .0
-000366 6E0F               M                 movwf   servo_cons15
+000362 0E00               M                 movlw   .0
+000364 6E0F               M                 movwf   servo_cons15
                       00037         MOVLF   .0, servo_cons16        ; 10
-000368 0E00               M                 movlw   .0
-00036A 6E10               M                 movwf   servo_cons16
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 24
+000366 0E00               M                 movlw   .0
+000368 6E10               M                 movwf   servo_cons16
+                      00038         MOVLF   .0, servo_cons17        ; 12
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 24
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00038         MOVLF   .0, servo_cons17        ; 12
-00036C 0E00               M                 movlw   .0
-00036E 6E11               M                 movwf   servo_cons17
+00036A 0E00               M                 movlw   .0
+00036C 6E11               M                 movwf   servo_cons17
                       00039         MOVLF   .0, servo_cons18        ; 13
-000370 0E00               M                 movlw   .0
-000372 6E12               M                 movwf   servo_cons18
+00036E 0E00               M                 movlw   .0
+000370 6E12               M                 movwf   servo_cons18
                       00040         MOVLF   .0, servo_cons19        ; 14
-000374 0E00               M                 movlw   .0
-000376 6E13               M                 movwf   servo_cons19
+000372 0E00               M                 movlw   .0
+000374 6E13               M                 movwf   servo_cons19
                       00041         MOVLF   .0, servo_cons20        ; 15
-000378 0E00               M                 movlw   .0
-00037A 6E14               M                 movwf   servo_cons20
+000376 0E00               M                 movlw   .0
+000378 6E14               M                 movwf   servo_cons20
                       00042         MOVLF   .0, servo_cons21        ; 16
-00037C 0E00               M                 movlw   .0
-00037E 6E15               M                 movwf   servo_cons21
+00037A 0E00               M                 movlw   .0
+00037C 6E15               M                 movwf   servo_cons21
                       00043         MOVLF   .0, servo_cons22        ; 17
-000380 0E00               M                 movlw   .0
-000382 6E16               M                 movwf   servo_cons22
+00037E 0E00               M                 movlw   .0
+000380 6E16               M                 movwf   servo_cons22
                       00044         MOVLF   .0, servo_cons23        ; 18
-000384 0E00               M                 movlw   .0
-000386 6E17               M                 movwf   servo_cons23
+000382 0E00               M                 movlw   .0
+000384 6E17               M                 movwf   servo_cons23
                       00045 #ENDIF
                       00046 
                       00047 #IFDEF  CONS_ALL_1
@@ -1414,13 +1413,13 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00074 #IFDEF  CONS_ALL_254
                       00075         MOVLF   .254, servo_cons0               ; 00
                       00076         MOVLF   .254, servo_cons1               ; 01
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 25
+                      00077         MOVLF   .254, servo_cons2               ; 02
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 25
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00077         MOVLF   .254, servo_cons2               ; 02
                       00078         MOVLF   .254, servo_cons3               ; 03
                       00079         MOVLF   .254, servo_cons4               ; 04
                       00080         MOVLF   .254, servo_cons5               ; 05
@@ -1473,13 +1472,13 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00127 
                       00128 
                       00129 #IFDEF  CONS_INC
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 26
+                      00130         MOVLF   .1, servo_cons0         ; 00
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 26
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00130         MOVLF   .1, servo_cons0         ; 00
                       00131         MOVLF   .2, servo_cons1         ; 01
                       00132         MOVLF   .3, servo_cons2         ; 02
                       00133         MOVLF   .4, servo_cons3         ; 03
@@ -1506,7 +1505,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00154 #ENDIF
                       00155 
                       00156 
-000388 0101           00157         movlb   .1
+000386 0101           00157         movlb   .1
                       00158 
                       00159 #IFDEF  CONS_INC
                       00160 
@@ -1532,13 +1531,13 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00180         MOVLFB  .1, servo_nbr19
                       00181         MOVLFB  .1, servo_nbr20
                       00182         MOVLFB  .1, servo_nbr21
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 27
+                      00183         MOVLFB  .1, servo_nbr22
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 27
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00183         MOVLFB  .1, servo_nbr22
                       00184         MOVLFB  .1, servo_nbr23
                       00185 
                       00186         MOVLFB  b'00000001', servo_val00
@@ -1591,13 +1590,13 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00233 
                       00234         MOVLFB  b'00000000', servo_val36
                       00235         MOVLFB  b'00010000', servo_val37                ; 12
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 28
+                      00236         MOVLFB  b'00000000', servo_val38
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 28
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00236         MOVLFB  b'00000000', servo_val38
                       00237 
                       00238         MOVLFB  b'00000000', servo_val39
                       00239         MOVLFB  b'00100000', servo_val40                ; 13
@@ -1648,804 +1647,805 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00284 #IFDEF  CONS_ALL_0
                       00285 
                       00286         MOVLFB  .23, servo_nbr00
-00038A 0E17               M                 movlw   .23
-00038C 6F00               M                 movwf   servo_nbr00, BANKED
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 29
-Gestion de 24 servos !
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
+000388 0E17               M                 movlw   .23
+00038A 6F00               M                 movwf   servo_nbr00, BANKED
                       00287         MOVLFB  .0, servo_nbr01
-00038E 0E00               M                 movlw   .0
-000390 6F01               M                 movwf   servo_nbr01, BANKED
-                      00288         MOVLFB  .0, servo_nbr02
-000392 0E00               M                 movlw   .0
-000394 6F02               M                 movwf   servo_nbr02, BANKED
-                      00289         MOVLFB  .0, servo_nbr03
-000396 0E00               M                 movlw   .0
-000398 6F03               M                 movwf   servo_nbr03, BANKED
-                      00290         MOVLFB  .0, servo_nbr04
-00039A 0E00               M                 movlw   .0
-00039C 6F04               M                 movwf   servo_nbr04, BANKED
-                      00291         MOVLFB  .0, servo_nbr05
-00039E 0E00               M                 movlw   .0
-0003A0 6F05               M                 movwf   servo_nbr05, BANKED
-                      00292         MOVLFB  .0, servo_nbr06
-0003A2 0E00               M                 movlw   .0
-0003A4 6F06               M                 movwf   servo_nbr06, BANKED
-                      00293         MOVLFB  .0, servo_nbr07
-0003A6 0E00               M                 movlw   .0
-0003A8 6F07               M                 movwf   servo_nbr07, BANKED
-                      00294         MOVLFB  .0, servo_nbr08
-0003AA 0E00               M                 movlw   .0
-0003AC 6F08               M                 movwf   servo_nbr08, BANKED
-                      00295         MOVLFB  .0, servo_nbr09
-0003AE 0E00               M                 movlw   .0
-0003B0 6F09               M                 movwf   servo_nbr09, BANKED
-                      00296         MOVLFB  .0, servo_nbr10
-0003B2 0E00               M                 movlw   .0
-0003B4 6F0A               M                 movwf   servo_nbr10, BANKED
-                      00297         MOVLFB  .0, servo_nbr11
-0003B6 0E00               M                 movlw   .0
-0003B8 6F0B               M                 movwf   servo_nbr11, BANKED
-                      00298         MOVLFB  .0, servo_nbr12
-0003BA 0E00               M                 movlw   .0
-0003BC 6F0C               M                 movwf   servo_nbr12, BANKED
-                      00299         MOVLFB  .0, servo_nbr13
-0003BE 0E00               M                 movlw   .0
-0003C0 6F0D               M                 movwf   servo_nbr13, BANKED
-                      00300         MOVLFB  .0, servo_nbr14
-0003C2 0E00               M                 movlw   .0
-0003C4 6F0E               M                 movwf   servo_nbr14, BANKED
-                      00301         MOVLFB  .0, servo_nbr15
-0003C6 0E00               M                 movlw   .0
-0003C8 6F0F               M                 movwf   servo_nbr15, BANKED
-                      00302         MOVLFB  .0, servo_nbr16
-0003CA 0E00               M                 movlw   .0
-0003CC 6F10               M                 movwf   servo_nbr16, BANKED
-                      00303         MOVLFB  .0, servo_nbr17
-0003CE 0E00               M                 movlw   .0
-0003D0 6F11               M                 movwf   servo_nbr17, BANKED
-                      00304         MOVLFB  .0, servo_nbr18
-0003D2 0E00               M                 movlw   .0
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 30
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 29
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0003D4 6F12               M                 movwf   servo_nbr18, BANKED
+00038C 0E00               M                 movlw   .0
+00038E 6F01               M                 movwf   servo_nbr01, BANKED
+                      00288         MOVLFB  .0, servo_nbr02
+000390 0E00               M                 movlw   .0
+000392 6F02               M                 movwf   servo_nbr02, BANKED
+                      00289         MOVLFB  .0, servo_nbr03
+000394 0E00               M                 movlw   .0
+000396 6F03               M                 movwf   servo_nbr03, BANKED
+                      00290         MOVLFB  .0, servo_nbr04
+000398 0E00               M                 movlw   .0
+00039A 6F04               M                 movwf   servo_nbr04, BANKED
+                      00291         MOVLFB  .0, servo_nbr05
+00039C 0E00               M                 movlw   .0
+00039E 6F05               M                 movwf   servo_nbr05, BANKED
+                      00292         MOVLFB  .0, servo_nbr06
+0003A0 0E00               M                 movlw   .0
+0003A2 6F06               M                 movwf   servo_nbr06, BANKED
+                      00293         MOVLFB  .0, servo_nbr07
+0003A4 0E00               M                 movlw   .0
+0003A6 6F07               M                 movwf   servo_nbr07, BANKED
+                      00294         MOVLFB  .0, servo_nbr08
+0003A8 0E00               M                 movlw   .0
+0003AA 6F08               M                 movwf   servo_nbr08, BANKED
+                      00295         MOVLFB  .0, servo_nbr09
+0003AC 0E00               M                 movlw   .0
+0003AE 6F09               M                 movwf   servo_nbr09, BANKED
+                      00296         MOVLFB  .0, servo_nbr10
+0003B0 0E00               M                 movlw   .0
+0003B2 6F0A               M                 movwf   servo_nbr10, BANKED
+                      00297         MOVLFB  .0, servo_nbr11
+0003B4 0E00               M                 movlw   .0
+0003B6 6F0B               M                 movwf   servo_nbr11, BANKED
+                      00298         MOVLFB  .0, servo_nbr12
+0003B8 0E00               M                 movlw   .0
+0003BA 6F0C               M                 movwf   servo_nbr12, BANKED
+                      00299         MOVLFB  .0, servo_nbr13
+0003BC 0E00               M                 movlw   .0
+0003BE 6F0D               M                 movwf   servo_nbr13, BANKED
+                      00300         MOVLFB  .0, servo_nbr14
+0003C0 0E00               M                 movlw   .0
+0003C2 6F0E               M                 movwf   servo_nbr14, BANKED
+                      00301         MOVLFB  .0, servo_nbr15
+0003C4 0E00               M                 movlw   .0
+0003C6 6F0F               M                 movwf   servo_nbr15, BANKED
+                      00302         MOVLFB  .0, servo_nbr16
+0003C8 0E00               M                 movlw   .0
+0003CA 6F10               M                 movwf   servo_nbr16, BANKED
+                      00303         MOVLFB  .0, servo_nbr17
+0003CC 0E00               M                 movlw   .0
+0003CE 6F11               M                 movwf   servo_nbr17, BANKED
+                      00304         MOVLFB  .0, servo_nbr18
+0003D0 0E00               M                 movlw   .0
+0003D2 6F12               M                 movwf   servo_nbr18, BANKED
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 30
+Gestion de 24 servos !
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
                       00305         MOVLFB  .0, servo_nbr19
-0003D6 0E00               M                 movlw   .0
-0003D8 6F13               M                 movwf   servo_nbr19, BANKED
+0003D4 0E00               M                 movlw   .0
+0003D6 6F13               M                 movwf   servo_nbr19, BANKED
                       00306         MOVLFB  .0, servo_nbr20
-0003DA 0E00               M                 movlw   .0
-0003DC 6F14               M                 movwf   servo_nbr20, BANKED
+0003D8 0E00               M                 movlw   .0
+0003DA 6F14               M                 movwf   servo_nbr20, BANKED
                       00307         MOVLFB  .0, servo_nbr21
-0003DE 0E00               M                 movlw   .0
-0003E0 6F15               M                 movwf   servo_nbr21, BANKED
+0003DC 0E00               M                 movlw   .0
+0003DE 6F15               M                 movwf   servo_nbr21, BANKED
                       00308         MOVLFB  .0, servo_nbr22
-0003E2 0E00               M                 movlw   .0
-0003E4 6F16               M                 movwf   servo_nbr22, BANKED
+0003E0 0E00               M                 movlw   .0
+0003E2 6F16               M                 movwf   servo_nbr22, BANKED
                       00309         MOVLFB  .0, servo_nbr23
-0003E6 0E00               M                 movlw   .0
-0003E8 6F17               M                 movwf   servo_nbr23, BANKED
+0003E4 0E00               M                 movlw   .0
+0003E6 6F17               M                 movwf   servo_nbr23, BANKED
                       00310 
                       00311         MOVLFB  b'11111111', servo_val00
-0003EA 0EFF               M                 movlw   b'11111111'
-0003EC 6F18               M                 movwf   servo_val00, BANKED
+0003E8 0EFF               M                 movlw   b'11111111'
+0003EA 6F18               M                 movwf   servo_val00, BANKED
                       00312         MOVLFB  b'11111111', servo_val01                ; 0
-0003EE 0EFF               M                 movlw   b'11111111'
-0003F0 6F19               M                 movwf   servo_val01, BANKED
+0003EC 0EFF               M                 movlw   b'11111111'
+0003EE 6F19               M                 movwf   servo_val01, BANKED
                       00313         MOVLFB  b'11111111', servo_val02
-0003F2 0EFF               M                 movlw   b'11111111'
-0003F4 6F1A               M                 movwf   servo_val02, BANKED
+0003F0 0EFF               M                 movlw   b'11111111'
+0003F2 6F1A               M                 movwf   servo_val02, BANKED
                       00314 
                       00315         MOVLFB  b'00000000', servo_val03
-0003F6 0E00               M                 movlw   b'00000000'
-0003F8 6F1B               M                 movwf   servo_val03, BANKED
+0003F4 0E00               M                 movlw   b'00000000'
+0003F6 6F1B               M                 movwf   servo_val03, BANKED
                       00316         MOVLFB  b'00000000', servo_val04                ; 1
-0003FA 0E00               M                 movlw   b'00000000'
-0003FC 6F1C               M                 movwf   servo_val04, BANKED
+0003F8 0E00               M                 movlw   b'00000000'
+0003FA 6F1C               M                 movwf   servo_val04, BANKED
                       00317         MOVLFB  b'00000000', servo_val05
-0003FE 0E00               M                 movlw   b'00000000'
-000400 6F1D               M                 movwf   servo_val05, BANKED
+0003FC 0E00               M                 movlw   b'00000000'
+0003FE 6F1D               M                 movwf   servo_val05, BANKED
                       00318 
                       00319         MOVLFB  b'00000000', servo_val06
-000402 0E00               M                 movlw   b'00000000'
-000404 6F1E               M                 movwf   servo_val06, BANKED
+000400 0E00               M                 movlw   b'00000000'
+000402 6F1E               M                 movwf   servo_val06, BANKED
                       00320         MOVLFB  b'00000000', servo_val07                ; 2
-000406 0E00               M                 movlw   b'00000000'
-000408 6F1F               M                 movwf   servo_val07, BANKED
+000404 0E00               M                 movlw   b'00000000'
+000406 6F1F               M                 movwf   servo_val07, BANKED
                       00321         MOVLFB  b'00000000', servo_val08
-00040A 0E00               M                 movlw   b'00000000'
-00040C 6F20               M                 movwf   servo_val08, BANKED
+000408 0E00               M                 movlw   b'00000000'
+00040A 6F20               M                 movwf   servo_val08, BANKED
                       00322 
                       00323         MOVLFB  b'00000000', servo_val09
-00040E 0E00               M                 movlw   b'00000000'
-000410 6F21               M                 movwf   servo_val09, BANKED
+00040C 0E00               M                 movlw   b'00000000'
+00040E 6F21               M                 movwf   servo_val09, BANKED
                       00324         MOVLFB  b'00000000', servo_val10                ; 3
-000412 0E00               M                 movlw   b'00000000'
-000414 6F22               M                 movwf   servo_val10, BANKED
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 31
+000410 0E00               M                 movlw   b'00000000'
+000412 6F22               M                 movwf   servo_val10, BANKED
+                      00325         MOVLFB  b'00000000', servo_val11
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 31
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00325         MOVLFB  b'00000000', servo_val11
-000416 0E00               M                 movlw   b'00000000'
-000418 6F23               M                 movwf   servo_val11, BANKED
+000414 0E00               M                 movlw   b'00000000'
+000416 6F23               M                 movwf   servo_val11, BANKED
                       00326 
                       00327         MOVLFB  b'00000000', servo_val12
-00041A 0E00               M                 movlw   b'00000000'
-00041C 6F24               M                 movwf   servo_val12, BANKED
+000418 0E00               M                 movlw   b'00000000'
+00041A 6F24               M                 movwf   servo_val12, BANKED
                       00328         MOVLFB  b'00000000', servo_val13                ; 4
-00041E 0E00               M                 movlw   b'00000000'
-000420 6F25               M                 movwf   servo_val13, BANKED
+00041C 0E00               M                 movlw   b'00000000'
+00041E 6F25               M                 movwf   servo_val13, BANKED
                       00329         MOVLFB  b'00000000', servo_val14
-000422 0E00               M                 movlw   b'00000000'
-000424 6F26               M                 movwf   servo_val14, BANKED
+000420 0E00               M                 movlw   b'00000000'
+000422 6F26               M                 movwf   servo_val14, BANKED
                       00330 
                       00331         MOVLFB  b'00000000', servo_val15
-000426 0E00               M                 movlw   b'00000000'
-000428 6F27               M                 movwf   servo_val15, BANKED
+000424 0E00               M                 movlw   b'00000000'
+000426 6F27               M                 movwf   servo_val15, BANKED
                       00332         MOVLFB  b'00000000', servo_val16                ; 5
-00042A 0E00               M                 movlw   b'00000000'
-00042C 6F28               M                 movwf   servo_val16, BANKED
+000428 0E00               M                 movlw   b'00000000'
+00042A 6F28               M                 movwf   servo_val16, BANKED
                       00333         MOVLFB  b'00000000', servo_val17
-00042E 0E00               M                 movlw   b'00000000'
-000430 6F29               M                 movwf   servo_val17, BANKED
+00042C 0E00               M                 movlw   b'00000000'
+00042E 6F29               M                 movwf   servo_val17, BANKED
                       00334 
                       00335         MOVLFB  b'00000000', servo_val18
-000432 0E00               M                 movlw   b'00000000'
-000434 6F2A               M                 movwf   servo_val18, BANKED
+000430 0E00               M                 movlw   b'00000000'
+000432 6F2A               M                 movwf   servo_val18, BANKED
                       00336         MOVLFB  b'00000000', servo_val19                ; 6
-000436 0E00               M                 movlw   b'00000000'
-000438 6F2B               M                 movwf   servo_val19, BANKED
+000434 0E00               M                 movlw   b'00000000'
+000436 6F2B               M                 movwf   servo_val19, BANKED
                       00337         MOVLFB  b'00000000', servo_val20
-00043A 0E00               M                 movlw   b'00000000'
-00043C 6F2C               M                 movwf   servo_val20, BANKED
+000438 0E00               M                 movlw   b'00000000'
+00043A 6F2C               M                 movwf   servo_val20, BANKED
                       00338 
                       00339         MOVLFB  b'00000000', servo_val21
-00043E 0E00               M                 movlw   b'00000000'
-000440 6F2D               M                 movwf   servo_val21, BANKED
+00043C 0E00               M                 movlw   b'00000000'
+00043E 6F2D               M                 movwf   servo_val21, BANKED
                       00340         MOVLFB  b'00000000', servo_val22                ; 7
-000442 0E00               M                 movlw   b'00000000'
-000444 6F2E               M                 movwf   servo_val22, BANKED
+000440 0E00               M                 movlw   b'00000000'
+000442 6F2E               M                 movwf   servo_val22, BANKED
                       00341         MOVLFB  b'00000000', servo_val23
-000446 0E00               M                 movlw   b'00000000'
-000448 6F2F               M                 movwf   servo_val23, BANKED
+000444 0E00               M                 movlw   b'00000000'
+000446 6F2F               M                 movwf   servo_val23, BANKED
                       00342 
                       00343         MOVLFB  b'00000000', servo_val24
-00044A 0E00               M                 movlw   b'00000000'
-00044C 6F30               M                 movwf   servo_val24, BANKED
+000448 0E00               M                 movlw   b'00000000'
+00044A 6F30               M                 movwf   servo_val24, BANKED
                       00344         MOVLFB  b'00000000', servo_val25                ; 8
-00044E 0E00               M                 movlw   b'00000000'
-000450 6F31               M                 movwf   servo_val25, BANKED
+00044C 0E00               M                 movlw   b'00000000'
+00044E 6F31               M                 movwf   servo_val25, BANKED
                       00345         MOVLFB  b'00000000', servo_val26
-000452 0E00               M                 movlw   b'00000000'
-000454 6F32               M                 movwf   servo_val26, BANKED
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 32
+000450 0E00               M                 movlw   b'00000000'
+000452 6F32               M                 movwf   servo_val26, BANKED
+                      00346 
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 32
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00346 
                       00347         MOVLFB  b'00000000', servo_val27
-000456 0E00               M                 movlw   b'00000000'
-000458 6F33               M                 movwf   servo_val27, BANKED
+000454 0E00               M                 movlw   b'00000000'
+000456 6F33               M                 movwf   servo_val27, BANKED
                       00348         MOVLFB  b'00000000', servo_val28                ; 9
-00045A 0E00               M                 movlw   b'00000000'
-00045C 6F34               M                 movwf   servo_val28, BANKED
+000458 0E00               M                 movlw   b'00000000'
+00045A 6F34               M                 movwf   servo_val28, BANKED
                       00349         MOVLFB  b'00000000', servo_val29
-00045E 0E00               M                 movlw   b'00000000'
-000460 6F35               M                 movwf   servo_val29, BANKED
+00045C 0E00               M                 movlw   b'00000000'
+00045E 6F35               M                 movwf   servo_val29, BANKED
                       00350 
                       00351         MOVLFB  b'00000000', servo_val30
-000462 0E00               M                 movlw   b'00000000'
-000464 6F36               M                 movwf   servo_val30, BANKED
+000460 0E00               M                 movlw   b'00000000'
+000462 6F36               M                 movwf   servo_val30, BANKED
                       00352         MOVLFB  b'00000000', servo_val31                ; 10
-000466 0E00               M                 movlw   b'00000000'
-000468 6F37               M                 movwf   servo_val31, BANKED
+000464 0E00               M                 movlw   b'00000000'
+000466 6F37               M                 movwf   servo_val31, BANKED
                       00353         MOVLFB  b'00000000', servo_val32
-00046A 0E00               M                 movlw   b'00000000'
-00046C 6F38               M                 movwf   servo_val32, BANKED
+000468 0E00               M                 movlw   b'00000000'
+00046A 6F38               M                 movwf   servo_val32, BANKED
                       00354 
                       00355         MOVLFB  b'00000000', servo_val33
-00046E 0E00               M                 movlw   b'00000000'
-000470 6F39               M                 movwf   servo_val33, BANKED
+00046C 0E00               M                 movlw   b'00000000'
+00046E 6F39               M                 movwf   servo_val33, BANKED
                       00356         MOVLFB  b'00000000', servo_val34                ; 11
-000472 0E00               M                 movlw   b'00000000'
-000474 6F3A               M                 movwf   servo_val34, BANKED
+000470 0E00               M                 movlw   b'00000000'
+000472 6F3A               M                 movwf   servo_val34, BANKED
                       00357         MOVLFB  b'00000000', servo_val35
-000476 0E00               M                 movlw   b'00000000'
-000478 6F3B               M                 movwf   servo_val35, BANKED
+000474 0E00               M                 movlw   b'00000000'
+000476 6F3B               M                 movwf   servo_val35, BANKED
                       00358 
                       00359         MOVLFB  b'00000000', servo_val36
-00047A 0E00               M                 movlw   b'00000000'
-00047C 6F3C               M                 movwf   servo_val36, BANKED
+000478 0E00               M                 movlw   b'00000000'
+00047A 6F3C               M                 movwf   servo_val36, BANKED
                       00360         MOVLFB  b'00000000', servo_val37                ; 12
-00047E 0E00               M                 movlw   b'00000000'
-000480 6F3D               M                 movwf   servo_val37, BANKED
+00047C 0E00               M                 movlw   b'00000000'
+00047E 6F3D               M                 movwf   servo_val37, BANKED
                       00361         MOVLFB  b'00000000', servo_val38
-000482 0E00               M                 movlw   b'00000000'
-000484 6F3E               M                 movwf   servo_val38, BANKED
+000480 0E00               M                 movlw   b'00000000'
+000482 6F3E               M                 movwf   servo_val38, BANKED
                       00362 
                       00363         MOVLFB  b'00000000', servo_val39
-000486 0E00               M                 movlw   b'00000000'
-000488 6F3F               M                 movwf   servo_val39, BANKED
+000484 0E00               M                 movlw   b'00000000'
+000486 6F3F               M                 movwf   servo_val39, BANKED
                       00364         MOVLFB  b'00000000', servo_val40                ; 13
-00048A 0E00               M                 movlw   b'00000000'
-00048C 6F40               M                 movwf   servo_val40, BANKED
+000488 0E00               M                 movlw   b'00000000'
+00048A 6F40               M                 movwf   servo_val40, BANKED
                       00365         MOVLFB  b'00000000', servo_val41
-00048E 0E00               M                 movlw   b'00000000'
-000490 6F41               M                 movwf   servo_val41, BANKED
+00048C 0E00               M                 movlw   b'00000000'
+00048E 6F41               M                 movwf   servo_val41, BANKED
                       00366 
                       00367         MOVLFB  b'00000000', servo_val42
-000492 0E00               M                 movlw   b'00000000'
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 33
+000490 0E00               M                 movlw   b'00000000'
+000492 6F42               M                 movwf   servo_val42, BANKED
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 33
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000494 6F42               M                 movwf   servo_val42, BANKED
                       00368         MOVLFB  b'00000000', servo_val43                ; 14
-000496 0E00               M                 movlw   b'00000000'
-000498 6F43               M                 movwf   servo_val43, BANKED
+000494 0E00               M                 movlw   b'00000000'
+000496 6F43               M                 movwf   servo_val43, BANKED
                       00369         MOVLFB  b'00000000', servo_val44
-00049A 0E00               M                 movlw   b'00000000'
-00049C 6F44               M                 movwf   servo_val44, BANKED
+000498 0E00               M                 movlw   b'00000000'
+00049A 6F44               M                 movwf   servo_val44, BANKED
                       00370 
                       00371         MOVLFB  b'00000000', servo_val45
-00049E 0E00               M                 movlw   b'00000000'
-0004A0 6F45               M                 movwf   servo_val45, BANKED
+00049C 0E00               M                 movlw   b'00000000'
+00049E 6F45               M                 movwf   servo_val45, BANKED
                       00372         MOVLFB  b'00000000', servo_val46                ; 15
-0004A2 0E00               M                 movlw   b'00000000'
-0004A4 6F46               M                 movwf   servo_val46, BANKED
+0004A0 0E00               M                 movlw   b'00000000'
+0004A2 6F46               M                 movwf   servo_val46, BANKED
                       00373         MOVLFB  b'00000000', servo_val47
-0004A6 0E00               M                 movlw   b'00000000'
-0004A8 6F47               M                 movwf   servo_val47, BANKED
+0004A4 0E00               M                 movlw   b'00000000'
+0004A6 6F47               M                 movwf   servo_val47, BANKED
                       00374 
                       00375         MOVLFB  b'00000000', servo_val48
-0004AA 0E00               M                 movlw   b'00000000'
-0004AC 6F48               M                 movwf   servo_val48, BANKED
+0004A8 0E00               M                 movlw   b'00000000'
+0004AA 6F48               M                 movwf   servo_val48, BANKED
                       00376         MOVLFB  b'00000000', servo_val49                ; 16
-0004AE 0E00               M                 movlw   b'00000000'
-0004B0 6F49               M                 movwf   servo_val49, BANKED
+0004AC 0E00               M                 movlw   b'00000000'
+0004AE 6F49               M                 movwf   servo_val49, BANKED
                       00377         MOVLFB  b'00000000', servo_val50
-0004B2 0E00               M                 movlw   b'00000000'
-0004B4 6F4A               M                 movwf   servo_val50, BANKED
+0004B0 0E00               M                 movlw   b'00000000'
+0004B2 6F4A               M                 movwf   servo_val50, BANKED
                       00378 
                       00379         MOVLFB  b'00000000', servo_val51
-0004B6 0E00               M                 movlw   b'00000000'
-0004B8 6F4B               M                 movwf   servo_val51, BANKED
+0004B4 0E00               M                 movlw   b'00000000'
+0004B6 6F4B               M                 movwf   servo_val51, BANKED
                       00380         MOVLFB  b'00000000', servo_val52                ; 17
-0004BA 0E00               M                 movlw   b'00000000'
-0004BC 6F4C               M                 movwf   servo_val52, BANKED
+0004B8 0E00               M                 movlw   b'00000000'
+0004BA 6F4C               M                 movwf   servo_val52, BANKED
                       00381         MOVLFB  b'00000000', servo_val53
-0004BE 0E00               M                 movlw   b'00000000'
-0004C0 6F4D               M                 movwf   servo_val53, BANKED
+0004BC 0E00               M                 movlw   b'00000000'
+0004BE 6F4D               M                 movwf   servo_val53, BANKED
                       00382 
                       00383         MOVLFB  b'00000000', servo_val54
-0004C2 0E00               M                 movlw   b'00000000'
-0004C4 6F4E               M                 movwf   servo_val54, BANKED
+0004C0 0E00               M                 movlw   b'00000000'
+0004C2 6F4E               M                 movwf   servo_val54, BANKED
                       00384         MOVLFB  b'00000000', servo_val55                ; 18
-0004C6 0E00               M                 movlw   b'00000000'
-0004C8 6F4F               M                 movwf   servo_val55, BANKED
+0004C4 0E00               M                 movlw   b'00000000'
+0004C6 6F4F               M                 movwf   servo_val55, BANKED
                       00385         MOVLFB  b'00000000', servo_val56
-0004CA 0E00               M                 movlw   b'00000000'
-0004CC 6F50               M                 movwf   servo_val56, BANKED
+0004C8 0E00               M                 movlw   b'00000000'
+0004CA 6F50               M                 movwf   servo_val56, BANKED
                       00386 
                       00387         MOVLFB  b'00000000', servo_val57
-0004CE 0E00               M                 movlw   b'00000000'
-0004D0 6F51               M                 movwf   servo_val57, BANKED
+0004CC 0E00               M                 movlw   b'00000000'
+0004CE 6F51               M                 movwf   servo_val57, BANKED
                       00388         MOVLFB  b'00000000', servo_val58                ; 19
-0004D2 0E00               M                 movlw   b'00000000'
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 34
+0004D0 0E00               M                 movlw   b'00000000'
+0004D2 6F52               M                 movwf   servo_val58, BANKED
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 34
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0004D4 6F52               M                 movwf   servo_val58, BANKED
                       00389         MOVLFB  b'00000000', servo_val59
-0004D6 0E00               M                 movlw   b'00000000'
-0004D8 6F53               M                 movwf   servo_val59, BANKED
+0004D4 0E00               M                 movlw   b'00000000'
+0004D6 6F53               M                 movwf   servo_val59, BANKED
                       00390 
                       00391         MOVLFB  b'00000000', servo_val60
-0004DA 0E00               M                 movlw   b'00000000'
-0004DC 6F54               M                 movwf   servo_val60, BANKED
+0004D8 0E00               M                 movlw   b'00000000'
+0004DA 6F54               M                 movwf   servo_val60, BANKED
                       00392         MOVLFB  b'00000000', servo_val61                ; 20
-0004DE 0E00               M                 movlw   b'00000000'
-0004E0 6F55               M                 movwf   servo_val61, BANKED
+0004DC 0E00               M                 movlw   b'00000000'
+0004DE 6F55               M                 movwf   servo_val61, BANKED
                       00393         MOVLFB  b'00000000', servo_val62
-0004E2 0E00               M                 movlw   b'00000000'
-0004E4 6F56               M                 movwf   servo_val62, BANKED
+0004E0 0E00               M                 movlw   b'00000000'
+0004E2 6F56               M                 movwf   servo_val62, BANKED
                       00394 
                       00395         MOVLFB  b'00000000', servo_val63
-0004E6 0E00               M                 movlw   b'00000000'
-0004E8 6F57               M                 movwf   servo_val63, BANKED
+0004E4 0E00               M                 movlw   b'00000000'
+0004E6 6F57               M                 movwf   servo_val63, BANKED
                       00396         MOVLFB  b'00000000', servo_val64                ; 21
-0004EA 0E00               M                 movlw   b'00000000'
-0004EC 6F58               M                 movwf   servo_val64, BANKED
+0004E8 0E00               M                 movlw   b'00000000'
+0004EA 6F58               M                 movwf   servo_val64, BANKED
                       00397         MOVLFB  b'00000000', servo_val65
-0004EE 0E00               M                 movlw   b'00000000'
-0004F0 6F59               M                 movwf   servo_val65, BANKED
+0004EC 0E00               M                 movlw   b'00000000'
+0004EE 6F59               M                 movwf   servo_val65, BANKED
                       00398 
                       00399         MOVLFB  b'00000000', servo_val66
-0004F2 0E00               M                 movlw   b'00000000'
-0004F4 6F5A               M                 movwf   servo_val66, BANKED
+0004F0 0E00               M                 movlw   b'00000000'
+0004F2 6F5A               M                 movwf   servo_val66, BANKED
                       00400         MOVLFB  b'00000000', servo_val67                ; 22
-0004F6 0E00               M                 movlw   b'00000000'
-0004F8 6F5B               M                 movwf   servo_val67, BANKED
+0004F4 0E00               M                 movlw   b'00000000'
+0004F6 6F5B               M                 movwf   servo_val67, BANKED
                       00401         MOVLFB  b'00000000', servo_val68
-0004FA 0E00               M                 movlw   b'00000000'
-0004FC 6F5C               M                 movwf   servo_val68, BANKED
+0004F8 0E00               M                 movlw   b'00000000'
+0004FA 6F5C               M                 movwf   servo_val68, BANKED
                       00402 
                       00403         MOVLFB  b'00000000', servo_val69
-0004FE 0E00               M                 movlw   b'00000000'
-000500 6F5D               M                 movwf   servo_val69, BANKED
+0004FC 0E00               M                 movlw   b'00000000'
+0004FE 6F5D               M                 movwf   servo_val69, BANKED
                       00404         MOVLFB  b'00000000', servo_val70                ; 23
-000502 0E00               M                 movlw   b'00000000'
-000504 6F5E               M                 movwf   servo_val70, BANKED
+000500 0E00               M                 movlw   b'00000000'
+000502 6F5E               M                 movwf   servo_val70, BANKED
                       00405         MOVLFB  b'00000000', servo_val71
-000506 0E00               M                 movlw   b'00000000'
-000508 6F5F               M                 movwf   servo_val71, BANKED
+000504 0E00               M                 movlw   b'00000000'
+000506 6F5F               M                 movwf   servo_val71, BANKED
                       00406 
                       00407 #ENDIF
                       00408 
-00050A 0100           00409         movlb   .0
+000508 0100           00409         movlb   .0
+                      00687 
                       00688 
                       00689 
-                      00690 
-                      00691         ;movlw  0
-                      00692         ;call   setValue
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 35
+                      00690         ;movlw  0
+                      00691         ;call   setValue
+                      00692 
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 35
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00693 
-00050C 6A57           00694         clrf received_counter
+00050A 6A57           00693         clrf    received_counter
+00050C 6A67           00694         clrf    pause_mode
                       00695 
                       00696 ; Routine principale
                       00697 
                       00698         ; Activation des interruptions
-00050E 8EF2           00699         bsf     INTCON, GIEH
-000510 8CF2           00700         bsf     INTCON, GIEL
-                      00701 
-                      00702         ;goto _intl_usart
-                      00703 
-000512                00704 main    
-                      00705         ;MOVLF  .20, servo_cons0
-                      00706         ;MOVLF  .100, servo_cons1
-                      00707 
-                      00708         ; On boucle temps que 18 octets ne sont pas recu
-000512 0E12           00709         movlw .18
-000514 6257           00710         cpfseq received_counter
-000516 EF89 F002      00711         goto main
-                      00712 
-00051A 6A57           00713         clrf received_counter
-                      00714 
-                      00715         ; Control received bytes
-00051C 0E00           00716         movlw 0
-00051E 2458           00717         addwf pos_0, 0
-000520 2459           00718         addwf pos_1, 0
-000522 245A           00719         addwf pos_2, 0
-000524 245B           00720         addwf pos_3, 0
-000526 245C           00721         addwf pos_4, 0
-000528 245D           00722         addwf pos_5, 0
-00052A 245E           00723         addwf pos_6, 0
-00052C 245F           00724         addwf pos_7, 0
-00052E 2460           00725         addwf pos_8, 0
-000530 2461           00726         addwf pos_9, 0
-000532 2462           00727         addwf pos_10, 0
-000534 2463           00728         addwf pos_11, 0
-000536 2464           00729         addwf pos_12, 0
-000538 2465           00730         addwf pos_13, 0
-                      00731 
-00053A 6267           00732         cpfseq reception_control
-00053C EFC2 F002      00733         goto nack
-                      00734 
-                      00735 ; Tout est bon, on envoie !
-000540                00736 ack
-                      00737         ; RA0, RA1, RA2, RA3, RA4, RC0, RC1, RC2        -> Servo 0 à 7
-                      00738         ; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1        -> Servo 8 à 15 
-                      00739         ; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7        -> Servo 16 à 23
-                      00740 
-                      00741         ; Bleuette servo mapping
-                      00742         ; pos_0  RA0 -> SRV0 
-                      00743         ; pos_1  RA1 -> SRV1
-                      00744         ; pos_2  RA2 -> SRV2
-                      00745         ; pos_3  RA3 -> SRV3
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 36
+00050E 8EF2           00699         bsf             INTCON, GIEH
+000510 8CF2           00700         bsf             INTCON, GIEL
+                      00701         ;goto _intl_usart
+                      00702 
+000512                00703 main
+                      00704         ; On boucle temps que 18 octets ne sont pas recu
+000512 0E11           00705         movlw .17
+000514 6257           00706         cpfseq received_counter
+000516 EF89 F002      00707         goto main
+                      00708 
+00051A 6A57           00709         clrf received_counter
+                      00710 
+                      00711         ; Control received bytes
+00051C 0E00           00712         movlw 0
+00051E 2458           00713         addwf pos_0, 0
+000520 2459           00714         addwf pos_1, 0
+000522 245A           00715         addwf pos_2, 0
+000524 245B           00716         addwf pos_3, 0
+000526 245C           00717         addwf pos_4, 0
+000528 245D           00718         addwf pos_5, 0
+00052A 245E           00719         addwf pos_6, 0
+00052C 245F           00720         addwf pos_7, 0
+00052E 2460           00721         addwf pos_8, 0
+000530 2461           00722         addwf pos_9, 0
+000532 2462           00723         addwf pos_10, 0
+000534 2463           00724         addwf pos_11, 0
+000536 2464           00725         addwf pos_12, 0
+000538 2465           00726         addwf pos_13, 0
+                      00727 
+00053A 6266           00728         cpfseq reception_control
+00053C EFC2 F002      00729         goto nack
+                      00730 
+                      00731 ; Tout est bon, on envoie !
+000540                00732 ack
+                      00733         ; RA0, RA1, RA2, RA3, RA4, RC0, RC1, RC2        -> Servo 0 à 7
+                      00734         ; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1        -> Servo 8 à 15 
+                      00735         ; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7        -> Servo 16 à 23
+                      00736 
+                      00737         ; Bleuette servo mapping
+                      00738         ; pos_0  RA0 -> SRV0 
+                      00739         ; pos_1  RA1 -> SRV1
+                      00740         ; pos_2  RA2 -> SRV2
+                      00741         ; pos_3  RA3 -> SRV3
+                      00742         ; pos_4  RA4 -> SRV4
+                      00743         ; pos_5  RC0 -> SRV5
+                      00744         ; pos_6  RB0 -> SRV6
+                      00745         ; pos_7  RB1 -> SRV7
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 36
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00746         ; pos_4  RA4 -> SRV4
-                      00747         ; pos_5  RC0 -> SRV5
-                      00748         ; pos_6  RB0 -> SRV6
-                      00749         ; pos_7  RB1 -> SRV7
-                      00750         ; pos_8  RB2 -> SRV8
-                      00751         ; pos_9  RB3 -> SRV9
-                      00752         ; pos_10 RB4 -> SRV10
-                      00753         ; pos_11 RB5 -> SRV11
-                      00754         ; pos_12 RD0 -> SRVX
-                      00755         ; pos_13 RD1 -> SRVY
-                      00756 
-000540 C058 F000      00757         movff pos_0, servo_cons0
-000544 C059 F001      00758         movff pos_1, servo_cons1
-000548 C05A F002      00759         movff pos_2, servo_cons2
-00054C C05B F003      00760         movff pos_3, servo_cons3
-000550 C05C F004      00761         movff pos_4, servo_cons4
-000554 C05D F005      00762         movff pos_5, servo_cons5
-                      00763 
-000558 C05E F008      00764         movff pos_6, servo_cons8
-00055C C05F F009      00765         movff pos_7, servo_cons9
-000560 C060 F00A      00766         movff pos_8, servo_cons10
-000564 C061 F00B      00767         movff pos_9, servo_cons11
-000568 C062 F00C      00768         movff pos_10, servo_cons12
-00056C C063 F00D      00769         movff pos_11, servo_cons13
-                      00770 
-000570 C064 F010      00771         movff pos_12, servo_cons16
-000574 C065 F011      00772         movff pos_13, servo_cons17
-                      00773 
-                      00774         SEND 'O'
+                      00746         ; pos_8  RB2 -> SRV8
+                      00747         ; pos_9  RB3 -> SRV9
+                      00748         ; pos_10 RB4 -> SRV10
+                      00749         ; pos_11 RB5 -> SRV11
+                      00750         ; pos_12 RD0 -> SRVX
+                      00751         ; pos_13 RD1 -> SRVY
+                      00752 
+000540 C058 F000      00753         movff pos_0, servo_cons0
+000544 C059 F001      00754         movff pos_1, servo_cons1
+000548 C05A F002      00755         movff pos_2, servo_cons2
+00054C C05B F003      00756         movff pos_3, servo_cons3
+000550 C05C F004      00757         movff pos_4, servo_cons4
+000554 C05D F005      00758         movff pos_5, servo_cons5
+                      00759 
+000558 C05E F008      00760         movff pos_6, servo_cons8
+00055C C05F F009      00761         movff pos_7, servo_cons9
+000560 C060 F00A      00762         movff pos_8, servo_cons10
+000564 C061 F00B      00763         movff pos_9, servo_cons11
+000568 C062 F00C      00764         movff pos_10, servo_cons12
+00056C C063 F00D      00765         movff pos_11, servo_cons13
+                      00766 
+000570 C064 F010      00767         movff pos_12, servo_cons16
+000574 C065 F011      00768         movff pos_13, servo_cons17
+                      00769 
+                      00770         SEND 'O'
 000578 0E4F               M                 movlw   'O'
 00057A 6EAD               M                 movwf   TXREG
 00057C A89E               M                 btfss   PIR1, TXIF
 00057E EFBE F002          M                 goto    $ - 2
-000582 D7C7           00775         bra     main
-                      00776 
-000584                00777 nack
-                      00778         SEND 'N'
+000582 D7C7           00771         bra     main
+                      00772 
+000584                00773 nack
+                      00774         SEND 'N'
 000584 0E4E               M                 movlw   'N'
 000586 6EAD               M                 movwf   TXREG
 000588 A89E               M                 btfss   PIR1, TXIF
 00058A EFC4 F002          M                 goto    $ - 2
-00058E EF89 F002      00779         goto main
+00058E EF89 F002      00775         goto main
+                      00776 
+                      00777 
+                      00778 ; Met toutes les consignes à la valeur voulues (dans WREG)
+000592                00779 setValue
                       00780 
-                      00781 
-                      00782 ; Met toutes les consignes à la valeur voulues (dans WREG)
-000592                00783 setValue
-                      00784 
-000592 6E00           00785         movwf   servo_cons0
-000594 6E01           00786         movwf   servo_cons1
-000596 6E02           00787         movwf   servo_cons2
-000598 6E03           00788         movwf   servo_cons3
-00059A 6E04           00789         movwf   servo_cons4
-00059C 6E05           00790         movwf   servo_cons5
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 37
+000592 6E00           00781         movwf   servo_cons0
+000594 6E01           00782         movwf   servo_cons1
+000596 6E02           00783         movwf   servo_cons2
+000598 6E03           00784         movwf   servo_cons3
+00059A 6E04           00785         movwf   servo_cons4
+00059C 6E05           00786         movwf   servo_cons5
+00059E 6E06           00787         movwf   servo_cons6
+0005A0 6E07           00788         movwf   servo_cons7
+                      00789 
+0005A2 6E08           00790         movwf   servo_cons8
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 37
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00059E 6E06           00791         movwf   servo_cons6
-0005A0 6E07           00792         movwf   servo_cons7
-                      00793 
-0005A2 6E08           00794         movwf   servo_cons8
-0005A4 6E09           00795         movwf   servo_cons9
-0005A6 6E0A           00796         movwf   servo_cons10
-0005A8 6E0B           00797         movwf   servo_cons11
-0005AA 6E0C           00798         movwf   servo_cons12
-0005AC 6E0D           00799         movwf   servo_cons13
-0005AE 6E0E           00800         movwf   servo_cons14
-0005B0 6E0F           00801         movwf   servo_cons15
-                      00802 
-0005B2 6E10           00803         movwf   servo_cons16
-0005B4 6E11           00804         movwf   servo_cons17
-0005B6 6E12           00805         movwf   servo_cons18
-0005B8 6E13           00806         movwf   servo_cons19
-0005BA 6E14           00807         movwf   servo_cons20
-0005BC 6E15           00808         movwf   servo_cons21
-0005BE 6E16           00809         movwf   servo_cons22
-0005C0 6E17           00810         movwf   servo_cons23
-                      00811 
-0005C2 0012           00812         return
+0005A4 6E09           00791         movwf   servo_cons9
+0005A6 6E0A           00792         movwf   servo_cons10
+0005A8 6E0B           00793         movwf   servo_cons11
+0005AA 6E0C           00794         movwf   servo_cons12
+0005AC 6E0D           00795         movwf   servo_cons13
+0005AE 6E0E           00796         movwf   servo_cons14
+0005B0 6E0F           00797         movwf   servo_cons15
+                      00798 
+0005B2 6E10           00799         movwf   servo_cons16
+0005B4 6E11           00800         movwf   servo_cons17
+0005B6 6E12           00801         movwf   servo_cons18
+0005B8 6E13           00802         movwf   servo_cons19
+0005BA 6E14           00803         movwf   servo_cons20
+0005BC 6E15           00804         movwf   servo_cons21
+0005BE 6E16           00805         movwf   servo_cons22
+0005C0 6E17           00806         movwf   servo_cons23
+                      00807 
+0005C2 0012           00808         return
+                      00809 
+0005C4                00810 clearAllOut
+0005C4 0EE0           00811         movlw   b'11100000'
+0005C6 1689           00812         andwf   LATA, 1
                       00813 
-                      00814 
-                      00815 
-                      00816 ; Tous les ports des servos à 1 ...
-                      00817 ; ... sauf ceux qui ont une consigne à 0
-0005C4                00818 setAllPort
-                      00819 ;       movlw   b'00011111'
-                      00820 ;       iorwf   LATA
-                      00821 ;       movlw   b'00000111'
-                      00822 ;       iorwf   LATC
-                      00823 ;       movlw   b'00111111'
-                      00824 ;       iorwf   LATB
-                      00825 ;       movlw   b'00111111'
-                      00826 ;       iorwf   LATE
-                      00827 ;       setf    LATD
-                      00828 ;       return
-                      00829 
-                      00830 ; On reprend le principe suivant :
-                      00831 ; RA0, RA1, RA2, RA3, RA4, RC0, RC1, RC2        -> Servo 0 à 7
-                      00832 ; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1        -> Servo 8 à 15 
-                      00833 ; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7        -> Servo 16 à 23
-                      00834 ; Inutile de faire une boucle pour gérer le code ci-dessous !
-                      00835 
-0005C4 6A42           00836         clrf    buf_PORTA
-0005C6 6A44           00837         clrf    buf_PORTC
-0005C8 6A43           00838         clrf    buf_PORTB
-0005CA 6A46           00839         clrf    buf_PORTE
-0005CC 6A45           00840         clrf    buf_PORTD
-                      00841 
-                      00842 
-                      00843 
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 38
+0005C8 0EF8           00814         movlw   b'11111000'
+0005CA 168B           00815         andwf   LATC, 1
+                      00816 
+0005CC 0EC0           00817         movlw   b'11000000'
+0005CE 168A           00818         andwf   LATB, 1
+                      00819 
+0005D0 0EFC           00820         movlw   b'11111100'
+0005D2 168D           00821         andwf   LATE, 1
+                      00822 
+0005D4 6A8C           00823         clrf    LATD
+0005D6 0012           00824         return
+                      00825 
+                      00826 
+                      00827 ; Tous les ports des servos à 1 ...
+                      00828 ; ... sauf ceux qui ont une consigne à 0
+0005D8                00829 setAllPort
+                      00830 ;       movlw   b'00011111'
+                      00831 ;       iorwf   LATA
+                      00832 ;       movlw   b'00000111'
+                      00833 ;       iorwf   LATC
+                      00834 ;       movlw   b'00111111'
+                      00835 ;       iorwf   LATB
+                      00836 ;       movlw   b'00111111'
+                      00837 ;       iorwf   LATE
+                      00838 ;       setf    LATD
+                      00839 ;       return
+                      00840 
+                      00841 ; On reprend le principe suivant :
+                      00842 ; RA0, RA1, RA2, RA3, RA4, RC0, RC1, RC2        -> Servo 0 à 7
+                      00843 ; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1        -> Servo 8 à 15 
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 38
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00844 ;       movf    servo_cons0, W
-                      00845 ;       bz              toto
-                      00846 ;       movlw   b'00000001'
-                      00847 ;       bra             $ + 6
-                      00848 ;toto
-                      00849 ;       andwf   b'00000001'
-                      00850 ;       iorwf   buf_PORTA
-                      00851 
-                      00852         
+                      00844 ; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7        -> Servo 16 à 23
+                      00845 ; Inutile de faire une boucle pour gérer le code ci-dessous !
+                      00846 
+0005D8 6A42           00847         clrf    buf_PORTA
+0005DA 6A44           00848         clrf    buf_PORTC
+0005DC 6A43           00849         clrf    buf_PORTB
+0005DE 6A46           00850         clrf    buf_PORTE
+0005E0 6A45           00851         clrf    buf_PORTD
+                      00852 
                       00853 
-0005CE 6AE8           00854         clrf    WREG
-0005D0 6600           00855         tstfsz  servo_cons0
-0005D2 0E01           00856         movlw   b'00000001'
-0005D4 1242           00857         iorwf   buf_PORTA
-                      00858 
-0005D6 6AE8           00859         clrf    WREG
-0005D8 6601           00860         tstfsz  servo_cons1
-0005DA 0E02           00861         movlw   b'00000010'
-0005DC 1242           00862         iorwf   buf_PORTA
-                      00863 
-0005DE 6AE8           00864         clrf    WREG
-0005E0 6602           00865         tstfsz  servo_cons2
-0005E2 0E04           00866         movlw   b'00000100'
-0005E4 1242           00867         iorwf   buf_PORTA
-                      00868 
-0005E6 6AE8           00869         clrf    WREG
-0005E8 6603           00870         tstfsz  servo_cons3
-0005EA 0E08           00871         movlw   b'00001000'
-0005EC 1242           00872         iorwf   buf_PORTA
-                      00873 
-0005EE 6AE8           00874         clrf    WREG
-0005F0 6604           00875         tstfsz  servo_cons4
-0005F2 0E10           00876         movlw   b'00010000'
-0005F4 1242           00877         iorwf   buf_PORTA
-                      00878 
-0005F6 6AE8           00879         clrf    WREG
-0005F8 6605           00880         tstfsz  servo_cons5
-0005FA 0E01           00881         movlw   b'00000001'
-0005FC 1244           00882         iorwf   buf_PORTC
-                      00883 
-0005FE 6AE8           00884         clrf    WREG
-000600 6606           00885         tstfsz  servo_cons6
-000602 0E02           00886         movlw   b'00000010'
-000604 1244           00887         iorwf   buf_PORTC
-                      00888 
-000606 6AE8           00889         clrf    WREG
-000608 6607           00890         tstfsz  servo_cons7
-00060A 0E04           00891         movlw   b'00000100'
-00060C 1244           00892         iorwf   buf_PORTC
-                      00893 
+                      00854 
+                      00855 ;       movf    servo_cons0, W
+                      00856 ;       bz              toto
+                      00857 ;       movlw   b'00000001'
+                      00858 ;       bra             $ + 6
+                      00859 ;toto
+                      00860 ;       andwf   b'00000001'
+                      00861 ;       iorwf   buf_PORTA
+                      00862 
+                      00863         
+                      00864 
+0005E2 6AE8           00865         clrf    WREG
+0005E4 6600           00866         tstfsz  servo_cons0
+0005E6 0E01           00867         movlw   b'00000001'
+0005E8 1242           00868         iorwf   buf_PORTA
+                      00869 
+0005EA 6AE8           00870         clrf    WREG
+0005EC 6601           00871         tstfsz  servo_cons1
+0005EE 0E02           00872         movlw   b'00000010'
+0005F0 1242           00873         iorwf   buf_PORTA
+                      00874 
+0005F2 6AE8           00875         clrf    WREG
+0005F4 6602           00876         tstfsz  servo_cons2
+0005F6 0E04           00877         movlw   b'00000100'
+0005F8 1242           00878         iorwf   buf_PORTA
+                      00879 
+0005FA 6AE8           00880         clrf    WREG
+0005FC 6603           00881         tstfsz  servo_cons3
+0005FE 0E08           00882         movlw   b'00001000'
+000600 1242           00883         iorwf   buf_PORTA
+                      00884 
+000602 6AE8           00885         clrf    WREG
+000604 6604           00886         tstfsz  servo_cons4
+000606 0E10           00887         movlw   b'00010000'
+000608 1242           00888         iorwf   buf_PORTA
+                      00889 
+00060A 6AE8           00890         clrf    WREG
+00060C 6605           00891         tstfsz  servo_cons5
+00060E 0E01           00892         movlw   b'00000001'
+000610 1244           00893         iorwf   buf_PORTC
                       00894 
-                      00895 
-00060E 6AE8           00896         clrf    WREG
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 39
+000612 6AE8           00895         clrf    WREG
+000614 6606           00896         tstfsz  servo_cons6
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 39
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000610 6608           00897         tstfsz  servo_cons8
-000612 0E01           00898         movlw   b'00000001'
-000614 1243           00899         iorwf   buf_PORTB
-                      00900 
-000616 6AE8           00901         clrf    WREG
-000618 6609           00902         tstfsz  servo_cons9
-00061A 0E02           00903         movlw   b'00000010'
-00061C 1243           00904         iorwf   buf_PORTB
+000616 0E02           00897         movlw   b'00000010'
+000618 1244           00898         iorwf   buf_PORTC
+                      00899 
+00061A 6AE8           00900         clrf    WREG
+00061C 6607           00901         tstfsz  servo_cons7
+00061E 0E04           00902         movlw   b'00000100'
+000620 1244           00903         iorwf   buf_PORTC
+                      00904 
                       00905 
-00061E 6AE8           00906         clrf    WREG
-000620 660A           00907         tstfsz  servo_cons10
-000622 0E04           00908         movlw   b'00000100'
-000624 1243           00909         iorwf   buf_PORTB
-                      00910 
-000626 6AE8           00911         clrf    WREG
-000628 660B           00912         tstfsz  servo_cons11
-00062A 0E08           00913         movlw   b'00001000'
-00062C 1243           00914         iorwf   buf_PORTB
-                      00915 
-00062E 6AE8           00916         clrf    WREG
-000630 660C           00917         tstfsz  servo_cons12
-000632 0E10           00918         movlw   b'00010000'
-000634 1243           00919         iorwf   buf_PORTB
-                      00920 
-000636 6AE8           00921         clrf    WREG
-000638 660D           00922         tstfsz  servo_cons13
-00063A 0E20           00923         movlw   b'00100000'
-00063C 1243           00924         iorwf   buf_PORTB
-                      00925 
-00063E 6AE8           00926         clrf    WREG
-000640 660E           00927         tstfsz  servo_cons14
-000642 0E01           00928         movlw   b'00000001'
-000644 1246           00929         iorwf   buf_PORTE
-                      00930 
-000646 6AE8           00931         clrf    WREG
-000648 660F           00932         tstfsz  servo_cons15
-00064A 0E02           00933         movlw   b'00000010'
-00064C 1246           00934         iorwf   buf_PORTE
-                      00935 
+                      00906 
+000622 6AE8           00907         clrf    WREG
+000624 6608           00908         tstfsz  servo_cons8
+000626 0E01           00909         movlw   b'00000001'
+000628 1243           00910         iorwf   buf_PORTB
+                      00911 
+00062A 6AE8           00912         clrf    WREG
+00062C 6609           00913         tstfsz  servo_cons9
+00062E 0E02           00914         movlw   b'00000010'
+000630 1243           00915         iorwf   buf_PORTB
+                      00916 
+000632 6AE8           00917         clrf    WREG
+000634 660A           00918         tstfsz  servo_cons10
+000636 0E04           00919         movlw   b'00000100'
+000638 1243           00920         iorwf   buf_PORTB
+                      00921 
+00063A 6AE8           00922         clrf    WREG
+00063C 660B           00923         tstfsz  servo_cons11
+00063E 0E08           00924         movlw   b'00001000'
+000640 1243           00925         iorwf   buf_PORTB
+                      00926 
+000642 6AE8           00927         clrf    WREG
+000644 660C           00928         tstfsz  servo_cons12
+000646 0E10           00929         movlw   b'00010000'
+000648 1243           00930         iorwf   buf_PORTB
+                      00931 
+00064A 6AE8           00932         clrf    WREG
+00064C 660D           00933         tstfsz  servo_cons13
+00064E 0E20           00934         movlw   b'00100000'
+000650 1243           00935         iorwf   buf_PORTB
                       00936 
-                      00937 
-00064E 6AE8           00938         clrf    WREG
-000650 6610           00939         tstfsz  servo_cons16
-000652 0E01           00940         movlw   b'00000001'
-000654 1245           00941         iorwf   buf_PORTD
-                      00942 
-000656 6AE8           00943         clrf    WREG
-000658 6611           00944         tstfsz  servo_cons17
-00065A 0E02           00945         movlw   b'00000010'
-00065C 1245           00946         iorwf   buf_PORTD
+000652 6AE8           00937         clrf    WREG
+000654 660E           00938         tstfsz  servo_cons14
+000656 0E01           00939         movlw   b'00000001'
+000658 1246           00940         iorwf   buf_PORTE
+                      00941 
+00065A 6AE8           00942         clrf    WREG
+00065C 660F           00943         tstfsz  servo_cons15
+00065E 0E02           00944         movlw   b'00000010'
+000660 1246           00945         iorwf   buf_PORTE
+                      00946 
                       00947 
-00065E 6AE8           00948         clrf    WREG
-000660 6612           00949         tstfsz  servo_cons18
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 40
+                      00948 
+000662 6AE8           00949         clrf    WREG
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 40
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000662 0E04           00950         movlw   b'00000100'
-000664 1245           00951         iorwf   buf_PORTD
-                      00952 
-000666 6AE8           00953         clrf    WREG
-000668 6613           00954         tstfsz  servo_cons19
-00066A 0E08           00955         movlw   b'00001000'
-00066C 1245           00956         iorwf   buf_PORTD
-                      00957 
-00066E 6AE8           00958         clrf    WREG
-000670 6614           00959         tstfsz  servo_cons20
-000672 0E10           00960         movlw   b'00010000'
-000674 1245           00961         iorwf   buf_PORTD
-                      00962 
-000676 6AE8           00963         clrf    WREG
-000678 6615           00964         tstfsz  servo_cons21
-00067A 0E20           00965         movlw   b'00100000'
-00067C 1245           00966         iorwf   buf_PORTD
-                      00967 
-00067E 6AE8           00968         clrf    WREG
-000680 6616           00969         tstfsz  servo_cons22
-000682 0E40           00970         movlw   b'01000000'
-000684 1245           00971         iorwf   buf_PORTD
-                      00972 
-000686 6AE8           00973         clrf    WREG
-000688 6617           00974         tstfsz  servo_cons23
-00068A 0E80           00975         movlw   b'10000000'
-00068C 1245           00976         iorwf   buf_PORTD
-                      00977 
+000664 6610           00950         tstfsz  servo_cons16
+000666 0E01           00951         movlw   b'00000001'
+000668 1245           00952         iorwf   buf_PORTD
+                      00953 
+00066A 6AE8           00954         clrf    WREG
+00066C 6611           00955         tstfsz  servo_cons17
+00066E 0E02           00956         movlw   b'00000010'
+000670 1245           00957         iorwf   buf_PORTD
+                      00958 
+000672 6AE8           00959         clrf    WREG
+000674 6612           00960         tstfsz  servo_cons18
+000676 0E04           00961         movlw   b'00000100'
+000678 1245           00962         iorwf   buf_PORTD
+                      00963 
+00067A 6AE8           00964         clrf    WREG
+00067C 6613           00965         tstfsz  servo_cons19
+00067E 0E08           00966         movlw   b'00001000'
+000680 1245           00967         iorwf   buf_PORTD
+                      00968 
+000682 6AE8           00969         clrf    WREG
+000684 6614           00970         tstfsz  servo_cons20
+000686 0E10           00971         movlw   b'00010000'
+000688 1245           00972         iorwf   buf_PORTD
+                      00973 
+00068A 6AE8           00974         clrf    WREG
+00068C 6615           00975         tstfsz  servo_cons21
+00068E 0E20           00976         movlw   b'00100000'
+000690 1245           00977         iorwf   buf_PORTD
                       00978 
-00068E 5042           00979         movf    buf_PORTA, W
-000690 6E89           00980         movwf   LATA
-000692 5044           00981         movf    buf_PORTC, W
-000694 6E8B           00982         movwf   LATC
-000696 5043           00983         movf    buf_PORTB, W
-000698 6E8A           00984         movwf   LATB
-00069A 5046           00985         movf    buf_PORTE, W
-00069C 6E8D           00986         movwf   LATE
-00069E 5045           00987         movf    buf_PORTD, W
-0006A0 6E8C           00988         movwf   LATD
+000692 6AE8           00979         clrf    WREG
+000694 6616           00980         tstfsz  servo_cons22
+000696 0E40           00981         movlw   b'01000000'
+000698 1245           00982         iorwf   buf_PORTD
+                      00983 
+00069A 6AE8           00984         clrf    WREG
+00069C 6617           00985         tstfsz  servo_cons23
+00069E 0E80           00986         movlw   b'10000000'
+0006A0 1245           00987         iorwf   buf_PORTD
+                      00988 
                       00989 
-0006A2 0012           00990         return
-                      00991 
-                      00992 
-                      00993 
-                      00994 
-                      00995 ; Eteint le port ou les ports spécifiés par le contenu de 3 octets,
-                      00996 ; l'adresse du premier des 3 octets étant spécifié dans W
-                      00997 ; Les ports utilisés sont A, B, C, D, E, le port C servant
-                      00998 ; à recevoir les ordres pour piloter les servos
-                      00999 ; x [0;7]       PORTA [0-4], PORTC [0-2]
-                      01000 ; x [8;15]      PORTB [0-5], PORTE [1-2]
-                      01001 ; x [16;23]     PORTD [0-7]
-                      01002 ; RA0, RA1, RA2, RA3, RA4, RC0, RC1, RC2        -> Servo 0 à 7
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 41
+0006A2 5042           00990         movf    buf_PORTA, W
+0006A4 6E89           00991         movwf   LATA
+0006A6 5044           00992         movf    buf_PORTC, W
+0006A8 6E8B           00993         movwf   LATC
+0006AA 5043           00994         movf    buf_PORTB, W
+0006AC 6E8A           00995         movwf   LATB
+0006AE 5046           00996         movf    buf_PORTE, W
+0006B0 6E8D           00997         movwf   LATE
+0006B2 5045           00998         movf    buf_PORTD, W
+0006B4 6E8C           00999         movwf   LATD
+                      01000 
+0006B6 0012           01001         return
+                      01002 
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 41
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      01003 ; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1        -> Servo 8 à 15 
-                      01004 ; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7        -> Servo 16 à 23
-0006A4                01005 clrPort
-                      01006 
-                      01007         ; Si la consigne courante est 0
-                      01008         ; Le ou les servo(s) restent comme il sont, à 1
-0006A4 503D           01009         movf    current_cons, W
-0006A6 E023           01010         bz              _clrPort
-                      01011 
-                      01012         ; Le premier octet concerne
-                      01013         ; les port A et C
-0006A8 50E7           01014         movf    INDF1, W
-0006AA 0B3F           01015         andlw   b'000111111'
-0006AC 1889           01016         xorwf   LATA, W         ; Pour A
-0006AE 6E42           01017         movwf   buf_PORTA
-                      01018 
-0006B0 50E7           01019         movf    INDF1, W
-0006B2 46E8           01020         rlncf   WREG
-0006B4 46E8           01021         rlncf   WREG
-0006B6 46E8           01022         rlncf   WREG
-0006B8 0B07           01023         andlw   b'00000111'
-0006BA 188B           01024         xorwf   LATC, W         ; Pour C
-0006BC 6E44           01025         movwf   buf_PORTC
-                      01026 
-                      01027         ; Le deuxième octet concerne
-                      01028         ; les port B et E
-0006BE 50E4           01029         movf    PREINC1, W
-0006C0 0B3F           01030         andlw   b'00111111'
-0006C2 188A           01031         xorwf   LATB, W         ; Pour B
-0006C4 6E43           01032         movwf   buf_PORTB
-                      01033 
-0006C6 50E6           01034         movf    POSTINC1, W
-0006C8 46E8           01035         rlncf   WREG
-0006CA 46E8           01036         rlncf   WREG
-0006CC 0B03           01037         andlw   b'0000011'
-0006CE 188D           01038         xorwf   LATE, W         ; Pour E
-0006D0 6E46           01039         movwf   buf_PORTE
-                      01040 
-                      01041         ; Le dernier octet concerne le port D
-0006D2 50E6           01042         movf    POSTINC1, W
-0006D4 188C           01043         xorwf   LATD, W         ; Pour D
-0006D6 6E45           01044         movwf   buf_PORTD
-                      01045 
-                      01046         ; Maintenant, on place tout le contenu des buffers ...
-                      01047         ; ... dans les ports qui vont bien, ce qui garanti une synchro idéale
-0006D8 5042           01048         movf    buf_PORTA, W
-0006DA 6E89           01049         movwf   LATA
-0006DC 5044           01050         movf    buf_PORTC, W
-0006DE 6E8B           01051         movwf   LATC
-0006E0 5043           01052         movf    buf_PORTB, W
-0006E2 6E8A           01053         movwf   LATB
-0006E4 5046           01054         movf    buf_PORTE, W
-0006E6 6E8D           01055         movwf   LATE
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 42
+                      01003 
+                      01004 
+                      01005 
+                      01006 ; Eteint le port ou les ports spécifiés par le contenu de 3 octets,
+                      01007 ; l'adresse du premier des 3 octets étant spécifié dans W
+                      01008 ; Les ports utilisés sont A, B, C, D, E, le port C servant
+                      01009 ; à recevoir les ordres pour piloter les servos
+                      01010 ; x [0;7]       PORTA [0-4], PORTC [0-2]
+                      01011 ; x [8;15]      PORTB [0-5], PORTE [1-2]
+                      01012 ; x [16;23]     PORTD [0-7]
+                      01013 ; RA0, RA1, RA2, RA3, RA4, RC0, RC1, RC2        -> Servo 0 à 7
+                      01014 ; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1        -> Servo 8 à 15 
+                      01015 ; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7        -> Servo 16 à 23
+0006B8                01016 clrPort
+                      01017 
+                      01018         ; Si la consigne courante est 0
+                      01019         ; Le ou les servo(s) restent comme il sont, à 1
+0006B8 503D           01020         movf    current_cons, W
+0006BA E023           01021         bz              _clrPort
+                      01022 
+                      01023         ; Le premier octet concerne
+                      01024         ; les port A et C
+0006BC 50E7           01025         movf    INDF1, W
+0006BE 0B3F           01026         andlw   b'000111111'
+0006C0 1889           01027         xorwf   LATA, W         ; Pour A
+0006C2 6E42           01028         movwf   buf_PORTA
+                      01029 
+0006C4 50E7           01030         movf    INDF1, W
+0006C6 46E8           01031         rlncf   WREG
+0006C8 46E8           01032         rlncf   WREG
+0006CA 46E8           01033         rlncf   WREG
+0006CC 0B07           01034         andlw   b'00000111'
+0006CE 188B           01035         xorwf   LATC, W         ; Pour C
+0006D0 6E44           01036         movwf   buf_PORTC
+                      01037 
+                      01038         ; Le deuxième octet concerne
+                      01039         ; les port B et E
+0006D2 50E4           01040         movf    PREINC1, W
+0006D4 0B3F           01041         andlw   b'00111111'
+0006D6 188A           01042         xorwf   LATB, W         ; Pour B
+0006D8 6E43           01043         movwf   buf_PORTB
+                      01044 
+0006DA 50E6           01045         movf    POSTINC1, W
+0006DC 46E8           01046         rlncf   WREG
+0006DE 46E8           01047         rlncf   WREG
+0006E0 0B03           01048         andlw   b'0000011'
+0006E2 188D           01049         xorwf   LATE, W         ; Pour E
+0006E4 6E46           01050         movwf   buf_PORTE
+                      01051 
+                      01052         ; Le dernier octet concerne le port D
+0006E6 50E6           01053         movf    POSTINC1, W
+0006E8 188C           01054         xorwf   LATD, W         ; Pour D
+0006EA 6E45           01055         movwf   buf_PORTD
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 42
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0006E8 5045           01056         movf    buf_PORTD, W
-0006EA 6E8C           01057         movwf   LATD
-                      01058 
-0006EC 0012           01059         return
-                      01060 
-                      01061 ; Rattrapage du temps en cas de consigne nul
-                      01062 ; Ne surtout pas modifier
-0006EE                01063 _clrPort
-                      01064 
-0006EE 2AE1           01065         incf    FSR1L
-0006F0 2AE1           01066         incf    FSR1L
-0006F2 2AE1           01067         incf    FSR1L
-0006F4 0000           01068         nop
-0006F6 0000           01069         nop
-0006F8 0000           01070         nop
-0006FA 0000           01071         nop
-0006FC 0000           01072         nop
-0006FE 0000           01073         nop
-000700 0000           01074         nop
+                      01056 
+                      01057         ; Maintenant, on place tout le contenu des buffers ...
+                      01058         ; ... dans les ports qui vont bien, ce qui garanti une synchro idéale
+0006EC 5042           01059         movf    buf_PORTA, W
+0006EE 6E89           01060         movwf   LATA
+0006F0 5044           01061         movf    buf_PORTC, W
+0006F2 6E8B           01062         movwf   LATC
+0006F4 5043           01063         movf    buf_PORTB, W
+0006F6 6E8A           01064         movwf   LATB
+0006F8 5046           01065         movf    buf_PORTE, W
+0006FA 6E8D           01066         movwf   LATE
+0006FC 5045           01067         movf    buf_PORTD, W
+0006FE 6E8C           01068         movwf   LATD
+                      01069 
+000700 0012           01070         return
+                      01071 
+                      01072 ; Rattrapage du temps en cas de consigne nul
+                      01073 ; Ne surtout pas modifier
+000702                01074 _clrPort
                       01075 
-000702 0000           01076         nop
-000704 0000           01077         nop
-000706 0000           01078         nop
+000702 2AE1           01076         incf    FSR1L
+000704 2AE1           01077         incf    FSR1L
+000706 2AE1           01078         incf    FSR1L
 000708 0000           01079         nop
 00070A 0000           01080         nop
 00070C 0000           01081         nop
@@ -2468,158 +2468,169 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 00072A 0000           01098         nop
 00072C 0000           01099         nop
 00072E 0000           01100         nop
-                      01101 
-000730 0012           01102         return
-                      01103 
-                      01104 
-                      01105 
-                      01106 ; Tri !
-                      01107 ; TODO: refaire tout le code de tri ci dessous !
-                      01108 ; il doit y avoir moyen d'économiser beaucoup de temps CPU...
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 43
+000730 0000           01101         nop
+000732 0000           01102         nop
+000734 0000           01103         nop
+000736 0000           01104         nop
+000738 0000           01105         nop
+00073A 0000           01106         nop
+00073C 0000           01107         nop
+                      01108 
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 43
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000732                01109 sort
-                      01110 
-000732 EE00 F018      01111         lfsr    FSR0, servo_sorted      ; Pointeur des servos triés
-000736 EE11 F018      01112         lfsr    FSR1, servo_val00       ; Pointeur des ports actifs
-00073A EE21 F000      01113         lfsr    FSR2, servo_nbr00       ; Pointeur de la quantité courante
+00073E 0000           01109         nop
+000740 0000           01110         nop
+000742 0000           01111         nop
+                      01112 
+000744 0012           01113         return
                       01114 
-00073E CFE9 F051      01115         movff   FSR0L, tmp_FSR0L
-000742 CFE2 F053      01116         movff   FSR1H, tmp_FSR1H
-000746 CFE1 F052      01117         movff   FSR1L, tmp_FSR1L
-00074A CFD9 F054      01118         movff   FSR2L, tmp_FSR2L
-                      01119 
-00074E 6A4A           01120         clrf    var_max
+                      01115 
+                      01116 
+                      01117 ; Tri !
+                      01118 ; TODO: refaire tout le code de tri ci dessous !
+                      01119 ; il doit y avoir moyen d'économiser beaucoup de temps CPU...
+000746                01120 sort
                       01121 
-000750 0E18           01122         movlw   NBR_SERVO
-000752 6E50           01123         movwf   cmpt_bcl
-                      01124 
-000754                01125 sort_
-                      01126 
-                      01127         ; Initialisation des variables, pointeurs...
-000754 EE00 F000      01128         lfsr    FSR0, servo_cons0       ; Pointeur de consignes
-000758 EE10 F04D      01129         lfsr    FSR1, buf_tab0          ; Buffer de données
+000746 EE00 F018      01122         lfsr    FSR0, servo_sorted      ; Pointeur des servos triés
+00074A EE11 F018      01123         lfsr    FSR1, servo_val00       ; Pointeur des ports actifs
+00074E EE21 F000      01124         lfsr    FSR2, servo_nbr00       ; Pointeur de la quantité courante
+                      01125 
+000752 CFE9 F051      01126         movff   FSR0L, tmp_FSR0L
+000756 CFE2 F053      01127         movff   FSR1H, tmp_FSR1H
+00075A CFE1 F052      01128         movff   FSR1L, tmp_FSR1L
+00075E CFD9 F054      01129         movff   FSR2L, tmp_FSR2L
                       01130 
-00075C 6849           01131         setf    var_min
+000762 6A4A           01131         clrf    var_max
                       01132 
-00075E 6A4D           01133         clrf    buf_tab0
-000760 6A4E           01134         clrf    buf_tab1
-000762 6A4F           01135         clrf    buf_tab2
-                      01136 
-000764 0E01           01137         movlw   .1
-000766 6E55           01138         movwf   cmpt
-000768 6E4C           01139         movwf   mask_tmp
-                      01140 
-00076A 6A56           01141         clrf    bcl
-                      01142 
-                      01143 ; C'est parti !
-00076C                01144 _sort
-00076C 2A56           01145         incf    bcl
-00076E 0E19           01146         movlw   NBR_SERVO + 1
-000770 6056           01147         cpfslt  bcl                                     ; Si toutes les consignes y sont passées...
-000772 D021           01148         bra             _sort_quit                      ; ... on quitte !
-                      01149 
-000774 0E18           01150         movlw   NBR_SERVO
-000776 5C50           01151         subwf   cmpt_bcl, W
-000778 E003           01152         bz              _sort_last
+000764 0E18           01133         movlw   NBR_SERVO
+000766 6E50           01134         movwf   cmpt_bcl
+                      01135 
+000768                01136 sort_
+                      01137 
+                      01138         ; Initialisation des variables, pointeurs...
+000768 EE00 F000      01139         lfsr    FSR0, servo_cons0       ; Pointeur de consignes
+00076C EE10 F04D      01140         lfsr    FSR1, buf_tab0          ; Buffer de données
+                      01141 
+000770 6849           01142         setf    var_min
+                      01143 
+000772 6A4D           01144         clrf    buf_tab0
+000774 6A4E           01145         clrf    buf_tab1
+000776 6A4F           01146         clrf    buf_tab2
+                      01147 
+000778 0E01           01148         movlw   .1
+00077A 6E55           01149         movwf   cmpt
+00077C 6E4C           01150         movwf   mask_tmp
+                      01151 
+00077E 6A56           01152         clrf    bcl
                       01153 
-00077A 50EF           01154         movf    INDF0, W                        ; Met la consigne courante dans W ...
-00077C 604A           01155         cpfslt  var_max                         ; ... et test si elle est supérieur à ...
-00077E D013           01156         bra             _sort_paf                       ; ... var_max, on poursuit, sinon, on retourne a
+                      01154 ; C'est parti !
+000780                01155 _sort
+000780 2A56           01156         incf    bcl
+000782 0E19           01157         movlw   NBR_SERVO + 1
+000784 6056           01158         cpfslt  bcl                                     ; Si toutes les consignes y sont passées...
+000786 D021           01159         bra             _sort_quit                      ; ... on quitte !
+                      01160 
+000788 0E18           01161         movlw   NBR_SERVO
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 44
+Gestion de 24 servos !
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00078A 5C50           01162         subwf   cmpt_bcl, W
+00078C E003           01163         bz              _sort_last
+                      01164 
+00078E 50EF           01165         movf    INDF0, W                        ; Met la consigne courante dans W ...
+000790 604A           01166         cpfslt  var_max                         ; ... et test si elle est supérieur à ...
+000792 D013           01167         bra             _sort_paf                       ; ... var_max, on poursuit, sinon, on retourne a
                             u début !
-                      01157 
-000780                01158 _sort_last
-000780 50EF           01159         movf    INDF0, W                        ; Met la consigne courante dans W ...
-000782 6249           01160         cpfseq  var_min                         ; Si la consigne courante est égale à var_min ...
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 44
-Gestion de 24 servos !
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-000784 D004           01161         bra             _sort_next
-                      01162 
-000786 504C           01163         movf    mask_tmp, W                     ; ... on va là !
-000788 12E7           01164         iorwf   INDF1
-                      01165 
-00078A 2A55           01166         incf    cmpt
-00078C D00C           01167         bra             _sort_paf
                       01168 
-00078E                01169 _sort_next
-00078E 6049           01170         cpfslt  var_min                         ; Si la consigne courante est inférieur à var_min ...
-000790 D001           01171         bra             _sort_inf
-                      01172 
-000792 D009           01173         bra             _sort_paf
-                      01174 
-000794                01175 _sort_inf
-000794 50EF           01176         movf    INDF0, W                        ; ... on file ici !
-000796 6E49           01177         movwf   var_min
-                      01178 
-000798 6A4D           01179         clrf    buf_tab0
-00079A 6A4E           01180         clrf    buf_tab1
-00079C 6A4F           01181         clrf    buf_tab2
-00079E 0E01           01182         movlw   .1
-0007A0 6E55           01183         movwf   cmpt
-                      01184 
-0007A2 504C           01185         movf    mask_tmp, W
-0007A4 12E7           01186         iorwf   INDF1
-                      01187 
-0007A6                01188 _sort_paf
-0007A6 90D8           01189         bcf             STATUS, C
-0007A8 364C           01190         rlcf    mask_tmp
-0007AA A0D8           01191         btfss   STATUS, C
-0007AC D002           01192         bra             _sort_pif
-                      01193 
-0007AE 364C           01194         rlcf    mask_tmp
-0007B0 2AE1           01195         incf    FSR1L
-                      01196 
-0007B2                01197 _sort_pif
-0007B2 2AE9           01198         incf    FSR0L
-0007B4 D7DB           01199         bra             _sort
-                      01200 
-                      01201 
-0007B6                01202 _sort_quit
-                      01203 
-0007B6 5049           01204         movf    var_min, W
-0007B8 6E4A           01205         movwf   var_max
-                      01206 
-0007BA C051 FFE9      01207         movff   tmp_FSR0L, FSR0L        ; servo_sorted  ->      Pointeur de consignes
-0007BE C053 FFE2      01208         movff   tmp_FSR1H, FSR1H        ; servo_val00   ->      Pointeur des ports actifs
-0007C2 C052 FFE1      01209         movff   tmp_FSR1L, FSR1L
-0007C6 C054 FFD9      01210         movff   tmp_FSR2L, FSR2L        ; servo_nbr00   ->      Pointeur de la quantité courante
+000794                01169 _sort_last
+000794 50EF           01170         movf    INDF0, W                        ; Met la consigne courante dans W ...
+000796 6249           01171         cpfseq  var_min                         ; Si la consigne courante est égale à var_min ...
+000798 D004           01172         bra             _sort_next
+                      01173 
+00079A 504C           01174         movf    mask_tmp, W                     ; ... on va là !
+00079C 12E7           01175         iorwf   INDF1
+                      01176 
+00079E 2A55           01177         incf    cmpt
+0007A0 D00C           01178         bra             _sort_paf
+                      01179 
+0007A2                01180 _sort_next
+0007A2 6049           01181         cpfslt  var_min                         ; Si la consigne courante est inférieur à var_min ...
+0007A4 D001           01182         bra             _sort_inf
+                      01183 
+0007A6 D009           01184         bra             _sort_paf
+                      01185 
+0007A8                01186 _sort_inf
+0007A8 50EF           01187         movf    INDF0, W                        ; ... on file ici !
+0007AA 6E49           01188         movwf   var_min
+                      01189 
+0007AC 6A4D           01190         clrf    buf_tab0
+0007AE 6A4E           01191         clrf    buf_tab1
+0007B0 6A4F           01192         clrf    buf_tab2
+0007B2 0E01           01193         movlw   .1
+0007B4 6E55           01194         movwf   cmpt
+                      01195 
+0007B6 504C           01196         movf    mask_tmp, W
+0007B8 12E7           01197         iorwf   INDF1
+                      01198 
+0007BA                01199 _sort_paf
+0007BA 90D8           01200         bcf             STATUS, C
+0007BC 364C           01201         rlcf    mask_tmp
+0007BE A0D8           01202         btfss   STATUS, C
+0007C0 D002           01203         bra             _sort_pif
+                      01204 
+0007C2 364C           01205         rlcf    mask_tmp
+0007C4 2AE1           01206         incf    FSR1L
+                      01207 
+0007C6                01208 _sort_pif
+0007C6 2AE9           01209         incf    FSR0L
+0007C8 D7DB           01210         bra             _sort
                       01211 
-0007CA C049 FFEE      01212         movff   var_min, POSTINC0
-                      01213 
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 45
+                      01212 
+0007CA                01213 _sort_quit
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 45
 Gestion de 24 servos !
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0007CE C04D FFE6      01214         movff   buf_tab0, POSTINC1
-0007D2 C04E FFE6      01215         movff   buf_tab1, POSTINC1
-0007D6 C04F FFE6      01216         movff   buf_tab2, POSTINC1
+                      01214 
+0007CA 5049           01215         movf    var_min, W
+0007CC 6E4A           01216         movwf   var_max
                       01217 
-0007DA C055 FFDE      01218         movff   cmpt, POSTINC2
-                      01219 
-0007DE CFE9 F051      01220         movff   FSR0L, tmp_FSR0L        ; Sauvegarde des pointeurs
-0007E2 CFE2 F053      01221         movff   FSR1H, tmp_FSR1H
-0007E6 CFE1 F052      01222         movff   FSR1L, tmp_FSR1L
-0007EA CFD9 F054      01223         movff   FSR2L, tmp_FSR2L
+0007CE C051 FFE9      01218         movff   tmp_FSR0L, FSR0L        ; servo_sorted  ->      Pointeur de consignes
+0007D2 C053 FFE2      01219         movff   tmp_FSR1H, FSR1H        ; servo_val00   ->      Pointeur des ports actifs
+0007D6 C052 FFE1      01220         movff   tmp_FSR1L, FSR1L
+0007DA C054 FFD9      01221         movff   tmp_FSR2L, FSR2L        ; servo_nbr00   ->      Pointeur de la quantité courante
+                      01222 
+0007DE C049 FFEE      01223         movff   var_min, POSTINC0
                       01224 
-0007EE 2E50           01225         decfsz  cmpt_bcl
-0007F0 D7B1           01226         bra             sort_
-                      01227 
-0007F2 0012           01228         return
-                      01229 
+0007E2 C04D FFE6      01225         movff   buf_tab0, POSTINC1
+0007E6 C04E FFE6      01226         movff   buf_tab1, POSTINC1
+0007EA C04F FFE6      01227         movff   buf_tab2, POSTINC1
+                      01228 
+0007EE C055 FFDE      01229         movff   cmpt, POSTINC2
                       01230 
-                      01231 
-                      01232         END
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 46
+0007F2 CFE9 F051      01231         movff   FSR0L, tmp_FSR0L        ; Sauvegarde des pointeurs
+0007F6 CFE2 F053      01232         movff   FSR1H, tmp_FSR1H
+0007FA CFE1 F052      01233         movff   FSR1L, tmp_FSR1L
+0007FE CFD9 F054      01234         movff   FSR2L, tmp_FSR2L
+                      01235 
+000802 2E50           01236         decfsz  cmpt_bcl
+000804 D7B1           01237         bra             sort_
+                      01238 
+000806 0012           01239         return
+                      01240 
+                      01241 
+                      01242 
+                      01243         END
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 46
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -2678,7 +2689,7 @@ CCP2CON                           00000FBA
 CCP2IE                            00000000
 CCP2IF                            00000000
 CCP2IP                            00000000
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 47
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 47
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -2737,7 +2748,7 @@ DON
 DONE                              00000002
 D_A                               00000005
 D_NOT_A                           00000005
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 48
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 48
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -2796,7 +2807,7 @@ INT1IP                            00000006
 INT1P                             00000006
 INT2                              00000002
 INT2E                             00000004
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 49
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 49
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -2855,7 +2866,7 @@ LATD6                             00000006
 LATD7                             00000007
 LATE                              00000F8D
 LATE0                             00000000
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 50
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 50
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -2914,7 +2925,7 @@ PEN                               00000002
 PGC                               00000006
 PGD                               00000007
 PGM                               00000005
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 51
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 51
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -2973,7 +2984,7 @@ RA5                               00000005
 RA6                               00000006
 RB0                               00000000
 RB1                               00000001
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 52
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 52
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3032,7 +3043,7 @@ S                                 00000003
 SCK                               00000003
 SCL                               00000003
 SCS                               00000000
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 53
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 53
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3091,7 +3102,7 @@ T0PS0                             00000000
 T0PS1                             00000001
 T0PS2                             00000002
 T0SE                              00000004
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 54
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 54
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3150,7 +3161,7 @@ TMR3IP                            00000001
 TMR3L                             00000FB2
 TMR3ON                            00000000
 TO                                00000003
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 55
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 55
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3209,7 +3220,7 @@ TX8_9                             00000006
 TX9                               00000006
 TX9D                              00000000
 TXD8                              00000000
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 56
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 56
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3268,7 +3279,7 @@ _CPB_OFF_5H                       000000FF
 _CPB_ON_5H                        000000BF
 _CPD_OFF_5H                       000000FF
 _CPD_ON_5H                        0000007F
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 57
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 57
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3327,7 +3338,7 @@ _WDTPS_4_2H                       000000F5
 _WDTPS_64_2H                      000000FD
 _WDTPS_8_2H                       000000F7
 _WDT_OFF_2H                       000000FE
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 58
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 58
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3351,53 +3362,52 @@ _WRTD_ON_6H                       0000007F
 _XT_OSC                           000000F9
 _XT_OSC_1H                        000000F9
 __18F452                          00000001
-_clrPort                          000006EE
-_init                             000002BE
-_int1_usart_clear                 000000C6
-_int1_usart_received_send_ack     000000AE
-_int1_usart_received_test_clear   00000090
-_int1_usart_received_test_init    00000060
-_int1_usart_received_test_pause   00000074
-_int1_usart_received_test_resume  00000082
-_int1_usart_received_test_set     00000054
-_inth_Timer                       000001C8
-_intl_usart                       00000036
-_intl_usart_end                   000001C0
-_intl_usart_exit                  000001C2
-_intl_usart_received_test_comman  0000004C
-_intl_usart_received_test_contro  000001BC
-_intl_usart_received_test_pos0    000000CC
-_intl_usart_received_test_pos1    000000DC
-_intl_usart_received_test_pos10   0000016C
-_intl_usart_received_test_pos11   0000017C
-_intl_usart_received_test_pos12   0000018C
-_intl_usart_received_test_pos13   0000019C
-_intl_usart_received_test_pos14   000001AC
-_intl_usart_received_test_pos2    000000EC
-_intl_usart_received_test_pos3    000000FC
-_intl_usart_received_test_pos4    0000010C
-_intl_usart_received_test_pos5    0000011C
-_intl_usart_received_test_pos6    0000012C
-_intl_usart_received_test_pos7    0000013C
-_intl_usart_received_test_pos8    0000014C
-_intl_usart_received_test_pos9    0000015C
-_intl_usart_unknow_command        000000BC
-_sort                             0000076C
-_sort_inf                         00000794
-_sort_last                        00000780
-_sort_next                        0000078E
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 59
+_clrPort                          00000702
+_init                             000002BC
+_int1_usart_clear                 000000D4
+_int1_usart_received_send_ack     000000BC
+_int1_usart_received_test_clear   0000009C
+_int1_usart_received_test_init    00000068
+_int1_usart_received_test_pause   0000007C
+_int1_usart_received_test_resume  0000008E
+_int1_usart_received_test_set     0000005C
+_inth_Timer                       000001C6
+_intl_usart                       0000003E
+_intl_usart_end                   000001BE
+_intl_usart_exit                  000001C0
+_intl_usart_received_test_comman  00000054
+_intl_usart_received_test_contro  000001BA
+_intl_usart_received_test_pos0    000000DA
+_intl_usart_received_test_pos1    000000EA
+_intl_usart_received_test_pos10   0000017A
+_intl_usart_received_test_pos11   0000018A
+_intl_usart_received_test_pos12   0000019A
+_intl_usart_received_test_pos13   000001AA
+_intl_usart_received_test_pos2    000000FA
+_intl_usart_received_test_pos3    0000010A
+_intl_usart_received_test_pos4    0000011A
+_intl_usart_received_test_pos5    0000012A
+_intl_usart_received_test_pos6    0000013A
+_intl_usart_received_test_pos7    0000014A
+_intl_usart_received_test_pos8    0000015A
+_intl_usart_received_test_pos9    0000016A
+_intl_usart_unknow_command        000000CA
+_sort                             00000780
+_sort_inf                         000007A8
+_sort_last                        00000794
+_sort_next                        000007A2
+_sort_paf                         000007BA
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 59
 Gestion de 24 servos !
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-_sort_paf                         000007A6
-_sort_pif                         000007B2
-_sort_quit                        000007B6
+_sort_pif                         000007C6
+_sort_quit                        000007CA
 ack                               00000540
 bcl                               00000056
-bcl_toto                          000001E4
+bcl_toto                          000001E2
 buf_PORTA                         00000042
 buf_PORTB                         00000043
 buf_PORTC                         00000044
@@ -3406,7 +3416,8 @@ buf_PORTE                         00000046
 buf_tab0                          0000004D
 buf_tab1                          0000004E
 buf_tab2                          0000004F
-clrPort                           000006A4
+clearAllOut                       000005C4
+clrPort                           000006B8
 cmpt                              00000055
 cmpt_bcl                          00000050
 cmpt_pass                         0000003C
@@ -3419,16 +3430,17 @@ current_cons                      0000003D
 current_qnt                       0000003F
 current_servo                     0000003E
 inth                              0000001C
-inth_end                          000002B8
-intl                              0000002E
+inth_end                          000002B6
+intl                              00000036
 main                              00000512
 mask                              0000004B
 mask_tmp                          0000004C
 nack                              00000584
+pause_mode                        00000067
 phase                             00000047
-phase2                            00000268
-phase3                            0000028E
-phase4                            000002A4
+phase2                            00000266
+phase3                            0000028C
+phase4                            000002A2
 phase_cmpt                        00000048
 pos_0                             00000058
 pos_1                             00000059
@@ -3436,7 +3448,6 @@ pos_10                            00000062
 pos_11                            00000063
 pos_12                            00000064
 pos_13                            00000065
-pos_14                            00000066
 pos_2                             0000005A
 pos_3                             0000005B
 pos_4                             0000005C
@@ -3445,14 +3456,14 @@ pos_6                             0000005E
 pos_7                             0000005F
 pos_8                             00000060
 pos_9                             00000061
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 60
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 60
 Gestion de 24 servos !
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
 received_counter                  00000057
-reception_control                 00000067
+reception_control                 00000066
 servo_cons0                       00000000
 servo_cons1                       00000001
 servo_cons10                      0000000A
@@ -3504,7 +3515,7 @@ servo_nbr23                       00000117
 servo_sorted                      00000018
 servo_val00                       00000118
 servo_val01                       00000119
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 61
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 61
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3563,7 +3574,7 @@ servo_val51                       0000014B
 servo_val52                       0000014C
 servo_val53                       0000014D
 servo_val54                       0000014E
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 62
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 62
 Gestion de 24 servos !
 
 SYMBOL TABLE
@@ -3586,10 +3597,10 @@ servo_val68                       0000015C
 servo_val69                       0000015D
 servo_val70                       0000015E
 servo_val71                       0000015F
-setAllPort                        000005C4
+setAllPort                        000005D8
 setValue                          00000592
-sort                              00000732
-sort_                             00000754
+sort                              00000746
+sort_                             00000768
 tmp_FSR0L                         00000051
 tmp_FSR1H                         00000053
 tmp_FSR1L                         00000052
@@ -3615,7 +3626,7 @@ MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 0280 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
 02C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
 0300 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-MPASM  5.48                          MAIN.ASM   1-17-2013  9:02:49         PAGE 63
+MPASM  5.48                          MAIN.ASM   1-19-2013  22:01:51         PAGE 63
 Gestion de 24 servos !
 
 MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
@@ -3639,13 +3650,14 @@ MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 0700 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
 0740 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
 0780 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-07C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXX------------
+07C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0800 : XXXXXXXX-------- ---------------- ---------------- ----------------
 0000 : XXXX--XXXXXXXX-- ---------------- ---------------- ----------------
 
 All other memory blocks unused.
 
-Program Memory Bytes Used:  2032
-Program Memory Bytes Free: 30736
+Program Memory Bytes Used:  2052
+Program Memory Bytes Free: 30716
 
 
 Errors   :     0

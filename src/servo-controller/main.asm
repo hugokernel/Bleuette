@@ -150,9 +150,9 @@
         pos_11   : 1
         pos_12   : 1
         pos_13   : 1
-        pos_14   : 1
 
 		reception_control : 1
+		pause_mode : 1
 
 ;		cmpt_word		: 1		; Compteur d'octets
 ;		cmpt_maj		: 1
@@ -286,6 +286,10 @@
 
 ; High Priority Vector
 inth
+	; Pause ?
+	movlw 	0
+	cpfseq 	pause_mode
+	goto  	inth_end
 
 	; "Switch" des interruptions
 	btfsc   INTCON, TMR0IF
@@ -309,69 +313,73 @@ intl
 ; Interruption venant de l'USART
 _intl_usart
 	; Backup WREG
-	movwf wreg_backup
+	movwf 	wreg_backup
 
 ; 0: Reception de l'entete
-	movlw 0
-	cpfseq received_counter
-	goto _intl_usart_received_test_command
+	movlw 	0
+	cpfseq 	received_counter
+	goto 	_intl_usart_received_test_command
 
 	; Test si le premier est bien egal a 255
-	movlw HEADER
-	cpfseq RCREG
-	goto _int1_usart_clear
-	goto _intl_usart_end
+	movlw 	HEADER
+	cpfseq 	RCREG
+	goto 	_int1_usart_clear
+	goto 	_intl_usart_end
 
 ; 1: Command
 _intl_usart_received_test_command
-	movlw .1
-	cpfseq received_counter
-	goto _intl_usart_received_test_pos0
+	movlw 	.1
+	cpfseq 	received_counter
+	goto 	_intl_usart_received_test_pos0
 
 ; Test for set command
 _int1_usart_received_test_set
-	movlw COMMAND_SET
-	cpfseq RCREG
-	goto _int1_usart_received_test_init
-	goto _intl_usart_end
+	movlw 	COMMAND_SET
+	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_init
+	goto 	_intl_usart_end
 
 ; Test for init command
 _int1_usart_received_test_init
-	movlw COMMAND_INIT
-	cpfseq RCREG
-	goto _int1_usart_received_test_pause
+	movlw 	COMMAND_INIT
+	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_pause
 	; Set all value to 0
 	movlw	0
 	call	setValue
-	bsf INTCON, TMR0IE
-	goto _int1_usart_received_send_ack
+	bsf 	INTCON, TMR0IE
+	goto 	_int1_usart_received_send_ack
 
 ; Test for pause command
 _int1_usart_received_test_pause
-	movlw COMMAND_PAUSE
-	cpfseq RCREG
-	goto _int1_usart_received_test_resume
-	bcf INTCON, TMR0IE
-	goto _int1_usart_received_send_ack
+	movlw 	COMMAND_PAUSE
+	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_resume
+
+	setf 	pause_mode, 1
+	call	clearAllOut
+	goto 	_int1_usart_received_send_ack
 
 ; Test for resume command
 _int1_usart_received_test_resume
-	movlw COMMAND_RESUME
-	cpfseq RCREG
-	goto _int1_usart_received_test_clear
-	bsf INTCON, TMR0IE
-	goto _int1_usart_received_send_ack
+	movlw 	COMMAND_RESUME
+	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_clear
+
+	clrf 	pause_mode
+	goto 	_int1_usart_received_send_ack
 
 ; Test for clear command
 _int1_usart_received_test_clear
-	movlw COMMAND_CLEAR
-	cpfseq RCREG
-	goto _intl_usart_unknow_command
+	movlw 	COMMAND_CLEAR
+	cpfseq 	RCREG
+	goto 	_intl_usart_unknow_command
 
+	clrf 	pause_mode
 	; Set all value to 0
 	movlw	0
 	call	setValue
-	goto _int1_usart_received_send_ack
+	goto 	_int1_usart_received_send_ack
 
 	; Si command n'est pas egal a 1, on clear et on quitte
 	movlw .1
@@ -381,7 +389,7 @@ _int1_usart_received_test_clear
 
 _int1_usart_received_send_ack
 	SEND 'O'
-	goto _intl_usart_exit
+	goto _int1_usart_clear
 
 _intl_usart_unknow_command
 	SEND 'N'
@@ -510,18 +518,9 @@ _intl_usart_received_test_pos12
 _intl_usart_received_test_pos13
 	movlw .15
 	cpfseq received_counter
-	goto _intl_usart_received_test_pos14
-	movf RCREG, W
-	movwf pos_13
-	goto _intl_usart_end
-
-; 16: Position 14
-_intl_usart_received_test_pos14
-	movlw .16
-	cpfseq received_counter
 	goto _intl_usart_received_test_control
 	movf RCREG, W
-	movwf pos_14
+	movwf pos_13
 	goto _intl_usart_end
 
 ; 17: Control byte
@@ -534,7 +533,7 @@ _intl_usart_end
 
 _intl_usart_exit
 	; Restore WREG
-	movlw wreg_backup
+	movlw 	wreg_backup
 	bcf		PIR1, RCIF
 	retfie
 
@@ -691,22 +690,19 @@ inth_end
 	;movlw	0
 	;call	setValue
 
-	clrf received_counter
+	clrf 	received_counter
+	clrf 	pause_mode
 
 ; Routine principale
 
 	; Activation des interruptions
-	bsf	INTCON, GIEH
-	bsf	INTCON, GIEL
-
+	bsf		INTCON, GIEH
+	bsf		INTCON, GIEL
 	;goto _intl_usart
 
-main	
-	;MOVLF	.20, servo_cons0
-	;MOVLF	.100, servo_cons1
-
+main
 	; On boucle temps que 18 octets ne sont pas recu
-	movlw .18
+	movlw .17
 	cpfseq received_counter
 	goto main
 
@@ -811,6 +807,21 @@ setValue
 
 	return
 
+clearAllOut
+	movlw	b'11100000'
+	andwf	LATA, 1
+
+	movlw	b'11111000'
+	andwf	LATC, 1
+
+	movlw	b'11000000'
+	andwf	LATB, 1
+
+	movlw	b'11111100'
+	andwf	LATE, 1
+
+	clrf 	LATD
+	return
 
 
 ; Tous les ports des servos à 1 ...

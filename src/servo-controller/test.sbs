@@ -37,6 +37,34 @@ Direct Message
 0xFF
 -1
 --
+Pin
+RCREG
+Direct Message
+
+0x49
+-1
+--
+Pin
+RCREG
+Direct Message
+
+0x50
+-1
+--
+Pin
+RCREG
+Direct Message
+
+0x53
+-1
+--
+Pin
+RCREG
+Direct Message
+
+0x01
+-1
+--
 &
 ## ADVANCEDSCL
 

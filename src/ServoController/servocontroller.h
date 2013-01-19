@@ -41,6 +41,9 @@ extern HardwareSerial Serial1;
 
 #define SERVO_HEADER 255
 
+#define SERVO_MAX_RETRY     3
+#define SERVO_DELAY_BYTE    2
+
 enum SERVO_CMD {
     SERVO_CMD_INIT      = 'I',
     SERVO_CMD_PAUSE     = 'P',
@@ -79,15 +82,16 @@ class ServoController
 private:
     HardwareSerial _serial;
     int _last_status_code;
-    unsigned char _retry;
 
     unsigned char _values[SERVO_COUNT];
+
+    void write(unsigned char);
 
 public:
     ServoController();
     ServoController(HardwareSerial &);
 
-    void setValues(unsigned long, char *);
+    void setValues(unsigned long, char *, unsigned char);
     void sendValues();
 
     inline bool getLastStatus();
@@ -128,11 +132,18 @@ int ServoController::getResponse()
     return _serial.read();
 }
 
+inline void ServoController::write(unsigned char byte)
+{
+    _serial.write(byte);
+    delay(SERVO_DELAY_BYTE);
+}
+
 inline bool ServoController::command(SERVO_CMD command)
 {
-    _serial.write(SERVO_HEADER);
-
-    _serial.write(command);
+    write(SERVO_HEADER);
+    delay(SERVO_DELAY_BYTE);
+    write(command);
+    delay(SERVO_DELAY_BYTE);
 
     _last_status_code = getResponse();
 
@@ -143,32 +154,27 @@ bool ServoController::command(SERVO_CMD command, unsigned char data[], unsigned 
 {
     unsigned char c = 0;
     unsigned char control = 0;
-    unsigned char retry = _retry;
+    unsigned char retry = SERVO_MAX_RETRY;
 
     do {
-        _serial.write(SERVO_HEADER);
+        write(SERVO_HEADER);
+        write(command);
 
-        _serial.write(command);
-
+        control = 0;
         for (c = 0; c < size; c++) {
-            _serial.write(data[c]);
-            delay(2); // Adjust this value
-
-            Serial.print(data[c], DEC);
-            Serial.print('\n');
+            write(data[c]);
 
             control += data[c];
         }
 
-        Serial.write("Control byte :");
-        Serial.print(control);
-        Serial.print('\n');
-
-        _serial.write(control);
+        write(control);
+        delay(SERVO_DELAY_BYTE);
 
         _last_status_code = getResponse();
+        if (_last_status_code == SERVO_ACK) {
+            break;
+        }
 
-        Serial.print(_last_status_code);
     } while (retry--);
 
     return getLastStatus();
@@ -214,10 +220,10 @@ bool ServoController::clear()
  *      servos : 0b00000000 00000101, values[] = 100, 100
  *
  */
-void ServoController::setValues(unsigned long servos, char * values)
+void ServoController::setValues(unsigned long servos, char * values, unsigned char count)
 {
     unsigned char b = 0;
-    for (b = 0; b < SERVO_COUNT; b++) {
+    for (b = 0; b < count; b++) {
         if (CHECK_BIT(servos, b)) {
             _values[b] = values[b];
         }

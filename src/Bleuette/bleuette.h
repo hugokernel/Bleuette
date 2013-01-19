@@ -56,9 +56,9 @@ typedef struct sequence_t {
 class Bleuette
 {
 private:
-    ServoController _servo;
 
 public:
+    ServoController _servo;
     Bleuette();
 
     void init(void);
@@ -96,6 +96,14 @@ void Bleuette::ledOn(unsigned char led)
 }
 
 /**
+ *  Led off !
+ */
+void Bleuette::ledOff(unsigned char led)
+{
+    digitalWrite(led, LOW);
+}
+
+/**
  *  Get button status
  */
 bool Bleuette::getButtonState(unsigned char button)
@@ -120,22 +128,12 @@ int Bleuette::getCurrent()
 }
 
 /**
- *  Led off !
- */
-void Bleuette::ledOff(unsigned char led)
-{
-    digitalWrite(led, LOW);
-}
-
-/**
  *  Run walk sequence
  */
 bool Bleuette::runSequence(struct sequence_t seq) {
     for (unsigned int i = 0; i < seq.count; i++) {
-
-        _servo.setValues(seq.motion[i].servos, seq.motion[i].values);
+        _servo.setValues(seq.motion[i].servos, seq.motion[i].values, seq.motion[i].count);
         _servo.sendValues();
-
         delay(seq.motion[i].delay);
     }
 }
