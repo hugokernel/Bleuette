@@ -44,13 +44,14 @@ typedef struct motion_t {
     unsigned long delay;        // How much time
     unsigned long servos;       // Servo bits field
     unsigned char count;        // Values count
-    char values[14];            // All values for each servo
+    unsigned char values[14];            // All values for each servo
 };
 
 typedef struct sequence_t {
     bool loopable;              // Sequence is loopable ?
     unsigned int count;         // Motion count
     motion_t *motion;           // Motion struct
+    char * name;
 };
 
 class Bleuette
@@ -58,7 +59,7 @@ class Bleuette
 private:
 
 public:
-    ServoController _servo;
+    ServoController servo;
     Bleuette();
 
     void init(void);
@@ -72,6 +73,7 @@ public:
     int getCurrent();
 
     // Walk
+    bool runLine(struct sequence_t, unsigned int);
     bool runSequence(struct sequence_t);
 };
 
@@ -83,8 +85,8 @@ Bleuette::Bleuette()
 
 void Bleuette::init(void)
 {
-    _servo = ServoController();
-    _servo.init();
+    servo = ServoController();
+    servo.init();
 }
 
 /**
@@ -127,14 +129,19 @@ int Bleuette::getCurrent()
     return analogRead(1);
 }
 
+bool Bleuette::runLine(struct sequence_t seq, unsigned int i)
+{
+    servo.setValues(seq.motion[i].servos, seq.motion[i].values, seq.motion[i].count);
+    servo.sendValues();
+    delay(seq.motion[i].delay);
+}
+
 /**
  *  Run walk sequence
  */
 bool Bleuette::runSequence(struct sequence_t seq) {
     for (unsigned int i = 0; i < seq.count; i++) {
-        _servo.setValues(seq.motion[i].servos, seq.motion[i].values, seq.motion[i].count);
-        _servo.sendValues();
-        delay(seq.motion[i].delay);
+        runLine(seq, i);
     }
 }
 

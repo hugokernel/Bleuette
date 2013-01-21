@@ -91,8 +91,10 @@ public:
     ServoController();
     ServoController(HardwareSerial &);
 
-    void setValues(unsigned long, char *, unsigned char);
+    void setValues(unsigned long, unsigned char *, unsigned char);
     void sendValues();
+
+    unsigned long get(unsigned char);
 
     inline bool getLastStatus();
     int getResponse();
@@ -124,6 +126,28 @@ ServoController::ServoController(HardwareSerial &serial) :
 inline bool ServoController::getLastStatus()
 {
     return (_last_status_code == SERVO_ACK) ? true : false;
+}
+
+unsigned long ServoController::get(unsigned char servo)
+{
+    unsigned long servos[] = {
+        SERVO_0,
+        SERVO_1,
+        SERVO_2,
+        SERVO_3,
+        SERVO_4,
+        SERVO_5,
+        SERVO_6,
+        SERVO_7,
+        SERVO_8,
+        SERVO_9,
+        SERVO_10,
+        SERVO_11,
+        SERVO_12,
+        SERVO_13
+    };
+
+    return (servo < sizeof(servos) ? servos[servo] : 0);
 }
 
 int ServoController::getResponse()
@@ -220,12 +244,12 @@ bool ServoController::clear()
  *      servos : 0b00000000 00000101, values[] = 100, 100
  *
  */
-void ServoController::setValues(unsigned long servos, char * values, unsigned char count)
+void ServoController::setValues(unsigned long servos, unsigned char * values, unsigned char count)
 {
-    unsigned char b = 0;
-    for (b = 0; b < count; b++) {
+    unsigned char b, v = 0;
+    for (b = 0, v = 0; v < count; b++) {
         if (CHECK_BIT(servos, b)) {
-            _values[b] = values[b];
+            _values[b] = values[v++];
         }
     }
 }
