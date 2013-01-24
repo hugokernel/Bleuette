@@ -23,11 +23,19 @@
 #ifndef Bleuette_h
 #define Bleuette_h
 
-#include <wiring.h>
-#include <Arduino.h>
+#if defined(WIRING) && WIRING >= 100
+  #include <Wiring.h>
+#elif defined(ARDUINO) && ARDUINO >= 100
+  #include <Arduino.h>
+#else
+  #include <WProgram.h>
+#endif
 
 //#include "HardwareSerial.h"
+#include <sequencer.h>
 #include <servocontroller.h>
+
+#define BLEUETTE_SERVO_COUNT    SERVO_COUNT
 
 #define BLEUETTE_LED0   8
 #define BLEUETTE_LED1   9
@@ -60,12 +68,15 @@ private:
 
 public:
     ServoController servo;
+    Sequencer sequencer;
+
     Bleuette();
 
     void init(void);
 
     void ledOn(unsigned char);
     void ledOff(unsigned char);
+    void ledToggle(unsigned char);
 
     bool getButtonState(unsigned char);
 
@@ -73,8 +84,11 @@ public:
     int getCurrent();
 
     // Walk
-    bool runLine(struct sequence_t, unsigned int);
+    bool runLine(struct sequence_t, unsigned int, unsigned int);
     bool runSequence(struct sequence_t);
+    bool runSequence(struct sequence_t, unsigned int);
+
+    bool runSequenceR(struct sequence_t, unsigned int);
 };
 
 Bleuette::Bleuette()
@@ -87,6 +101,8 @@ void Bleuette::init(void)
 {
     servo = ServoController();
     servo.init();
+
+    sequencer = Sequencer(servo);
 }
 
 /**
@@ -105,6 +121,15 @@ void Bleuette::ledOff(unsigned char led)
     digitalWrite(led, LOW);
 }
 
+void Bleuette::ledToggle(unsigned char led)
+{
+    if (digitalRead(led)) {
+        ledOff(led);
+    } else {
+        ledOn(led);
+    }
+}
+
 /**
  *  Get button status
  */
@@ -118,7 +143,12 @@ bool Bleuette::getButtonState(unsigned char button)
  */
 int Bleuette::getVoltage()
 {
-    return analogRead(0);
+    static double x;
+    static double k = 1;
+    double measure = analogRead(0);
+    x = x + k * (measure - x);
+    return x;
+    //return analogRead(0);
 }
 
 /**
@@ -129,11 +159,11 @@ int Bleuette::getCurrent()
     return analogRead(1);
 }
 
-bool Bleuette::runLine(struct sequence_t seq, unsigned int i)
+bool Bleuette::runLine(struct sequence_t seq, unsigned int i, unsigned int timeout)
 {
     servo.setValues(seq.motion[i].servos, seq.motion[i].values, seq.motion[i].count);
     servo.sendValues();
-    delay(seq.motion[i].delay);
+    delay(seq.motion[i].delay + timeout);
 }
 
 /**
@@ -141,7 +171,13 @@ bool Bleuette::runLine(struct sequence_t seq, unsigned int i)
  */
 bool Bleuette::runSequence(struct sequence_t seq) {
     for (unsigned int i = 0; i < seq.count; i++) {
-        runLine(seq, i);
+        runLine(seq, i, 0);
+    }
+}
+
+bool Bleuette::runSequence(struct sequence_t seq, unsigned int timeout) {
+    for (unsigned int i = 0; i < seq.count; i++) {
+        runLine(seq, i, timeout);
     }
 }
 

@@ -1,0 +1,98 @@
+/*
+    Bleuette.h Control Bleuette shield
+    Copyright (c) 2013 Charles Rincheval.  All rights reserved.
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+    The latest version of this library can always be found at
+    http://www.digitalspirit.org/
+*/
+
+#include "bleuette.h"
+
+Bleuette::Bleuette()
+{
+    pinMode(BLEUETTE_LED0, OUTPUT);
+    pinMode(BLEUETTE_LED1, OUTPUT);
+}
+
+void Bleuette::init(void)
+{
+    servo = ServoController();
+    servo.init();
+}
+
+/**
+ *  Led on !
+ */
+void Bleuette::ledOn(unsigned char led)
+{
+    digitalWrite(led, HIGH);
+}
+
+/**
+ *  Led off !
+ */
+void Bleuette::ledOff(unsigned char led)
+{
+    digitalWrite(led, LOW);
+}
+
+/**
+ *  Get button status
+ */
+bool Bleuette::getButtonState(unsigned char button)
+{
+    return digitalRead(button);
+}
+
+/**
+ *  Get voltage
+ */
+int Bleuette::getVoltage()
+{
+    return analogRead(0);
+}
+
+/**
+ *  Get voltage
+ */
+int Bleuette::getCurrent()
+{
+    return analogRead(1);
+}
+
+bool Bleuette::runLine(struct sequence_t seq, unsigned int i, unsigned int delay)
+{
+    servo.setValues(seq.motion[i].servos, seq.motion[i].values, seq.motion[i].count);
+    servo.sendValues();
+    delay(seq.motion[i].delay);
+}
+
+/**
+ *  Run walk sequence
+ */
+bool Bleuette::runSequence(struct sequence_t seq) {
+    for (unsigned int i = 0; i < seq.count; i++) {
+        runLine(seq, i, 0);
+    }
+}
+
+bool Bleuette::runSequence(struct sequence_t, unsigned int delay) {
+    for (unsigned int i = 0; i < seq.count; i++) {
+        runLine(seq, i, delay);
+    }
+}
+

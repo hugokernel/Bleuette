@@ -1,0 +1,31 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Bleuette KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+init            KEYWORD2
+
+ledOn           KEYWORD2
+ledOff          KEYWORD2
+
+getButtonState  KEYWORD2
+
+getVoltage      KEYWORD2
+getCurrent      KEYWORD2
+
+runLine         KEYWORD2
+runSequence     KEYWORD2
+runSequence     KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+####################################### 

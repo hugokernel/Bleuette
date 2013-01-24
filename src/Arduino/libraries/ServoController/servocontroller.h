@@ -25,8 +25,13 @@
 #ifndef ServoController_h
 #define ServoController_h
 
-#include <wiring.h>
-#include <Arduino.h>
+#if defined(WIRING) && WIRING >= 100
+  #include <Wiring.h>
+#elif defined(ARDUINO) && ARDUINO >= 100
+  #include <Arduino.h>
+#else
+  #include <WProgram.h>
+#endif
 
 #include "HardwareSerial.h"
 
@@ -90,6 +95,8 @@ private:
 public:
     ServoController();
     ServoController(HardwareSerial &);
+
+    inline void setValue(unsigned char, unsigned char);
 
     void setValues(unsigned long, unsigned char *, unsigned char);
     void sendValues();
@@ -233,6 +240,11 @@ bool ServoController::clear()
     return command(SERVO_CMD_CLEAR);
 }
 
+inline void ServoController::setValue(unsigned char index, unsigned char value)
+{
+    _values[index] = value;
+}
+
 /**
  *  Set servo values
  *  servos is a bits field and values is the values only for bit set
@@ -249,7 +261,9 @@ void ServoController::setValues(unsigned long servos, unsigned char * values, un
     unsigned char b, v = 0;
     for (b = 0, v = 0; v < count; b++) {
         if (CHECK_BIT(servos, b)) {
+            // Todo: replace with setValue
             _values[b] = values[v++];
+            //setValue(b, v++);
         }
     }
 }

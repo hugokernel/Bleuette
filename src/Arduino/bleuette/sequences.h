@@ -90,6 +90,7 @@ sequence_t sequence_neutral = {
     "Neutral position"
 };
 
+/*
 // All leg to up position
 motion_t motion_up[] = {
     {
@@ -108,7 +109,9 @@ sequence_t sequence_up = {
     motion_up,
     "Up position"
 };
+*/
 
+/*
 // All leg to down position
 motion_t motion_down[] = {
     {
@@ -127,6 +130,7 @@ sequence_t sequence_down = {
     motion_down,
     "Down position"
 };
+*/
 
 // All leg to down position
 #define PUMP_DELAY 300
@@ -290,6 +294,54 @@ sequence_t sequence_walk = {
     motion_walk,
     "Walk"
 };
+
+
+/**
+ *  Walk 2
+ */
+
+/*
+  const double pos[NUM_STATES][NUM_SERVOS] = {
+        {BACK, FRONT, BACK, -FRONT, -BACK, -FRONT, LO, HI, LO, HI, LO, HI},
+        {BACK, FRONT, BACK, -FRONT, -BACK, -FRONT, HI, HI, HI, HI, HI, HI},
+        {BACK, FRONT, BACK, -FRONT, -BACK, -FRONT, HI, LO, HI, LO, HI, LO},
+        {FRONT, BACK, FRONT, -BACK, -FRONT, -BACK, HI, LO, HI, LO, HI, LO},
+        {FRONT, BACK, FRONT, -BACK, -FRONT, -BACK, HI, HI, HI, HI, HI, HI},
+        {FRONT, BACK, FRONT, -BACK, -FRONT, -BACK, LO, HI, LO, HI, LO, HI}
+  };
+ */
+
+/*
+{   MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID },
+{   MIDDLE, ___,    ___,    FRONT,  BACK,
+
+motion_t motion_walk2[] = {
+    {
+        1000,
+        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
+        6,
+        {
+            SV0_D, SV1_D, SV2_D, SV3_D, SV4_D, SV5_D
+        },
+    }
+};
+
+sequence_t sequence_walk2 = {
+    true,
+    5,
+    motion_walk2,
+    "Walk 2 !"
+};
+*/
+
+sequence_t sequences[] = {
+    sequence_neutral,
+//    sequence_down,
+//    sequence_up,
+    sequence_walk,
+//    sequence_pump
+};
+
 
 #endif
 
