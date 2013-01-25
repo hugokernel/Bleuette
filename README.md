@@ -3,6 +3,20 @@ Bleuette
 
 ![Vue de Bleuette](https://github.com/hugokernel/Bleuette/blob/master/export/img/thumbs/bleuette.png?raw=true)
 
+## What is it ?
+
+This project aims to produce a creature with 6 legs and must run without anyone's help.
+For some of you may, the name "Bleuette" you may be familiar, in fact, it is a feminization of Bleuet, the robot of F/X:The Series (the Blue robot name in the french serie is Bleuet), we have no connection with this series but we  think that the poor would Bleuet feel alone and it would make him a fellow and then as a female to do ... :)
+
+See the announcement of the resumption of development: http://www.digitalspirit.org/blog/index.php/post/2012/08/06/Le-retour-de-l-hexapode-Bleuette
+
+More information in french : http://www.digitalspirit.org/wiki/index.php/Bleuette
+
+## How ?
+
+https://github.com/hugokernel/Bleuette/wiki/Home
+
+
 ## C'est quoi ?
 
 Ce projet à pour but de fabriquer une bestiole à 6 pattes et de la faire marcher sans l'aide de quiconque.
@@ -14,4 +28,4 @@ Plus d'informations : http://www.digitalspirit.org/wiki/index.php/Bleuette
 
 ## Comment ?
 
-https://github.com/hugokernel/Bleuette/wiki/Home
+https://github.com/hugokernel/Bleuette/wiki/Accueil
