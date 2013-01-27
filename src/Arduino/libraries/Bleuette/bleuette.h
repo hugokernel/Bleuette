@@ -40,6 +40,9 @@
 #define BLEUETTE_LED0   8
 #define BLEUETTE_LED1   9
 
+#define BLEUETTE VOLTAGE    0
+#define BLEUETTE_CURRENT    1
+
 #define BLEUETTE_BUTTON0    10
 #define BLEUETTE_BUTTON1    11
 
@@ -48,6 +51,14 @@
 #define BUTTON0 BLEUETTE_BUTTON0
 #define BUTTON1 BLEUETTE_BUTTON1
 
+// Uout = R2 / (R1 + R2) x Alim
+// Alim = R2 / (R1 + R2) x Uout
+#define R1  3300
+#define R2  10000
+#define MAX_VOLTAGE 7.4
+#define VOLTAGE(voltage) R2 / (R1 + R2) * MAX_VOLTAGE / (1024 / voltage) 
+
+/*
 typedef struct motion_t {
     unsigned long delay;        // How much time
     unsigned long servos;       // Servo bits field
@@ -61,6 +72,7 @@ typedef struct sequence_t {
     motion_t *motion;           // Motion struct
     char * name;
 };
+*/
 
 class Bleuette
 {
@@ -80,15 +92,16 @@ public:
 
     bool getButtonState(unsigned char);
 
-    int getVoltage();
-    int getCurrent();
+    unsigned int getVoltage();
+    unsigned int getCurrent();
 
     // Walk
+    /*
     bool runLine(struct sequence_t, unsigned int, unsigned int);
     bool runSequence(struct sequence_t);
     bool runSequence(struct sequence_t, unsigned int);
-
     bool runSequenceR(struct sequence_t, unsigned int);
+    */
 };
 
 Bleuette::Bleuette()
@@ -141,34 +154,33 @@ bool Bleuette::getButtonState(unsigned char button)
 /**
  *  Get voltage
  */
-int Bleuette::getVoltage()
+unsigned int Bleuette::getVoltage()
 {
+    /*
     static double x;
     static double k = 1;
     double measure = analogRead(0);
     x = x + k * (measure - x);
     return x;
-    //return analogRead(0);
+    */
+    return analogRead(0);
 }
 
 /**
  *  Get voltage
  */
-int Bleuette::getCurrent()
+unsigned int Bleuette::getCurrent()
 {
-    return analogRead(1);
+    return analogRead(BLEUETTE_CURRENT);
 }
 
+/*
 bool Bleuette::runLine(struct sequence_t seq, unsigned int i, unsigned int timeout)
 {
     servo.setValues(seq.motion[i].servos, seq.motion[i].values, seq.motion[i].count);
     servo.sendValues();
     delay(seq.motion[i].delay + timeout);
 }
-
-/**
- *  Run walk sequence
- */
 bool Bleuette::runSequence(struct sequence_t seq) {
     for (unsigned int i = 0; i < seq.count; i++) {
         runLine(seq, i, 0);
@@ -180,5 +192,6 @@ bool Bleuette::runSequence(struct sequence_t seq, unsigned int timeout) {
         runLine(seq, i, timeout);
     }
 }
+ */
 
 #endif
