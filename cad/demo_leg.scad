@@ -4,6 +4,7 @@ use <leg_holder.scad>
 use <leg.scad>
 use <spacer.scad>
 use <spring.scad>
+use <sensor.scad>
 
 $fn = 20;
 
@@ -116,6 +117,11 @@ module leg() {
 
     rotate([ -90, 0, 0]) {
         mounted_arm();
+    }
+
+    // Leg sensor
+    translate([0, 14, -65]) {
+        sensor_all();
     }
 }
 
