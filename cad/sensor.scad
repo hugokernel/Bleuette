@@ -72,10 +72,10 @@ module sensor_support() {
 module sensor() {
     translate([0, 0, 6]) {
         difference() {
-            sphere(r = 13);
-            sphere(r = 12);
-            translate([0, 0, 6]) {
-                cube(size = [30, 30, 20], center = true);
+            sphere(r = 32);
+            sphere(r = 31);
+            translate([0, 0, 28]) {
+                cube(size = [100, 100, 100], center = true);
             }
 
             translate([0, 0, -6]) {
