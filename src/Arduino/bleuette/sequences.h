@@ -1,347 +1,435 @@
 
-#ifndef Sequences_h
-#define Sequences_h
-
-#include <bleuette.h>
-#include <servocontroller.h>
-
-/**
- *  SERVO HORIZONTAL
- */
-
-#define SH0    SERVO_0
-#define SH1    SERVO_1
-#define SH2    SERVO_2
-#define SH3    SERVO_3
-#define SH4    SERVO_4
-#define SH5    SERVO_5
-
-// Servo horizontal max / mid / min values
-#define SH_MIN  85
-#define SH_MAX  170
-#define SH_MID  SH_MIN + (SH_MAX - SH_MIN) / 2
-
-// Servo Horizontal Front
-#define SH0_F  SH_MIN
-#define SH1_F  SH_MAX
-#define SH2_F  SH_MIN
-#define SH3_F  SH_MAX
-#define SH4_F  SH_MIN
-#define SH5_F  SH_MAX
-
-// Servo Horizontal Back
-#define SH0_B  SH_MAX
-#define SH1_B  SH_MIN
-#define SH2_B  SH_MAX
-#define SH3_B  SH_MIN
-#define SH4_B  SH_MAX
-#define SH5_B  SH_MIN
-
-/**
- *  SERVO VERTICAL
- */
-
-#define SV0    SERVO_6
-#define SV1    SERVO_7
-#define SV2    SERVO_8
-#define SV3    SERVO_9
-#define SV4    SERVO_10
-#define SV5    SERVO_11
-
-// Servo vertical max / mid / min values
-#define SV_MIN  90
-#define SV_MAX  210
-#define SV_MID  SV_MIN + (SV_MAX - SV_MIN)  / 2
-
-// Servo Vertical Up
-#define SV0_U  SV_MAX
-#define SV1_U  SV_MIN
-#define SV2_U  SV_MAX
-#define SV3_U  SV_MIN
-#define SV4_U  SV_MIN
-#define SV5_U  SV_MAX
-
-// Servo Vertical Down
-#define SV0_D  SV_MIN
-#define SV1_D  SV_MAX
-#define SV2_D  SV_MIN
-#define SV3_D  SV_MAX
-#define SV4_D  SV_MAX
-#define SV5_D  SV_MIN
-
-// All leg to neutral position
-motion_t motion_neutral[] = {
+// Standby
+motion_t motion_standby[] = {
     {
-        1000,
-        SH0 | SH1 | SH2 | SH3 | SH4 | SH5 |
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        12,
+        0,
         {
-            SH_MID, SH_MID, SH_MID, SH_MID, SH_MID, SH_MID,
-            SV_MID, SV_MID, SV_MID, SV_MID, SV_MID, SV_MID,
+            HMID,   HMID,   HMID,   HMID,   HMID,   HMID,
+            UP,     UP,     UP,     UP,     UP,     UP
         },
+        NULL
     }
 };
 
-sequence_t sequence_neutral = {
-    true,
-    sizeof(motion_neutral) / sizeof(motion_neutral[0]),
-    motion_neutral,
-    "Neutral position"
+sequence_t seq_standby = {
+    "Standby",
+    1, //sizeof(motion_UP) / sizeof(motion_down[0]),
+    motion_standby
 };
 
-/*
-// All leg to up position
-motion_t motion_up[] = {
+// Middle
+motion_t motion_middle[] = {
     {
-        1000,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
+        0,
         {
-            SV0_U, SV1_U, SV2_U, SV3_U, SV4_U, SV5_U
+            MID,    MID,    MID,    MID,    MID,    MID,
+            MID,    MID,    MID,    MID,    MID,    MID
         },
+        NULL
     }
 };
 
-sequence_t sequence_up = {
-    true,
-    sizeof(motion_up) / sizeof(motion_up[0]),
-    motion_up,
-    "Up position"
+sequence_t seq_middle = {
+    "Middle",
+    1, //sizeof(motion_UP) / sizeof(motion_down[0]),
+    motion_middle
 };
-*/
 
-/*
-// All leg to down position
+// Down
 motion_t motion_down[] = {
     {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            DOWN,   DOWN,   DOWN,   DOWN,   DOWN,   DOWN
+        },
+        NULL
+    }
+};
+
+sequence_t seq_down = {
+    "Leg down",
+    1, //sizeof(motion_down) / sizeof(motion_up[0]),
+    motion_down
+};
+
+// Up
+motion_t motion_up[] = {
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            UP,     UP,     UP,     UP,     UP,     UP
+        },
+        NULL
+    }
+};
+
+sequence_t seq_up = {
+    "Leg up",
+    1, //sizeof(motion_up) / sizeof(motion_down[0]),
+    motion_up
+};
+
+// Push up
+motion_t motion_pushup[] = {
+    {
+        DELAY_MIN,
+        {
+            FRONT,  FRONT,  HMID,   HMID,   BACK,   BACK,
+            UP,     UP,     UP,     UP,     UP,     UP
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            DOWN,   DOWN,   DOWN,   DOWN,   DOWN,   DOWN
+        },
+        NULL
+    }
+};
+
+sequence_t seq_pushup = {
+    "Push up",
+    2, //sizeof(motion_up) / sizeof(motion_down[0]),
+    motion_pushup
+};
+
+
+
+// Middle push up
+motion_t motion_middle_pushup[] = {
+    {
         1000,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
         {
-            SV0_D, SV1_D, SV2_D, SV3_D, SV4_D, SV5_D
+            __,     __,     __,     __,     __,     __,
+            UP,     UP,     UP,     UP,     UP,     UP
         },
+        NULL
+    },
+    {
+        1000,
+        {
+            __,     __,     __,     __,     __,     __,
+            MID,    MID,    MID,    MID,    MID,    MID
+        },
+        NULL
+    },
+    {
+        1000,
+        {
+            __,     __,     __,     __,     __,     __,
+            DOWN,   DOWN,   DOWN,   DOWN,   DOWN,   DOWN
+        },
+        NULL
     }
 };
 
-sequence_t sequence_down = {
-    true,
-    sizeof(motion_down) / sizeof(motion_down[0]),
-    motion_down,
-    "Down position"
+sequence_t seq_middle_pushup = {
+    "Middle push up",
+    3, //sizeof(motion_up) / sizeof(motion_down[0]),
+    motion_middle_pushup
 };
-*/
 
-// All leg to down position
-#define PUMP_DELAY 300
-motion_t motion_pump[] = {
+
+
+// Lateral pushup
+motion_t motion_pushup_lateral[] = {
     {
-        PUMP_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
+        600,
         {
-            SV0_D, SV1_D, SV2_D, SV3_D, SV4_D, SV5_D
+            __,     __,     __,     __,     __,     __,
+            UP,     DOWN,   UP,     DOWN,   UP,     DOWN
         },
+        NULL
     },
     {
-        PUMP_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
+        600,
         {
-            SV0_U, SV1_U, SV2_U, SV3_U, SV4_U, SV5_U
+            __,     __,     __,     __,     __,     __,
+            DOWN,  UP,     DOWN,   UP,     DOWN,   UP
         },
-    },
-    {
-        PUMP_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
-        {
-            SV0_D, SV1_D, SV2_D, SV3_D, SV4_D, SV5_D
-        },
-    },
-    {
-        PUMP_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
-        {
-            SV0_U, SV1_U, SV2_U, SV3_U, SV4_U, SV5_U
-        },
+        NULL
     }
 };
 
-sequence_t sequence_pump = {
-    true,
-    4,
-    motion_pump,
-    "Pump"
+sequence_t seq_pushup_lateral = {
+    "Lateral push up",
+    2, //sizeof(motion_up) / sizeof(motion_down[0]),
+    motion_pushup_lateral
 };
 
-// Walk !
-#define WALK_DELAY 800
+
+// Walk
 motion_t motion_walk[] = {
-    // Neutral
     {
-        WALK_DELAY,
-        SH0 | SH1 | SH2 | SH3 | SH4 | SH5 |
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        12,
+        DELAY_MIN,
         {
-            SH_MID, SH_MID, SH_MID, SH_MID, SH_MID, SH_MID,
-            SV_MID, SV_MID, SV_MID, SV_MID, SV_MID, SV_MID,
-        }
-    },
-
-    /**
-     *  First phase
-     */
-
-    // 1
-    {
-        WALK_DELAY,
-        SV0 | SV3 | SV4,
-        3,
-        {
-            SV0_U, SV3_U, SV4_U
-        }
-    },
-
-    // 2
-    {
-        WALK_DELAY,
-        SH0 | SH3 | SH4,
-        3,
-        {
-            SH0_F, SH3_F, SH4_F
-        }
-    },
-
-    // 3
-    {
-        WALK_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
-        {
-            SV0_D, SV1_U, SV2_U, SV3_D, SV4_D, SV5_U
-        }
-    },
-
-    // 4
-    {
-        WALK_DELAY,
-        SH0 | SH1 | SH2 | SH3 | SH4 | SH5,
-        6,
-        {
-            SH0_B, SH1_F, SH2_F, SH3_B, SH4_B, SH5_F
-        }
-    },
-
-    // 5
-    {
-        WALK_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
-        {
-            SV0_D, SV1_D, SV2_D, SV3_D, SV4_D, SV5_D
-        }
-    },
-
-    // 5 bis
-    {
-        WALK_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
-        {
-            SV0_U, SV1_D, SV2_D, SV3_U, SV4_U, SV5_D
-        }
-    },
-
-    // 6
-    {
-        WALK_DELAY,
-        SH0 | SH1 | SH2 | SH3 | SH4 | SH5,
-        6,
-        {
-            SH0_F, SH1_B, SH2_B, SH3_F, SH4_F, SH5_B
-        }
-    },
-
-    // 7
-    {
-        WALK_DELAY,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
-        {
-            SV0_D, SV1_D, SV2_D, SV3_D, SV4_D, SV5_D
-        }
-    },
-
-    // 8
-    {
-        WALK_DELAY,
-        SH0 | SH1 | SH2 | SH3 | SH4 | SH5 |
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        12,
-        {
-            SH0_B, SH1_F, SH2_F, SH3_B, SH4_B, SH5_F,
-            SV0_D, SV1_U, SV2_U, SV3_D, SV4_D, SV5_U
-        }
-    }
-};
-
-sequence_t sequence_walk = {
-    true,
-    10, //sizeof(motion_walk) / sizeof(motion_walk[0]),
-    motion_walk,
-    "Walk"
-};
-
-
-/**
- *  Walk 2
- */
-
-/*
-  const double pos[NUM_STATES][NUM_SERVOS] = {
-        {BACK, FRONT, BACK, -FRONT, -BACK, -FRONT, LO, HI, LO, HI, LO, HI},
-        {BACK, FRONT, BACK, -FRONT, -BACK, -FRONT, HI, HI, HI, HI, HI, HI},
-        {BACK, FRONT, BACK, -FRONT, -BACK, -FRONT, HI, LO, HI, LO, HI, LO},
-        {FRONT, BACK, FRONT, -BACK, -FRONT, -BACK, HI, LO, HI, LO, HI, LO},
-        {FRONT, BACK, FRONT, -BACK, -FRONT, -BACK, HI, HI, HI, HI, HI, HI},
-        {FRONT, BACK, FRONT, -BACK, -FRONT, -BACK, LO, HI, LO, HI, LO, HI}
-  };
- */
-
-/*
-{   MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID,    MID },
-{   MIDDLE, ___,    ___,    FRONT,  BACK,
-
-motion_t motion_walk2[] = {
-    {
-        1000,
-        SV0 | SV1 | SV2 | SV3 | SV4 | SV5,
-        6,
-        {
-            SV0_D, SV1_D, SV2_D, SV3_D, SV4_D, SV5_D
+            __,     __,     __,     __,     __,     __,     // Assume start from standby mode
+            UP,     __,     __,     UP,     UP,     __
         },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            FRONT,  BACK,   BACK,   FRONT,  FRONT,  BACK,   // Leg in front
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,     // Stabilisation : all leg DOWN
+            DOWN,   __,     __,     DOWN,   DOWN,   __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,     // 3 legs UP !
+            __,     UP,     UP,     __,     __,     UP
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            BACK,   FRONT,  FRONT,  BACK,   BACK,   FRONT,  // One step !
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,     // Stabilisation : all leg UP
+            __,     DOWN,   DOWN,   __,     __,     DOWN
+        },
+        NULL
     }
 };
 
-sequence_t sequence_walk2 = {
-    true,
-    5,
-    motion_walk2,
-    "Walk 2 !"
+sequence_t seq_walk = {
+    "Walk",
+    6, //sizeof(motion_UP) / sizeof(motion_down[0]),
+    motion_walk
 };
-*/
+
+// Right turn
+motion_t motion_right_turn[] = {
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            UP,   DOWN,     DOWN,   DOWN,   DOWN,   UP
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            FRONT,  __,   __,   __,  __,  BACK,
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            DOWN,  DOWN,    DOWN,  DOWN,   DOWN,   DOWN
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            __,  UP,     __,     __,   UP,   __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     BACK,     __,     __,     FRONT,     __,
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            __,  DOWN,     UP,     UP,   DOWN,   __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            BACK,   FRONT,  __,  __,   BACK,   FRONT,
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    }
+};
+
+sequence_t seq_right_turn = {
+    "Right turn",
+    sizeof(motion_right_turn) / sizeof(motion_right_turn[0]),
+    motion_right_turn
+};
+
+
+// Left turn
+motion_t motion_left_turn[] = {
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            UP,   DOWN,     DOWN,   DOWN,   DOWN,   UP
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            BACK,   __,     __,     __,     __,     FRONT,
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            DOWN,  DOWN,    DOWN,  DOWN,   DOWN,   DOWN
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            __,  UP,     __,     __,   UP,   __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     FRONT,  __,     __,     BACK,   __,
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __,     __,     __,     __,     __,     __,
+            __,  DOWN,     UP,     UP,   DOWN,   __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            FRONT,  BACK,   __,     __,     FRONT,  BACK,
+            __,     __,     __,     __,     __,     __
+        },
+        NULL
+    }
+};
+
+sequence_t seq_left_turn = {
+    "Left turn",
+    sizeof(motion_left_turn) / sizeof(motion_left_turn[0]),
+    motion_left_turn
+};
+
+
+
+// Linuxfr
+motion_t motion_linuxfr[] = {
+    {
+        DELAY_MIN,
+        {
+            FRONT, BACK, BACK, FRONT, HMID, HMID,
+            DOWN, DOWN, DOWN, DOWN, UP, DOWN
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            HMID, HMID, HMID, HMID, FRONT, BACK,
+            DOWN, UP, UP, DOWN, DOWN, DOWN
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            BACK, FRONT, FRONT, BACK, HMID, HMID,
+            DOWN, DOWN, DOWN, DOWN, DOWN, UP
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            HMID, HMID, HMID, HMID, BACK, FRONT,
+            UP, DOWN, DOWN, UP, DOWN, DOWN
+        },
+        NULL
+    }
+};
+
+sequence_t seq_linuxfr = {
+    "Linuxfr",
+    sizeof(motion_linuxfr) / sizeof(motion_linuxfr[0]),
+    motion_linuxfr
+};
+
+
+sequence_t s_pushup[] = {
+    seq_up,
+    seq_down,
+    seq_up,
+    seq_down
+};
 
 sequence_t sequences[] = {
-    sequence_neutral,
-//    sequence_down,
-//    sequence_up,
-    sequence_walk,
-//    sequence_pump
+    seq_standby,        // 0
+    seq_up,             // 1
+    seq_down,           // 2
+    seq_walk,           // 3
+    seq_right_turn,     // 4
+    seq_left_turn,      // 5
+    seq_pushup,         // 6
+    seq_pushup_lateral, // 7
+    seq_middle_pushup,  // 8
+    seq_linuxfr,        // 9
+    seq_middle          // 10
 };
 
-
-#endif
-
+/*
+0	: 85
+1	: 85
+2	: 85
+3	: 85
+4	: 85
+5	: 85
+6	: 90
+7	: 90
+8	: 90
+9	: 90
+10	: 90
+11	: 90
+*/

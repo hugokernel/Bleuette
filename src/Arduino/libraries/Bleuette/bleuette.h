@@ -40,7 +40,7 @@
 #define BLEUETTE_LED0   8
 #define BLEUETTE_LED1   9
 
-#define BLEUETTE VOLTAGE    0
+#define BLEUETTE_VOLTAGE    0
 #define BLEUETTE_CURRENT    1
 
 #define BLEUETTE_BUTTON0    10
@@ -77,9 +77,8 @@ typedef struct sequence_t {
 class Bleuette
 {
 private:
-
-public:
     ServoController servo;
+public:
     Sequencer sequencer;
 
     Bleuette();
@@ -92,16 +91,11 @@ public:
 
     bool getButtonState(unsigned char);
 
-    unsigned int getVoltage();
-    unsigned int getCurrent();
+    unsigned int readVoltage();
+    unsigned int readCurrent();
 
-    // Walk
-    /*
-    bool runLine(struct sequence_t, unsigned int, unsigned int);
-    bool runSequence(struct sequence_t);
-    bool runSequence(struct sequence_t, unsigned int);
-    bool runSequenceR(struct sequence_t, unsigned int);
-    */
+    float getVoltage();
+    float getCurrent();
 };
 
 Bleuette::Bleuette()
@@ -152,9 +146,9 @@ bool Bleuette::getButtonState(unsigned char button)
 }
 
 /**
- *  Get voltage
+ *  Read voltage
  */
-unsigned int Bleuette::getVoltage()
+inline unsigned int Bleuette::readVoltage()
 {
     /*
     static double x;
@@ -163,35 +157,41 @@ unsigned int Bleuette::getVoltage()
     x = x + k * (measure - x);
     return x;
     */
-    return analogRead(0);
+    return analogRead(BLEUETTE_VOLTAGE);
+}
+
+/**
+ *  Read current
+ */
+inline unsigned int Bleuette::readCurrent()
+{
+    return analogRead(BLEUETTE_CURRENT);
 }
 
 /**
  *  Get voltage
  */
-unsigned int Bleuette::getCurrent()
+float Bleuette::getVoltage()
 {
-    return analogRead(BLEUETTE_CURRENT);
+    /*
+    static double x;
+    static double k = 1;
+    double measure = analogRead(0);
+    x = x + k * (measure - x);
+    return x;
+    */
+    //return analogRead(BLEUETTE_VOLTAGE);
+    unsigned int voltage = getVoltage();
+    return VOLTAGE(voltage);
 }
 
-/*
-bool Bleuette::runLine(struct sequence_t seq, unsigned int i, unsigned int timeout)
-{
-    servo.setValues(seq.motion[i].servos, seq.motion[i].values, seq.motion[i].count);
-    servo.sendValues();
-    delay(seq.motion[i].delay + timeout);
-}
-bool Bleuette::runSequence(struct sequence_t seq) {
-    for (unsigned int i = 0; i < seq.count; i++) {
-        runLine(seq, i, 0);
-    }
-}
-
-bool Bleuette::runSequence(struct sequence_t seq, unsigned int timeout) {
-    for (unsigned int i = 0; i < seq.count; i++) {
-        runLine(seq, i, timeout);
-    }
-}
+/**
+ *  Get current
  */
+float Bleuette::getCurrent()
+{
+    unsigned int current = getCurrent();
+    return current;
+}
 
 #endif

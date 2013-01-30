@@ -1,26 +1,24 @@
 
+#define P   Serial.print
+#define PLN Serial.println
+
 #include <bleuette.h>
-//#include "sequences.h"
 #include <sequencer.h>
+#include "sequences.h"
 #include <servocontroller.h>
 #include <SerialCommand.h>
+
+//#include <Streaming.h>
 
 extern HardwareSerial Serial1;
 
 Bleuette bleuette;
 
-/*
-extern struct sequence_t sequence_neutral;
-extern struct sequence_t sequence_down;
-extern struct sequence_t sequence_up;
-extern struct sequence_t sequence_walk;
-extern struct sequence_t sequence_pump;
-*/
-
 SerialCommand sCmd;
 
-#define ARG_ERROR   println("Argument error !"); return;
+#define ARG_ERROR   PLN("Argument error !"); return;
 
+/*
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -32,6 +30,7 @@ void echo(char *fmt, ... ) {
     va_end (args);
     Serial.print(tmp);
 }
+*/
 
 /*
 void echo(char *str) {
@@ -40,18 +39,31 @@ void echo(char *str) {
 //#define echo println
 */
 
+/*
 void println(char *str) {
-    Serial.println(str);
+    PLN(str);
+}
+*/
+
+
+Status waitSerial(unsigned int i) {
+    P("Waiting for serial, sequence ");
+    P(i);
+    P(" ...");
+    while (Serial.read() != '\n');
+    PLN("[ok]");
+
+    return STATUS_OK;
 }
 
+Status waitButton(unsigned int i) {
+    P("Waiting for button, sequence ");
+    P(i);
+    P(" ...");
+    while (!bleuette.getButtonState(BLEUETTE_BUTTON1));
+    PLN("[ok]");
 
-void waitSerial(unsigned int i) {
-    echo("Waiting for serial (%i) ... ", i);
-    while (Serial.read() != '\n');
-    echo("[ok]\n");
-
-    //if (!bleuette.getButtonState(BLEUETTE_BUTTON1)) {
-    //Serial.println("OK");
+    return STATUS_OK;
 }
 
 void setup()
@@ -90,8 +102,11 @@ void setup()
     sCmd.addCommand("start",    cmd_start);
     sCmd.addCommand("clear",    cmd_clear);
 
+    sCmd.addCommand("test",     cmd_test);
+    sCmd.addCommand("test2",     cmd_test2);
+
     while (!Serial) ;
-    println("Ready !");
+    PLN("Ready !");
 }
 
 ISR(TIMER1_OVF_vect)
@@ -101,11 +116,13 @@ ISR(TIMER1_OVF_vect)
 
     bleuette.ledToggle(LED1);
 
-    ccurrent = bleuette.getCurrent();
-    cvoltage = bleuette.getVoltage();
+    ccurrent = bleuette.readCurrent();
+    cvoltage = bleuette.readVoltage();
 
     if (ccurrent > current + 10) {
-        echo("! V=%i (%i); I=%i\n", cvoltage, R2 / (R1 + R2) * MAX_VOLTAGE / (1024 / cvoltage), ccurrent);
+//        echo("! V=%i (%i); I=%i\n", cvoltage, R2 / (R1 + R2) * MAX_VOLTAGE / (1024 / cvoltage), ccurrent);
+
+        //P("V=");P(cvoltage);P("; I=");PLN(ccurrent);
     }
 
     current = ccurrent;
@@ -119,13 +136,14 @@ ISR(TIMER1_OVF_vect)
 
 void loop() {
     sCmd.readSerial();
+    delay(1);
 }
 
 /**
  *  Init
  */
 void cmd_init() {
-    println("Init");
+    PLN("Init");
     bleuette.init();
 }
 
@@ -133,21 +151,36 @@ void cmd_init() {
  *  Info
  */
 void cmd_info() {
-    println("Info");
-    unsigned int current = bleuette.getCurrent();
-    unsigned int voltage = bleuette.getVoltage();
+    PLN("Info !!");
+    unsigned int current = bleuette.readCurrent();
+    unsigned int voltage = bleuette.readVoltage();
     //echo("Voltage=%i (%f); Current=%i\n", voltage, VOLTAGE(voltage), current);
 
-    Serial.println(4.5 / (1024 / voltage), 10);
+    //PLN(4.5 / (1024 / voltage), 10);
 
-    echo("Voltage=%i (%i); Current=%i\n", voltage, 4 / (1024 / voltage), current);
+    //echo("Voltage=%i (%i); Current=%i\n", voltage, 4 / (1024 / voltage), current);
+    P("V=");
+    P(voltage);
+    P(" (");
+    P(bleuette.getVoltage());
+    P("); I=");
+    P(current);
+    P(" (");
+    P(bleuette.getCurrent());
+    P(")");
 
+    P("Button 0 ");
     if (!bleuette.getButtonState(BLEUETTE_BUTTON0)) {
-        echo("Button 0 pressed !\n");
+        PLN(" pressed !");
+    } else {
+        PLN(" released !");
     }
 
+    P("Button 1");
     if (!bleuette.getButtonState(BLEUETTE_BUTTON1)) {
-        echo("Button 1 pressed !\n");
+        PLN(" pressed !");
+    } else {
+        PLN(" released !");
     }
 }
 
@@ -164,29 +197,27 @@ void cmd_debug() {
 
     if (debug) {
         bleuette.sequencer.setCallback(waitSerial);
-        println("Debug enabled !\n");
+        PLN("Debug enabled !");
     } else {
         bleuette.sequencer.setCallback(NULL);
-        println("Debug disabled !\n");
+        PLN("Debug disabled !");
     }
-
-    //debug =! debug;
 }
 
 /**
  *  Pause
  */
 void cmd_pause() {
-    println("Pause");
-    bleuette.servo.pause();
+    PLN("Pause");
+    bleuette.sequencer._servo.pause();
 }
 
 /**
  *  Resume
  */
 void cmd_resume() {
-    println("Resume");
-    bleuette.servo.resume();
+    PLN("Resume");
+    bleuette.sequencer._servo.resume();
 }
 
 /**
@@ -197,7 +228,6 @@ void cmd_set() {
     char *arg;
     unsigned char value[1];
 
-    println("Set");
     arg = sCmd.next();
     if (arg == NULL) {
         ARG_ERROR
@@ -212,15 +242,30 @@ void cmd_set() {
 
     value[0] = atol(arg);
 
-    echo("Servo %i servo (%i) go to position !\n", servo, bleuette.servo.get(servo), value[0]);
+    //echo("Servo %i servo (%i) go to position !\n", servo, bleuette.servo.get(servo));//, value[0]);
 
-    bleuette.servo.setValues(
-        bleuette.servo.get(servo),
+    P("Set servo : ");
+    P(servo);
+    P(" (");
+    P(bleuette.sequencer._servo.get(servo));
+    P(")");
+    P(", position : ");
+    PLN(value[0]);
+
+
+    P("Before value :");
+    PLN(bleuette.sequencer._servo.getPosition(servo));
+
+    bleuette.sequencer._servo.setValues(
+        bleuette.sequencer._servo.get(servo),
         value,
         1
     );
 
-    bleuette.servo.sendValues();
+    bleuette.sequencer._servo.sendValues();
+
+    P("After value :");
+    PLN(bleuette.sequencer._servo.getPosition(servo));
 }
 
 /**
@@ -230,6 +275,8 @@ void cmd_seq() {
     char *arg;
     unsigned char seq = 0;
     unsigned int i, count, timeout = 0;
+    unsigned int mode = 1;
+
 
     // Get sequence index
     arg = sCmd.next();
@@ -237,9 +284,22 @@ void cmd_seq() {
         ARG_ERROR
     }
 
+    // Help ?
+    if (arg[0] == '?') {
+        PLN("Available sequence :");
+        for (i = 0; i < 11; i++) {//sizeof(sequences); i++) {
+            P("- ");
+            P(i);
+            P(' ');
+            PLN(sequences[i].name);
+        }
+
+        return;
+    }
+
     seq = atoi(arg);
     if (seq < 0 || seq > sizeof(sequences)) {
-        println("Sequence not found !");
+        PLN("Sequence not found !");
         return;
     }
 
@@ -257,13 +317,39 @@ void cmd_seq() {
         timeout = atoi(arg);
     }
 
-    echo("Run sequence %s !\n", sequences[seq].name);
-    //Serial.println(seq); // %c (%s), %i time(s) with %i ms !\n", seq, sequences[seq].name, count, timeout);
+    // backward mode ?
+    arg = sCmd.next();
+    if (arg != NULL) {
+        mode = atoi(arg);
+    }
+
+    P("Run sequence : ");
+    P(seq);
+    P(", name : ");
+    P(sequences[seq].name);
+    P(", count : ");
+    P(count);
+    P(", timeout : ");
+    P(timeout);
+    P(", backward : ");
+
+    if (mode) {
+        PLN("Forward !");
+    } else {
+        PLN("Backward !");
+    }
+
+    bleuette.sequencer.setDelay(timeout);
 
     for (i = 0; i < count; i++) {
-        bleuette.sequencer.run(sequences[seq]);
-        delay(timeout);
+        if (mode) {
+            bleuette.sequencer.forward(sequences[seq]);
+        } else {
+            bleuette.sequencer.backward(sequences[seq]);
+        }
     }
+
+    cmd_test2();
 }
 
 /**
@@ -282,28 +368,48 @@ void cmd_push() {
 
     seq = atoi(arg);
     if (seq < 0 || seq > sizeof(sequences)) {
-        println("Sequence not found !");
+        PLN("Sequence not found !");
         return;
     }
 
-Serial.println(seq);
-    Serial.println(sequences[seq].name);
+    PLN(seq);
+    PLN(sequences[seq].name);
     //echo("Run sequence %c (%s) !\n", seq, sequences[seq].name);
 
     bleuette.sequencer.push(&sequences[seq]);
 }
 
+void cmd_test() {
+    PLN("Test !");
+
+    for (int i = 0; i < SERVO_COUNT; i++) {
+        P(i);
+        P("\t: ");
+        PLN(bleuette.sequencer._servo._values[i]);
+    }
+}
+
+void cmd_test2() {
+    PLN("Test2 !");
+
+    for (int i = 0; i < SERVO_COUNT; i++) {
+        P(i);
+        P("\t: ");
+        PLN(bleuette.sequencer._servo._current_values[i]);
+    }
+}
+
 void cmd_start() {
-    println("Start !");
+    PLN("Start !");
     bleuette.sequencer.start();
 }
 
 void cmd_clear() {
-    println("Clear !");
+    PLN("Clear !");
     bleuette.sequencer.clear();
 }
 
 void unrecognized(const char *command) {
-    println("Command not found !");
+    PLN("Command not found !");
 }
 
