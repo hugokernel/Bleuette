@@ -16726,8 +16726,8 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="S1" library="switch-omron" deviceset="10-XX" device=""/>
 <part name="LED0" library="led" deviceset="LED" device="CHIPLED_0805"/>
 <part name="LED1" library="led" deviceset="LED" device="CHIPLED_0805"/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="M0805" value="1k"/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="M0805" value="1k"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="M0805"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="M0805"/>
 <part name="VSS9" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS10" library="supply1" deviceset="VSS" device=""/>
 <part name="R5" library="rcl" deviceset="R-EU_" device="M0805"/>

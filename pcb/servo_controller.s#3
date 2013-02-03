@@ -16681,7 +16681,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <parts>
 <part name="VSS1" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS2" library="supply1" deviceset="VSS" device=""/>
-<part name="Q1" library="crystal" deviceset="CRYTAL" device="HC49UP"/>
+<part name="Q1" library="crystal" deviceset="CRYTAL" device="HC49UP" value="10Mhz"/>
 <part name="SRV0" library="con-lstb" deviceset="MA03-1" device=""/>
 <part name="SRV1" library="con-lstb" deviceset="MA03-1" device=""/>
 <part name="SRV2" library="con-lstb" deviceset="MA03-1" device=""/>
@@ -16699,8 +16699,8 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="C1" library="rcl" deviceset="C-EU" device="C1206" value="100nf"/>
 <part name="C2" library="rcl" deviceset="C-EU" device="C1206" value="10uf"/>
 <part name="SRVY" library="con-lstb" deviceset="MA03-1" device=""/>
-<part name="C7" library="rcl" deviceset="C-EU" device="C1206"/>
-<part name="C8" library="rcl" deviceset="C-EU" device="C1206"/>
+<part name="C7" library="rcl" deviceset="C-EU" device="C1206" value="22pf"/>
+<part name="C8" library="rcl" deviceset="C-EU" device="C1206" value="22pf"/>
 <part name="C6" library="rcl" deviceset="C-EU" device="C1206"/>
 <part name="FRAME1" library="frames" deviceset="A3L-LOC" device=""/>
 <part name="U1" library="adafruit" deviceset="ARDUINOR3" device="-DIMENSION"/>
@@ -16714,8 +16714,8 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="VSS3" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS4" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS5" library="supply1" deviceset="VSS" device=""/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="M1206"/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="M1206"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="M1206" value="3.3k"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="M1206" value="10k"/>
 <part name="VSS6" library="supply1" deviceset="VSS" device=""/>
 <part name="SP" library="switch" deviceset="255SB" device=""/>
 <part name="P+1" library="supply1" deviceset="+5V" device=""/>
@@ -16730,8 +16730,8 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="R4" library="rcl" deviceset="R-EU_" device="M0805" value="1k"/>
 <part name="VSS9" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS10" library="supply1" deviceset="VSS" device=""/>
-<part name="R5" library="rcl" deviceset="R-EU_" device="M0805"/>
-<part name="R6" library="rcl" deviceset="R-EU_" device="M0805"/>
+<part name="R5" library="rcl" deviceset="R-EU_" device="M0805" value="2.2k"/>
+<part name="R6" library="rcl" deviceset="R-EU_" device="M0805" value="2.2k"/>
 <part name="VSS11" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS12" library="supply1" deviceset="VSS" device=""/>
 <part name="SUPPLY2" library="supply2" deviceset="VEE" device="" value="SERVO"/>

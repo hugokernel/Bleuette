@@ -16701,7 +16701,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="SRVY" library="con-lstb" deviceset="MA03-1" device=""/>
 <part name="C7" library="rcl" deviceset="C-EU" device="C1206" value="22pf"/>
 <part name="C8" library="rcl" deviceset="C-EU" device="C1206" value="22pf"/>
-<part name="C6" library="rcl" deviceset="C-EU" device="C1206"/>
+<part name="C6" library="rcl" deviceset="C-EU" device="C1206" value="100nf"/>
 <part name="FRAME1" library="frames" deviceset="A3L-LOC" device=""/>
 <part name="U1" library="adafruit" deviceset="ARDUINOR3" device="-DIMENSION"/>
 <part name="VSS15" library="supply1" deviceset="VSS" device=""/>

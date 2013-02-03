@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.2">
+<eagle version="6.4">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -16768,7 +16768,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="SV1" library="con-lstb" deviceset="MA03-2" device=""/>
 <part name="C5" library="rcl" deviceset="CPOL-EU" device="D"/>
 <part name="VSS22" library="supply1" deviceset="VSS" device=""/>
-<part name="RSENSE" library="rcl" deviceset="R-EU_" device="R4527"/>
+<part name="RSENSE" library="rcl" deviceset="R-EU_" device="R4527" value="0.1"/>
 <part name="C4" library="rcl" deviceset="CPOL-EU" device="D"/>
 <part name="VSS23" library="supply1" deviceset="VSS" device=""/>
 <part name="X1" library="con-wago-500" deviceset="W237-102" device=""/>
