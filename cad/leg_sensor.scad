@@ -21,7 +21,7 @@ module sensor_support_top() {
 
         // 1
         translate([0, 0, SUPPORT_HEIGHT - 15]) {
-            cylinder(r = 3.5, h = 15);
+            cylinder(r = 3.7, h = 15);
         }
 
         // 2
@@ -79,9 +79,10 @@ module holes(complete = true) {
 module hole(complete = true) {
     if (complete) {
         cylinder(r = 1.5, h = SUPPORT_HEIGHT);
+        cylinder(r = 2.5, h = 15.5);
+    } else {
+        cylinder(r = 2.5, h = 8.5);
     }
-
-    cylinder(r = 2.5, h = 15.5);
 }
 
 module thread() {
@@ -109,13 +110,13 @@ PI=3.141592;
 
 module base() {
     translate([0, 0, -7.5]) {
-    //thread();
+        //thread();
     }
 
     sensor();
 }
 
-//base();
+base();
 
-sensor_support_top();
+//sensor_support_top();
 
