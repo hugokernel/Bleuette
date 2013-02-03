@@ -37,7 +37,7 @@ module sensor_support_top() {
 }
 
 module sensor() {
-    clear = 0.98;
+    clear = 0.92;
 
     scale([clear, clear, clear]) {
         cylinder(r = 6.5, h = 8.5);
