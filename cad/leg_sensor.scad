@@ -14,6 +14,8 @@ SUPPORT_DIAMETER = 7.7;
 
 SCREW_DIAMETER = 2.7;
 
+DEBUG = true;
+
 module piston() {
     clear = 0.2;
     difference() {
@@ -33,8 +35,21 @@ module piston() {
         holes();
     }
 
-    translate([0, 0, 3]) {
-        torus(9.2);
+    translate([0, 0, 2.5]) {
+        torus(9.4);
+    }
+
+    translate([0, 0, 13.5]) {
+        torus(9.4);
+    }
+}
+
+module foot() {
+    difference() {
+        sphere(r = 24);
+        translate([0, 0, 38]) {
+            cube(size = [100, 100, 100], center = true);
+        }
     }
 }
 
@@ -48,6 +63,10 @@ module external() {
         }
 
         translate([0, 0, 3]) {
+            torus(10.5, 1.2);
+        }
+
+        translate([0, 0, 14]) {
             torus(10.5, 1.2);
         }
     }
@@ -66,11 +85,12 @@ module external() {
         }
 
         translate([0, 0, -7.5]) {
-            cylinder(r = 4, h = 2);
+            cylinder(r = 4, h = 4);
         }
     }
 }
 
+/*
 module sensor() {
     clear = 0.92;
 
@@ -83,6 +103,7 @@ module sensor() {
         torus();
     }
 }
+*/
 
 module torus(size = 5.5, radius = 1) {
     rotate_extrude(convexity = 10, $fn = 100) {
@@ -136,10 +157,14 @@ module thread(diameter, height) {
     t_se=1; // Thread ends style
     t_gp=0; // Gap between nut and bolt threads
 
-    //cylinder(r = diameter / 2, h = height);
-    screw_thread(t_od+t_gp, t_st, t_lf, t_ln, t_rs, t_se);
+    if (DEBUG) {
+        cylinder(r = diameter / 2, h = height);
+    } else {
+        screw_thread(t_od+t_gp, t_st, t_lf, t_ln, t_rs, t_se);
+    }
 }
 
+/*
 module base() {
     translate([0, 0, -7.5]) {
         //thread();
@@ -147,10 +172,33 @@ module base() {
 
     sensor();
 }
+*/
 
-//base();
+/*
+intersection() {
+    translate([0, -25, -15]) {
+        cube(size = [50, 50, 60]);
+    }
+*/
 
-//piston();
+if (0) {
+    piston();
+} else if (1) {
+    external();
+} else {
+    union() {
 
-external();
+        union() {
+            color("RED") piston();
+
+            color("GREEN")
+            translate([0, 0, -1]) {
+                external();
+                translate([0, 0, 12]) {
+                    foot();
+                }
+            }
+        }
+    }
+}
 
