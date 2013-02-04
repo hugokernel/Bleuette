@@ -12,9 +12,11 @@ ARM_WIDTH = 20;
 SUPPORT_HEIGHT = 30;
 SUPPORT_DIAMETER = 7.7;
 
+NUT_DIAMETER = 6;
+NUT_HEIGHT = 1.9;
 SCREW_DIAMETER = 2.7;
 
-DEBUG = true;
+DEBUG = false;
 
 module piston() {
     clear = 0.2;
@@ -46,14 +48,16 @@ module piston() {
 
 module foot() {
     difference() {
-        sphere(r = 24);
+        sphere(r = 25);
         translate([0, 0, 38]) {
             cube(size = [100, 100, 100], center = true);
         }
+
+        cylinder(r = 12.5, h = 17);
     }
 }
 
-module external() {
+module external(filled = false) {
     clear = 0.3;
     difference() {
         cylinder(r = 12.5, h = 17);
@@ -76,16 +80,18 @@ module external() {
             thread(25, 7.5);
         }
 
-        translate([0, 0, -7.6]) {
-            cylinder(r = 1.6, h = 20);
-        }
+        if (!filled) {
+            translate([0, 0, -7.6]) {
+                cylinder(r = SCREW_DIAMETER / 2, h = 20);
+            }
 
-        translate([0, 0, -2]) {
-            cylinder(r = 2.5, h = 6, $fn = 6);
-        }
+            translate([0, 0, -NUT_HEIGHT]) {
+                cylinder(r = NUT_DIAMETER / 2, h = NUT_HEIGHT, $fn = 6);
+            }
 
-        translate([0, 0, -7.5]) {
-            cylinder(r = 4, h = 4);
+            translate([0, 0, -7.5]) {
+                cylinder(r = 4, h = 4);
+            }
         }
     }
 }
@@ -174,19 +180,26 @@ module base() {
 }
 */
 
-/*
-intersection() {
-    translate([0, -25, -15]) {
-        cube(size = [50, 50, 60]);
-    }
-*/
-
 if (0) {
     piston();
-} else if (1) {
+} else if (0) {
     external();
+} else if (0) {
+    difference() {
+        translate([0, 0, 12]) {
+            foot();
+        }
+
+        external(true);
+    }
 } else {
-    union() {
+
+    intersection() {
+        translate([0, -25, -15]) {
+            cube(size = [50, 50, 60]);
+        }
+
+//    union() {
 
         union() {
             color("RED") piston();
