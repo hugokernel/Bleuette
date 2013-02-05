@@ -21,28 +21,32 @@ DEBUG = false;
 module piston() {
     clear = 0.2;
     difference() {
-        cylinder(r = ARMS_SPACING / 2, h = SUPPORT_HEIGHT);
+        union() {
+            difference() {
+                cylinder(r = ARMS_SPACING / 2, h = SUPPORT_HEIGHT);
 
-        // 1
-        translate([0, 0, SUPPORT_HEIGHT - 20]) {
-            cylinder(r = 3.7, h = 20);
+                // 1
+                translate([0, 0, SUPPORT_HEIGHT - 17]) {
+                    cylinder(r = 3.7, h = 17);
+                }
+
+                // 2
+                cylinder(r = 2.5, h = SUPPORT_HEIGHT);
+
+                // 3
+                cylinder(r = 6.5, h = 11.5);
+            }
+
+            translate([0, 0, 2.5]) {
+                torus(9.3);
+            }
+
+            translate([0, 0, 13.5]) {
+                torus(9.3);
+            }
         }
 
-        // 2
-        cylinder(r = 2.5, h = SUPPORT_HEIGHT);
-
-        // 3
-        cylinder(r = 6.5, h = 8.5);
-
         holes();
-    }
-
-    translate([0, 0, 2.5]) {
-        torus(9.4);
-    }
-
-    translate([0, 0, 13.5]) {
-        torus(9.4);
     }
 }
 
@@ -57,7 +61,7 @@ module foot() {
     }
 }
 
-module external(filled = false) {
+module external() {
     clear = 0.3;
     difference() {
         cylinder(r = 12.5, h = 17);
@@ -75,25 +79,11 @@ module external(filled = false) {
         }
     }
 
-    difference() {
-        translate([0, 0, -7.5]) {
-            thread(25, 7.5);
-        }
-
-        if (!filled) {
-            translate([0, 0, -7.6]) {
-                cylinder(r = SCREW_DIAMETER / 2, h = 20);
-            }
-
-            translate([0, 0, -NUT_HEIGHT]) {
-                cylinder(r = NUT_DIAMETER / 2, h = NUT_HEIGHT, $fn = 6);
-            }
-
-            translate([0, 0, -7.5]) {
-                cylinder(r = 4, h = 4);
-            }
-        }
+    translate([0, 0, -7.5]) {
+        thread(25, 7.5);
     }
+
+    cylinder(r = 3, h = 7);
 }
 
 /*
@@ -119,6 +109,15 @@ module torus(size = 5.5, radius = 1) {
     }
 }
 
+module hole(complete = true) {
+    if (complete) {
+        cylinder(r = 1.6, h = SUPPORT_HEIGHT);
+        cylinder(r = 2.7, h = 15.5);
+    } else {
+        cylinder(r = 2.7, h = 8.5);
+    }
+}
+
 module holes(complete = true) {
     // Holes
     translate([0, 6.3, 0]) {
@@ -135,15 +134,6 @@ module holes(complete = true) {
 
     translate([-6.3, 0, 0]) {
         hole(complete);
-    }
-}
-
-module hole(complete = true) {
-    if (complete) {
-        cylinder(r = 1.6, h = SUPPORT_HEIGHT);
-        cylinder(r = 2.7, h = 15.5);
-    } else {
-        cylinder(r = 2.7, h = 8.5);
     }
 }
 
@@ -182,7 +172,7 @@ module base() {
 
 if (0) {
     piston();
-} else if (0) {
+} else if (1) {
     external();
 } else if (0) {
     difference() {
