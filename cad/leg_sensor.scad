@@ -51,14 +51,34 @@ module piston() {
 }
 
 module foot() {
+
+    thread_height = 7.5;
+    diameter = 25;
+
     difference() {
-        sphere(r = 25);
-        translate([0, 0, 38]) {
-            cube(size = [100, 100, 100], center = true);
+        translate([0, 0, 12]) {
+
+            difference() {
+                sphere(r = 25, $fn = 20);
+                translate([0, 0, 38]) {
+                    cube(size = [100, 100, 100], center = true);
+                }
+
+                cylinder(r = 12.5, h = 17);
+            }
+
         }
 
-        cylinder(r = 12.5, h = 17);
+        translate([0, 0, -7.5]) {
+            cylinder(r = diameter / 2, h = thread_height);
+        }
     }
+
+    // Thread
+    translate([0, 0, - thread_height]) {
+        nut(diameter, thread_height);
+    }
+
 }
 
 module external() {
@@ -85,21 +105,6 @@ module external() {
 
     cylinder(r = 3, h = 7);
 }
-
-/*
-module sensor() {
-    clear = 0.92;
-
-    scale([clear, clear, clear]) {
-        cylinder(r = 6.5, h = 8.5);
-        holes(false);
-    }
-
-    translate([0, 0, 8.5 / 2]) {
-        torus();
-    }
-}
-*/
 
 module torus(size = 5.5, radius = 1) {
     rotate_extrude(convexity = 10, $fn = 100) {
@@ -143,8 +148,6 @@ module thread(diameter, height) {
     $fn = 36;
     PI=3.141592;
 
-    /* Screw thread parameters
-    */
     t_od=diameter; // Thread outer diameter
     t_st=2.5; // Step/traveling per turn
     t_lf=55; // Step angle degrees
@@ -160,28 +163,43 @@ module thread(diameter, height) {
     }
 }
 
-/*
-module base() {
-    translate([0, 0, -7.5]) {
-        //thread();
-    }
+module nut(diameter, height)
+{
+    n_df=25;    // Distance between flats
+    n_hg=height;    // Thickness/Height
+    n_od=diameter;    // Outer diameter of the bolt to match
+    n_st=2.5;   // Step height
+    n_lf=55;    // Step Degrees
+    n_rs=0.5;   // Resolution
+    n_gp=0.07;   // Gap between nut and bolt
 
-    sensor();
+    hex_nut(n_df, n_hg, n_st, n_lf, n_od + n_gp, n_rs);
 }
-*/
+
 
 if (0) {
     piston();
-} else if (1) {
-    external();
 } else if (0) {
+    external();
+} else if (1) {
+    foot();
+    /*
     difference() {
         translate([0, 0, 12]) {
             foot();
         }
 
-        external(true);
+        translate([0, 0, -7.5]) {
+            cylinder(r = diameter / 2, h = 7.5);
+        }
+//        external(true);
     }
+
+    translate([0, 0, -7.5]) {
+        nut(diameter, 7.5);
+    }
+    */
+} else if (1) {
 } else {
 
     intersection() {
@@ -192,13 +210,18 @@ if (0) {
 //    union() {
 
         union() {
-            color("RED") piston();
+            //color("RED") piston();
 
             color("GREEN")
             translate([0, 0, -1]) {
                 external();
+                /*
                 translate([0, 0, 12]) {
-                    foot();
+                    //foot();
+                }
+                */
+                translate([0, 0, -7.5]) {
+                    nut(25, 7.5);
                 }
             }
         }
