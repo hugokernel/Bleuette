@@ -40,11 +40,11 @@ module piston() {
             }
 
             translate([0, 0, 2.5]) {
-                torus(9.2);
+                torus(9.3);
             }
 
             translate([0, 0, 13.5]) {
-                torus(9.2);
+                torus(9.3);
             }
         }
 
@@ -78,7 +78,7 @@ module foot() {
 }
 
 module external() {
-    clear = 0.3;
+    clear = 0.4;
     difference() {
         cylinder(r = EXTERNAL_DIAMETER / 2, h = 17);
 
@@ -142,14 +142,14 @@ module holes(complete = true) {
     }
 }
 
-if (1) {
+if (0) {
     piston();
-} else if (1) {
+} else if (0) {
     external();
 } else if (1) {
 
     difference() {
-        translate([0, 0, 5]) {
+        translate([0, 0, 4]) {
             foot();
         }
 
@@ -173,7 +173,7 @@ if (1) {
             color("GREEN")
             translate([0, 0, -1]) {
                 external();
-                translate([0, 0, 5]) {
+                translate([0, 0, 4]) {
                     foot();
                 }
             }
