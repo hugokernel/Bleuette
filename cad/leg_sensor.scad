@@ -141,9 +141,9 @@ module holes(complete = true) {
     }
 }
 
-if (0) {
+if (1) {
     piston();
-} else if (0) {
+} else if (1) {
     external();
 } else if (1) {
 
