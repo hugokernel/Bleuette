@@ -21,6 +21,7 @@ EXTERNAL_DIAMETER = 25;
 DEBUG = false;
 
 module piston() {
+    button_clear = 0.4;
     difference() {
         union() {
             difference() {
@@ -28,7 +29,7 @@ module piston() {
 
                 // 1
                 translate([0, 0, SUPPORT_HEIGHT - 17]) {
-                    cylinder(r = 3.7, h = 17);
+                    cylinder(r = 3.5 + button_clear, h = 17);
                 }
 
                 // 2
@@ -39,11 +40,11 @@ module piston() {
             }
 
             translate([0, 0, 2.5]) {
-                torus(9.3);
+                torus(9.2);
             }
 
             translate([0, 0, 13.5]) {
-                torus(9.3);
+                torus(9.2);
             }
         }
 
