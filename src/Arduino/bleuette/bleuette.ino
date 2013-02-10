@@ -68,22 +68,12 @@ Status waitButton(unsigned int i) {
 
 void setup()
 {
-    //Serial.begin(9600);
+    Serial.begin(9600);
 
     bleuette = Bleuette();
     bleuette.init();
 
     //Sequencer sequencer = Sequencer(bleuette.servo);
-
-    // initialize timer1
-    noInterrupts();           // disable all interrupts
-    TCCR1A = 0;
-    TCCR1B = 0;
-
-    TCNT1 = 34286;            // preload timer 65536-16MHz/256/2Hz
-    TCCR1B |= (1 << CS12);    // 256 prescaler
-    TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
-    interrupts();             // enable all interrupts
 
 
     // Setup callbacks for SerialCommand commands
@@ -102,31 +92,25 @@ void setup()
     sCmd.addCommand("start",    cmd_start);
     sCmd.addCommand("clear",    cmd_clear);
 
-    sCmd.addCommand("test",     cmd_test);
-    sCmd.addCommand("test2",     cmd_test2);
+    sCmd.addCommand("pos",      cmd_pos);
 
-    while (!Serial) ;
-    PLN("Ready !");
+    // initialize timer1
+    noInterrupts();           // disable all interrupts
+    TCCR1A = 0;
+    TCCR1B = 0;
+
+    TCNT1 = 34286;            // preload timer 65536-16MHz/256/2Hz
+    TCCR1B |= (1 << CS12);    // 256 prescaler
+    TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
+    interrupts();             // enable all interrupts
+
+//    while (!Serial) ;
+//    PLN("Ready !");
 }
 
 ISR(TIMER1_OVF_vect)
 {
-    static unsigned int current, voltage = 0;
-    unsigned int ccurrent, cvoltage = 0;
-
-    bleuette.ledToggle(LED1);
-
-    ccurrent = bleuette.readCurrent();
-    cvoltage = bleuette.readVoltage();
-
-    if (ccurrent > current + 10) {
-//        echo("! V=%i (%i); I=%i\n", cvoltage, R2 / (R1 + R2) * MAX_VOLTAGE / (1024 / cvoltage), ccurrent);
-
-        //P("V=");P(cvoltage);P("; I=");PLN(ccurrent);
-    }
-
-    current = ccurrent;
-    current = ccurrent;
+    bleuette.monitor();
 
     //TCNT1 = 0;     // reset timer ct to 130 out of 255
     //TCNT1 = 34286;            // preload timer
@@ -135,6 +119,7 @@ ISR(TIMER1_OVF_vect)
 }
 
 void loop() {
+    bleuette.ledToggle(LED0);
     sCmd.readSerial();
     delay(1);
 }
@@ -152,35 +137,25 @@ void cmd_init() {
  */
 void cmd_info() {
     PLN("Info !!");
-    unsigned int current = bleuette.readCurrent();
-    unsigned int voltage = bleuette.readVoltage();
-    //echo("Voltage=%i (%f); Current=%i\n", voltage, VOLTAGE(voltage), current);
 
-    //PLN(4.5 / (1024 / voltage), 10);
-
-    //echo("Voltage=%i (%i); Current=%i\n", voltage, 4 / (1024 / voltage), current);
-    P("V=");
-    P(voltage);
-    P(" (");
-    P(bleuette.getVoltage());
-    P("); I=");
-    P(current);
-    P(" (");
-    P(bleuette.getCurrent());
-    P(")");
+    P("Voltage : ");
+    PLN(bleuette.getVoltage());
+    P("Current : ");
+    P(bleuette.getCurrentPercent());
+    PLN("%");
 
     P("Button 0 ");
     if (!bleuette.getButtonState(BLEUETTE_BUTTON0)) {
-        PLN(" pressed !");
+        PLN("pressed !");
     } else {
-        PLN(" released !");
+        PLN("released !");
     }
 
-    P("Button 1");
+    P("Button 1 ");
     if (!bleuette.getButtonState(BLEUETTE_BUTTON1)) {
-        PLN(" pressed !");
+        PLN("pressed !");
     } else {
-        PLN(" released !");
+        PLN("released !");
     }
 }
 
@@ -209,7 +184,7 @@ void cmd_debug() {
  */
 void cmd_pause() {
     PLN("Pause");
-    bleuette.sequencer._servo.pause();
+    bleuette.servo.pause();
 }
 
 /**
@@ -217,7 +192,7 @@ void cmd_pause() {
  */
 void cmd_resume() {
     PLN("Resume");
-    bleuette.sequencer._servo.resume();
+    bleuette.servo.resume();
 }
 
 /**
@@ -247,25 +222,25 @@ void cmd_set() {
     P("Set servo : ");
     P(servo);
     P(" (");
-    P(bleuette.sequencer._servo.get(servo));
+    P(bleuette.servo.get(servo));
     P(")");
     P(", position : ");
     PLN(value[0]);
 
 
-    P("Before value :");
-    PLN(bleuette.sequencer._servo.getPosition(servo));
+    //P("Before value :");
+    //PLN(bleuette.servo.getPosition(servo));
 
-    bleuette.sequencer._servo.setValues(
-        bleuette.sequencer._servo.get(servo),
+    bleuette.servo.setValues(
+        bleuette.servo.get(servo),
         value,
         1
     );
 
-    bleuette.sequencer._servo.sendValues();
+    bleuette.servo.sendValues();
 
-    P("After value :");
-    PLN(bleuette.sequencer._servo.getPosition(servo));
+    //P("After value :");
+    //PLN(bleuette.servo.getPosition(servo));
 }
 
 /**
@@ -348,8 +323,6 @@ void cmd_seq() {
             bleuette.sequencer.backward(sequences[seq]);
         }
     }
-
-    cmd_test2();
 }
 
 /**
@@ -379,23 +352,17 @@ void cmd_push() {
     bleuette.sequencer.push(&sequences[seq]);
 }
 
-void cmd_test() {
-    PLN("Test !");
+void cmd_pos() {
+    PLN("Get current servo position !");
+
+    unsigned char buffer[SERVO_COUNT];
+
+    bleuette.servo.getPositions(*buffer);
 
     for (int i = 0; i < SERVO_COUNT; i++) {
         P(i);
         P("\t: ");
-        PLN(bleuette.sequencer._servo._values[i]);
-    }
-}
-
-void cmd_test2() {
-    PLN("Test2 !");
-
-    for (int i = 0; i < SERVO_COUNT; i++) {
-        P(i);
-        P("\t: ");
-        PLN(bleuette.sequencer._servo._current_values[i]);
+        PLN(buffer[i]);
     }
 }
 

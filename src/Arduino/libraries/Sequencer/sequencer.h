@@ -78,8 +78,8 @@ private:
     Status play(struct sequence_t, unsigned int);
 
     unsigned long _delay;
-public:
     ServoController _servo;
+public:
     Sequencer();
     Sequencer(ServoController);
 

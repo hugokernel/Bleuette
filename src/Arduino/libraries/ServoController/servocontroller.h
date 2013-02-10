@@ -35,6 +35,8 @@
 
 #include "HardwareSerial.h"
 
+#define SERVO_DEBUG 0
+
 extern HardwareSerial Serial1;
 
 #define CHECK_BIT(var, pos) (var & (1 << pos))
@@ -88,18 +90,19 @@ private:
     HardwareSerial _serial;
     int _last_status_code;
 
-
     void write(unsigned char);
 
-public:
-    unsigned char _values[SERVO_COUNT];
+    unsigned char _buffer[SERVO_COUNT];
     unsigned char _current_values[SERVO_COUNT];
+
+public:
     ServoController();
     ServoController(HardwareSerial &);
 
     inline void setValue(unsigned char, unsigned char);
 
     unsigned char getPosition(unsigned char);
+    void getPositions(unsigned char &);
 
     void setValues(unsigned long, unsigned char *, unsigned char);
     void sendValues();
@@ -122,7 +125,7 @@ ServoController::ServoController() :
     _serial(Serial1)
 {
     _last_status_code = 0;
-    memset(&_values, 0x00, sizeof(_values));
+    memset(&_buffer, 0x00, sizeof(_buffer));
     memset(&_current_values, 0x00, sizeof(_current_values));
 
     _serial.begin(9600);
@@ -133,7 +136,7 @@ ServoController::ServoController(HardwareSerial &serial) :
 {
     _last_status_code = 0;
 
-    memset(&_values, 0x00, sizeof(_values));
+    memset(&_buffer, 0x00, sizeof(_buffer));
     memset(&_current_values, 0x00, sizeof(_current_values));
 };
 
@@ -200,7 +203,9 @@ bool ServoController::command(SERVO_CMD command, unsigned char data[], unsigned 
 
         control = 0;
         for (c = 0; c < size; c++) {
+#if SERVO_DEBUG
             PLN(data[c]);
+#endif
             write(data[c]);
 
             control += data[c];
@@ -211,7 +216,7 @@ bool ServoController::command(SERVO_CMD command, unsigned char data[], unsigned 
 
         _last_status_code = getResponse();
         if (_last_status_code == SERVO_ACK) {
-            PLN("MEMCPY!");
+            //PLN("MEMCPY!");
             memcpy(&_current_values, data, SERVO_COUNT);
             break;
         }
@@ -255,13 +260,17 @@ bool ServoController::clear()
 
 inline void ServoController::setValue(unsigned char index, unsigned char value)
 {
-    _values[index] = value;
+    _buffer[index] = value;
 }
 
 unsigned char ServoController::getPosition(unsigned char servo) {
     if (servo >= 0 && servo <= SERVO_COUNT) {
         return _current_values[servo];
     }
+}
+
+void ServoController::getPositions(unsigned char &buf) {
+    memcpy(&buf, _current_values, SERVO_COUNT);
 }
 
 /**
@@ -281,7 +290,7 @@ void ServoController::setValues(unsigned long servos, unsigned char * values, un
     for (b = 0, v = 0; v < count; b++) {
         if (CHECK_BIT(servos, b)) {
             // Todo: replace with setValue
-            //_values[b] = values[v++];
+            //_buffer[b] = values[v++];
             setValue(b, values[v++]);
         }
     }
@@ -289,7 +298,7 @@ void ServoController::setValues(unsigned long servos, unsigned char * values, un
 
 void ServoController::sendValues()
 {
-    command(SERVO_CMD_SET, _values, sizeof(_values));
+    command(SERVO_CMD_SET, _buffer, sizeof(_buffer));
 }
 
 #endif

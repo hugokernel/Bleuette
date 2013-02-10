@@ -4,7 +4,7 @@ motion_t motion_standby[] = {
     {
         0,
         {
-            HMID,   HMID,   HMID,   HMID,   HMID,   HMID,
+            MID,   MID,   MID,   MID,   MID,   MID,
             UP,     UP,     UP,     UP,     UP,     UP
         },
         NULL
@@ -76,7 +76,7 @@ motion_t motion_pushup[] = {
     {
         DELAY_MIN,
         {
-            FRONT,  FRONT,  HMID,   HMID,   BACK,   BACK,
+            FRONT,  FRONT,  MID,   MID,   BACK,   BACK,
             UP,     UP,     UP,     UP,     UP,     UP
         },
         NULL
@@ -356,11 +356,11 @@ sequence_t seq_left_turn = {
 
 
 // Linuxfr
-motion_t motion_linuxfr[] = {
+ motion_t motion_linuxfr[] = {
     {
         DELAY_MIN,
         {
-            FRONT, BACK, BACK, FRONT, HMID, HMID,
+            FRONT, BACK, BACK, FRONT, MID, MID,
             DOWN, DOWN, DOWN, DOWN, UP, DOWN
         },
         NULL
@@ -368,7 +368,7 @@ motion_t motion_linuxfr[] = {
     {
         DELAY_MIN,
         {
-            HMID, HMID, HMID, HMID, FRONT, BACK,
+            MID, MID, MID, MID, FRONT, BACK,
             DOWN, UP, UP, DOWN, DOWN, DOWN
         },
         NULL
@@ -376,7 +376,7 @@ motion_t motion_linuxfr[] = {
     {
         DELAY_MIN,
         {
-            BACK, FRONT, FRONT, BACK, HMID, HMID,
+            BACK, FRONT, FRONT, BACK, MID, MID,
             DOWN, DOWN, DOWN, DOWN, DOWN, UP
         },
         NULL
@@ -384,12 +384,75 @@ motion_t motion_linuxfr[] = {
     {
         DELAY_MIN,
         {
-            HMID, HMID, HMID, HMID, BACK, FRONT,
+            MID, MID, MID, MID, BACK, FRONT,
             UP, DOWN, DOWN, UP, DOWN, DOWN
         },
         NULL
     }
 };
+
+/*
+motion_t motion_linuxfr[] = {
+    {
+        DELAY_MIN,
+        {
+            __, __, __, __, __, __,
+            DOWN, DOWN, DOWN, DOWN, DOWN, DOWN
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            __, __, __, __, __, __,
+            __, __, __, __, UP, __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            FRONT, BACK, BACK, FRONT, MID, MID,
+            __, __, __, __, __, __
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            MID, MID, MID, MID, FRONT, BACK,
+            DOWN, UP, UP, DOWN, DOWN, DOWN
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            MID, MID, MID, MID, FRONT, BACK,
+            DOWN, UP, UP, DOWN, DOWN, DOWN
+        },
+        NULL
+    },
+
+
+    {
+        DELAY_MIN,
+        {
+            BACK, FRONT, FRONT, BACK, MID, MID,
+            DOWN, DOWN, DOWN, DOWN, DOWN, UP
+        },
+        NULL
+    },
+    {
+        DELAY_MIN,
+        {
+            MID, MID, MID, MID, BACK, FRONT,
+            UP, DOWN, DOWN, UP, DOWN, DOWN
+        },
+        NULL
+    }
+};
+*/
 
 sequence_t seq_linuxfr = {
     "Linuxfr",
