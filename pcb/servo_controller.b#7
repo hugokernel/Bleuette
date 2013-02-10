@@ -128,7 +128,7 @@
 <text x="54.61" y="31.75" size="1.778" layer="26" rot="MR0">Servo controller</text>
 <text x="9.525" y="42.2275" size="2.54" layer="25">+</text>
 <text x="9.8425" y="37.1475" size="2.54" layer="25">-</text>
-<text x="66.675" y="10.795" size="1.27" layer="25" rot="R90">Rev. 1.2.0</text>
+<text x="66.675" y="11.43" size="1.27" layer="25" rot="R90">Rev. 1.2.0</text>
 </plain>
 <libraries>
 <library name="microchip">
@@ -4912,6 +4912,7 @@ design rules under a new name.</description>
 <wire x1="43.18" y1="13.97" x2="42.8625" y2="13.6525" width="0.6096" layer="1"/>
 <wire x1="42.8625" y1="13.6525" x2="41.0875" y2="13.6525" width="0.6096" layer="1"/>
 <wire x1="41.0875" y1="13.6525" x2="40.9575" y2="13.5225" width="0.6096" layer="1"/>
+<via x="53.34" y="8.255" extent="1-16" drill="0.6" diameter="1.9304"/>
 <wire x1="45.24375" y1="17.93875" x2="45.24375" y2="18.33625" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$25">
@@ -5046,9 +5047,7 @@ design rules under a new name.</description>
 <wire x1="3.81" y1="26.035" x2="4.1275" y2="25.7175" width="0.6096" layer="1"/>
 <wire x1="4.1275" y1="25.7175" x2="5.3213" y2="25.7175" width="0.6096" layer="1"/>
 <contactref element="SV1" pad="1"/>
-<wire x1="38.1" y1="2.54" x2="38.1" y2="8.255" width="0.6096" layer="16"/>
-<wire x1="38.1" y1="8.255" x2="39.37" y2="9.525" width="0.6096" layer="16"/>
-<wire x1="39.37" y1="9.525" x2="50.8" y2="9.525" width="0.6096" layer="16"/>
+<wire x1="37.7825" y1="9.525" x2="50.8" y2="9.525" width="0.6096" layer="16"/>
 <wire x1="50.8" y1="9.525" x2="53.975" y2="12.7" width="0.6096" layer="16"/>
 <wire x1="53.975" y1="12.7" x2="53.975" y2="13.97" width="0.6096" layer="16"/>
 <wire x1="53.975" y1="13.97" x2="55.245" y2="15.24" width="0.6096" layer="16"/>
@@ -5110,6 +5109,9 @@ design rules under a new name.</description>
 <wire x1="33.9725" y1="13.335" x2="33.9725" y2="15.2425" width="0.6096" layer="1"/>
 <wire x1="33.975" y1="15.24" x2="36.5125" y2="15.24" width="0.6096" layer="1"/>
 <wire x1="40.9575" y1="16.3225" x2="40.9575" y2="16.8275" width="0.4064" layer="1"/>
+<wire x1="37.7825" y1="9.525" x2="36.5125" y2="8.255" width="0.6096" layer="16"/>
+<wire x1="36.5125" y1="8.255" x2="39.4275" y2="8.255" width="0.6096" layer="1"/>
+<via x="36.5125" y="8.255" extent="1-16" drill="0.6" diameter="1.9304"/>
 </signal>
 <signal name="VDD">
 <contactref element="C1" pad="1"/>
@@ -5450,6 +5452,13 @@ design rules under a new name.</description>
 <wire x1="33.02" y1="2.54" x2="33.02" y2="4.6355" width="0.6096" layer="16"/>
 </signal>
 </signals>
+<errors>
+<approved hash="19,16,27adb6483183dec8"/>
+<approved hash="19,16,70a3109346ab16ba"/>
+<approved hash="19,16,37e3fac7f80d3529"/>
+<approved hash="19,16,34a347dfa6568258"/>
+<approved hash="19,16,747eb34f53b550da"/>
+</errors>
 </board>
 </drawing>
 </eagle>
