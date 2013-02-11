@@ -17476,7 +17476,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="SUPPLY1" library="supply2" deviceset="VEE" device="" value="SERVO"/>
 <part name="SUPPLY3" library="supply2" deviceset="VEE" device="" value="SERVO"/>
 <part name="SUPPLY4" library="supply2" deviceset="VEE" device="" value="SERVO"/>
-<part name="IC3" library="AWJLEagleLib" deviceset="MAX4173" device="A"/>
+<part name="IC3" library="AWJLEagleLib" deviceset="MAX4173" device="A" value="MAX4173FESA+"/>
 <part name="VSS14" library="supply1" deviceset="VSS" device=""/>
 <part name="VDD2" library="supply1" deviceset="VDD" device="" value="LIPO"/>
 <part name="RESET" library="testpad" deviceset="TP" device="TP20R"/>

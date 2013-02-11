@@ -17557,6 +17557,8 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="VSS25" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS26" library="supply1" deviceset="VSS" device=""/>
 <part name="SJ1" library="jumper" deviceset="SJ" device=""/>
+<part name="C9" library="rcl" deviceset="CPOL-EU" device="F"/>
+<part name="VSS27" library="supply1" deviceset="VSS" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -17735,6 +17737,8 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <instance part="VSS25" gate="G$1" x="55.88" y="177.8"/>
 <instance part="VSS26" gate="G$1" x="228.6" y="180.34"/>
 <instance part="SJ1" gate="1" x="332.74" y="129.54" rot="R90"/>
+<instance part="C9" gate="G$1" x="119.38" y="198.12"/>
+<instance part="VSS27" gate="G$1" x="119.38" y="177.8"/>
 </instances>
 <busses>
 </busses>
@@ -18074,6 +18078,11 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <pinref part="VSS22" gate="G$1" pin="VSS"/>
 <wire x1="60.96" y1="22.86" x2="60.96" y2="25.4" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="C9" gate="G$1" pin="-"/>
+<pinref part="VSS27" gate="G$1" pin="VSS"/>
+<wire x1="119.38" y1="180.34" x2="119.38" y2="193.04" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="N$25" class="0">
 <segment>
@@ -18209,9 +18218,13 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 </segment>
 <segment>
 <wire x1="121.92" y1="213.36" x2="121.92" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="210.82" x2="119.38" y2="210.82" width="0.1524" layer="91"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
 <pinref part="D1" gate="G$1" pin="C"/>
-<wire x1="116.84" y1="210.82" x2="121.92" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="116.84" y1="210.82" x2="119.38" y2="210.82" width="0.1524" layer="91"/>
+<pinref part="C9" gate="G$1" pin="+"/>
+<wire x1="119.38" y1="210.82" x2="119.38" y2="200.66" width="0.1524" layer="91"/>
+<junction x="119.38" y="210.82"/>
 </segment>
 <segment>
 <pinref part="R5" gate="G$1" pin="2"/>

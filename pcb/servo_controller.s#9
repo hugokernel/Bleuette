@@ -17624,10 +17624,10 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <instance part="VSS24" gate="G$1" x="340.36" y="127"/>
 <instance part="R7" gate="G$1" x="83.82" y="93.98" rot="R90"/>
 <instance part="P+9" gate="1" x="83.82" y="104.14"/>
-<instance part="D2" gate="G$1" x="238.76" y="187.96" rot="R90"/>
+<instance part="D2" gate="G$1" x="228.6" y="187.96" rot="R90"/>
 <instance part="D3" gate="G$1" x="55.88" y="187.96" rot="R90"/>
 <instance part="VSS25" gate="G$1" x="55.88" y="177.8"/>
-<instance part="VSS26" gate="G$1" x="238.76" y="180.34"/>
+<instance part="VSS26" gate="G$1" x="228.6" y="180.34"/>
 </instances>
 <busses>
 </busses>
@@ -17955,7 +17955,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <segment>
 <pinref part="D2" gate="G$1" pin="A"/>
 <pinref part="VSS26" gate="G$1" pin="VSS"/>
-<wire x1="238.76" y1="182.88" x2="238.76" y2="185.42" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="182.88" x2="228.6" y2="185.42" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C4" gate="G$1" pin="-"/>
@@ -18373,13 +18373,13 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <net name="SERVO_CURRENT" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="VOUT"/>
-<wire x1="226.06" y1="193.04" x2="238.76" y2="193.04" width="0.1524" layer="91"/>
-<junction x="243.84" y="193.04"/>
-<label x="246.38" y="193.04" size="1.778" layer="95"/>
+<wire x1="226.06" y1="193.04" x2="228.6" y2="193.04" width="0.1524" layer="91"/>
+<junction x="233.68" y="193.04"/>
+<label x="236.22" y="193.04" size="1.778" layer="95"/>
 <pinref part="D2" gate="G$1" pin="C"/>
-<wire x1="238.76" y1="193.04" x2="243.84" y2="193.04" width="0.1524" layer="91"/>
-<wire x1="238.76" y1="193.04" x2="238.76" y2="190.5" width="0.1524" layer="91"/>
-<junction x="238.76" y="193.04"/>
+<wire x1="228.6" y1="193.04" x2="233.68" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="193.04" x2="228.6" y2="190.5" width="0.1524" layer="91"/>
+<junction x="228.6" y="193.04"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="A1"/>

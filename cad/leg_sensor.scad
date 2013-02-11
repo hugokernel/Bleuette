@@ -146,7 +146,7 @@ if (0) {
     piston();
 } else if (0) {
     external();
-} else if (1) {
+} else if (0) {
 
     difference() {
         translate([0, 0, 4]) {
@@ -162,22 +162,24 @@ if (0) {
 
 } else {
 
+    /*
     intersection() {
         translate([0, -25, -25]) {
             cube(size = [50, 50, 80]);
         }
-
+*/
         union() {
-            color("RED") piston();
+            color("WHITE") piston();
 
-            color("GREEN")
             translate([0, 0, -1]) {
+                color("GREY")
                 external();
                 translate([0, 0, 4]) {
+                    color("GREY")
                     foot();
                 }
             }
         }
-    }
+    //}
 }
 
