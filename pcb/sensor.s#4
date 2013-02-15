@@ -7173,8 +7173,8 @@ FAIRCHILD FDS5680.pdf</description>
 </instance>
 <instance part="IN" gate="-1" x="27.94" y="63.5"/>
 <instance part="IN" gate="-2" x="27.94" y="58.42"/>
-<instance part="OUT" gate="-1" x="27.94" y="35.56"/>
-<instance part="OUT" gate="-2" x="27.94" y="30.48"/>
+<instance part="OUT" gate="-1" x="27.94" y="30.48"/>
+<instance part="OUT" gate="-2" x="27.94" y="35.56"/>
 <instance part="VSS10" gate="G$1" x="101.6" y="45.72"/>
 <instance part="VSS11" gate="G$1" x="35.56" y="53.34"/>
 <instance part="Q2" gate="G$1" x="50.8" y="33.02" rot="R180"/>
@@ -7513,13 +7513,6 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="200.66" y="157.48"/>
 </segment>
 </net>
-<net name="N$10" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="D12"/>
-<wire x1="203.2" y1="154.94" x2="203.2" y2="157.48" width="0.1524" layer="91"/>
-<junction x="203.2" y="157.48"/>
-</segment>
-</net>
 <net name="SDA" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="SDA"/>
@@ -7576,7 +7569,7 @@ FAIRCHILD FDS5680.pdf</description>
 <label x="218.44" y="160.02" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
-<net name="N$14" class="0">
+<net name="POUT" class="0">
 <segment>
 <pinref part="Q2" gate="G$1" pin="G"/>
 <wire x1="55.88" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
@@ -7585,6 +7578,12 @@ FAIRCHILD FDS5680.pdf</description>
 <wire x1="58.42" y1="35.56" x2="58.42" y2="33.02" width="0.1524" layer="91"/>
 <junction x="58.42" y="35.56"/>
 <junction x="63.5" y="35.56"/>
+<label x="71.12" y="38.1" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$1" pin="D12"/>
+<wire x1="203.2" y1="154.94" x2="203.2" y2="157.48" width="0.1524" layer="91"/>
+<junction x="203.2" y="157.48"/>
 </segment>
 </net>
 <net name="+15V" class="0">
@@ -7597,14 +7596,14 @@ FAIRCHILD FDS5680.pdf</description>
 <segment>
 <pinref part="P+9" gate="1" pin="+15V"/>
 <wire x1="35.56" y1="38.1" x2="35.56" y2="35.56" width="0.1524" layer="91"/>
-<pinref part="OUT" gate="-1" pin="KL"/>
+<pinref part="OUT" gate="-2" pin="KL"/>
 <wire x1="35.56" y1="35.56" x2="33.02" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$13" class="0">
+<net name="N$10" class="0">
 <segment>
-<pinref part="OUT" gate="-2" pin="KL"/>
 <pinref part="Q2" gate="G$1" pin="D"/>
+<pinref part="OUT" gate="-1" pin="KL"/>
 <wire x1="33.02" y1="30.48" x2="45.72" y2="30.48" width="0.1524" layer="91"/>
 </segment>
 </net>

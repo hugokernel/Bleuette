@@ -7513,13 +7513,6 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="200.66" y="157.48"/>
 </segment>
 </net>
-<net name="N$10" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="D12"/>
-<wire x1="203.2" y1="154.94" x2="203.2" y2="157.48" width="0.1524" layer="91"/>
-<junction x="203.2" y="157.48"/>
-</segment>
-</net>
 <net name="SDA" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="SDA"/>
@@ -7586,6 +7579,11 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="58.42" y="35.56"/>
 <junction x="63.5" y="35.56"/>
 <label x="71.12" y="38.1" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$1" pin="D12"/>
+<wire x1="203.2" y1="154.94" x2="203.2" y2="157.48" width="0.1524" layer="91"/>
+<junction x="203.2" y="157.48"/>
 </segment>
 </net>
 <net name="+15V" class="0">
