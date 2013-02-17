@@ -1,0 +1,35 @@
+(.../Documents/elec/Eagle/ulp/pcb-gcode.ulp)
+(Copyright 2005 - 2009 by John Johnson)
+(See readme.txt for licensing terms.)
+(This file generated from the board:)
+(.../GitHub/Bleuette/pcb/sensor.brd)
+(Current profile is .../elec/Eagle/ulp/profiles/emc.pp  )
+(This file generated 2/17/13 2:38 PM)
+(Settings from pcb-machine.h)
+(  Tool Size)
+(0.1778 )
+(Z Axis Settings)
+(  High     Up        Down     Drill)
+(12.7000 	2.5400 	-0.1000 	-0.8128 )
+(spindle on time = 3.0000)
+(milling depth = -0.2540)
+(text depth = -0.1270)
+(tool change at 0.0000 0.0000 0.0000 )
+(feed rate xy = F508.00 )
+(feed rate z  = F254.00 )
+(Settings from pcb-defaults.h)
+(Default isolate = 0.0254)
+(isolate max = 0.5080)
+(isolate step = 0.1270)
+(Generated top outlines, top drill, )
+(Unit of measure: mm)
+(Metric Mode)
+G21
+(Absolute Coordinates)
+G90
+G00 X0.0000 Y0.0000 
+M03
+G04 P3.000000
+G00 Z12.7000 
+M05
+M02
