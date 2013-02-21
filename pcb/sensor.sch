@@ -7092,6 +7092,7 @@ by R. Vogg  15.March.2002</description>
 </variantdefs>
 <classes>
 <class number="0" name="default" width="0" drill="0">
+<clearance class="0" value="0.355"/>
 </class>
 </classes>
 <parts>

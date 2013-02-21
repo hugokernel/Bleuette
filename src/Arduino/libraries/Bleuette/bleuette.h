@@ -71,6 +71,33 @@
 
 #define VOLTAGE(value)          (double)value * ADC_STEP / COEFF 
 
+/**
+ *  Foot sensor
+ */
+#define BLEUETTE_FOOT_SENSOR_ADDR_A 2
+#define BLEUETTE_FOOT_SENSOR_ADDR_B 3
+#define BLEUETTE_FOOT_SENSOR_ADDR_C 4
+
+#define BLEUETTE_FOOT_SENSOR_OUT    5
+
+/*
+#define BLEUETTE_FOOT_SENSOR_0  0
+#define BLEUETTE_FOOT_SENSOR_1  1
+#define BLEUETTE_FOOT_SENSOR_2  2
+#define BLEUETTE_FOOT_SENSOR_3  3
+#define BLEUETTE_FOOT_SENSOR_4  4
+#define BLEUETTE_FOOT_SENSOR_5  5
+*/
+
+enum BLEUETTE_FOOT_SENSOR {
+    BLEUETTE_FOOT_SENSOR_0,
+    BLEUETTE_FOOT_SENSOR_1,
+    BLEUETTE_FOOT_SENSOR_2,
+    BLEUETTE_FOOT_SENSOR_3,
+    BLEUETTE_FOOT_SENSOR_4,
+    BLEUETTE_FOOT_SENSOR_5
+};
+
 /*
 typedef struct motion_t {
     unsigned long delay;        // How much time
@@ -114,12 +141,22 @@ public:
     double getVoltage();
     double getCurrent();
     unsigned char getCurrentPercent();
+
+    // Foot sensor read
+    unsigned char footSensorRead(unsigned char);
+    unsigned char feetSensorRead();
 };
 
 Bleuette::Bleuette()
 {
     pinMode(BLEUETTE_LED0, OUTPUT);
     pinMode(BLEUETTE_LED1, OUTPUT);
+
+    // Foot sensor
+    pinMode(BLEUETTE_FOOT_SENSOR_ADDR_A, OUTPUT);
+    pinMode(BLEUETTE_FOOT_SENSOR_ADDR_B, OUTPUT);
+    pinMode(BLEUETTE_FOOT_SENSOR_ADDR_C, OUTPUT);
+    pinMode(BLEUETTE_FOOT_SENSOR_OUT,    INPUT);
 }
 
 void Bleuette::init(void)
@@ -283,6 +320,28 @@ unsigned char Bleuette::getCurrentPercent()
 */
     // CURRENT_SENSE_MAX / CURRENT_MAX = 2
     return min((total / 100) / 2, 100);
+}
+
+unsigned char Bleuette::footSensorRead(unsigned char sensor)
+{
+    digitalWrite(BLEUETTE_FOOT_SENSOR_ADDR_A, sensor & 0);
+    digitalWrite(BLEUETTE_FOOT_SENSOR_ADDR_B, sensor & 1);
+    digitalWrite(BLEUETTE_FOOT_SENSOR_ADDR_C, sensor & 2);
+
+    return digitalRead(BLEUETTE_FOOT_SENSOR_OUT);
+}
+
+unsigned char Bleuette::feetSensorRead()
+{
+    unsigned char index, out = 0;
+
+    for (index = 0; index < 6; index++) {
+        if (footSensorRead(index)) {
+            out |= 1 << index;
+        }
+    }
+
+    return out;
 }
 
 #endif

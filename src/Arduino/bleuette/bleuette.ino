@@ -136,6 +136,8 @@ void cmd_init() {
  *  Info
  */
 void cmd_info() {
+    unsigned char index = 0;
+
     PLN("Info !!");
 
     P("Voltage : ");
@@ -157,6 +159,19 @@ void cmd_info() {
     } else {
         PLN("released !");
     }
+
+    PLN("Feet");
+    for (index = 0; index < 6; index++) {
+        P(index);
+        P(":");
+        if (bleuette.footSensorRead(index)) {
+            P("1");
+        } else {
+            P("0");
+        }
+        P(", ");
+    }
+    PLN();
 }
 
 void cmd_debug() {
@@ -261,6 +276,7 @@ void cmd_seq() {
 
     // Help ?
     if (arg[0] == '?') {
+        PLN(F("Syntax : seq {index} {count} {delay} {forward}"));
         PLN("Available sequence :");
         for (i = 0; i < 11; i++) {//sizeof(sequences); i++) {
             P("- ");
