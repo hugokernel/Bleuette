@@ -16,7 +16,7 @@ module spacer(length, width, thickness, support = false) {
     MAIN_HOLE_DIAMETER = 3;
 
     SCREW_DIAMETER = 2.7;
-    NUT_DIAMETER = 6;
+    NUT_DIAMETER = 5;
     NUT_HEIGHT = 1.9;
 
     difference() {
