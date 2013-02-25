@@ -13,7 +13,7 @@ module spacer(length, width, thickness, support = false) {
     SPACE = 0.3;
     CLEAR = 0.7;
 
-    MAIN_HOLE_DIAMETER = 2.5;
+    MAIN_HOLE_DIAMETER = 3;
 
     SCREW_DIAMETER = 2.7;
     NUT_DIAMETER = 6;
@@ -68,7 +68,8 @@ module spacer(length, width, thickness, support = false) {
             for (i = [0 : 3]) {
                 rotate([0, 0, i * 90]) {
 
-                    translate([-(length / 4 + MAIN_HOLE_DIAMETER / 2), 0, -5]) {
+                    //translate([-(length / 4 + MAIN_HOLE_DIAMETER / 2), 0, -5]) {
+                    translate([-(length / 4 + 1.25), 0, -5]) {
                         cylinder(r = SCREW_DIAMETER / 2, h = 20);
 
                         // Nut
