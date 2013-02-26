@@ -61,7 +61,15 @@ module foot() {
         translate([0, 0, 12]) {
 
             difference() {
-                sphere(r = 25, $fn = 20);
+                union() {
+                    difference() {
+                        sphere(r = 25, $fn = 20);
+                        sphere(r = 24, $fn = 20);
+                    }
+
+                    cylinder(r = EXTERNAL_DIAMETER / 2, h = 17);
+                }
+
                 translate([0, 0, 38]) {
                     cube(size = [100, 100, 100], center = true);
                 }
@@ -74,6 +82,10 @@ module foot() {
         translate([0, 0, - thread_height]) {
             cylinder(r = EXTERNAL_DIAMETER / 2 + clear, h = thread_height);
         }
+    }
+
+    translate([0, 0, -6]) {
+        cylinder(r = EXTERNAL_DIAMETER / 2 + 3, h = 6);
     }
 }
 
@@ -143,10 +155,13 @@ module holes(complete = true) {
 }
 
 if (0) {
+    foot();
+} else 
+if (0) {
     piston();
 } else if (0) {
     external();
-} else if (0) {
+} else if (1) {
 
     difference() {
         translate([0, 0, 4]) {
