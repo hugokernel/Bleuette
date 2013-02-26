@@ -1851,11 +1851,11 @@ design rules under a new name.</description>
 <attribute name="MF" value="" x="10.795" y="15.24" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="10.795" y="15.24" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="GY-27" library="con-lstb" package="MA05-1" value="" x="28.575" y="13.97" rot="R270">
-<attribute name="OC_NEWARK" value="unknown" x="28.575" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MPN" value="" x="28.575" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MF" value="" x="28.575" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="OC_FARNELL" value="unknown" x="28.575" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
+<element name="GY-27" library="con-lstb" package="MA05-1" value="" x="27.305" y="13.97" rot="R270">
+<attribute name="OC_NEWARK" value="unknown" x="27.305" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MPN" value="" x="27.305" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MF" value="" x="27.305" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="OC_FARNELL" value="unknown" x="27.305" y="13.97" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="JY-MCU" library="con-lstb" package="MA04-1" value="" x="34.925" y="39.37" rot="R270">
 <attribute name="OC_NEWARK" value="unknown" x="34.925" y="39.37" size="1.778" layer="27" rot="R270" display="off"/>
@@ -1919,7 +1919,9 @@ design rules under a new name.</description>
 <wire x1="32.385" y1="43.18" x2="31.115" y2="44.45" width="0.8128" layer="1"/>
 <wire x1="31.115" y1="44.45" x2="30.165" y2="44.45" width="0.8128" layer="1"/>
 <wire x1="30.165" y1="44.45" x2="29.845" y2="44.13" width="0.8128" layer="1"/>
-<wire x1="28.575" y1="19.05" x2="22.225" y2="21.59" width="0" layer="19" extent="1-1"/>
+<wire x1="47.4218" y1="20.32" x2="47.4218" y2="21.59" width="0" layer="19" extent="1-1"/>
+<wire x1="29.845" y1="24.13" x2="27.305" y2="19.05" width="0" layer="19" extent="1-1"/>
+<wire x1="22.225" y1="21.59" x2="27.305" y2="19.05" width="0" layer="19" extent="1-1"/>
 <wire x1="29.845" y1="36.83" x2="29.845" y2="24.13" width="0" layer="19" extent="1-1"/>
 <wire x1="17.78" y1="41.91" x2="29.845" y2="44.13" width="0" layer="19" extent="1-1"/>
 </signal>
@@ -1975,16 +1977,15 @@ design rules under a new name.</description>
 <wire x1="8.89" y1="16.51" x2="10.795" y2="16.51" width="0.8128" layer="1"/>
 <wire x1="8.89" y1="11.43" x2="10.795" y2="11.43" width="0.8128" layer="1"/>
 <wire x1="29.845" y1="39.37" x2="29.845" y2="42.23" width="0.8128" layer="1"/>
-<wire x1="28.575" y1="8.89" x2="35.24" y2="13.335" width="0" layer="19" extent="1-16"/>
-<wire x1="35.24" y1="13.335" x2="25.715" y2="7.3" width="0" layer="19" extent="1-16"/>
-<wire x1="25.715" y1="7.3" x2="24.765" y2="6.35" width="0" layer="19" extent="1-16"/>
 <wire x1="24.765" y1="6.35" x2="10.795" y2="6.35" width="0.8128" layer="1"/>
-<wire x1="28.575" y1="8.89" x2="36.83" y2="8.89" width="0.8128" layer="1"/>
+<wire x1="27.305" y1="8.89" x2="36.83" y2="8.89" width="0.8128" layer="1"/>
 <wire x1="36.83" y1="8.89" x2="38.1" y2="7.62" width="0.8128" layer="1"/>
 <wire x1="38.1" y1="7.62" x2="38.1" y2="2.54" width="0.8128" layer="1"/>
 <wire x1="34.925" y1="35.56" x2="38.42" y2="35.56" width="0.8128" layer="1"/>
 <wire x1="29.845" y1="39.37" x2="34.925" y2="35.56" width="0" layer="19" extent="1-1"/>
 <wire x1="10.795" y1="39.37" x2="29.845" y2="39.37" width="0" layer="19" extent="1-1"/>
+<wire x1="27.305" y1="8.89" x2="24.765" y2="6.35" width="0" layer="19" extent="1-1"/>
+<wire x1="35.24" y1="13.335" x2="36.83" y2="8.89" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$4">
 <contactref element="RN1" pad="7"/>
@@ -2114,21 +2115,17 @@ design rules under a new name.</description>
 <wire x1="22.225" y1="47.625" x2="26.035" y2="47.625" width="0.8128" layer="1"/>
 <wire x1="26.035" y1="47.625" x2="27.305" y2="46.355" width="0.8128" layer="1"/>
 <wire x1="27.305" y1="46.355" x2="27.305" y2="20.955" width="0.8128" layer="1"/>
-<wire x1="27.305" y1="20.955" x2="26.035" y2="19.685" width="0" layer="19" extent="1-16"/>
-<wire x1="26.035" y1="19.685" x2="26.035" y2="15.24" width="0" layer="19" extent="1-16"/>
-<wire x1="26.035" y1="15.24" x2="27.305" y2="13.97" width="0" layer="19" extent="1-16"/>
-<wire x1="27.305" y1="13.97" x2="28.575" y2="13.97" width="0" layer="19" extent="1-16"/>
+<wire x1="27.305" y1="13.97" x2="27.305" y2="20.955" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="SCL">
 <contactref element="U1" pad="SCL"/>
 <contactref element="GY-27" pad="4"/>
-<wire x1="28.575" y1="11.43" x2="26.67" y2="11.43" width="0" layer="19" extent="1-16"/>
-<wire x1="26.67" y1="11.43" x2="24.765" y2="13.335" width="0" layer="19" extent="1-16"/>
 <wire x1="24.765" y1="13.335" x2="24.765" y2="44.45" width="0.8128" layer="1"/>
 <wire x1="24.765" y1="44.45" x2="24.13" y2="45.085" width="0.8128" layer="1"/>
 <wire x1="24.13" y1="45.085" x2="20.32" y2="45.085" width="0.8128" layer="1"/>
 <wire x1="18.796" y1="50.8" x2="18.796" y2="46.609" width="0.8128" layer="1"/>
 <wire x1="18.796" y1="46.609" x2="20.32" y2="45.085" width="0.8128" layer="1"/>
+<wire x1="24.765" y1="13.335" x2="27.305" y2="11.43" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="TXD">
 <contactref element="JY-MCU" pad="2"/>

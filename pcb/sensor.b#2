@@ -126,6 +126,7 @@
 <wire x1="33.02" y1="31.115" x2="74.295" y2="31.115" width="0.3048" layer="21"/>
 <wire x1="74.295" y1="31.115" x2="74.295" y2="47.625" width="0.3048" layer="21"/>
 <wire x1="74.295" y1="47.625" x2="33.02" y2="47.625" width="0.3048" layer="21"/>
+<text x="50.8" y="19.685" size="2.54" layer="1">v1</text>
 </plain>
 <libraries>
 <library name="45xx">
