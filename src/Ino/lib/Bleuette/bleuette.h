@@ -35,6 +35,9 @@
 #include <sequencer.h>
 #include <servocontroller.h>
 
+#define P   Serial.print
+#define PLN Serial.println
+
 #define BLEUETTE_SERVO_COUNT    SERVO_COUNT
 
 #define BLEUETTE_LED0   8
