@@ -49,11 +49,6 @@
 #define VMAX    210
 #define VMID    VMIN + (VMAX - VMIN)  / 2
 
-typedef enum Status {
-    STATUS_OK,
-    STATUS_ABORT
-};
-
 const unsigned char servo_limits[][2] = {
 
     // Horizontal servos
@@ -90,6 +85,9 @@ typedef struct sequence_t {
 
 class Sequencer
 {
+public:
+    typedef enum Status { STATUS_OK, STATUS_ABORT };
+   
 private:
     sequence_t      *_sequences[10];
     unsigned char   _sequences_count;

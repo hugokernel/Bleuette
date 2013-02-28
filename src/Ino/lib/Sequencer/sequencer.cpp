@@ -89,7 +89,7 @@ inline unsigned char Sequencer::getValue(unsigned char servo, unsigned char pos)
     return 0;
 }
 
-void Sequencer::setCallback(Status (*function)(unsigned int)) {
+void Sequencer::setCallback(Sequencer::Status (*function)(unsigned int)) {
     _callback = function;
 }
 
@@ -128,15 +128,15 @@ void Sequencer::start() {
     }
 }
 
-Status Sequencer::forward(struct sequence_t seq) {
+Sequencer::Status Sequencer::forward(struct sequence_t seq) {
     return forward(seq, 0, seq.count);
 }
 
-Status Sequencer::forward(struct sequence_t seq, unsigned int start, unsigned int end) {
-    Status status = STATUS_OK;
+Sequencer::Status Sequencer::forward(struct sequence_t seq, unsigned int start, unsigned int end) {
+    Sequencer::Status status = Sequencer::STATUS_OK;
     for (unsigned int index = start; index < end; index++) {
         status = play(seq, index);
-        if (status != STATUS_OK) {
+        if (status != Sequencer::STATUS_OK) {
             break;
         }
     }
@@ -144,15 +144,15 @@ Status Sequencer::forward(struct sequence_t seq, unsigned int start, unsigned in
     return status;
 }
 
-Status Sequencer::backward(struct sequence_t seq) {
+Sequencer::Status Sequencer::backward(struct sequence_t seq) {
     return backward(seq, seq.count, 0);
 }
 
-Status Sequencer::backward(struct sequence_t seq, unsigned int start, unsigned int end) {
-    Status status = STATUS_OK;
+Sequencer::Status Sequencer::backward(struct sequence_t seq, unsigned int start, unsigned int end) {
+    Sequencer::Status status = Sequencer::STATUS_OK;
     for (unsigned int index = start; index > end; index--) {
         status = play(seq, index - 1);
-        if (status != STATUS_OK) {
+        if (status != Sequencer::STATUS_OK) {
             break;
         }
     }
@@ -163,9 +163,9 @@ Status Sequencer::backward(struct sequence_t seq, unsigned int start, unsigned i
 /**
  *  Play one sequence line
  */
-Status Sequencer::play(struct sequence_t seq, unsigned int index) {
+Sequencer::Status Sequencer::play(struct sequence_t seq, unsigned int index) {
 
-    Status status = STATUS_OK;
+    Sequencer::Status status = Sequencer::STATUS_OK;
 
     if (seq.motion[index].function) {
         seq.motion[index].function();
