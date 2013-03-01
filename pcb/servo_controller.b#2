@@ -7880,7 +7880,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="4.1275" y="47.3075" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="11.43" y="54.9275" size="1.778" layer="27" rot="R180"/>
 </element>
-<element name="U$2" library="ohw-logo" package="OSHW_8X350_NOTEXT" value="" x="46.99" y="21.2725"/>
+<element name="U$2" library="ohw-logo" package="OSHW_8X350_NOTEXT" value="" x="56.8325" y="20.955" rot="MR0"/>
 </elements>
 <signals>
 <signal name="N$1">
