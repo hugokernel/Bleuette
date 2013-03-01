@@ -123,7 +123,7 @@
 <hole x="13.97" y="2.54" drill="3"/>
 <hole x="15.24" y="50.8" drill="3"/>
 <text x="11.7475" y="47.625" size="1.27" layer="25">ON</text>
-<text x="43.4975" y="46.0375" size="2.1844" layer="25">Bleuette</text>
+<text x="40.9575" y="46.0375" size="2.1844" layer="25">Bleuette</text>
 <text x="54.61" y="33.9725" size="2.1844" layer="26" rot="MR0">Bleuette</text>
 <text x="54.61" y="31.75" size="1.778" layer="26" rot="MR0">Servo controller</text>
 <text x="9.525" y="42.2275" size="2.54" layer="25">+</text>
@@ -4501,7 +4501,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="16.8275" y="8.5725" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="16.1925" y="6.6675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="IC3" library="AWJLEagleLib" package="SO08" value="" x="7.9375" y="23.8125" rot="R270"/>
+<element name="IC3" library="AWJLEagleLib" package="SO08" value="MAX4173FESA+" x="7.9375" y="23.8125" rot="R270"/>
 <element name="RESET" library="testpad" package="TP20R" value="TPTP20R" x="44.45" y="19.05" smashed="yes" rot="MR270">
 <attribute name="TP_SIGNAL_NAME" value="" x="46.99" y="19.05" size="1" layer="38" rot="MR270"/>
 <attribute name="NAME" x="42.91" y="18.5125" size="1.27" layer="26" rot="MR0"/>

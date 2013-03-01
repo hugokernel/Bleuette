@@ -4501,7 +4501,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="16.8275" y="8.5725" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="16.1925" y="6.6675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="IC3" library="AWJLEagleLib" package="SO08" value="" x="7.9375" y="23.8125" rot="R270"/>
+<element name="IC3" library="AWJLEagleLib" package="SO08" value="MAX4173FESA+" x="7.9375" y="23.8125" rot="R270"/>
 <element name="RESET" library="testpad" package="TP20R" value="TPTP20R" x="44.45" y="19.05" smashed="yes" rot="MR270">
 <attribute name="TP_SIGNAL_NAME" value="" x="46.99" y="19.05" size="1" layer="38" rot="MR270"/>
 <attribute name="NAME" x="42.91" y="18.5125" size="1.27" layer="26" rot="MR0"/>
@@ -4545,11 +4545,13 @@ design rules under a new name.</description>
 <attribute name="NAME" x="3.81" y="26.162" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="6.223" y="27.305" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="OPT" library="con-lstb" package="MA03-2" value="" x="59.69" y="12.7" rot="R270">
+<element name="EXT" library="con-lstb" package="MA03-2" value="" x="59.69" y="12.7" smashed="yes" rot="R270">
 <attribute name="OC_NEWARK" value="unknown" x="59.69" y="12.7" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MPN" value="" x="59.69" y="12.7" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MF" value="" x="59.69" y="12.7" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="59.69" y="12.7" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="57.15" y="16.891" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="55.499" y="13.97" size="1.27" layer="27" ratio="10" rot="R270"/>
 </element>
 <element name="C5" library="rcl" package="PANASONIC_D" value="" x="18.0975" y="12.3825" smashed="yes" rot="R45">
 <attribute name="NAME" x="20.908946875" y="8.788025" size="1.016" layer="25" rot="R180"/>
@@ -4820,7 +4822,7 @@ design rules under a new name.</description>
 <contactref element="C2" pad="2"/>
 <contactref element="C3" pad="2"/>
 <wire x1="5.3213" y1="23.1775" x2="2.8575" y2="23.1775" width="0.6096" layer="1"/>
-<contactref element="OPT" pad="2"/>
+<contactref element="EXT" pad="2"/>
 <wire x1="25.7175" y1="48.895" x2="17.4625" y2="48.895" width="0.6096" layer="1"/>
 <wire x1="17.4625" y1="48.895" x2="15.875" y2="47.3075" width="0.6096" layer="1"/>
 <wire x1="43.815" y1="49.2125" x2="43.815" y2="51.7525" width="0.6096" layer="1"/>
@@ -5013,7 +5015,7 @@ design rules under a new name.</description>
 <wire x1="3.81" y1="26.9875" x2="3.81" y2="26.035" width="0.6096" layer="1"/>
 <wire x1="3.81" y1="26.035" x2="4.1275" y2="25.7175" width="0.6096" layer="1"/>
 <wire x1="4.1275" y1="25.7175" x2="5.3213" y2="25.7175" width="0.6096" layer="1"/>
-<contactref element="OPT" pad="1"/>
+<contactref element="EXT" pad="1"/>
 <wire x1="37.7825" y1="9.525" x2="50.8" y2="9.525" width="0.6096" layer="16"/>
 <wire x1="50.8" y1="9.525" x2="53.975" y2="12.7" width="0.6096" layer="16"/>
 <wire x1="53.975" y1="12.7" x2="53.975" y2="13.97" width="0.6096" layer="16"/>
@@ -5377,7 +5379,7 @@ design rules under a new name.</description>
 <wire x1="12.3698" y1="34.925" x2="12.7762" y2="34.8361" width="0.8128" layer="1"/>
 </signal>
 <signal name="OPTION0">
-<contactref element="OPT" pad="3"/>
+<contactref element="EXT" pad="3"/>
 <contactref element="U1" pad="A2"/>
 <wire x1="58.42" y1="12.7" x2="57.15" y2="12.7" width="0.6096" layer="16"/>
 <wire x1="57.15" y1="12.7" x2="55.88" y2="11.43" width="0.6096" layer="16"/>
@@ -5385,19 +5387,19 @@ design rules under a new name.</description>
 </signal>
 <signal name="OPTION2">
 <contactref element="U1" pad="A4"/>
-<contactref element="OPT" pad="6"/>
+<contactref element="EXT" pad="6"/>
 <wire x1="60.96" y1="10.16" x2="60.96" y2="2.54" width="0.6096" layer="16"/>
 </signal>
 <signal name="OPTION3">
 <contactref element="U1" pad="A5"/>
-<contactref element="OPT" pad="4"/>
+<contactref element="EXT" pad="4"/>
 <wire x1="60.96" y1="12.7" x2="62.23" y2="12.7" width="0.6096" layer="16"/>
 <wire x1="62.23" y1="12.7" x2="63.5" y2="11.43" width="0.6096" layer="16"/>
 <wire x1="63.5" y1="11.43" x2="63.5" y2="2.54" width="0.6096" layer="16"/>
 </signal>
 <signal name="OPTION1">
 <contactref element="U1" pad="A3"/>
-<contactref element="OPT" pad="5"/>
+<contactref element="EXT" pad="5"/>
 <wire x1="58.42" y1="10.16" x2="58.42" y2="2.54" width="0.6096" layer="16"/>
 </signal>
 <signal name="N$21">

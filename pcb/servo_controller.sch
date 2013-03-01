@@ -17520,7 +17520,6 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <part name="C9" library="rcl" deviceset="CPOL-EU" device="F"/>
 <part name="VSS27" library="supply1" deviceset="VSS" device=""/>
 <part name="PW" library="switch" deviceset="TL36PO" device=""/>
-<part name="IC4" library="AWJLEagleLib" deviceset="MAX4173" device="T"/>
 </parts>
 <sheets>
 <sheet>
@@ -17618,7 +17617,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <instance part="R2" gate="G$1" x="48.26" y="187.96" rot="R90"/>
 <instance part="VSS6" gate="G$1" x="48.26" y="177.8"/>
 <instance part="P+1" gate="1" x="121.92" y="215.9"/>
-<instance part="P+8" gate="1" x="195.58" y="215.9"/>
+<instance part="P+8" gate="1" x="198.12" y="205.74"/>
 <instance part="VSS7" gate="G$1" x="109.22" y="177.8"/>
 <instance part="VDD1" gate="G$1" x="48.26" y="215.9"/>
 <instance part="S0" gate="1" x="337.82" y="40.64" rot="R270"/>
@@ -17639,9 +17638,9 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <instance part="SUPPLY1" gate="G$1" x="182.88" y="114.3"/>
 <instance part="SUPPLY3" gate="G$1" x="81.28" y="30.48"/>
 <instance part="SUPPLY4" gate="G$1" x="147.32" y="40.64"/>
-<instance part="IC3" gate="G$1" x="213.36" y="210.82"/>
-<instance part="VSS14" gate="G$1" x="195.58" y="195.58"/>
-<instance part="VDD2" gate="G$1" x="195.58" y="231.14"/>
+<instance part="IC3" gate="G$1" x="215.9" y="200.66"/>
+<instance part="VSS14" gate="G$1" x="198.12" y="185.42"/>
+<instance part="VDD2" gate="G$1" x="198.12" y="220.98"/>
 <instance part="RESET" gate="G$1" x="114.3" y="129.54" smashed="yes">
 <attribute name="NAME" x="114.935" y="130.81" size="1.778" layer="95" rot="R90"/>
 <attribute name="TP_SIGNAL_NAME" x="115.57" y="128.27" size="1.778" layer="97"/>
@@ -17662,7 +17661,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <attribute name="NAME" x="125.095" y="130.81" size="1.778" layer="95" rot="R90"/>
 <attribute name="TP_SIGNAL_NAME" x="125.73" y="128.27" size="1.778" layer="97"/>
 </instance>
-<instance part="SUPPLY5" gate="G$1" x="231.14" y="231.14"/>
+<instance part="SUPPLY5" gate="G$1" x="233.68" y="220.98"/>
 <instance part="VSS16" gate="G$1" x="134.62" y="101.6"/>
 <instance part="VSS17" gate="G$1" x="53.34" y="20.32"/>
 <instance part="VSS18" gate="G$1" x="81.28" y="12.7"/>
@@ -17678,13 +17677,13 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <attribute name="TP_SIGNAL_NAME" x="168.91" y="87.63" size="1.778" layer="97"/>
 </instance>
 <instance part="D1" gate="G$1" x="114.3" y="210.82"/>
-<instance part="C3" gate="G$1" x="185.42" y="205.74"/>
-<instance part="P+6" gate="1" x="185.42" y="215.9"/>
-<instance part="VSS8" gate="G$1" x="185.42" y="195.58"/>
+<instance part="C3" gate="G$1" x="187.96" y="195.58"/>
+<instance part="P+6" gate="1" x="187.96" y="205.74"/>
+<instance part="VSS8" gate="G$1" x="187.96" y="185.42"/>
 <instance part="EXT" gate="1" x="299.72" y="50.8"/>
 <instance part="C5" gate="G$1" x="60.96" y="30.48"/>
 <instance part="VSS22" gate="G$1" x="60.96" y="20.32"/>
-<instance part="RSENSE" gate="G$1" x="213.36" y="226.06"/>
+<instance part="RSENSE" gate="G$1" x="215.9" y="215.9"/>
 <instance part="C4" gate="G$1" x="182.88" y="27.94"/>
 <instance part="VSS23" gate="G$1" x="182.88" y="17.78"/>
 <instance part="X1" gate="-1" x="22.86" y="200.66"/>
@@ -17693,15 +17692,14 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <instance part="VSS24" gate="G$1" x="340.36" y="127"/>
 <instance part="R7" gate="G$1" x="83.82" y="93.98" rot="R90"/>
 <instance part="P+9" gate="1" x="83.82" y="104.14"/>
-<instance part="D2" gate="G$1" x="231.14" y="203.2" rot="R90"/>
+<instance part="D2" gate="G$1" x="233.68" y="193.04" rot="R90"/>
 <instance part="D3" gate="G$1" x="55.88" y="187.96" rot="R90"/>
 <instance part="VSS25" gate="G$1" x="55.88" y="177.8"/>
-<instance part="VSS26" gate="G$1" x="231.14" y="195.58"/>
+<instance part="VSS26" gate="G$1" x="233.68" y="185.42"/>
 <instance part="SJ1" gate="1" x="332.74" y="129.54" rot="R90"/>
 <instance part="C9" gate="G$1" x="119.38" y="198.12"/>
 <instance part="VSS27" gate="G$1" x="119.38" y="177.8"/>
 <instance part="PW" gate="BEF1" x="35.56" y="208.28" rot="R270"/>
-<instance part="IC4" gate="G$1" x="213.36" y="175.26"/>
 </instances>
 <busses>
 </busses>
@@ -17906,9 +17904,9 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="GND"/>
-<wire x1="198.12" y1="205.74" x2="195.58" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="200.66" y1="195.58" x2="198.12" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="VSS14" gate="G$1" pin="VSS"/>
-<wire x1="195.58" y1="205.74" x2="195.58" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="198.12" y1="195.58" x2="198.12" y2="187.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <wire x1="131.445" y1="106.68" x2="134.62" y2="106.68" width="0.1524" layer="91"/>
@@ -18009,7 +18007,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <segment>
 <pinref part="C3" gate="G$1" pin="2"/>
 <pinref part="VSS8" gate="G$1" pin="VSS"/>
-<wire x1="185.42" y1="198.12" x2="185.42" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="187.96" x2="187.96" y2="190.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="GND2"/>
@@ -18029,7 +18027,7 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <segment>
 <pinref part="D2" gate="G$1" pin="A"/>
 <pinref part="VSS26" gate="G$1" pin="VSS"/>
-<wire x1="231.14" y1="198.12" x2="231.14" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="233.68" y1="187.96" x2="233.68" y2="190.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C4" gate="G$1" pin="-"/>
@@ -18045,11 +18043,6 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 <pinref part="C9" gate="G$1" pin="-"/>
 <pinref part="VSS27" gate="G$1" pin="VSS"/>
 <wire x1="119.38" y1="180.34" x2="119.38" y2="193.04" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="IC4" gate="G$1" pin="GND"/>
-<wire x1="198.12" y1="170.18" x2="195.58" y2="170.18" width="0.1524" layer="91"/>
-<junction x="195.58" y="170.18"/>
 </segment>
 </net>
 <net name="N$25" class="0">
@@ -18212,24 +18205,19 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="VCC"/>
-<wire x1="198.12" y1="210.82" x2="195.58" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="200.66" y1="200.66" x2="198.12" y2="200.66" width="0.1524" layer="91"/>
 <pinref part="P+8" gate="1" pin="+5V"/>
-<wire x1="195.58" y1="210.82" x2="195.58" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="198.12" y1="200.66" x2="198.12" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+6" gate="1" pin="+5V"/>
 <pinref part="C3" gate="G$1" pin="1"/>
-<wire x1="185.42" y1="208.28" x2="185.42" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="198.12" x2="187.96" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R7" gate="G$1" pin="2"/>
 <pinref part="P+9" gate="1" pin="+5V"/>
 <wire x1="83.82" y1="101.6" x2="83.82" y2="99.06" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="IC4" gate="G$1" pin="VCC"/>
-<wire x1="198.12" y1="175.26" x2="195.58" y2="175.26" width="0.1524" layer="91"/>
-<junction x="195.58" y="175.26"/>
 </segment>
 </net>
 <net name="VDD" class="0">
@@ -18250,18 +18238,13 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 </segment>
 <segment>
 <pinref part="VDD2" gate="G$1" pin="VDD"/>
-<wire x1="195.58" y1="228.6" x2="195.58" y2="226.06" width="0.1524" layer="91"/>
-<wire x1="195.58" y1="226.06" x2="205.74" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="198.12" y1="218.44" x2="198.12" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="198.12" y1="215.9" x2="208.28" y2="215.9" width="0.1524" layer="91"/>
 <pinref part="IC3" gate="G$1" pin="R+"/>
-<wire x1="205.74" y1="226.06" x2="205.74" y2="223.52" width="0.1524" layer="91"/>
-<wire x1="205.74" y1="226.06" x2="208.28" y2="226.06" width="0.1524" layer="91"/>
-<junction x="205.74" y="226.06"/>
+<wire x1="208.28" y1="215.9" x2="208.28" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="208.28" y1="215.9" x2="210.82" y2="215.9" width="0.1524" layer="91"/>
+<junction x="208.28" y="215.9"/>
 <pinref part="RSENSE" gate="G$1" pin="1"/>
-</segment>
-<segment>
-<pinref part="IC4" gate="G$1" pin="R+"/>
-<wire x1="205.74" y1="187.96" x2="205.74" y2="190.5" width="0.1524" layer="91"/>
-<junction x="205.74" y="190.5"/>
 </segment>
 </net>
 <net name="N$7" class="0">
@@ -18457,41 +18440,31 @@ Source: &lt;a href="http://www.national.com/ds/LM/LM2936.pdf"&gt; Data sheet&lt;
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="R-"/>
-<wire x1="220.98" y1="223.52" x2="220.98" y2="226.06" width="0.1524" layer="91"/>
-<wire x1="220.98" y1="226.06" x2="231.14" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="223.52" y1="213.36" x2="223.52" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="223.52" y1="215.9" x2="233.68" y2="215.9" width="0.1524" layer="91"/>
 <pinref part="SUPPLY5" gate="G$1" pin="VEE"/>
-<wire x1="231.14" y1="226.06" x2="231.14" y2="228.6" width="0.1524" layer="91"/>
-<wire x1="218.44" y1="226.06" x2="220.98" y2="226.06" width="0.1524" layer="91"/>
-<junction x="220.98" y="226.06"/>
+<wire x1="233.68" y1="215.9" x2="233.68" y2="218.44" width="0.1524" layer="91"/>
+<wire x1="220.98" y1="215.9" x2="223.52" y2="215.9" width="0.1524" layer="91"/>
+<junction x="223.52" y="215.9"/>
 <pinref part="RSENSE" gate="G$1" pin="2"/>
-</segment>
-<segment>
-<pinref part="IC4" gate="G$1" pin="R-"/>
-<wire x1="220.98" y1="187.96" x2="220.98" y2="190.5" width="0.1524" layer="91"/>
-<junction x="220.98" y="190.5"/>
 </segment>
 </net>
 <net name="SERVO_CURRENT" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="VOUT"/>
-<wire x1="228.6" y1="208.28" x2="231.14" y2="208.28" width="0.1524" layer="91"/>
-<junction x="236.22" y="208.28"/>
-<label x="238.76" y="208.28" size="1.778" layer="95"/>
+<wire x1="231.14" y1="198.12" x2="233.68" y2="198.12" width="0.1524" layer="91"/>
+<junction x="238.76" y="198.12"/>
+<label x="241.3" y="198.12" size="1.778" layer="95"/>
 <pinref part="D2" gate="G$1" pin="C"/>
-<wire x1="231.14" y1="208.28" x2="236.22" y2="208.28" width="0.1524" layer="91"/>
-<wire x1="231.14" y1="208.28" x2="231.14" y2="205.74" width="0.1524" layer="91"/>
-<junction x="231.14" y="208.28"/>
+<wire x1="233.68" y1="198.12" x2="238.76" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="233.68" y1="198.12" x2="233.68" y2="195.58" width="0.1524" layer="91"/>
+<junction x="233.68" y="198.12"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="A1"/>
 <wire x1="353.06" y1="144.78" x2="353.06" y2="142.24" width="0.1524" layer="91"/>
 <junction x="353.06" y="142.24"/>
 <label x="353.06" y="116.84" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
-<pinref part="IC4" gate="G$1" pin="VOUT"/>
-<wire x1="228.6" y1="172.72" x2="231.14" y2="172.72" width="0.1524" layer="91"/>
-<junction x="231.14" y="172.72"/>
 </segment>
 </net>
 <net name="N$20" class="0">
