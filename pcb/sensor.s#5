@@ -7002,32 +7002,46 @@ GDSB: gate, drain, source, bulk&lt;p&gt;
 &lt;p&gt;
 by R. Vogg  15.March.2002</description>
 <packages>
-<package name="SO-8">
-<description>&lt;b&gt;SO 8 small outline&lt;/b&gt;</description>
-<wire x1="-1.8034" y1="2.3622" x2="-1.8034" y2="-2.3622" width="0.127" layer="21"/>
-<wire x1="-1.8034" y1="-2.3622" x2="1.8034" y2="-2.3622" width="0.127" layer="21"/>
-<wire x1="1.8034" y1="-2.3622" x2="1.8034" y2="2.3622" width="0.127" layer="21"/>
-<wire x1="1.8034" y1="2.3622" x2="-1.8034" y2="2.3622" width="0.127" layer="21"/>
-<circle x="-1.2446" y="1.8034" radius="0.3556" width="0.0508" layer="21"/>
-<smd name="1" x="-2.7432" y="1.905" dx="1.524" dy="0.6096" layer="1"/>
-<smd name="8" x="2.7432" y="1.905" dx="1.524" dy="0.6096" layer="1"/>
-<smd name="2" x="-2.7432" y="0.635" dx="1.524" dy="0.6096" layer="1"/>
-<smd name="3" x="-2.7432" y="-0.635" dx="1.524" dy="0.6096" layer="1"/>
-<smd name="7" x="2.7432" y="0.635" dx="1.524" dy="0.6096" layer="1"/>
-<smd name="6" x="2.7432" y="-0.635" dx="1.524" dy="0.6096" layer="1"/>
-<smd name="4" x="-2.7432" y="-1.905" dx="1.524" dy="0.6096" layer="1"/>
-<smd name="5" x="2.7432" y="-1.905" dx="1.524" dy="0.6096" layer="1"/>
-<text x="-2.032" y="-4.0005" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
-<text x="-2.032" y="2.7305" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="0.762" y="1.143" size="1.016" layer="21" ratio="10">8</text>
-<rectangle x1="-2.8702" y1="1.7272" x2="-1.8542" y2="2.0828" layer="51"/>
-<rectangle x1="-2.8702" y1="0.4572" x2="-1.8542" y2="0.8128" layer="51"/>
-<rectangle x1="-2.8702" y1="-0.8128" x2="-1.8542" y2="-0.4572" layer="51"/>
-<rectangle x1="-2.8702" y1="-2.0828" x2="-1.8542" y2="-1.7272" layer="51"/>
-<rectangle x1="1.8542" y1="1.7272" x2="2.8702" y2="2.0828" layer="51"/>
-<rectangle x1="1.8542" y1="0.4572" x2="2.8702" y2="0.8128" layer="51"/>
-<rectangle x1="1.8542" y1="-0.8128" x2="2.8702" y2="-0.4572" layer="51"/>
-<rectangle x1="1.8542" y1="-2.0828" x2="2.8702" y2="-1.7272" layer="51"/>
+<package name="TO220">
+<description>&lt;b&gt;TO 220 horizontal&lt;/b&gt;</description>
+<wire x1="-5.207" y1="-1.27" x2="5.207" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="5.207" y1="14.605" x2="-5.207" y2="14.605" width="0.127" layer="21"/>
+<wire x1="5.207" y1="-1.27" x2="5.207" y2="11.176" width="0.127" layer="21"/>
+<wire x1="5.207" y1="11.176" x2="4.318" y2="11.176" width="0.127" layer="21"/>
+<wire x1="4.318" y1="11.176" x2="4.318" y2="12.7" width="0.127" layer="21"/>
+<wire x1="4.318" y1="12.7" x2="5.207" y2="12.7" width="0.127" layer="21"/>
+<wire x1="5.207" y1="12.7" x2="5.207" y2="14.605" width="0.127" layer="21"/>
+<wire x1="-5.207" y1="-1.27" x2="-5.207" y2="11.176" width="0.127" layer="21"/>
+<wire x1="-5.207" y1="11.176" x2="-4.318" y2="11.176" width="0.127" layer="21"/>
+<wire x1="-4.318" y1="11.176" x2="-4.318" y2="12.7" width="0.127" layer="21"/>
+<wire x1="-4.318" y1="12.7" x2="-5.207" y2="12.7" width="0.127" layer="21"/>
+<wire x1="-5.207" y1="12.7" x2="-5.207" y2="14.605" width="0.127" layer="21"/>
+<wire x1="-4.572" y1="-0.635" x2="4.572" y2="-0.635" width="0.0508" layer="21"/>
+<wire x1="4.572" y1="7.62" x2="4.572" y2="-0.635" width="0.0508" layer="21"/>
+<wire x1="4.572" y1="7.62" x2="-4.572" y2="7.62" width="0.0508" layer="21"/>
+<wire x1="-4.572" y1="-0.635" x2="-4.572" y2="7.62" width="0.0508" layer="21"/>
+<circle x="0" y="11.176" radius="1.8034" width="0.127" layer="21"/>
+<circle x="0" y="11.176" radius="4.191" width="0" layer="42"/>
+<circle x="0" y="11.176" radius="4.191" width="0" layer="43"/>
+<pad name="1" x="-2.54" y="-6.35" drill="1.1176" shape="long" rot="R90"/>
+<pad name="2" x="0" y="-6.35" drill="1.1176" shape="long" rot="R90"/>
+<pad name="3" x="2.54" y="-6.35" drill="1.1176" shape="long" rot="R90"/>
+<text x="-3.81" y="5.207" size="1.778" layer="25" ratio="10">&gt;NAME</text>
+<text x="-3.937" y="2.54" size="1.778" layer="27" ratio="10">&gt;VALUE</text>
+<text x="-4.445" y="7.874" size="0.9906" layer="21" ratio="12">A17,5mm</text>
+<text x="-3.175" y="0" size="1.27" layer="51" ratio="10">1</text>
+<text x="-0.635" y="0" size="1.27" layer="51" ratio="10">2</text>
+<text x="1.905" y="0" size="1.27" layer="51" ratio="10">3</text>
+<rectangle x1="2.159" y1="-4.699" x2="2.921" y2="-4.064" layer="21"/>
+<rectangle x1="-0.381" y1="-4.699" x2="0.381" y2="-4.064" layer="21"/>
+<rectangle x1="-2.921" y1="-4.699" x2="-2.159" y2="-4.064" layer="21"/>
+<rectangle x1="-3.175" y1="-4.064" x2="-1.905" y2="-1.27" layer="21"/>
+<rectangle x1="-0.635" y1="-4.064" x2="0.635" y2="-1.27" layer="21"/>
+<rectangle x1="1.905" y1="-4.064" x2="3.175" y2="-1.27" layer="21"/>
+<rectangle x1="-2.921" y1="-6.604" x2="-2.159" y2="-4.699" layer="51"/>
+<rectangle x1="-0.381" y1="-6.604" x2="0.381" y2="-4.699" layer="51"/>
+<rectangle x1="2.159" y1="-6.604" x2="2.921" y2="-4.699" layer="51"/>
+<hole x="0" y="11.176" drill="3.302"/>
 </package>
 </packages>
 <symbols>
@@ -7051,18 +7065,17 @@ by R. Vogg  15.March.2002</description>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="FDS5680" prefix="Q">
-<description>&lt;b&gt;60V N-Channel PowerTrench TM MOSFET&lt;/b&gt;&lt;p&gt;
-FAIRCHILD FDS5680.pdf</description>
+<deviceset name="BUZ10" prefix="Q">
+<description>&lt;b&gt;N-Channel Enhancement MOSFET&lt;/b&gt; 50V; 20A; 0,080Ohm</description>
 <gates>
 <gate name="G$1" symbol="IGFET-EN-GDS" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="SO-8">
+<device name="" package="TO220">
 <connects>
-<connect gate="G$1" pin="D" pad="5 6 7 8"/>
-<connect gate="G$1" pin="G" pad="4"/>
-<connect gate="G$1" pin="S" pad="1 2 3"/>
+<connect gate="G$1" pin="D" pad="2"/>
+<connect gate="G$1" pin="G" pad="1"/>
+<connect gate="G$1" pin="S" pad="3"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -7079,10 +7092,10 @@ FAIRCHILD FDS5680.pdf</description>
 </variantdefs>
 <classes>
 <class number="0" name="default" width="0" drill="0">
+<clearance class="0" value="0.355"/>
 </class>
 </classes>
 <parts>
-<part name="IC1" library="45xx" deviceset="4512" device="D"/>
 <part name="VSS1" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS2" library="supply1" deviceset="VSS" device=""/>
 <part name="P+1" library="supply1" deviceset="+5V" device=""/>
@@ -7113,19 +7126,19 @@ FAIRCHILD FDS5680.pdf</description>
 <part name="OUT" library="con-wago-500" deviceset="W237-102" device=""/>
 <part name="VSS10" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS11" library="supply1" deviceset="VSS" device=""/>
-<part name="Q2" library="transistor-fet" deviceset="FDS5680" device=""/>
 <part name="VSS12" library="supply1" deviceset="VSS" device=""/>
 <part name="R1" library="rcl" deviceset="R-EU_" device="M0805"/>
 <part name="VSS13" library="supply1" deviceset="VSS" device=""/>
 <part name="P+8" library="supply1" deviceset="+15V" device=""/>
 <part name="P+9" library="supply1" deviceset="+15V" device=""/>
+<part name="IC2" library="45xx" deviceset="4512" device="N"/>
+<part name="Q1" library="transistor-fet" deviceset="BUZ10" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 </plain>
 <instances>
-<instance part="IC1" gate="A" x="86.36" y="121.92"/>
 <instance part="VSS1" gate="G$1" x="132.08" y="144.78" smashed="yes">
 <attribute name="VALUE" x="134.62" y="142.24" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -7133,7 +7146,6 @@ FAIRCHILD FDS5680.pdf</description>
 <instance part="P+1" gate="1" x="132.08" y="165.1" smashed="yes">
 <attribute name="VALUE" x="134.62" y="167.64" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="IC1" gate="P" x="83.82" y="162.56" rot="R90"/>
 <instance part="VSS3" gate="G$1" x="93.98" y="147.32"/>
 <instance part="P+2" gate="1" x="73.66" y="167.64"/>
 <instance part="C1" gate="G$1" x="81.28" y="154.94" rot="R90"/>
@@ -7177,7 +7189,6 @@ FAIRCHILD FDS5680.pdf</description>
 <instance part="OUT" gate="-2" x="27.94" y="30.48"/>
 <instance part="VSS10" gate="G$1" x="101.6" y="45.72"/>
 <instance part="VSS11" gate="G$1" x="35.56" y="53.34"/>
-<instance part="Q2" gate="G$1" x="50.8" y="33.02" rot="R180"/>
 <instance part="VSS12" gate="G$1" x="43.18" y="17.78" smashed="yes">
 <attribute name="VALUE" x="45.72" y="15.24" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -7187,13 +7198,15 @@ FAIRCHILD FDS5680.pdf</description>
 </instance>
 <instance part="P+8" gate="1" x="35.56" y="68.58"/>
 <instance part="P+9" gate="1" x="35.56" y="40.64"/>
+<instance part="IC2" gate="A" x="86.36" y="121.92"/>
+<instance part="IC2" gate="P" x="83.82" y="162.56" rot="R90"/>
+<instance part="Q1" gate="G$1" x="50.8" y="33.02" rot="R180"/>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="+5V" class="0">
 <segment>
-<pinref part="IC1" gate="P" pin="VDD"/>
 <wire x1="76.2" y1="162.56" x2="73.66" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="P+2" gate="1" pin="+5V"/>
 <wire x1="73.66" y1="162.56" x2="73.66" y2="165.1" width="0.1524" layer="91"/>
@@ -7201,6 +7214,7 @@ FAIRCHILD FDS5680.pdf</description>
 <pinref part="C1" gate="G$1" pin="1"/>
 <wire x1="73.66" y1="154.94" x2="78.74" y2="154.94" width="0.1524" layer="91"/>
 <junction x="73.66" y="162.56"/>
+<pinref part="IC2" gate="P" pin="VDD"/>
 </segment>
 <segment>
 <wire x1="27.94" y1="104.14" x2="27.94" y2="109.22" width="0.1524" layer="91"/>
@@ -7268,7 +7282,6 @@ FAIRCHILD FDS5680.pdf</description>
 </net>
 <net name="VSS" class="0">
 <segment>
-<pinref part="IC1" gate="P" pin="VSS"/>
 <pinref part="VSS3" gate="G$1" pin="VSS"/>
 <wire x1="91.44" y1="162.56" x2="93.98" y2="162.56" width="0.1524" layer="91"/>
 <wire x1="93.98" y1="162.56" x2="93.98" y2="154.94" width="0.1524" layer="91"/>
@@ -7276,16 +7289,17 @@ FAIRCHILD FDS5680.pdf</description>
 <wire x1="93.98" y1="154.94" x2="93.98" y2="149.86" width="0.1524" layer="91"/>
 <wire x1="86.36" y1="154.94" x2="93.98" y2="154.94" width="0.1524" layer="91"/>
 <junction x="93.98" y="154.94"/>
+<pinref part="IC2" gate="P" pin="VSS"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="A" pin="INH"/>
 <wire x1="73.66" y1="104.14" x2="71.12" y2="104.14" width="0.1524" layer="91"/>
 <pinref part="VSS6" gate="G$1" pin="VSS"/>
 <wire x1="71.12" y1="104.14" x2="71.12" y2="101.6" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="A" pin="OE"/>
 <wire x1="73.66" y1="106.68" x2="71.12" y2="106.68" width="0.1524" layer="91"/>
 <wire x1="71.12" y1="106.68" x2="71.12" y2="104.14" width="0.1524" layer="91"/>
 <junction x="71.12" y="104.14"/>
+<pinref part="IC2" gate="A" pin="INH"/>
+<pinref part="IC2" gate="A" pin="OE"/>
 </segment>
 <segment>
 <pinref part="RN1" gate="G$1" pin="1"/>
@@ -7333,10 +7347,10 @@ FAIRCHILD FDS5680.pdf</description>
 <wire x1="149.86" y1="114.3" x2="149.86" y2="116.84" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="Q2" gate="G$1" pin="S"/>
 <wire x1="45.72" y1="35.56" x2="43.18" y2="35.56" width="0.1524" layer="91"/>
 <pinref part="VSS12" gate="G$1" pin="VSS"/>
 <wire x1="43.18" y1="35.56" x2="43.18" y2="20.32" width="0.1524" layer="91"/>
+<pinref part="Q1" gate="G$1" pin="S"/>
 </segment>
 <segment>
 <pinref part="R1" gate="G$1" pin="1"/>
@@ -7353,7 +7367,6 @@ FAIRCHILD FDS5680.pdf</description>
 <net name="N$4" class="0">
 <segment>
 <wire x1="25.4" y1="116.84" x2="35.56" y2="116.84" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="A" pin="X5"/>
 <wire x1="35.56" y1="116.84" x2="53.34" y2="116.84" width="0.1524" layer="91"/>
 <wire x1="53.34" y1="116.84" x2="53.34" y2="127" width="0.1524" layer="91"/>
 <wire x1="53.34" y1="127" x2="73.66" y2="127" width="0.1524" layer="91"/>
@@ -7361,11 +7374,11 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="35.56" y="116.84"/>
 <pinref part="RN1" gate="G$1" pin="7"/>
 <pinref part="SV2" gate="1" pin="6"/>
+<pinref part="IC2" gate="A" pin="X5"/>
 </segment>
 </net>
 <net name="N$1" class="0">
 <segment>
-<pinref part="IC1" gate="A" pin="X4"/>
 <wire x1="38.1" y1="121.92" x2="50.8" y2="121.92" width="0.1524" layer="91"/>
 <wire x1="50.8" y1="121.92" x2="50.8" y2="129.54" width="0.1524" layer="91"/>
 <wire x1="50.8" y1="129.54" x2="73.66" y2="129.54" width="0.1524" layer="91"/>
@@ -7374,23 +7387,23 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="38.1" y="121.92"/>
 <pinref part="RN1" gate="G$1" pin="6"/>
 <pinref part="SV2" gate="1" pin="8"/>
+<pinref part="IC2" gate="A" pin="X4"/>
 </segment>
 </net>
 <net name="N$2" class="0">
 <segment>
 <wire x1="25.4" y1="137.16" x2="40.64" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="40.64" y1="137.16" x2="40.64" y2="132.08" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="A" pin="X3"/>
 <wire x1="40.64" y1="132.08" x2="73.66" y2="132.08" width="0.1524" layer="91"/>
 <wire x1="40.64" y1="104.14" x2="40.64" y2="132.08" width="0.1524" layer="91"/>
 <junction x="40.64" y="132.08"/>
 <pinref part="RN1" gate="G$1" pin="5"/>
 <pinref part="SV1" gate="1" pin="2"/>
+<pinref part="IC2" gate="A" pin="X3"/>
 </segment>
 </net>
 <net name="N$3" class="0">
 <segment>
-<pinref part="IC1" gate="A" pin="X2"/>
 <wire x1="73.66" y1="134.62" x2="43.18" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="134.62" x2="43.18" y2="142.24" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="142.24" x2="25.4" y2="142.24" width="0.1524" layer="91"/>
@@ -7398,38 +7411,39 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="43.18" y="134.62"/>
 <pinref part="RN1" gate="G$1" pin="4"/>
 <pinref part="SV1" gate="1" pin="4"/>
+<pinref part="IC2" gate="A" pin="X2"/>
 </segment>
 </net>
 <net name="N$5" class="0">
 <segment>
 <wire x1="25.4" y1="147.32" x2="45.72" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="147.32" x2="45.72" y2="137.16" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="A" pin="X1"/>
 <wire x1="45.72" y1="137.16" x2="73.66" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="104.14" x2="45.72" y2="137.16" width="0.1524" layer="91"/>
 <junction x="45.72" y="137.16"/>
 <pinref part="RN1" gate="G$1" pin="3"/>
 <pinref part="SV1" gate="1" pin="6"/>
+<pinref part="IC2" gate="A" pin="X1"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
 <wire x1="25.4" y1="152.4" x2="48.26" y2="152.4" width="0.1524" layer="91"/>
 <wire x1="48.26" y1="152.4" x2="48.26" y2="139.7" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="A" pin="X0"/>
 <wire x1="73.66" y1="139.7" x2="48.26" y2="139.7" width="0.1524" layer="91"/>
 <wire x1="48.26" y1="139.7" x2="48.26" y2="104.14" width="0.1524" layer="91"/>
 <junction x="48.26" y="139.7"/>
 <pinref part="RN1" gate="G$1" pin="2"/>
 <pinref part="SV1" gate="1" pin="8"/>
+<pinref part="IC2" gate="A" pin="X0"/>
 </segment>
 </net>
 <net name="ADDRA" class="0">
 <segment>
-<pinref part="IC1" gate="A" pin="A"/>
 <wire x1="73.66" y1="116.84" x2="71.12" y2="116.84" width="0.1524" layer="91"/>
 <junction x="71.12" y="116.84"/>
 <label x="60.96" y="116.84" size="1.778" layer="95"/>
+<pinref part="IC2" gate="A" pin="A"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="D2"/>
@@ -7440,10 +7454,10 @@ FAIRCHILD FDS5680.pdf</description>
 </net>
 <net name="ADDRB" class="0">
 <segment>
-<pinref part="IC1" gate="A" pin="B"/>
 <wire x1="73.66" y1="114.3" x2="71.12" y2="114.3" width="0.1524" layer="91"/>
 <junction x="71.12" y="114.3"/>
 <label x="60.96" y="114.3" size="1.778" layer="95"/>
+<pinref part="IC2" gate="A" pin="B"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="D3"/>
@@ -7454,10 +7468,10 @@ FAIRCHILD FDS5680.pdf</description>
 </net>
 <net name="ADDRC" class="0">
 <segment>
-<pinref part="IC1" gate="A" pin="C"/>
 <wire x1="73.66" y1="111.76" x2="71.12" y2="111.76" width="0.1524" layer="91"/>
 <junction x="71.12" y="111.76"/>
 <label x="60.96" y="111.76" size="1.778" layer="95"/>
+<pinref part="IC2" gate="A" pin="C"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="D4"/>
@@ -7470,18 +7484,17 @@ FAIRCHILD FDS5680.pdf</description>
 <segment>
 <wire x1="25.4" y1="111.76" x2="33.02" y2="111.76" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="104.14" x2="33.02" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="A" pin="X6"/>
 <wire x1="33.02" y1="111.76" x2="55.88" y2="111.76" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="111.76" x2="55.88" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="124.46" x2="73.66" y2="124.46" width="0.1524" layer="91"/>
 <junction x="33.02" y="111.76"/>
 <pinref part="RN1" gate="G$1" pin="8"/>
 <pinref part="SV2" gate="1" pin="4"/>
+<pinref part="IC2" gate="A" pin="X6"/>
 </segment>
 </net>
 <net name="N$7" class="0">
 <segment>
-<pinref part="IC1" gate="A" pin="X7"/>
 <wire x1="73.66" y1="121.92" x2="58.42" y2="121.92" width="0.1524" layer="91"/>
 <wire x1="58.42" y1="121.92" x2="58.42" y2="106.68" width="0.1524" layer="91"/>
 <wire x1="58.42" y1="106.68" x2="30.48" y2="106.68" width="0.1524" layer="91"/>
@@ -7490,14 +7503,15 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="30.48" y="106.68"/>
 <pinref part="RN1" gate="G$1" pin="9"/>
 <pinref part="SV2" gate="1" pin="2"/>
+<pinref part="IC2" gate="A" pin="X7"/>
 </segment>
 </net>
 <net name="OUT" class="0">
 <segment>
-<pinref part="IC1" gate="A" pin="Z"/>
 <wire x1="99.06" y1="139.7" x2="104.14" y2="139.7" width="0.1524" layer="91"/>
 <junction x="104.14" y="139.7"/>
 <label x="106.68" y="139.7" size="1.778" layer="95"/>
+<pinref part="IC2" gate="A" pin="Z"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="D5"/>
@@ -7571,7 +7585,6 @@ FAIRCHILD FDS5680.pdf</description>
 </net>
 <net name="POUT" class="0">
 <segment>
-<pinref part="Q2" gate="G$1" pin="G"/>
 <wire x1="55.88" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="2"/>
 <wire x1="58.42" y1="35.56" x2="63.5" y2="35.56" width="0.1524" layer="91"/>
@@ -7579,6 +7592,7 @@ FAIRCHILD FDS5680.pdf</description>
 <junction x="58.42" y="35.56"/>
 <junction x="63.5" y="35.56"/>
 <label x="71.12" y="38.1" size="1.778" layer="95" rot="R180"/>
+<pinref part="Q1" gate="G$1" pin="G"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="D12"/>
@@ -7603,8 +7617,8 @@ FAIRCHILD FDS5680.pdf</description>
 <net name="N$13" class="0">
 <segment>
 <pinref part="OUT" gate="-2" pin="KL"/>
-<pinref part="Q2" gate="G$1" pin="D"/>
 <wire x1="33.02" y1="30.48" x2="45.72" y2="30.48" width="0.1524" layer="91"/>
+<pinref part="Q1" gate="G$1" pin="D"/>
 </segment>
 </net>
 </nets>

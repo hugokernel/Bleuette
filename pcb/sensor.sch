@@ -7133,6 +7133,9 @@ by R. Vogg  15.March.2002</description>
 <part name="P+9" library="supply1" deviceset="+15V" device=""/>
 <part name="IC2" library="45xx" deviceset="4512" device="N"/>
 <part name="Q1" library="transistor-fet" deviceset="BUZ10" device=""/>
+<part name="LED-STRIP" library="con-lstb" deviceset="MA04-1" device=""/>
+<part name="P+10" library="supply1" deviceset="+5V" device=""/>
+<part name="VSS14" library="supply1" deviceset="VSS" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -7201,6 +7204,16 @@ by R. Vogg  15.March.2002</description>
 <instance part="IC2" gate="A" x="86.36" y="121.92"/>
 <instance part="IC2" gate="P" x="83.82" y="162.56" rot="R90"/>
 <instance part="Q1" gate="G$1" x="50.8" y="33.02" rot="R180"/>
+<instance part="LED-STRIP" gate="1" x="121.92" y="81.28" smashed="yes">
+<attribute name="VALUE" x="120.65" y="71.12" size="1.778" layer="96"/>
+<attribute name="NAME" x="113.03" y="87.122" size="1.778" layer="95"/>
+</instance>
+<instance part="P+10" gate="1" x="132.08" y="88.9" smashed="yes">
+<attribute name="VALUE" x="134.62" y="91.44" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="VSS14" gate="G$1" x="132.08" y="71.12" smashed="yes">
+<attribute name="VALUE" x="134.62" y="68.58" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -7278,6 +7291,12 @@ by R. Vogg  15.March.2002</description>
 <pinref part="C3" gate="G$1" pin="1"/>
 <pinref part="P+7" gate="1" pin="+5V"/>
 <wire x1="149.86" y1="129.54" x2="149.86" y2="124.46" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="LED-STRIP" gate="1" pin="4"/>
+<wire x1="129.54" y1="83.82" x2="132.08" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="P+10" gate="1" pin="+5V"/>
+<wire x1="132.08" y1="83.82" x2="132.08" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VSS" class="0">
@@ -7362,6 +7381,12 @@ by R. Vogg  15.March.2002</description>
 <wire x1="33.02" y1="58.42" x2="35.56" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="VSS11" gate="G$1" pin="VSS"/>
 <wire x1="35.56" y1="58.42" x2="35.56" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="LED-STRIP" gate="1" pin="1"/>
+<wire x1="129.54" y1="76.2" x2="132.08" y2="76.2" width="0.1524" layer="91"/>
+<pinref part="VSS14" gate="G$1" pin="VSS"/>
+<wire x1="132.08" y1="76.2" x2="132.08" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -7520,13 +7545,6 @@ by R. Vogg  15.March.2002</description>
 <label x="223.52" y="160.02" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
-<net name="N$8" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="D13"/>
-<wire x1="200.66" y1="154.94" x2="200.66" y2="157.48" width="0.1524" layer="91"/>
-<junction x="200.66" y="157.48"/>
-</segment>
-</net>
 <net name="SDA" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="SDA"/>
@@ -7595,9 +7613,10 @@ by R. Vogg  15.March.2002</description>
 <pinref part="Q1" gate="G$1" pin="G"/>
 </segment>
 <segment>
-<pinref part="U1" gate="G$1" pin="D12"/>
-<wire x1="203.2" y1="154.94" x2="203.2" y2="157.48" width="0.1524" layer="91"/>
-<junction x="203.2" y="157.48"/>
+<pinref part="U1" gate="G$1" pin="A5/SCL"/>
+<wire x1="238.76" y1="93.98" x2="238.76" y2="91.44" width="0.1524" layer="91"/>
+<junction x="238.76" y="91.44"/>
+<label x="238.76" y="83.82" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 <net name="+15V" class="0">
@@ -7619,6 +7638,34 @@ by R. Vogg  15.March.2002</description>
 <pinref part="OUT" gate="-2" pin="KL"/>
 <wire x1="33.02" y1="30.48" x2="45.72" y2="30.48" width="0.1524" layer="91"/>
 <pinref part="Q1" gate="G$1" pin="D"/>
+</segment>
+</net>
+<net name="CO" class="0">
+<segment>
+<pinref part="LED-STRIP" gate="1" pin="2"/>
+<wire x1="129.54" y1="78.74" x2="137.16" y2="78.74" width="0.1524" layer="91"/>
+<junction x="137.16" y="78.74"/>
+<label x="139.7" y="78.74" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$1" pin="D12"/>
+<wire x1="203.2" y1="154.94" x2="203.2" y2="157.48" width="0.1524" layer="91"/>
+<junction x="203.2" y="157.48"/>
+<label x="203.2" y="160.02" size="1.778" layer="95" rot="R90"/>
+</segment>
+</net>
+<net name="DO" class="0">
+<segment>
+<pinref part="LED-STRIP" gate="1" pin="3"/>
+<wire x1="129.54" y1="81.28" x2="137.16" y2="81.28" width="0.1524" layer="91"/>
+<junction x="137.16" y="81.28"/>
+<label x="139.7" y="81.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$1" pin="D13"/>
+<wire x1="200.66" y1="154.94" x2="200.66" y2="157.48" width="0.1524" layer="91"/>
+<junction x="200.66" y="157.48"/>
+<label x="200.66" y="160.02" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 </nets>

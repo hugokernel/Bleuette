@@ -126,6 +126,7 @@
 <wire x1="33.02" y1="31.115" x2="74.295" y2="31.115" width="0.3048" layer="21"/>
 <wire x1="74.295" y1="31.115" x2="74.295" y2="47.625" width="0.3048" layer="21"/>
 <wire x1="74.295" y1="47.625" x2="33.02" y2="47.625" width="0.3048" layer="21"/>
+<text x="50.8" y="19.685" size="2.54" layer="1">v1</text>
 </plain>
 <libraries>
 <library name="45xx">
@@ -1664,6 +1665,7 @@ by R. Vogg  15.March.2002</description>
 </variantdefs>
 <classes>
 <class number="0" name="default" width="0" drill="0">
+<clearance class="0" value="0.355"/>
 </class>
 </classes>
 <designrules name="default">
@@ -1892,6 +1894,12 @@ design rules under a new name.</description>
 <element name="R1" library="rcl" package="M0805" value="" x="53.34" y="7.62" rot="R90"/>
 <element name="IC2" library="45xx" package="DIL16" value="4512N" x="26.035" y="30.48" rot="R270"/>
 <element name="Q1" library="transistor-fet" package="TO220" value="BUZ10" x="46.99" y="13.97" rot="R90"/>
+<element name="LED-STRIP" library="con-lstb" package="MA04-1" value="" x="5.715" y="-4.445">
+<attribute name="OC_NEWARK" value="unknown" x="5.715" y="-4.445" size="2.54" layer="27" display="off"/>
+<attribute name="MPN" value="" x="5.715" y="-4.445" size="2.54" layer="27" display="off"/>
+<attribute name="MF" value="" x="5.715" y="-4.445" size="2.54" layer="27" display="off"/>
+<attribute name="OC_FARNELL" value="unknown" x="5.715" y="-4.445" size="2.54" layer="27" display="off"/>
+</element>
 </elements>
 <signals>
 <signal name="VSS">
@@ -1938,6 +1946,26 @@ design rules under a new name.</description>
 <wire x1="30.48" y1="36.83" x2="33.02" y2="34.29" width="0.8128" layer="1"/>
 <wire x1="34.925" y1="38.1" x2="34.29" y2="38.1" width="0.8128" layer="1"/>
 <wire x1="34.29" y1="38.1" x2="31.75" y2="40.64" width="0.8128" layer="1"/>
+<contactref element="LED-STRIP" pad="1"/>
+<wire x1="53.34" y1="16.51" x2="62.865" y2="27.265" width="0" layer="19" extent="1-1"/>
+<wire x1="53.34" y1="6.67" x2="53.34" y2="16.51" width="0" layer="19" extent="1-1"/>
+<wire x1="49.53" y1="1.27" x2="53.34" y2="6.67" width="0" layer="19" extent="1-1"/>
+<wire x1="20.32" y1="3.81" x2="19.685" y2="1.905" width="0" layer="19" extent="1-1"/>
+<wire x1="43.18" y1="2.54" x2="46.99" y2="0.635" width="0" layer="19" extent="1-1"/>
+<wire x1="40.64" y1="2.54" x2="43.18" y2="2.54" width="0" layer="19" extent="1-1"/>
+<wire x1="31.115" y1="8.57" x2="26.035" y2="1.905" width="0" layer="19" extent="1-1"/>
+<wire x1="27.305" y1="16.51" x2="31.115" y2="8.57" width="0" layer="19" extent="1-1"/>
+<wire x1="22.225" y1="21.59" x2="27.305" y2="16.51" width="0" layer="19" extent="1-1"/>
+<wire x1="29.845" y1="24.13" x2="27.305" y2="16.51" width="0" layer="19" extent="1-1"/>
+<wire x1="33.02" y1="34.29" x2="29.845" y2="24.13" width="0" layer="19" extent="1-1"/>
+<wire x1="34.29" y1="38.1" x2="30.48" y2="36.83" width="0" layer="19" extent="1-1"/>
+<wire x1="31.7475" y1="41.275" x2="31.75" y2="40.64" width="0" layer="19" extent="1-1"/>
+<wire x1="32.385" y1="43.18" x2="31.7475" y2="41.275" width="0" layer="19" extent="1-1"/>
+<wire x1="40.32" y1="35.56" x2="34.925" y2="38.1" width="0" layer="19" extent="1-1"/>
+<wire x1="44.45" y1="35.56" x2="40.32" y2="35.56" width="0" layer="19" extent="1-1"/>
+<wire x1="26.416" y1="50.8" x2="31.115" y2="44.45" width="0" layer="19" extent="1-1"/>
+<wire x1="17.78" y1="41.91" x2="26.416" y2="50.8" width="0" layer="19" extent="1-1"/>
+<wire x1="1.905" y1="-4.445" x2="19.685" y2="1.905" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VIN">
 <contactref element="U1" pad="VIN"/>
@@ -2013,6 +2041,8 @@ design rules under a new name.</description>
 <wire x1="29.845" y1="46.99" x2="29.845" y2="39.37" width="0.8128" layer="1"/>
 <wire x1="29.8475" y1="41.275" x2="29.8475" y2="39.3725" width="0.8128" layer="1"/>
 <wire x1="29.8475" y1="39.3725" x2="29.845" y2="39.37" width="0.8128" layer="1"/>
+<contactref element="LED-STRIP" pad="4"/>
+<wire x1="9.525" y1="-4.445" x2="8.89" y2="6.35" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$4">
 <contactref element="RN1" pad="7"/>
@@ -2137,9 +2167,6 @@ design rules under a new name.</description>
 <wire x1="48.895" y1="32.385" x2="50.8" y2="34.29" width="0.8128" layer="1"/>
 <wire x1="50.8" y1="34.29" x2="50.8" y2="50.8" width="0.8128" layer="1"/>
 </signal>
-<signal name="N$8">
-<contactref element="U1" pad="D13"/>
-</signal>
 <signal name="SDA">
 <contactref element="U1" pad="SDA"/>
 <contactref element="GY-27" pad="3"/>
@@ -2182,10 +2209,8 @@ design rules under a new name.</description>
 </signal>
 <signal name="POUT">
 <contactref element="R1" pad="2"/>
-<contactref element="U1" pad="D12"/>
 <contactref element="Q1" pad="1"/>
 <wire x1="53.34" y1="11.43" x2="53.34" y2="8.57" width="0.8128" layer="1"/>
-<wire x1="31.496" y1="50.8" x2="31.496" y2="48.514" width="0.8128" layer="16"/>
 <wire x1="31.496" y1="48.514" x2="33.02" y2="46.99" width="0.8128" layer="16"/>
 <wire x1="33.02" y1="46.99" x2="46.355" y2="46.99" width="0.8128" layer="16"/>
 <wire x1="46.355" y1="46.99" x2="49.53" y2="43.815" width="0.8128" layer="16"/>
@@ -2212,6 +2237,16 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$10">
 <via x="29.845" y="19.05" extent="1-16" drill="0.6" diameter="2.54"/>
+</signal>
+<signal name="CO">
+<contactref element="LED-STRIP" pad="2"/>
+<contactref element="U1" pad="D12"/>
+<wire x1="4.445" y1="-4.445" x2="31.496" y2="50.8" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="DO">
+<contactref element="LED-STRIP" pad="3"/>
+<contactref element="U1" pad="D13"/>
+<wire x1="6.985" y1="-4.445" x2="28.956" y2="50.8" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>
