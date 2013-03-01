@@ -6,7 +6,8 @@ Bleuette
 ## What is it ?
 
 This project aims to produce a creature with 6 legs and must run without anyone's help.
-For some of you may, the name "Bleuette" you may be familiar, in fact, it is a feminization of Bleuet, the robot of F/X:The Series (the Blue robot name in the french serie is Bleuet), we have no connection with this series but we  think that the poor would Bleuet feel alone and it would make him a fellow and then as a female to do ... :)
+
+Some of you may be familiar with the late 90’s tv show “F/X” where the main character (working with special effect) was getting the help of a small but smart robot named “Bleuet” (in French). This show sparkled the idea of creating a matte for Bleuet, that will be called “Bleuette”.
 
 See the announcement of the resumption of development: http://www.digitalspirit.org/blog/index.php/post/2012/08/06/Le-retour-de-l-hexapode-Bleuette
 
