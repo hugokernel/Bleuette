@@ -19587,6 +19587,20 @@ by R. Vogg  15.March.2002</description>
 <junction x="368.3" y="180.34"/>
 </segment>
 </net>
+<net name="N$41" class="0">
+<segment>
+<pinref part="U$3" gate="G$1" pin="24-SPI-CE0-N"/>
+<wire x1="365.76" y1="175.26" x2="368.3" y2="175.26" width="0.1524" layer="91"/>
+<junction x="368.3" y="175.26"/>
+</segment>
+</net>
+<net name="N$42" class="0">
+<segment>
+<pinref part="U$3" gate="G$1" pin="26-SPI-CE1-N"/>
+<wire x1="365.76" y1="170.18" x2="368.3" y2="170.18" width="0.1524" layer="91"/>
+<junction x="368.3" y="170.18"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>

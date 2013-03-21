@@ -19373,6 +19373,12 @@ by R. Vogg  15.March.2002</description>
 <label x="368.3" y="60.96" size="1.778" layer="95" rot="R180"/>
 <pinref part="Q2" gate="G$1" pin="G"/>
 </segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="15-GPIO3"/>
+<wire x1="317.5" y1="195.58" x2="314.96" y2="195.58" width="0.1524" layer="91"/>
+<junction x="314.96" y="195.58"/>
+<label x="304.8" y="195.58" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="+15V" class="0">
 <segment>
@@ -19586,14 +19592,6 @@ by R. Vogg  15.March.2002</description>
 <wire x1="365.76" y1="195.58" x2="368.3" y2="195.58" width="0.1524" layer="91"/>
 <junction x="368.3" y="195.58"/>
 <label x="370.84" y="195.58" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="N$37" class="0">
-<segment>
-<pinref part="U$3" gate="G$1" pin="15-GPIO3"/>
-<wire x1="317.5" y1="195.58" x2="314.96" y2="195.58" width="0.1524" layer="91"/>
-<junction x="314.96" y="195.58"/>
-<label x="304.8" y="195.58" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>

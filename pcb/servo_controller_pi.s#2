@@ -18829,24 +18829,6 @@ by R. Vogg  15.March.2002</description>
 <pinref part="C7" gate="G$1" pin="2"/>
 </segment>
 </net>
-<net name="RX_FROM_ARDUINO" class="0">
-<segment>
-<wire x1="119.38" y1="50.8" x2="127" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="127" y1="50.8" x2="127" y2="91.44" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="TX/RC6"/>
-<label x="127" y="93.98" size="1.778" layer="95" rot="R90"/>
-<junction x="127" y="91.44"/>
-</segment>
-</net>
-<net name="TX_FROM_ARDUINO" class="0">
-<segment>
-<wire x1="119.38" y1="53.34" x2="121.92" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="121.92" y1="91.44" x2="121.92" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="RX/RC7"/>
-<junction x="121.92" y="91.44"/>
-<label x="121.92" y="93.98" size="1.778" layer="95" rot="R90"/>
-</segment>
-</net>
 <net name="N$9" class="0">
 <segment>
 <wire x1="139.7" y1="83.82" x2="139.7" y2="45.72" width="0.1524" layer="91"/>
@@ -19577,6 +19559,13 @@ by R. Vogg  15.March.2002</description>
 <junction x="360.68" y="208.28"/>
 <label x="363.22" y="208.28" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="119.38" y1="53.34" x2="121.92" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="91.44" x2="121.92" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="RX/RC7"/>
+<junction x="121.92" y="91.44"/>
+<label x="121.92" y="93.98" size="1.778" layer="95" rot="R90"/>
+</segment>
 </net>
 <net name="RX_PI" class="0">
 <segment>
@@ -19584,6 +19573,13 @@ by R. Vogg  15.March.2002</description>
 <wire x1="358.14" y1="203.2" x2="360.68" y2="203.2" width="0.1524" layer="91"/>
 <junction x="360.68" y="203.2"/>
 <label x="363.22" y="203.2" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="119.38" y1="50.8" x2="127" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="127" y1="50.8" x2="127" y2="91.44" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="TX/RC6"/>
+<label x="127" y="93.98" size="1.778" layer="95" rot="R90"/>
+<junction x="127" y="91.44"/>
 </segment>
 </net>
 </nets>

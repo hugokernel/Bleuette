@@ -18363,8 +18363,8 @@ by R. Vogg  15.March.2002</description>
 <attribute name="VALUE" x="274.32" y="193.04" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="+3V1" gate="G$1" x="302.26" y="228.6"/>
-<instance part="VSS41" gate="G$1" x="365.76" y="208.28" smashed="yes">
-<attribute name="VALUE" x="368.3" y="205.74" size="1.778" layer="96" rot="R180"/>
+<instance part="VSS41" gate="G$1" x="375.92" y="208.28" smashed="yes">
+<attribute name="VALUE" x="378.46" y="205.74" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="IC4" gate="G$1" x="40.64" y="182.88"/>
 <instance part="D5" gate="G$1" x="58.42" y="185.42"/>
@@ -18777,8 +18777,8 @@ by R. Vogg  15.March.2002</description>
 </segment>
 <segment>
 <pinref part="U$3" gate="G$1" pin="6-GND"/>
-<wire x1="358.14" y1="213.36" x2="365.76" y2="213.36" width="0.1524" layer="91"/>
-<wire x1="365.76" y1="213.36" x2="365.76" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="358.14" y1="213.36" x2="375.92" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="375.92" y1="213.36" x2="375.92" y2="210.82" width="0.1524" layer="91"/>
 <pinref part="VSS41" gate="G$1" pin="VSS"/>
 </segment>
 <segment>
@@ -19568,6 +19568,22 @@ by R. Vogg  15.March.2002</description>
 <wire x1="358.14" y1="187.96" x2="360.68" y2="187.96" width="0.1524" layer="91"/>
 <junction x="360.68" y="187.96"/>
 <label x="363.22" y="187.96" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="TX_PI" class="0">
+<segment>
+<pinref part="U$3" gate="G$1" pin="8-TX"/>
+<wire x1="358.14" y1="208.28" x2="360.68" y2="208.28" width="0.1524" layer="91"/>
+<junction x="360.68" y="208.28"/>
+<label x="363.22" y="208.28" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="RX_PI" class="0">
+<segment>
+<pinref part="U$3" gate="G$1" pin="10-RX"/>
+<wire x1="358.14" y1="203.2" x2="360.68" y2="203.2" width="0.1524" layer="91"/>
+<junction x="360.68" y="203.2"/>
+<label x="363.22" y="203.2" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>

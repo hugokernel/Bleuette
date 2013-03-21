@@ -9116,6 +9116,12 @@ design rules under a new name.</description>
 <contactref element="U$3" pad="16"/>
 <wire x1="17.78" y1="18.415" x2="20.32" y2="53.34" width="0" layer="19" extent="16-16"/>
 </signal>
+<signal name="TX_PI">
+<contactref element="U$3" pad="8"/>
+</signal>
+<signal name="RX_PI">
+<contactref element="U$3" pad="10"/>
+</signal>
 </signals>
 </board>
 </drawing>

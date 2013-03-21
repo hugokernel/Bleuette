@@ -8965,7 +8965,9 @@ design rules under a new name.</description>
 <signal name="POUT">
 <contactref element="R8" pad="2"/>
 <contactref element="Q2" pad="1"/>
-<wire x1="-12.065" y1="-23.495" x2="2.855" y2="-69.85" width="0" layer="19" extent="1-1"/>
+<contactref element="U$3" pad="15"/>
+<wire x1="-12.065" y1="-23.495" x2="20.32" y2="50.8" width="0" layer="19" extent="1-1"/>
+<wire x1="2.855" y1="-69.85" x2="-12.065" y2="-23.495" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="+15V">
 <contactref element="IN" pad="1"/>
@@ -9116,9 +9118,6 @@ design rules under a new name.</description>
 <wire x1="10.4775" y1="5.4356" x2="10.5537" y2="5.3594" width="0.6096" layer="1"/>
 <contactref element="U$3" pad="16"/>
 <wire x1="17.78" y1="18.415" x2="20.32" y2="53.34" width="0" layer="19" extent="16-16"/>
-</signal>
-<signal name="N$37">
-<contactref element="U$3" pad="15"/>
 </signal>
 </signals>
 </board>

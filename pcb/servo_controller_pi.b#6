@@ -8729,6 +8729,8 @@ design rules under a new name.</description>
 </signal>
 <signal name="LED0">
 <contactref element="LED0" pad="C"/>
+<contactref element="U$3" pad="7"/>
+<wire x1="25.0825" y1="4.225" x2="10.16" y2="50.8" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="LED1">
 <contactref element="LED1" pad="C"/>
@@ -8738,6 +8740,8 @@ design rules under a new name.</description>
 <wire x1="18.0975" y1="7.9375" x2="18.0975" y2="6.6675" width="0.6096" layer="16"/>
 <wire x1="18.0975" y1="4.225" x2="18.0975" y2="6.6675" width="0.6096" layer="1"/>
 <via x="18.0975" y="6.6675" extent="1-16" drill="0.6" diameter="1.9304"/>
+<contactref element="U$3" pad="11"/>
+<wire x1="19.685" y1="17.4625" x2="15.24" y2="50.8" width="0" layer="19" extent="16-16"/>
 </signal>
 <signal name="LIPO_VOLTAGE">
 <contactref element="R1" pad="1"/>
@@ -9112,12 +9116,6 @@ design rules under a new name.</description>
 <wire x1="10.4775" y1="5.4356" x2="10.5537" y2="5.3594" width="0.6096" layer="1"/>
 <contactref element="U$3" pad="16"/>
 <wire x1="17.78" y1="18.415" x2="20.32" y2="53.34" width="0" layer="19" extent="16-16"/>
-</signal>
-<signal name="N$15">
-<contactref element="U$3" pad="7"/>
-</signal>
-<signal name="N$16">
-<contactref element="U$3" pad="11"/>
 </signal>
 <signal name="N$37">
 <contactref element="U$3" pad="15"/>

@@ -19243,6 +19243,12 @@ by R. Vogg  15.March.2002</description>
 <label x="231.14" y="185.42" size="1.778" layer="95"/>
 <pinref part="IC5" gate="A" pin="A"/>
 </segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="22-GPIO6"/>
+<wire x1="365.76" y1="180.34" x2="368.3" y2="180.34" width="0.1524" layer="91"/>
+<junction x="368.3" y="180.34"/>
+<label x="370.84" y="180.34" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="ADDRB" class="0">
 <segment>
@@ -19251,6 +19257,12 @@ by R. Vogg  15.March.2002</description>
 <label x="231.14" y="182.88" size="1.778" layer="95"/>
 <pinref part="IC5" gate="A" pin="B"/>
 </segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="24-SPI-CE0-N"/>
+<wire x1="365.76" y1="175.26" x2="368.3" y2="175.26" width="0.1524" layer="91"/>
+<junction x="368.3" y="175.26"/>
+<label x="370.84" y="175.26" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="ADDRC" class="0">
 <segment>
@@ -19258,6 +19270,12 @@ by R. Vogg  15.March.2002</description>
 <junction x="241.3" y="180.34"/>
 <label x="231.14" y="180.34" size="1.778" layer="95"/>
 <pinref part="IC5" gate="A" pin="C"/>
+</segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="26-SPI-CE1-N"/>
+<wire x1="365.76" y1="170.18" x2="368.3" y2="170.18" width="0.1524" layer="91"/>
+<junction x="368.3" y="170.18"/>
+<label x="370.84" y="170.18" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$34" class="0">
@@ -19296,6 +19314,12 @@ by R. Vogg  15.March.2002</description>
 <wire x1="271.78" y1="208.28" x2="274.32" y2="208.28" width="0.1524" layer="91"/>
 <wire x1="271.78" y1="208.28" x2="271.78" y2="205.74" width="0.1524" layer="91"/>
 <junction x="271.78" y="208.28"/>
+</segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="12-GPIO1"/>
+<wire x1="365.76" y1="205.74" x2="368.3" y2="205.74" width="0.1524" layer="91"/>
+<junction x="368.3" y="205.74"/>
+<label x="370.84" y="205.74" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -19571,34 +19595,6 @@ by R. Vogg  15.March.2002</description>
 <pinref part="U$3" gate="G$1" pin="15-GPIO3"/>
 <wire x1="317.5" y1="195.58" x2="314.96" y2="195.58" width="0.1524" layer="91"/>
 <junction x="314.96" y="195.58"/>
-</segment>
-</net>
-<net name="N$39" class="0">
-<segment>
-<pinref part="U$3" gate="G$1" pin="12-GPIO1"/>
-<wire x1="365.76" y1="205.74" x2="368.3" y2="205.74" width="0.1524" layer="91"/>
-<junction x="368.3" y="205.74"/>
-</segment>
-</net>
-<net name="N$40" class="0">
-<segment>
-<pinref part="U$3" gate="G$1" pin="22-GPIO6"/>
-<wire x1="365.76" y1="180.34" x2="368.3" y2="180.34" width="0.1524" layer="91"/>
-<junction x="368.3" y="180.34"/>
-</segment>
-</net>
-<net name="N$41" class="0">
-<segment>
-<pinref part="U$3" gate="G$1" pin="24-SPI-CE0-N"/>
-<wire x1="365.76" y1="175.26" x2="368.3" y2="175.26" width="0.1524" layer="91"/>
-<junction x="368.3" y="175.26"/>
-</segment>
-</net>
-<net name="N$42" class="0">
-<segment>
-<pinref part="U$3" gate="G$1" pin="26-SPI-CE1-N"/>
-<wire x1="365.76" y1="170.18" x2="368.3" y2="170.18" width="0.1524" layer="91"/>
-<junction x="368.3" y="170.18"/>
 </segment>
 </net>
 </nets>

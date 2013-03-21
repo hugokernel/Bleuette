@@ -18981,6 +18981,12 @@ by R. Vogg  15.March.2002</description>
 <junction x="350.52" y="246.38"/>
 <label x="350.52" y="248.92" size="1.778" layer="95" rot="R90"/>
 </segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="7-GPIO7"/>
+<wire x1="317.5" y1="215.9" x2="314.96" y2="215.9" width="0.1524" layer="91"/>
+<junction x="314.96" y="215.9"/>
+<label x="304.8" y="215.9" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="LED1" class="0">
 <segment>
@@ -18993,6 +18999,12 @@ by R. Vogg  15.March.2002</description>
 <wire x1="347.98" y1="243.84" x2="347.98" y2="246.38" width="0.1524" layer="91"/>
 <junction x="347.98" y="246.38"/>
 <label x="347.98" y="248.92" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="11-GPIO0"/>
+<wire x1="317.5" y1="205.74" x2="314.96" y2="205.74" width="0.1524" layer="91"/>
+<junction x="314.96" y="205.74"/>
+<label x="304.8" y="205.74" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="LIPO_VOLTAGE" class="0">
@@ -19576,25 +19588,12 @@ by R. Vogg  15.March.2002</description>
 <label x="370.84" y="195.58" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$15" class="0">
-<segment>
-<pinref part="U$3" gate="G$1" pin="7-GPIO7"/>
-<wire x1="317.5" y1="215.9" x2="314.96" y2="215.9" width="0.1524" layer="91"/>
-<junction x="314.96" y="215.9"/>
-</segment>
-</net>
-<net name="N$16" class="0">
-<segment>
-<pinref part="U$3" gate="G$1" pin="11-GPIO0"/>
-<wire x1="317.5" y1="205.74" x2="314.96" y2="205.74" width="0.1524" layer="91"/>
-<junction x="314.96" y="205.74"/>
-</segment>
-</net>
 <net name="N$37" class="0">
 <segment>
 <pinref part="U$3" gate="G$1" pin="15-GPIO3"/>
 <wire x1="317.5" y1="195.58" x2="314.96" y2="195.58" width="0.1524" layer="91"/>
 <junction x="314.96" y="195.58"/>
+<label x="304.8" y="195.58" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>

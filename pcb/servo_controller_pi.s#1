@@ -18257,9 +18257,9 @@ by R. Vogg  15.March.2002</description>
 <instance part="SUPPLY1" gate="G$1" x="160.02" y="111.76"/>
 <instance part="SUPPLY3" gate="G$1" x="58.42" y="27.94"/>
 <instance part="SUPPLY4" gate="G$1" x="124.46" y="38.1"/>
-<instance part="IC3" gate="G$1" x="137.16" y="213.36"/>
-<instance part="VSS14" gate="G$1" x="119.38" y="198.12"/>
-<instance part="VDD2" gate="G$1" x="119.38" y="233.68"/>
+<instance part="IC3" gate="G$1" x="139.7" y="195.58"/>
+<instance part="VSS14" gate="G$1" x="121.92" y="180.34"/>
+<instance part="VDD2" gate="G$1" x="121.92" y="215.9"/>
 <instance part="RESET" gate="G$1" x="91.44" y="127" smashed="yes">
 <attribute name="NAME" x="92.075" y="128.27" size="1.778" layer="95" rot="R90"/>
 <attribute name="TP_SIGNAL_NAME" x="92.71" y="125.73" size="1.778" layer="97"/>
@@ -18280,7 +18280,7 @@ by R. Vogg  15.March.2002</description>
 <attribute name="NAME" x="102.235" y="128.27" size="1.778" layer="95" rot="R90"/>
 <attribute name="TP_SIGNAL_NAME" x="102.87" y="125.73" size="1.778" layer="97"/>
 </instance>
-<instance part="SUPPLY5" gate="G$1" x="154.94" y="233.68"/>
+<instance part="SUPPLY5" gate="G$1" x="157.48" y="215.9"/>
 <instance part="VSS16" gate="G$1" x="111.76" y="99.06"/>
 <instance part="VSS17" gate="G$1" x="30.48" y="17.78"/>
 <instance part="VSS18" gate="G$1" x="58.42" y="10.16"/>
@@ -18296,21 +18296,21 @@ by R. Vogg  15.March.2002</description>
 <attribute name="TP_SIGNAL_NAME" x="146.05" y="85.09" size="1.778" layer="97"/>
 </instance>
 <instance part="D1" gate="G$1" x="81.28" y="233.68"/>
-<instance part="C3" gate="G$1" x="109.22" y="208.28"/>
-<instance part="VSS8" gate="G$1" x="109.22" y="198.12"/>
+<instance part="C3" gate="G$1" x="111.76" y="190.5"/>
+<instance part="VSS8" gate="G$1" x="111.76" y="180.34"/>
 <instance part="C5" gate="G$1" x="38.1" y="27.94"/>
 <instance part="VSS22" gate="G$1" x="38.1" y="17.78"/>
-<instance part="RSENSE" gate="G$1" x="137.16" y="228.6"/>
+<instance part="RSENSE" gate="G$1" x="139.7" y="210.82"/>
 <instance part="C4" gate="G$1" x="160.02" y="25.4"/>
 <instance part="VSS23" gate="G$1" x="160.02" y="15.24"/>
 <instance part="X1" gate="-1" x="12.7" y="226.06"/>
 <instance part="X1" gate="-2" x="12.7" y="233.68"/>
 <instance part="IC2" gate="G$1" x="63.5" y="231.14"/>
 <instance part="R7" gate="G$1" x="60.96" y="91.44" rot="R90"/>
-<instance part="D2" gate="G$1" x="154.94" y="205.74" rot="R90"/>
+<instance part="D2" gate="G$1" x="157.48" y="187.96" rot="R90"/>
 <instance part="D3" gate="G$1" x="38.1" y="210.82" rot="R90"/>
 <instance part="VSS25" gate="G$1" x="38.1" y="200.66"/>
-<instance part="VSS26" gate="G$1" x="154.94" y="198.12"/>
+<instance part="VSS26" gate="G$1" x="157.48" y="180.34"/>
 <instance part="SJ1" gate="1" x="332.74" y="121.92" rot="R90"/>
 <instance part="C9" gate="G$1" x="86.36" y="220.98"/>
 <instance part="VSS27" gate="G$1" x="86.36" y="200.66"/>
@@ -18383,8 +18383,8 @@ by R. Vogg  15.March.2002</description>
 <instance part="+3V8" gate="G$1" x="274.32" y="66.04"/>
 <instance part="+3V10" gate="G$1" x="220.98" y="121.92"/>
 <instance part="+3V11" gate="G$1" x="238.76" y="121.92"/>
-<instance part="+3V13" gate="G$1" x="109.22" y="218.44"/>
-<instance part="+3V14" gate="G$1" x="119.38" y="218.44"/>
+<instance part="+3V13" gate="G$1" x="111.76" y="200.66"/>
+<instance part="+3V14" gate="G$1" x="121.92" y="200.66"/>
 <instance part="+3V15" gate="G$1" x="243.84" y="236.22"/>
 <instance part="+3V16" gate="G$1" x="198.12" y="228.6"/>
 <instance part="P+3" gate="1" x="274.32" y="121.92"/>
@@ -18581,9 +18581,9 @@ by R. Vogg  15.March.2002</description>
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="GND"/>
-<wire x1="121.92" y1="208.28" x2="119.38" y2="208.28" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="190.5" x2="121.92" y2="190.5" width="0.1524" layer="91"/>
 <pinref part="VSS14" gate="G$1" pin="VSS"/>
-<wire x1="119.38" y1="208.28" x2="119.38" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="190.5" x2="121.92" y2="182.88" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <wire x1="108.585" y1="104.14" x2="111.76" y2="104.14" width="0.1524" layer="91"/>
@@ -18684,7 +18684,7 @@ by R. Vogg  15.March.2002</description>
 <segment>
 <pinref part="C3" gate="G$1" pin="2"/>
 <pinref part="VSS8" gate="G$1" pin="VSS"/>
-<wire x1="109.22" y1="200.66" x2="109.22" y2="203.2" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="182.88" x2="111.76" y2="185.42" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="D3" gate="G$1" pin="A"/>
@@ -18694,7 +18694,7 @@ by R. Vogg  15.March.2002</description>
 <segment>
 <pinref part="D2" gate="G$1" pin="A"/>
 <pinref part="VSS26" gate="G$1" pin="VSS"/>
-<wire x1="154.94" y1="200.66" x2="154.94" y2="203.2" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="182.88" x2="157.48" y2="185.42" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C4" gate="G$1" pin="-"/>
@@ -18928,12 +18928,12 @@ by R. Vogg  15.March.2002</description>
 </segment>
 <segment>
 <pinref part="VDD2" gate="G$1" pin="VDD"/>
-<wire x1="119.38" y1="231.14" x2="119.38" y2="228.6" width="0.1524" layer="91"/>
-<wire x1="119.38" y1="228.6" x2="129.54" y2="228.6" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="213.36" x2="121.92" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="210.82" x2="132.08" y2="210.82" width="0.1524" layer="91"/>
 <pinref part="IC3" gate="G$1" pin="R+"/>
-<wire x1="129.54" y1="228.6" x2="129.54" y2="226.06" width="0.1524" layer="91"/>
-<wire x1="129.54" y1="228.6" x2="132.08" y2="228.6" width="0.1524" layer="91"/>
-<junction x="129.54" y="228.6"/>
+<wire x1="132.08" y1="210.82" x2="132.08" y2="208.28" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="210.82" x2="134.62" y2="210.82" width="0.1524" layer="91"/>
+<junction x="132.08" y="210.82"/>
 <pinref part="RSENSE" gate="G$1" pin="1"/>
 </segment>
 </net>
@@ -19094,25 +19094,25 @@ by R. Vogg  15.March.2002</description>
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="R-"/>
-<wire x1="144.78" y1="226.06" x2="144.78" y2="228.6" width="0.1524" layer="91"/>
-<wire x1="144.78" y1="228.6" x2="154.94" y2="228.6" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="208.28" x2="147.32" y2="210.82" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="210.82" x2="157.48" y2="210.82" width="0.1524" layer="91"/>
 <pinref part="SUPPLY5" gate="G$1" pin="VEE"/>
-<wire x1="154.94" y1="228.6" x2="154.94" y2="231.14" width="0.1524" layer="91"/>
-<wire x1="142.24" y1="228.6" x2="144.78" y2="228.6" width="0.1524" layer="91"/>
-<junction x="144.78" y="228.6"/>
+<wire x1="157.48" y1="210.82" x2="157.48" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="210.82" x2="147.32" y2="210.82" width="0.1524" layer="91"/>
+<junction x="147.32" y="210.82"/>
 <pinref part="RSENSE" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="SERVO_CURRENT" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="VOUT"/>
-<wire x1="152.4" y1="210.82" x2="154.94" y2="210.82" width="0.1524" layer="91"/>
-<junction x="160.02" y="210.82"/>
-<label x="149.86" y="213.36" size="1.778" layer="95"/>
+<wire x1="154.94" y1="193.04" x2="157.48" y2="193.04" width="0.1524" layer="91"/>
+<junction x="162.56" y="193.04"/>
+<label x="152.4" y="195.58" size="1.778" layer="95"/>
 <pinref part="D2" gate="G$1" pin="C"/>
-<wire x1="154.94" y1="210.82" x2="160.02" y2="210.82" width="0.1524" layer="91"/>
-<wire x1="154.94" y1="210.82" x2="154.94" y2="208.28" width="0.1524" layer="91"/>
-<junction x="154.94" y="210.82"/>
+<wire x1="157.48" y1="193.04" x2="162.56" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="193.04" x2="157.48" y2="190.5" width="0.1524" layer="91"/>
+<junction x="157.48" y="193.04"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="RE0/!RD/AN5"/>
@@ -19443,13 +19443,13 @@ by R. Vogg  15.March.2002</description>
 </segment>
 <segment>
 <pinref part="C3" gate="G$1" pin="1"/>
-<wire x1="109.22" y1="210.82" x2="109.22" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="193.04" x2="111.76" y2="198.12" width="0.1524" layer="91"/>
 <pinref part="+3V13" gate="G$1" pin="+3V3"/>
 </segment>
 <segment>
 <pinref part="IC3" gate="G$1" pin="VCC"/>
-<wire x1="121.92" y1="213.36" x2="119.38" y2="213.36" width="0.1524" layer="91"/>
-<wire x1="119.38" y1="213.36" x2="119.38" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="195.58" x2="121.92" y2="195.58" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="195.58" x2="121.92" y2="198.12" width="0.1524" layer="91"/>
 <pinref part="+3V14" gate="G$1" pin="+3V3"/>
 </segment>
 <segment>

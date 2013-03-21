@@ -18311,7 +18311,7 @@ by R. Vogg  15.March.2002</description>
 <instance part="D3" gate="G$1" x="38.1" y="210.82" rot="R90"/>
 <instance part="VSS25" gate="G$1" x="38.1" y="200.66"/>
 <instance part="VSS26" gate="G$1" x="157.48" y="180.34"/>
-<instance part="SJ1" gate="1" x="332.74" y="121.92" rot="R90"/>
+<instance part="SJ1" gate="1" x="180.34" y="132.08" rot="R90"/>
 <instance part="C9" gate="G$1" x="86.36" y="220.98"/>
 <instance part="VSS27" gate="G$1" x="86.36" y="200.66"/>
 <instance part="U$3" gate="G$1" x="330.2" y="172.72"/>
@@ -19013,12 +19013,6 @@ by R. Vogg  15.March.2002</description>
 <wire x1="73.66" y1="109.22" x2="73.66" y2="111.76" width="0.1524" layer="91"/>
 <junction x="73.66" y="111.76"/>
 <pinref part="RESET" gate="G$1" pin="TP"/>
-</segment>
-<segment>
-<pinref part="SJ1" gate="1" pin="1"/>
-<wire x1="332.74" y1="116.84" x2="332.74" y2="114.3" width="0.1524" layer="91"/>
-<junction x="332.74" y="114.3"/>
-<label x="327.66" y="116.84" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VEE" class="0">
