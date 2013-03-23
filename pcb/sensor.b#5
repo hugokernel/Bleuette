@@ -2167,9 +2167,6 @@ design rules under a new name.</description>
 <wire x1="48.895" y1="32.385" x2="50.8" y2="34.29" width="0.8128" layer="1"/>
 <wire x1="50.8" y1="34.29" x2="50.8" y2="50.8" width="0.8128" layer="1"/>
 </signal>
-<signal name="N$8">
-<contactref element="U1" pad="D13"/>
-</signal>
 <signal name="SDA">
 <contactref element="U1" pad="SDA"/>
 <contactref element="GY-27" pad="3"/>
@@ -2212,10 +2209,8 @@ design rules under a new name.</description>
 </signal>
 <signal name="POUT">
 <contactref element="R1" pad="2"/>
-<contactref element="U1" pad="D12"/>
 <contactref element="Q1" pad="1"/>
 <wire x1="53.34" y1="11.43" x2="53.34" y2="8.57" width="0.8128" layer="1"/>
-<wire x1="31.496" y1="50.8" x2="31.496" y2="48.514" width="0.8128" layer="16"/>
 <wire x1="31.496" y1="48.514" x2="33.02" y2="46.99" width="0.8128" layer="16"/>
 <wire x1="33.02" y1="46.99" x2="46.355" y2="46.99" width="0.8128" layer="16"/>
 <wire x1="46.355" y1="46.99" x2="49.53" y2="43.815" width="0.8128" layer="16"/>
@@ -2243,11 +2238,15 @@ design rules under a new name.</description>
 <signal name="N$10">
 <via x="29.845" y="19.05" extent="1-16" drill="0.6" diameter="2.54"/>
 </signal>
-<signal name="DI">
+<signal name="CO">
 <contactref element="LED-STRIP" pad="2"/>
+<contactref element="U1" pad="D12"/>
+<wire x1="4.445" y1="-4.445" x2="31.496" y2="50.8" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="CI">
+<signal name="DO">
 <contactref element="LED-STRIP" pad="3"/>
+<contactref element="U1" pad="D13"/>
+<wire x1="6.985" y1="-4.445" x2="28.956" y2="50.8" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>
