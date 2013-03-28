@@ -77,7 +77,7 @@
 <symbol name="GY-27">
 <pin name="GND" x="12.7" y="-2.54" length="middle" rot="R180"/>
 <pin name="DRY" x="0" y="-12.7" length="middle" rot="R90"/>
-<pin name="SDA" x="-12.7" y="10.16" length="middle"/>
+<pin name="$SDA" x="-12.7" y="10.16" length="middle"/>
 <pin name="SCL" x="-12.7" y="5.08" length="middle"/>
 <pin name="VCC" x="12.7" y="12.7" length="middle" rot="R180"/>
 <wire x1="-7.62" y1="17.78" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
@@ -94,10 +94,10 @@
 <devices>
 <device name="" package="GY-27">
 <connects>
+<connect gate="G$1" pin="$SDA" pad="SDA"/>
 <connect gate="G$1" pin="DRY" pad="DRY"/>
 <connect gate="G$1" pin="GND" pad="GND"/>
 <connect gate="G$1" pin="SCL" pad="SCL"/>
-<connect gate="G$1" pin="SDA" pad="SDA"/>
 <connect gate="G$1" pin="VCC" pad="VCC"/>
 </connects>
 <technologies>

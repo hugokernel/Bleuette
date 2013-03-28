@@ -76,7 +76,7 @@
 <symbols>
 <symbol name="GY-27">
 <pin name="GND" x="12.7" y="-2.54" length="middle" rot="R180"/>
-<pin name="DRY" x="0" y="-12.7" length="middle" rot="R90"/>
+<pin name="DRY" x="-5.08" y="-12.7" length="middle" rot="R90"/>
 <pin name="SDA" x="-12.7" y="10.16" length="middle"/>
 <pin name="SCL" x="-12.7" y="5.08" length="middle"/>
 <pin name="VCC" x="12.7" y="12.7" length="middle" rot="R180"/>
