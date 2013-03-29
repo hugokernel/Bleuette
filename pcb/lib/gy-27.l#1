@@ -66,11 +66,13 @@
 <pad name="SDA" x="3.81" y="7.62" drill="0.8" diameter="1.9304"/>
 <pad name="DRY" x="3.81" y="10.16" drill="0.8" diameter="1.9304"/>
 <pad name="GND" x="3.81" y="12.7" drill="0.8" diameter="1.9304"/>
-<text x="0.635" y="10.16" size="0.6096" layer="21">DRY</text>
-<text x="0.635" y="7.62" size="0.6096" layer="21">SDA</text>
-<text x="0.635" y="5.08" size="0.6096" layer="21">SCL</text>
-<text x="0.635" y="2.54" size="0.6096" layer="21">VCC</text>
-<text x="0.635" y="12.7" size="0.6096" layer="21">GND</text>
+<text x="0.3175" y="12.3825" size="0.8128" layer="21">GND</text>
+<text x="0.3175" y="9.8425" size="0.8128" layer="21">DRY</text>
+<text x="0.3175" y="7.3025" size="0.8128" layer="21">SDA</text>
+<text x="0.3175" y="4.7625" size="0.8128" layer="21">SCL</text>
+<text x="0.3175" y="2.2225" size="0.8128" layer="21">VCC</text>
+<text x="0" y="-3.81" size="1.27" layer="21">&gt;VALUE</text>
+<text x="0" y="-1.905" size="1.27" layer="21">&gt;NAME</text>
 </package>
 </packages>
 <symbols>
@@ -84,6 +86,8 @@
 <wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="7.62" y1="-7.62" x2="7.62" y2="17.78" width="0.254" layer="94"/>
 <wire x1="7.62" y1="17.78" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
+<text x="-7.62" y="19.05" size="1.6764" layer="95">&gt;VALUE</text>
+<text x="-7.62" y="21.59" size="1.778" layer="95">&gt;NAME</text>
 </symbol>
 </symbols>
 <devicesets>

@@ -66,24 +66,28 @@
 <pad name="SDA" x="3.81" y="7.62" drill="0.8" diameter="1.9304"/>
 <pad name="DRY" x="3.81" y="10.16" drill="0.8" diameter="1.9304"/>
 <pad name="GND" x="3.81" y="12.7" drill="0.8" diameter="1.9304"/>
-<text x="0.635" y="12.7" size="0.6096" layer="21">GND</text>
-<text x="0.635" y="10.16" size="0.6096" layer="21">DRY</text>
-<text x="0.635" y="7.62" size="0.6096" layer="21">SDA</text>
-<text x="0.635" y="5.08" size="0.6096" layer="21">SCL</text>
-<text x="0.635" y="2.54" size="0.6096" layer="21">VCC</text>
+<text x="0.3175" y="12.3825" size="0.8128" layer="21">GND</text>
+<text x="0.3175" y="9.8425" size="0.8128" layer="21">DRY</text>
+<text x="0.3175" y="7.3025" size="0.8128" layer="21">SDA</text>
+<text x="0.3175" y="4.7625" size="0.8128" layer="21">SCL</text>
+<text x="0.3175" y="2.2225" size="0.8128" layer="21">VCC</text>
+<text x="0" y="-1.905" size="1.27" layer="21">GY-27</text>
+<text x="6.35" y="-1.27" size="1.27" layer="21">&gt;NAME</text>
 </package>
 </packages>
 <symbols>
 <symbol name="GY-27">
-<pin name="GND" x="12.7" y="-2.54" length="middle" rot="R180"/>
-<pin name="DRY" x="0" y="-12.7" length="middle" rot="R90"/>
-<pin name="$SDA" x="-12.7" y="10.16" length="middle"/>
-<pin name="SCL" x="-12.7" y="5.08" length="middle"/>
-<pin name="VCC" x="12.7" y="12.7" length="middle" rot="R180"/>
+<pin name="GND" x="12.7" y="-2.54" visible="pin" length="middle" direction="pwr" rot="R180"/>
+<pin name="DRY" x="-5.08" y="-12.7" visible="pin" length="middle" rot="R90"/>
+<pin name="SDA" x="-12.7" y="10.16" visible="pin" length="middle"/>
+<pin name="SCL" x="-12.7" y="5.08" visible="pin" length="middle" direction="in" function="clk"/>
+<pin name="VCC" x="12.7" y="12.7" visible="pin" length="middle" direction="pwr" rot="R180"/>
 <wire x1="-7.62" y1="17.78" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="7.62" y1="-7.62" x2="7.62" y2="17.78" width="0.254" layer="94"/>
 <wire x1="7.62" y1="17.78" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
+<text x="-7.62" y="19.05" size="1.6764" layer="95">GY-27</text>
+<text x="0" y="20.32" size="1.27" layer="95">&gt;NAME</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -94,10 +98,10 @@
 <devices>
 <device name="" package="GY-27">
 <connects>
-<connect gate="G$1" pin="$SDA" pad="SDA"/>
 <connect gate="G$1" pin="DRY" pad="DRY"/>
 <connect gate="G$1" pin="GND" pad="GND"/>
 <connect gate="G$1" pin="SCL" pad="SCL"/>
+<connect gate="G$1" pin="SDA" pad="SDA"/>
 <connect gate="G$1" pin="VCC" pad="VCC"/>
 </connects>
 <technologies>
