@@ -18162,10 +18162,10 @@ Source: http://cache.national.com/ds/LM/LM386.pdf</description>
 <library name="gy-27">
 <packages>
 <package name="GY-27">
-<wire x1="0" y1="0" x2="32.0675" y2="0" width="0.127" layer="21"/>
-<wire x1="32.0675" y1="0" x2="32.0675" y2="15.24" width="0.127" layer="21"/>
-<wire x1="32.0675" y1="15.24" x2="0" y2="15.24" width="0.127" layer="21"/>
-<wire x1="0" y1="15.24" x2="0" y2="0" width="0.127" layer="21"/>
+<wire x1="0" y1="0" x2="32.0675" y2="0" width="0.127" layer="21" style="shortdash"/>
+<wire x1="32.0675" y1="0" x2="32.0675" y2="15.24" width="0.127" layer="21" style="shortdash"/>
+<wire x1="32.0675" y1="15.24" x2="0" y2="15.24" width="0.127" layer="21" style="shortdash"/>
+<wire x1="0" y1="15.24" x2="0" y2="0" width="0.127" layer="21" style="shortdash"/>
 <pad name="VCC" x="3.81" y="2.54" drill="0.8" diameter="1.9304"/>
 <pad name="SCL" x="3.81" y="5.08" drill="0.8" diameter="1.9304"/>
 <pad name="SDA" x="3.81" y="7.62" drill="0.8" diameter="1.9304"/>
@@ -18176,6 +18176,8 @@ Source: http://cache.national.com/ds/LM/LM386.pdf</description>
 <text x="0.3175" y="7.3025" size="0.8128" layer="21">SDA</text>
 <text x="0.3175" y="4.7625" size="0.8128" layer="21">SCL</text>
 <text x="0.3175" y="2.2225" size="0.8128" layer="21">VCC</text>
+<text x="0" y="-3.81" size="1.27" layer="21">&gt;VALUE</text>
+<text x="0" y="-1.905" size="1.27" layer="21">&gt;NAME</text>
 </package>
 </packages>
 <symbols>
@@ -18189,6 +18191,8 @@ Source: http://cache.national.com/ds/LM/LM386.pdf</description>
 <wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="7.62" y1="-7.62" x2="7.62" y2="17.78" width="0.254" layer="94"/>
 <wire x1="7.62" y1="17.78" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
+<text x="-7.62" y="19.05" size="1.6764" layer="95">&gt;VALUE</text>
+<text x="-7.62" y="21.59" size="1.778" layer="95">&gt;NAME</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -20447,7 +20451,7 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <part name="C10" library="rcl" deviceset="C-EU" device="C0805" value="22pf"/>
 <part name="C11" library="rcl" deviceset="C-EU" device="C0805" value="22pf"/>
 <part name="C5" library="rcl" deviceset="C-EU" device="C0805" value="100nf"/>
-<part name="U$4" library="gy-27" deviceset="GY-27" device=""/>
+<part name="IC7" library="gy-27" deviceset="GY-27" device=""/>
 <part name="PWR" library="led" deviceset="LED" device="CHIPLED_0805"/>
 <part name="R14" library="rcl" deviceset="R-EU_" device="M0805" value="1k"/>
 <part name="VSS32" library="supply1" deviceset="VSS" device=""/>
@@ -20503,6 +20507,7 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <part name="PGND" library="wirepad" deviceset="2,15/1,0" device=""/>
 <part name="HP+" library="wirepad" deviceset="2,15/1,0" device=""/>
 <part name="HP-" library="wirepad" deviceset="2,15/1,0" device=""/>
+<part name="AN6" library="testpad" deviceset="TP" device="B1,27"/>
 </parts>
 <sheets>
 <sheet>
@@ -20633,19 +20638,19 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <instance part="C2" gate="G$1" x="68.58" y="210.82"/>
 <instance part="VSS27" gate="G$1" x="68.58" y="200.66"/>
 <instance part="U$3" gate="G$1" x="330.2" y="172.72"/>
-<instance part="VSS28" gate="G$1" x="284.48" y="104.14" smashed="yes">
-<attribute name="VALUE" x="287.02" y="101.6" size="1.778" layer="96" rot="R180"/>
+<instance part="VSS28" gate="G$1" x="284.48" y="93.98" smashed="yes">
+<attribute name="VALUE" x="287.02" y="91.44" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VSS29" gate="G$1" x="218.44" y="152.4"/>
 <instance part="VSS30" gate="G$1" x="264.16" y="215.9"/>
 <instance part="C6" gate="G$1" x="251.46" y="223.52" rot="R90"/>
-<instance part="C12" gate="G$1" x="292.1" y="116.84"/>
+<instance part="C12" gate="G$1" x="292.1" y="106.68"/>
 <instance part="VSS31" gate="G$1" x="243.84" y="167.64"/>
 <instance part="RN1" gate="G$1" x="208.28" y="167.64" rot="R180"/>
 <instance part="SV1" gate="1" x="187.96" y="210.82"/>
 <instance part="SV2" gate="1" x="187.96" y="180.34"/>
-<instance part="VSS33" gate="G$1" x="292.1" y="104.14" smashed="yes">
-<attribute name="VALUE" x="294.64" y="101.6" size="1.778" layer="96" rot="R180"/>
+<instance part="VSS33" gate="G$1" x="292.1" y="93.98" smashed="yes">
+<attribute name="VALUE" x="294.64" y="91.44" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="LED-STRIP" gate="1" x="345.44" y="127" smashed="yes">
 <attribute name="VALUE" x="344.17" y="116.84" size="1.778" layer="96"/>
@@ -20693,7 +20698,7 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <instance part="C10" gate="G$1" x="73.66" y="60.96" rot="R90"/>
 <instance part="C11" gate="G$1" x="73.66" y="53.34" rot="R90"/>
 <instance part="C5" gate="G$1" x="111.76" y="193.04"/>
-<instance part="U$4" gate="G$1" x="269.24" y="111.76"/>
+<instance part="IC7" gate="G$1" x="269.24" y="101.6"/>
 <instance part="PWR" gate="G$1" x="81.28" y="175.26" rot="R180"/>
 <instance part="R14" gate="G$1" x="81.28" y="165.1" rot="R90"/>
 <instance part="VSS32" gate="G$1" x="81.28" y="154.94"/>
@@ -20772,11 +20777,11 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <instance part="P+5" gate="1" x="81.28" y="101.6" smashed="yes">
 <attribute name="VALUE" x="83.82" y="104.14" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="+3V1" gate="G$1" x="292.1" y="129.54" smashed="yes">
-<attribute name="VALUE" x="294.64" y="132.08" size="1.778" layer="96" rot="R180"/>
+<instance part="+3V1" gate="G$1" x="292.1" y="119.38" smashed="yes">
+<attribute name="VALUE" x="294.64" y="121.92" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="+3V4" gate="G$1" x="284.48" y="129.54" smashed="yes">
-<attribute name="VALUE" x="287.02" y="132.08" size="1.778" layer="96" rot="R180"/>
+<instance part="+3V4" gate="G$1" x="284.48" y="119.38" smashed="yes">
+<attribute name="VALUE" x="287.02" y="121.92" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="P+6" gate="1" x="170.18" y="139.7" smashed="yes">
 <attribute name="VALUE" x="172.72" y="142.24" size="1.778" layer="96" rot="R180"/>
@@ -20791,6 +20796,10 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <instance part="HP-" gate="1" x="345.44" y="53.34" smashed="yes" rot="R180">
 <attribute name="NAME" x="354.203" y="54.0258" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="346.583" y="56.642" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="AN6" gate="G$1" x="91.44" y="66.04" smashed="yes" rot="R90">
+<attribute name="NAME" x="90.17" y="67.31" size="1.778" layer="95" rot="R180"/>
+<attribute name="TP_SIGNAL_NAME" x="92.71" y="67.31" size="1.778" layer="97" rot="R90"/>
 </instance>
 </instances>
 <busses>
@@ -21081,7 +21090,7 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <segment>
 <pinref part="C12" gate="G$1" pin="2"/>
 <pinref part="VSS33" gate="G$1" pin="VSS"/>
-<wire x1="292.1" y1="106.68" x2="292.1" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="292.1" y1="96.52" x2="292.1" y2="101.6" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="LED-STRIP" gate="1" pin="1"/>
@@ -21132,10 +21141,10 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <wire x1="160.02" y1="88.9" x2="160.02" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="GND"/>
-<wire x1="281.94" y1="109.22" x2="284.48" y2="109.22" width="0.1524" layer="91"/>
+<pinref part="IC7" gate="G$1" pin="GND"/>
+<wire x1="281.94" y1="99.06" x2="284.48" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="VSS28" gate="G$1" pin="VSS"/>
-<wire x1="284.48" y1="109.22" x2="284.48" y2="106.68" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="99.06" x2="284.48" y2="96.52" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R14" gate="G$1" pin="1"/>
@@ -21671,10 +21680,10 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 </net>
 <net name="SDA" class="0">
 <segment>
-<wire x1="256.54" y1="121.92" x2="254" y2="121.92" width="0.1524" layer="91"/>
-<junction x="254" y="121.92"/>
-<label x="246.38" y="121.92" size="1.778" layer="95"/>
-<pinref part="U$4" gate="G$1" pin="SDA"/>
+<wire x1="256.54" y1="111.76" x2="254" y2="111.76" width="0.1524" layer="91"/>
+<junction x="254" y="111.76"/>
+<label x="246.38" y="111.76" size="1.778" layer="95"/>
+<pinref part="IC7" gate="G$1" pin="SDA"/>
 <wire x1="317.5" y1="93.98" x2="322.58" y2="93.98" width="0.1524" layer="91"/>
 <junction x="317.5" y="93.98"/>
 <label x="309.88" y="93.98" size="1.778" layer="95"/>
@@ -21689,13 +21698,13 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 </net>
 <net name="SCL" class="0">
 <segment>
-<wire x1="256.54" y1="116.84" x2="254" y2="116.84" width="0.1524" layer="91"/>
-<junction x="254" y="116.84"/>
-<label x="246.38" y="116.84" size="1.778" layer="95"/>
+<wire x1="256.54" y1="106.68" x2="254" y2="106.68" width="0.1524" layer="91"/>
+<junction x="254" y="106.68"/>
+<label x="246.38" y="106.68" size="1.778" layer="95"/>
 <wire x1="322.58" y1="96.52" x2="317.5" y2="96.52" width="0.1524" layer="91"/>
 <junction x="317.5" y="96.52"/>
 <label x="309.88" y="96.52" size="1.778" layer="95"/>
-<pinref part="U$4" gate="G$1" pin="SCL"/>
+<pinref part="IC7" gate="G$1" pin="SCL"/>
 <pinref part="OPTION" gate="G$1" pin="8"/>
 </segment>
 <segment>
@@ -21775,13 +21784,13 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 </segment>
 <segment>
 <pinref part="C12" gate="G$1" pin="1"/>
-<wire x1="292.1" y1="127" x2="292.1" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="292.1" y1="116.84" x2="292.1" y2="109.22" width="0.1524" layer="91"/>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="VCC"/>
-<wire x1="281.94" y1="124.46" x2="284.48" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="284.48" y1="124.46" x2="284.48" y2="127" width="0.1524" layer="91"/>
+<pinref part="IC7" gate="G$1" pin="VCC"/>
+<wire x1="281.94" y1="114.3" x2="284.48" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="284.48" y1="114.3" x2="284.48" y2="116.84" width="0.1524" layer="91"/>
 <pinref part="+3V4" gate="G$1" pin="+3V3"/>
 </segment>
 </net>
@@ -22034,6 +22043,19 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <pinref part="C16" gate="G$1" pin="-"/>
 <wire x1="340.36" y1="60.96" x2="342.9" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="HP+" gate="1" pin="P"/>
+</segment>
+</net>
+<net name="N$20" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="RE2/!CS/AN7"/>
+<wire x1="93.98" y1="63.5" x2="96.52" y2="63.5" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$26" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="RE1/!WR/AN6"/>
+<wire x1="93.98" y1="66.04" x2="96.52" y2="66.04" width="0.1524" layer="91"/>
+<pinref part="AN6" gate="G$1" pin="TP"/>
 </segment>
 </net>
 </nets>

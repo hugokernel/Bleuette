@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE eagle SYSTEM "eagle.dtd">
+<eagle version="6.4">
+<drawing>
+<settings>
+<setting alwaysvectorfont="no"/>
+<setting verticaltext="up"/>
+</settings>
+<grid distance="3.125" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<layers>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
+<layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
+<layer number="3" name="Route3" color="4" fill="3" visible="no" active="yes"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
+<layer number="14" name="Route14" color="1" fill="6" visible="no" active="yes"/>
+<layer number="15" name="Route15" color="4" fill="6" visible="no" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="no" active="yes"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="yes"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
+<layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
+<layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="yes"/>
+<layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes"/>
+<layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
+<layer number="51" name="tDocu" color="14" fill="1" visible="yes" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
+<layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="93" name="Pins" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
+</layers>
+<library>
+<packages>
+<package name="RASPBERRY-PI">
+<wire x1="82.6" y1="5.275" x2="-2.4" y2="5.275" width="0.127" layer="51"/>
+<wire x1="-2.4" y1="5.275" x2="-2.4" y2="-6.225" width="0.127" layer="51"/>
+<wire x1="-2.4" y1="-34.025" x2="-2.4" y2="-50.725" width="0.127" layer="51"/>
+<wire x1="-2.4" y1="-50.725" x2="82.6" y2="-50.725" width="0.127" layer="51"/>
+<wire x1="82.6" y1="-50.725" x2="82.6" y2="5.275" width="0.127" layer="51"/>
+<wire x1="-0.925" y1="0.925" x2="0.925" y2="0.925" width="0.127" layer="21"/>
+<wire x1="0.925" y1="0.925" x2="0.925" y2="-0.925" width="0.127" layer="21" curve="1.965897"/>
+<wire x1="0.925" y1="-0.925" x2="-0.925" y2="-0.925" width="0.127" layer="21"/>
+<wire x1="-0.925" y1="-0.925" x2="-0.925" y2="0.925" width="0.127" layer="21"/>
+<wire x1="-2.4" y1="-34.025" x2="-2.4" y2="-6.225" width="0.127" layer="51"/>
+<wire x1="-1.4" y1="-1.225" x2="31.8" y2="-1.225" width="0.127" layer="21"/>
+<wire x1="31.8" y1="-1.225" x2="31.8" y2="3.775" width="0.127" layer="21"/>
+<wire x1="31.8" y1="3.775" x2="-1.4" y2="3.775" width="0.127" layer="21"/>
+<wire x1="-1.4" y1="3.775" x2="-1.4" y2="-1.225" width="0.127" layer="21"/>
+<wire x1="65.9" y1="5.3" x2="66" y2="5.3" width="0.127" layer="51"/>
+<circle x="0.078" y="3.0996" radius="1.0152" width="0.1524" layer="52"/>
+<circle x="5.158" y="3.0996" radius="1.0152" width="0.1524" layer="52"/>
+<pad name="1" x="0" y="0" drill="1" shape="square"/>
+<pad name="2" x="0" y="2.54" drill="1" diameter="1.6764"/>
+<pad name="3" x="2.54" y="0" drill="1"/>
+<pad name="4" x="2.54" y="2.54" drill="1"/>
+<pad name="5" x="5.08" y="0" drill="1"/>
+<pad name="6" x="5.08" y="2.54" drill="1" diameter="1.6764"/>
+<pad name="7" x="7.62" y="0" drill="1"/>
+<pad name="8" x="7.62" y="2.54" drill="1"/>
+<pad name="9" x="10.16" y="0" drill="1"/>
+<pad name="10" x="10.16" y="2.54" drill="1"/>
+<pad name="11" x="12.7" y="0" drill="1"/>
+<pad name="12" x="12.7" y="2.54" drill="1"/>
+<pad name="13" x="15.24" y="0" drill="1"/>
+<pad name="14" x="15.24" y="2.54" drill="1"/>
+<pad name="15" x="17.78" y="0" drill="1"/>
+<pad name="16" x="17.78" y="2.54" drill="1"/>
+<pad name="17" x="20.32" y="0" drill="1"/>
+<pad name="18" x="20.32" y="2.54" drill="1"/>
+<pad name="19" x="22.86" y="0" drill="1"/>
+<pad name="20" x="22.86" y="2.54" drill="1"/>
+<pad name="21" x="25.4" y="0" drill="1"/>
+<pad name="22" x="25.4" y="2.54" drill="1"/>
+<pad name="23" x="27.94" y="0" drill="1"/>
+<pad name="24" x="27.94" y="2.54" drill="1"/>
+<pad name="25" x="30.48" y="0" drill="1"/>
+<pad name="26" x="30.48" y="2.54" drill="1"/>
+<text x="0.5" y="-2.5" size="1.27" layer="21" ratio="10" rot="R180">1</text>
+</package>
+<package name="RASPBERRY-PI-LIGHT">
+<wire x1="41.96" y1="28.135" x2="-43.04" y2="28.135" width="0.127" layer="51"/>
+<wire x1="-43.04" y1="-27.865" x2="41.96" y2="-27.865" width="0.127" layer="51"/>
+<wire x1="41.96" y1="-27.865" x2="41.96" y2="28.135" width="0.127" layer="51"/>
+<wire x1="-41.565" y1="23.785" x2="-39.715" y2="23.785" width="0.127" layer="21"/>
+<wire x1="-39.715" y1="23.785" x2="-39.715" y2="21.935" width="0.127" layer="21" curve="1.965897"/>
+<wire x1="-39.715" y1="21.935" x2="-41.565" y2="21.935" width="0.127" layer="21"/>
+<wire x1="-41.565" y1="21.935" x2="-41.565" y2="23.785" width="0.127" layer="21"/>
+<wire x1="-43.04" y1="-27.865" x2="-43.04" y2="28.135" width="0.127" layer="51"/>
+<wire x1="-42.04" y1="21.635" x2="-8.84" y2="21.635" width="0.127" layer="21"/>
+<wire x1="-8.84" y1="21.635" x2="-8.84" y2="26.635" width="0.127" layer="21"/>
+<wire x1="-8.84" y1="26.635" x2="-42.04" y2="26.635" width="0.127" layer="21"/>
+<wire x1="-42.04" y1="26.635" x2="-42.04" y2="21.635" width="0.127" layer="21"/>
+<wire x1="25.26" y1="28.16" x2="25.36" y2="28.16" width="0.127" layer="51"/>
+<pad name="1" x="-40.64" y="22.86" drill="1" shape="square"/>
+<pad name="2" x="-40.64" y="25.4" drill="1" diameter="1.6764"/>
+<pad name="3" x="-38.1" y="22.86" drill="1"/>
+<pad name="4" x="-38.1" y="25.4" drill="1"/>
+<pad name="5" x="-35.56" y="22.86" drill="1"/>
+<pad name="6" x="-35.56" y="25.4" drill="1" diameter="1.6764"/>
+<pad name="7" x="-33.02" y="22.86" drill="1"/>
+<pad name="8" x="-33.02" y="25.4" drill="1"/>
+<pad name="9" x="-30.48" y="22.86" drill="1"/>
+<pad name="10" x="-30.48" y="25.4" drill="1"/>
+<pad name="11" x="-27.94" y="22.86" drill="1"/>
+<pad name="12" x="-27.94" y="25.4" drill="1"/>
+<pad name="13" x="-25.4" y="22.86" drill="1"/>
+<pad name="14" x="-25.4" y="25.4" drill="1"/>
+<pad name="15" x="-22.86" y="22.86" drill="1"/>
+<pad name="16" x="-22.86" y="25.4" drill="1"/>
+<pad name="17" x="-20.32" y="22.86" drill="1"/>
+<pad name="18" x="-20.32" y="25.4" drill="1"/>
+<pad name="19" x="-17.78" y="22.86" drill="1"/>
+<pad name="20" x="-17.78" y="25.4" drill="1"/>
+<pad name="21" x="-15.24" y="22.86" drill="1"/>
+<pad name="22" x="-15.24" y="25.4" drill="1"/>
+<pad name="23" x="-12.7" y="22.86" drill="1"/>
+<pad name="24" x="-12.7" y="25.4" drill="1"/>
+<pad name="25" x="-10.16" y="22.86" drill="1"/>
+<pad name="26" x="-10.16" y="25.4" drill="1"/>
+<text x="-40.14" y="20.36" size="1.27" layer="21" ratio="10" rot="R180">1</text>
+<hole x="-17.62125" y="-9.8425" drill="3"/>
+<hole x="37.1475" y="15.5575" drill="3"/>
+</package>
+</packages>
+<symbols>
+<symbol name="RASPBERRY-PI">
+<wire x1="-15.24" y1="53.34" x2="22.86" y2="53.34" width="0.254" layer="94"/>
+<wire x1="22.86" y1="53.34" x2="22.86" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="22.86" y1="-12.7" x2="-15.24" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="-15.24" y1="-12.7" x2="-15.24" y2="53.34" width="0.254" layer="94"/>
+<pin name="1-+3V3" x="-20.32" y="50.8" length="middle"/>
+<pin name="2-+5V" x="27.94" y="50.8" length="middle" rot="R180"/>
+<pin name="3-SDA0" x="-20.32" y="45.72" length="middle"/>
+<pin name="4-DNC" x="27.94" y="45.72" length="middle" rot="R180"/>
+<pin name="5-SCL0" x="-20.32" y="40.64" length="middle"/>
+<pin name="6-GND" x="27.94" y="40.64" length="middle" rot="R180"/>
+<pin name="7-GPIO7" x="-20.32" y="35.56" length="middle"/>
+<pin name="8-TX" x="27.94" y="35.56" length="middle" rot="R180"/>
+<pin name="9-DNC" x="-20.32" y="30.48" length="middle"/>
+<pin name="10-RX" x="27.94" y="30.48" length="middle" rot="R180"/>
+<pin name="11-GPIO0" x="-20.32" y="25.4" length="middle"/>
+<pin name="12-GPIO1" x="27.94" y="25.4" length="middle" rot="R180"/>
+<pin name="13-GPIO2" x="-20.32" y="20.32" length="middle"/>
+<pin name="14-DNC" x="27.94" y="20.32" length="middle" rot="R180"/>
+<pin name="15-GPIO3" x="-20.32" y="15.24" length="middle"/>
+<pin name="16-GPIO4" x="27.94" y="15.24" length="middle" rot="R180"/>
+<pin name="17-DNC" x="-20.32" y="10.16" length="middle"/>
+<pin name="18-GPIO5" x="27.94" y="10.16" length="middle" rot="R180"/>
+<pin name="19-SPI-MOSI" x="-20.32" y="5.08" length="middle"/>
+<pin name="20-DNC" x="27.94" y="5.08" length="middle" rot="R180"/>
+<pin name="21-SPI-MISO" x="-20.32" y="0" length="middle"/>
+<pin name="22-GPIO6" x="27.94" y="0" length="middle" rot="R180"/>
+<pin name="23-SPI-SCLK" x="-20.32" y="-5.08" length="middle"/>
+<pin name="24-SPI-CE0-N" x="27.94" y="-5.08" length="middle" rot="R180"/>
+<pin name="25-DNC" x="-20.32" y="-10.16" length="middle"/>
+<pin name="26-SPI-CE1-N" x="27.94" y="-10.16" length="middle" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="RASPBERRY-PI">
+<description>&lt;b&gt;&lt;a href="http://www.raspberrypi.org/"&gt;Raspberry Pi Board&lt;/a&gt;&lt;b&gt;&lt;br&gt;
+&lt;br&gt;Jacques Lagnel V1.0 (beta) 2012&lt;br&gt;&lt;br&gt;
+
+Board dimension:&lt;br&gt;
+&lt;a href="http://www.raspberrypi.org/forum/general-discussion/mechanical-profile-3d-models?value=3d%20model&amp;type=1&amp;include=1&amp;search=1&amp;ret=all"&gt;Forum 3D model&lt;/a&gt;&lt;br&gt;
+The GPIO Connector (P1):&lt;br&gt;
+&lt;a href="http://elinux.org/RPi_Low-level_peripherals"&gt;http://elinux.org/RPi_Low-level_peripherals&lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="RASPBERRY-PI" x="-2.54" y="-20.32"/>
+</gates>
+<devices>
+<device name="" package="RASPBERRY-PI">
+<connects>
+<connect gate="G$1" pin="1-+3V3" pad="1"/>
+<connect gate="G$1" pin="10-RX" pad="10"/>
+<connect gate="G$1" pin="11-GPIO0" pad="11"/>
+<connect gate="G$1" pin="12-GPIO1" pad="12"/>
+<connect gate="G$1" pin="13-GPIO2" pad="13"/>
+<connect gate="G$1" pin="14-DNC" pad="14"/>
+<connect gate="G$1" pin="15-GPIO3" pad="15"/>
+<connect gate="G$1" pin="16-GPIO4" pad="16"/>
+<connect gate="G$1" pin="17-DNC" pad="17"/>
+<connect gate="G$1" pin="18-GPIO5" pad="18"/>
+<connect gate="G$1" pin="19-SPI-MOSI" pad="19"/>
+<connect gate="G$1" pin="2-+5V" pad="2"/>
+<connect gate="G$1" pin="20-DNC" pad="20"/>
+<connect gate="G$1" pin="21-SPI-MISO" pad="21"/>
+<connect gate="G$1" pin="22-GPIO6" pad="22"/>
+<connect gate="G$1" pin="23-SPI-SCLK" pad="23"/>
+<connect gate="G$1" pin="24-SPI-CE0-N" pad="24"/>
+<connect gate="G$1" pin="25-DNC" pad="25"/>
+<connect gate="G$1" pin="26-SPI-CE1-N" pad="26"/>
+<connect gate="G$1" pin="3-SDA0" pad="3"/>
+<connect gate="G$1" pin="4-DNC" pad="4"/>
+<connect gate="G$1" pin="5-SCL0" pad="5"/>
+<connect gate="G$1" pin="6-GND" pad="6"/>
+<connect gate="G$1" pin="7-GPIO7" pad="7"/>
+<connect gate="G$1" pin="8-TX" pad="8"/>
+<connect gate="G$1" pin="9-DNC" pad="9"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+</drawing>
+</eagle>
