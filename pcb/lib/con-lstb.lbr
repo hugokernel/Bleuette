@@ -960,8 +960,6 @@ W = angled&lt;p&gt;
 <pad name="7" x="6.35" y="0" drill="1.016" shape="long" rot="R90"/>
 <pad name="8" x="8.89" y="0" drill="1.016" shape="long" rot="R90"/>
 <text x="-10.16" y="1.651" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="-9.398" y="-2.921" size="1.27" layer="21" ratio="10">1</text>
-<text x="8.255" y="1.651" size="1.27" layer="21" ratio="10">8</text>
 <text x="-1.27" y="-2.921" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
 <rectangle x1="-6.604" y1="-0.254" x2="-6.096" y2="0.254" layer="51"/>
 <rectangle x1="-9.144" y1="-0.254" x2="-8.636" y2="0.254" layer="51"/>

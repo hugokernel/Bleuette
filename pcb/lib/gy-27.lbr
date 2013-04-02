@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="25" unitdist="mil" unit="mil" style="dots" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -66,11 +66,11 @@
 <pad name="SDA" x="3.81" y="7.62" drill="0.8" diameter="1.9304"/>
 <pad name="DRY" x="3.81" y="10.16" drill="0.8" diameter="1.9304"/>
 <pad name="GND" x="3.81" y="12.7" drill="0.8" diameter="1.9304"/>
-<text x="0.3175" y="12.3825" size="0.8128" layer="21">GND</text>
-<text x="0.3175" y="9.8425" size="0.8128" layer="21">DRY</text>
-<text x="0.3175" y="7.3025" size="0.8128" layer="21">SDA</text>
-<text x="0.3175" y="4.7625" size="0.8128" layer="21">SCL</text>
-<text x="0.3175" y="2.2225" size="0.8128" layer="21">VCC</text>
+<text x="5.3975" y="12.3825" size="0.8128" layer="21">GND</text>
+<text x="5.3975" y="9.8425" size="0.8128" layer="21">DRY</text>
+<text x="5.3975" y="7.3025" size="0.8128" layer="21">SDA</text>
+<text x="5.3975" y="4.7625" size="0.8128" layer="21">SCL</text>
+<text x="5.3975" y="2.2225" size="0.8128" layer="21">VCC</text>
 <text x="0" y="-3.81" size="1.27" layer="21">&gt;VALUE</text>
 <text x="0" y="-1.905" size="1.27" layer="21">&gt;NAME</text>
 </package>

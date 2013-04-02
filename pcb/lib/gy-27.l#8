@@ -72,6 +72,7 @@
 <text x="0.3175" y="4.7625" size="0.8128" layer="21">SCL</text>
 <text x="0.3175" y="2.2225" size="0.8128" layer="21">VCC</text>
 <text x="0" y="-1.905" size="1.27" layer="21">GY-27</text>
+<text x="6.35" y="-1.27" size="1.27" layer="21">&gt;NAME</text>
 </package>
 </packages>
 <symbols>

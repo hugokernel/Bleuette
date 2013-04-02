@@ -86,7 +86,8 @@
 <wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="7.62" y1="-7.62" x2="7.62" y2="17.78" width="0.254" layer="94"/>
 <wire x1="7.62" y1="17.78" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
-<text x="-7.62" y="19.05" size="1.6764" layer="95">GY-27</text>
+<text x="-7.62" y="19.05" size="1.6764" layer="95">&gt;VALUE</text>
+<text x="-7.62" y="21.59" size="1.778" layer="95">&gt;NAME</text>
 </symbol>
 </symbols>
 <devicesets>
