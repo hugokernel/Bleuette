@@ -16,7 +16,7 @@
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
@@ -4437,6 +4437,77 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 </package>
 </packages>
 </library>
+<library name="adafruit">
+<packages>
+<package name="SO28W">
+<description>&lt;B&gt;28-Lead Plastic Small Outline (SO) &lt;/B&gt; Wide, 300 mil Body (SOIC)&lt;/B&gt;&lt;p&gt;
+Source: http://ww1.microchip.com/downloads/en/devicedoc/39632c.pdf</description>
+<wire x1="-8.1788" y1="-3.7132" x2="9.4742" y2="-3.7132" width="0.1524" layer="21"/>
+<wire x1="9.4742" y1="-3.7132" x2="9.4742" y2="3.7132" width="0.1524" layer="21"/>
+<wire x1="9.4742" y1="3.7132" x2="-8.1788" y2="3.7132" width="0.1524" layer="21"/>
+<wire x1="-8.1788" y1="3.7132" x2="-8.1788" y2="-3.7132" width="0.1524" layer="21"/>
+<circle x="-7.239" y="-3.1496" radius="0.5334" width="0.1524" layer="21"/>
+<smd name="1" x="-7.62" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="2" x="-6.35" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="3" x="-5.08" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="4" x="-3.81" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="5" x="-2.54" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="6" x="-1.27" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="7" x="0" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="8" x="1.27" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="9" x="2.54" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="10" x="3.81" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="20" x="2.54" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="19" x="3.81" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="18" x="5.08" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="17" x="6.35" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="16" x="7.62" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="15" x="8.89" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="14" x="8.89" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="13" x="7.62" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="12" x="6.35" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="11" x="5.08" y="-4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="21" x="1.27" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="22" x="0" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="23" x="-1.27" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="24" x="-2.54" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="25" x="-3.81" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="26" x="-5.08" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="27" x="-6.35" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<smd name="28" x="-7.62" y="4.78" dx="0.762" dy="1.27" layer="1"/>
+<text x="-8.509" y="-4.064" size="1.778" layer="25" ratio="10" rot="R90">&gt;NAME</text>
+<text x="11.557" y="-4.064" size="1.778" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-7.874" y1="-5.2626" x2="-7.366" y2="-3.7386" layer="51"/>
+<rectangle x1="-6.604" y1="-5.2626" x2="-6.096" y2="-3.7386" layer="51"/>
+<rectangle x1="-5.334" y1="-5.2626" x2="-4.826" y2="-3.7386" layer="51"/>
+<rectangle x1="-4.064" y1="-5.2626" x2="-3.556" y2="-3.7386" layer="51"/>
+<rectangle x1="-2.794" y1="-5.2626" x2="-2.286" y2="-3.7386" layer="51"/>
+<rectangle x1="-1.524" y1="-5.2626" x2="-1.016" y2="-3.7386" layer="51"/>
+<rectangle x1="-0.254" y1="-5.2626" x2="0.254" y2="-3.7386" layer="51"/>
+<rectangle x1="1.016" y1="-5.2626" x2="1.524" y2="-3.7386" layer="51"/>
+<rectangle x1="2.286" y1="-5.2626" x2="2.794" y2="-3.7386" layer="51"/>
+<rectangle x1="3.556" y1="-5.2626" x2="4.064" y2="-3.7386" layer="51"/>
+<rectangle x1="4.826" y1="-5.2626" x2="5.334" y2="-3.7386" layer="51"/>
+<rectangle x1="6.096" y1="-5.2626" x2="6.604" y2="-3.7386" layer="51"/>
+<rectangle x1="7.366" y1="-5.2626" x2="7.874" y2="-3.7386" layer="51"/>
+<rectangle x1="8.636" y1="-5.2626" x2="9.144" y2="-3.7386" layer="51"/>
+<rectangle x1="8.636" y1="3.7386" x2="9.144" y2="5.2626" layer="51"/>
+<rectangle x1="7.366" y1="3.7386" x2="7.874" y2="5.2626" layer="51"/>
+<rectangle x1="6.096" y1="3.7386" x2="6.604" y2="5.2626" layer="51"/>
+<rectangle x1="4.826" y1="3.7386" x2="5.334" y2="5.2626" layer="51"/>
+<rectangle x1="3.556" y1="3.7386" x2="4.064" y2="5.2626" layer="51"/>
+<rectangle x1="2.286" y1="3.7386" x2="2.794" y2="5.2626" layer="51"/>
+<rectangle x1="1.016" y1="3.7386" x2="1.524" y2="5.2626" layer="51"/>
+<rectangle x1="-0.254" y1="3.7386" x2="0.254" y2="5.2626" layer="51"/>
+<rectangle x1="-1.524" y1="3.7386" x2="-1.016" y2="5.2626" layer="51"/>
+<rectangle x1="-2.794" y1="3.7386" x2="-2.286" y2="5.2626" layer="51"/>
+<rectangle x1="-4.064" y1="3.7386" x2="-3.556" y2="5.2626" layer="51"/>
+<rectangle x1="-5.334" y1="3.7386" x2="-4.826" y2="5.2626" layer="51"/>
+<rectangle x1="-6.604" y1="3.7386" x2="-6.096" y2="5.2626" layer="51"/>
+<rectangle x1="-7.874" y1="3.7386" x2="-7.366" y2="5.2626" layer="51"/>
+</package>
+</packages>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -5098,6 +5169,7 @@ design rules under a new name.</description>
 </element>
 <element name="R11" library="rcl" package="M0805" value="10" x="68.58" y="12.22375"/>
 <element name="R15" library="rcl" package="M0805" value="10" x="68.58" y="14.76375"/>
+<element name="IC8" library="adafruit" package="SO28W" value="MCP23017SO" x="91.7575" y="42.8625" rot="R90"/>
 </elements>
 <signals>
 <signal name="N$1">
@@ -5409,6 +5481,8 @@ design rules under a new name.</description>
 <via x="51.435" y="8.5725" extent="1-16" drill="0.6" diameter="1.4224"/>
 <via x="57.15" y="33.655" extent="1-16" drill="0.6" diameter="1.4224"/>
 <via x="64.4525" y="19.05" extent="1-16" drill="0.6" diameter="1.4224"/>
+<contactref element="IC8" pad="10"/>
+<wire x1="5.5425" y1="1.5875" x2="96.5375" y2="46.6725" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$25">
 <contactref element="IC1" pad="31"/>
@@ -5619,6 +5693,8 @@ design rules under a new name.</description>
 <contactref element="R1" pad="2"/>
 <contactref element="PBATT" pad="1"/>
 <wire x1="3.81" y1="22.86" x2="6.035" y2="22.86" width="0.254" layer="1"/>
+<contactref element="IC8" pad="9"/>
+<wire x1="96.5375" y1="45.4025" x2="6.035" y2="22.86" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="LIPO_VOLTAGE">
 <contactref element="D3" pad="3"/>
