@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -2567,34 +2567,6 @@ The GPIO Connector (P1):&lt;br&gt;
 <attribute name="PACKAGE" value="SOIC-8" constant="no"/>
 <attribute name="SUPPLIER" value="Maxim" constant="no"/>
 </technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="MCP3424-E/SL">
-<gates>
-<gate name="G$1" symbol="MCP3424-E/ST" x="5.08" y="2.54"/>
-</gates>
-<devices>
-<device name="" package="SOIC-14">
-<connects>
-<connect gate="G$1" pin="ADR0" pad="9"/>
-<connect gate="G$1" pin="ADR1" pad="10"/>
-<connect gate="G$1" pin="CH1+" pad="1"/>
-<connect gate="G$1" pin="CH1-" pad="2"/>
-<connect gate="G$1" pin="CH2+" pad="3"/>
-<connect gate="G$1" pin="CH2-" pad="4"/>
-<connect gate="G$1" pin="CH3+" pad="11"/>
-<connect gate="G$1" pin="CH3-" pad="12"/>
-<connect gate="G$1" pin="CH4+" pad="13"/>
-<connect gate="G$1" pin="CH4-" pad="14"/>
-<connect gate="G$1" pin="SCL" pad="8"/>
-<connect gate="G$1" pin="SDA" pad="7"/>
-<connect gate="G$1" pin="VDD" pad="6"/>
-<connect gate="G$1" pin="VSS" pad="5"/>
-</connects>
-<technologies>
-<technology name=""/>
 </technologies>
 </device>
 </devices>
