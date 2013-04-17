@@ -22170,7 +22170,7 @@ Note the THM package has the ground pads on both sides of the PCB so that the ma
 <part name="P+34" library="supply1" deviceset="+5V" device=""/>
 <part name="SV1" library="con-lstb" deviceset="MA04-1" device=""/>
 <part name="SV6" library="con-lstb" deviceset="MA04-1" device=""/>
-<part name="SJ1" library="jumper" deviceset="SJ" device=""/>
+<part name="J_SERV" library="jumper" deviceset="SJ" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -22201,6 +22201,9 @@ controller</text>
 <wire x1="99.06" y1="189.23" x2="177.8" y2="189.23" width="0.4064" layer="98" style="shortdash"/>
 <text x="101.6" y="180.34" size="6.4516" layer="98" font="vector" ratio="20">Level adapter</text>
 <wire x1="182.88" y1="144.78" x2="182.88" y2="5.08" width="0.4064" layer="98" style="shortdash"/>
+<text x="43.18" y="246.38" size="1.778" layer="98">J_SERV : If servo power is same than battery</text>
+<text x="43.18" y="241.3" size="1.778" layer="98">J_VOLT : Battery voltage read by MCP or PIC</text>
+<text x="121.92" y="193.04" size="1.778" layer="98">J_CURRENT : Servo current read by MCP or PIC</text>
 </plain>
 <instances>
 <instance part="VSS1" gate="G$1" x="91.44" y="120.65"/>
@@ -22792,7 +22795,7 @@ controller</text>
 </instance>
 <instance part="SV1" gate="1" x="10.16" y="231.14"/>
 <instance part="SV6" gate="1" x="10.16" y="195.58"/>
-<instance part="SJ1" gate="1" x="38.1" y="223.52"/>
+<instance part="J_SERV" gate="1" x="38.1" y="223.52"/>
 </instances>
 <busses>
 </busses>
@@ -23641,7 +23644,7 @@ controller</text>
 <wire x1="48.26" y1="233.68" x2="48.26" y2="228.6" width="0.1524" layer="91"/>
 <junction x="30.48" y="233.68"/>
 <pinref part="SV1" gate="1" pin="4"/>
-<pinref part="SJ1" gate="1" pin="2"/>
+<pinref part="J_SERV" gate="1" pin="2"/>
 <wire x1="48.26" y1="228.6" x2="48.26" y2="226.06" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="223.52" x2="45.72" y2="223.52" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="223.52" x2="45.72" y2="228.6" width="0.1524" layer="91"/>
@@ -24283,7 +24286,7 @@ controller</text>
 <wire x1="30.48" y1="223.52" x2="30.48" y2="226.06" width="0.1524" layer="91"/>
 <pinref part="SUPPLY6" gate="G$1" pin="+7V"/>
 <pinref part="SV1" gate="1" pin="3"/>
-<pinref part="SJ1" gate="1" pin="1"/>
+<pinref part="J_SERV" gate="1" pin="1"/>
 <wire x1="30.48" y1="223.52" x2="33.02" y2="223.52" width="0.1524" layer="91"/>
 <junction x="30.48" y="223.52"/>
 </segment>
@@ -24646,7 +24649,7 @@ controller</text>
 <pinref part="J_VOLT" gate="G$1" pin="1"/>
 <wire x1="63.5" y1="218.44" x2="63.5" y2="220.98" width="0.1524" layer="91"/>
 <junction x="63.5" y="220.98"/>
-<label x="58.42" y="223.52" size="1.778" layer="95"/>
+<label x="63.5" y="223.52" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="PIC_SERVO_CURRENT" class="0">
@@ -24668,7 +24671,7 @@ controller</text>
 <pinref part="J_VOLT" gate="G$1" pin="3"/>
 <wire x1="63.5" y1="208.28" x2="63.5" y2="205.74" width="0.1524" layer="91"/>
 <junction x="63.5" y="205.74"/>
-<label x="58.42" y="200.66" size="1.778" layer="95"/>
+<label x="63.5" y="200.66" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="SV5" gate="1" pin="4"/>

@@ -22169,6 +22169,8 @@ Note the THM package has the ground pads on both sides of the PCB so that the ma
 <part name="P+33" library="supply1" deviceset="+5V" device=""/>
 <part name="P+34" library="supply1" deviceset="+5V" device=""/>
 <part name="SV1" library="con-lstb" deviceset="MA04-1" device=""/>
+<part name="SV6" library="con-lstb" deviceset="MA04-1" device=""/>
+<part name="J_SERV" library="jumper" deviceset="SJ" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -22262,11 +22264,11 @@ controller</text>
 <instance part="VSS3" gate="G$1" x="33.02" y="195.58" smashed="yes">
 <attribute name="VALUE" x="35.56" y="193.04" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="VSS6" gate="G$1" x="43.18" y="195.58" smashed="yes">
-<attribute name="VALUE" x="45.72" y="193.04" size="1.778" layer="96" rot="R180"/>
+<instance part="VSS6" gate="G$1" x="48.26" y="195.58" smashed="yes">
+<attribute name="VALUE" x="50.8" y="193.04" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="VDD1" gate="G$1" x="33.02" y="238.76" smashed="yes">
-<attribute name="VALUE" x="43.18" y="241.3" size="1.778" layer="96" rot="R180"/>
+<instance part="VDD1" gate="G$1" x="30.48" y="238.76" smashed="yes">
+<attribute name="VALUE" x="40.64" y="241.3" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VSS10" gate="G$1" x="223.52" y="78.74" smashed="yes">
 <attribute name="VALUE" x="226.06" y="76.2" size="1.778" layer="96" rot="R180"/>
@@ -22325,9 +22327,9 @@ controller</text>
 <attribute name="VALUE" x="152.4" y="12.7" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="R7" gate="G$1" x="55.88" y="91.44" rot="R90"/>
-<instance part="D3" gate="G$1" x="50.8" y="205.74" rot="R90"/>
-<instance part="VSS25" gate="G$1" x="50.8" y="195.58" smashed="yes">
-<attribute name="VALUE" x="53.34" y="193.04" size="1.778" layer="96" rot="R180"/>
+<instance part="D3" gate="G$1" x="55.88" y="205.74" rot="R90"/>
+<instance part="VSS25" gate="G$1" x="55.88" y="195.58" smashed="yes">
+<attribute name="VALUE" x="58.42" y="193.04" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="C2" gate="G$1" x="76.2" y="205.74"/>
 <instance part="VSS27" gate="G$1" x="76.2" y="195.58" smashed="yes">
@@ -22365,8 +22367,8 @@ controller</text>
 <instance part="+3V7" gate="G$1" x="223.52" y="99.06" smashed="yes">
 <attribute name="VALUE" x="226.06" y="101.6" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="R1" gate="G$1" x="43.18" y="220.98" rot="R90"/>
-<instance part="R2" gate="G$1" x="43.18" y="205.74" rot="R90"/>
+<instance part="R1" gate="G$1" x="48.26" y="220.98" rot="R90"/>
+<instance part="R2" gate="G$1" x="48.26" y="205.74" rot="R90"/>
 <instance part="R9" gate="G$1" x="132.08" y="96.52" smashed="yes" rot="R90">
 <attribute name="NAME" x="130.5814" y="92.71" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="130.302" y="97.79" size="1.778" layer="96" rot="R90"/>
@@ -22456,7 +22458,7 @@ controller</text>
 <attribute name="NAME" x="157.48" y="226.695" size="1.778" layer="95" rot="R180"/>
 <attribute name="TP_SIGNAL_NAME" x="142.24" y="222.25" size="1.778" layer="97" rot="R180"/>
 </instance>
-<instance part="T_LVOLTAGE" gate="G$1" x="50.8" y="231.14"/>
+<instance part="T_LVOLTAGE" gate="G$1" x="55.88" y="231.14"/>
 <instance part="P+1" gate="1" x="76.2" y="213.36" smashed="yes">
 <attribute name="VALUE" x="78.74" y="215.9" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -22563,8 +22565,8 @@ controller</text>
 <attribute name="NAME" x="62.23" y="64.135" size="1.778" layer="95" align="top-right"/>
 <attribute name="TP_SIGNAL_NAME" x="64.77" y="60.96" size="1.778" layer="97" rot="R270"/>
 </instance>
-<instance part="SUPPLY6" gate="G$1" x="33.02" y="228.6" smashed="yes">
-<attribute name="VALUE" x="36.195" y="229.235" size="1.778" layer="96"/>
+<instance part="SUPPLY6" gate="G$1" x="30.48" y="228.6" smashed="yes">
+<attribute name="VALUE" x="33.655" y="229.235" size="1.778" layer="96"/>
 </instance>
 <instance part="SUPPLY7" gate="G$1" x="109.22" y="233.68" smashed="yes">
 <attribute name="VALUE" x="112.395" y="234.315" size="1.778" layer="96"/>
@@ -22716,7 +22718,7 @@ controller</text>
 <instance part="P+29" gate="1" x="167.64" y="170.18" smashed="yes">
 <attribute name="VALUE" x="170.18" y="172.72" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="J_VOLT" gate="G$1" x="58.42" y="213.36"/>
+<instance part="J_VOLT" gate="G$1" x="63.5" y="213.36"/>
 <instance part="J_CURRENT" gate="G$1" x="154.94" y="210.82"/>
 <instance part="R35" gate="G$1" x="299.72" y="43.18" smashed="yes" rot="R90">
 <attribute name="NAME" x="296.1386" y="39.37" size="1.778" layer="95" rot="R270"/>
@@ -22789,6 +22791,8 @@ controller</text>
 <attribute name="VALUE" x="287.02" y="246.38" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="SV1" gate="1" x="10.16" y="231.14"/>
+<instance part="SV6" gate="1" x="10.16" y="195.58"/>
+<instance part="J_SERV" gate="1" x="38.1" y="223.52"/>
 </instances>
 <busses>
 </busses>
@@ -22936,7 +22940,7 @@ controller</text>
 </segment>
 <segment>
 <pinref part="VSS6" gate="G$1" pin="VSS"/>
-<wire x1="43.18" y1="198.12" x2="43.18" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="198.12" x2="48.26" y2="200.66" width="0.1524" layer="91"/>
 <pinref part="R2" gate="G$1" pin="1"/>
 </segment>
 <segment>
@@ -23032,7 +23036,7 @@ controller</text>
 <segment>
 <pinref part="D3" gate="G$1" pin="A"/>
 <pinref part="VSS25" gate="G$1" pin="VSS"/>
-<wire x1="50.8" y1="198.12" x2="50.8" y2="203.2" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="198.12" x2="55.88" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C9" gate="G$1" pin="-"/>
@@ -23629,30 +23633,36 @@ controller</text>
 </net>
 <net name="VDD" class="0">
 <segment>
-<wire x1="17.78" y1="233.68" x2="33.02" y2="233.68" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="233.68" x2="30.48" y2="233.68" width="0.1524" layer="91"/>
 <pinref part="VDD1" gate="G$1" pin="VDD"/>
-<wire x1="33.02" y1="233.68" x2="33.02" y2="236.22" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="233.68" x2="43.18" y2="233.68" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="233.68" x2="30.48" y2="236.22" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="233.68" x2="48.26" y2="233.68" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="43.18" y1="233.68" x2="43.18" y2="226.06" width="0.1524" layer="91"/>
-<junction x="33.02" y="233.68"/>
+<wire x1="48.26" y1="233.68" x2="48.26" y2="228.6" width="0.1524" layer="91"/>
+<junction x="30.48" y="233.68"/>
 <pinref part="SV1" gate="1" pin="4"/>
+<pinref part="J_SERV" gate="1" pin="2"/>
+<wire x1="48.26" y1="228.6" x2="48.26" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="223.52" x2="45.72" y2="223.52" width="0.1524" layer="91"/>
+<wire x1="45.72" y1="223.52" x2="45.72" y2="228.6" width="0.1524" layer="91"/>
+<wire x1="45.72" y1="228.6" x2="48.26" y2="228.6" width="0.1524" layer="91"/>
+<junction x="48.26" y="228.6"/>
 </segment>
 </net>
 <net name="LIPO_VOLTAGE" class="0">
 <segment>
-<wire x1="43.18" y1="210.82" x2="43.18" y2="213.36" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="213.36" x2="43.18" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="213.36" x2="50.8" y2="213.36" width="0.1524" layer="91"/>
-<junction x="43.18" y="213.36"/>
-<junction x="50.8" y="213.36"/>
+<wire x1="48.26" y1="210.82" x2="48.26" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="213.36" x2="48.26" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="213.36" x2="55.88" y2="213.36" width="0.1524" layer="91"/>
+<junction x="48.26" y="213.36"/>
+<junction x="55.88" y="213.36"/>
 <pinref part="D3" gate="G$1" pin="C"/>
-<wire x1="50.8" y1="213.36" x2="50.8" y2="208.28" width="0.1524" layer="91"/>
-<wire x1="50.8" y1="213.36" x2="53.34" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="213.36" x2="55.88" y2="208.28" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="213.36" x2="58.42" y2="213.36" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="R2" gate="G$1" pin="2"/>
 <pinref part="T_LVOLTAGE" gate="G$1" pin="TP"/>
-<wire x1="50.8" y1="228.6" x2="50.8" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="228.6" x2="55.88" y2="213.36" width="0.1524" layer="91"/>
 <pinref part="J_VOLT" gate="G$1" pin="2"/>
 </segment>
 </net>
@@ -24269,10 +24279,13 @@ controller</text>
 <segment>
 <wire x1="17.78" y1="231.14" x2="25.4" y2="231.14" width="0.1524" layer="91"/>
 <wire x1="25.4" y1="231.14" x2="25.4" y2="223.52" width="0.1524" layer="91"/>
-<wire x1="25.4" y1="223.52" x2="33.02" y2="223.52" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="223.52" x2="33.02" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="223.52" x2="30.48" y2="223.52" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="223.52" x2="30.48" y2="226.06" width="0.1524" layer="91"/>
 <pinref part="SUPPLY6" gate="G$1" pin="+7V"/>
 <pinref part="SV1" gate="1" pin="3"/>
+<pinref part="J_SERV" gate="1" pin="1"/>
+<wire x1="30.48" y1="223.52" x2="33.02" y2="223.52" width="0.1524" layer="91"/>
+<junction x="30.48" y="223.52"/>
 </segment>
 <segment>
 <wire x1="109.22" y1="231.14" x2="109.22" y2="228.6" width="0.1524" layer="91"/>
@@ -24631,8 +24644,8 @@ controller</text>
 </segment>
 <segment>
 <pinref part="J_VOLT" gate="G$1" pin="1"/>
-<wire x1="58.42" y1="218.44" x2="58.42" y2="220.98" width="0.1524" layer="91"/>
-<junction x="58.42" y="220.98"/>
+<wire x1="63.5" y1="218.44" x2="63.5" y2="220.98" width="0.1524" layer="91"/>
+<junction x="63.5" y="220.98"/>
 <label x="58.42" y="223.52" size="1.778" layer="95"/>
 </segment>
 </net>
@@ -24653,8 +24666,8 @@ controller</text>
 <net name="CAN3" class="0">
 <segment>
 <pinref part="J_VOLT" gate="G$1" pin="3"/>
-<wire x1="58.42" y1="208.28" x2="58.42" y2="205.74" width="0.1524" layer="91"/>
-<junction x="58.42" y="205.74"/>
+<wire x1="63.5" y1="208.28" x2="63.5" y2="205.74" width="0.1524" layer="91"/>
+<junction x="63.5" y="205.74"/>
 <label x="58.42" y="200.66" size="1.778" layer="95"/>
 </segment>
 <segment>

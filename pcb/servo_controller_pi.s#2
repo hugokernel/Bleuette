@@ -22161,16 +22161,15 @@ Note the THM package has the ground pads on both sides of the PCB so that the ma
 <part name="P+30" library="supply1" deviceset="+5V" device=""/>
 <part name="P+32" library="supply1" deviceset="+5V" device=""/>
 <part name="+3V1" library="supply1" deviceset="+3V3" device=""/>
-<part name="U$1" library="adafruit" deviceset="CR1220" device="THM"/>
 <part name="Q6" library="crystal" deviceset="CRYSTAL" device="TC26H"/>
 <part name="VSS50" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS57" library="supply1" deviceset="VSS" device=""/>
 <part name="R19" library="rcl" deviceset="R-EU_" device="M0805" value="10"/>
 <part name="P+33" library="supply1" deviceset="+5V" device=""/>
-<part name="P+34" library="supply1" deviceset="+5V" device=""/>
 <part name="SV1" library="con-lstb" deviceset="MA04-1" device=""/>
-<part name="SV6" library="con-lstb" deviceset="MA04-1" device=""/>
 <part name="J_SERV" library="jumper" deviceset="SJ" device=""/>
+<part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
+<part name="U$7" library="adafruit" deviceset="CR1220" device="SMT"/>
 </parts>
 <sheets>
 <sheet>
@@ -22780,7 +22779,6 @@ controller</text>
 <instance part="+3V1" gate="G$1" x="312.42" y="231.14" smashed="yes">
 <attribute name="VALUE" x="314.96" y="233.68" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="U$1" gate="G$1" x="243.84" y="213.36" rot="R270"/>
 <instance part="Q6" gate="G$1" x="246.38" y="228.6" rot="R90"/>
 <instance part="VSS50" gate="G$1" x="251.46" y="200.66" smashed="yes">
 <attribute name="VALUE" x="254" y="198.12" size="1.778" layer="96" rot="R180"/>
@@ -22795,12 +22793,12 @@ controller</text>
 <instance part="P+33" gate="1" x="279.4" y="243.84" smashed="yes">
 <attribute name="VALUE" x="281.94" y="246.38" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="P+34" gate="1" x="284.48" y="243.84" smashed="yes">
+<instance part="SV1" gate="1" x="10.16" y="231.14"/>
+<instance part="J_SERV" gate="1" x="38.1" y="223.52"/>
+<instance part="+3V4" gate="G$1" x="284.48" y="243.84" smashed="yes">
 <attribute name="VALUE" x="287.02" y="246.38" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="SV1" gate="1" x="10.16" y="231.14"/>
-<instance part="SV6" gate="1" x="10.16" y="195.58"/>
-<instance part="J_SERV" gate="1" x="38.1" y="223.52"/>
+<instance part="U$7" gate="G$1" x="243.84" y="213.36" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -23368,15 +23366,15 @@ controller</text>
 <wire x1="251.46" y1="215.9" x2="251.46" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="+1"/>
 <wire x1="241.3" y1="208.28" x2="241.3" y2="205.74" width="0.1524" layer="91"/>
 <wire x1="241.3" y1="205.74" x2="243.84" y2="205.74" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="+"/>
 <wire x1="243.84" y1="205.74" x2="246.38" y2="205.74" width="0.1524" layer="91"/>
 <wire x1="246.38" y1="205.74" x2="246.38" y2="208.28" width="0.1524" layer="91"/>
 <wire x1="243.84" y1="205.74" x2="243.84" y2="203.2" width="0.1524" layer="91"/>
 <pinref part="VSS57" gate="G$1" pin="VSS"/>
 <junction x="243.84" y="205.74"/>
+<pinref part="U$7" gate="G$1" pin="+"/>
+<pinref part="U$7" gate="G$1" pin="+1"/>
 </segment>
 </net>
 <net name="N$25" class="0">
@@ -23632,11 +23630,6 @@ controller</text>
 <wire x1="276.86" y1="231.14" x2="279.4" y2="231.14" width="0.1524" layer="91"/>
 <wire x1="279.4" y1="231.14" x2="279.4" y2="241.3" width="0.1524" layer="91"/>
 <pinref part="P+33" gate="1" pin="+5V"/>
-</segment>
-<segment>
-<pinref part="R19" gate="G$1" pin="2"/>
-<wire x1="284.48" y1="238.76" x2="284.48" y2="241.3" width="0.1524" layer="91"/>
-<pinref part="P+34" gate="1" pin="+5V"/>
 </segment>
 </net>
 <net name="VDD" class="0">
@@ -23946,6 +23939,11 @@ controller</text>
 <wire x1="314.96" y1="226.06" x2="312.42" y2="226.06" width="0.1524" layer="91"/>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
 <wire x1="312.42" y1="226.06" x2="312.42" y2="228.6" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="R19" gate="G$1" pin="2"/>
+<wire x1="284.48" y1="238.76" x2="284.48" y2="241.3" width="0.1524" layer="91"/>
+<pinref part="+3V4" gate="G$1" pin="+3V3"/>
 </segment>
 </net>
 <net name="SI" class="0">
@@ -24807,8 +24805,8 @@ controller</text>
 <segment>
 <pinref part="IC2" gate="G$1" pin="VBAT"/>
 <wire x1="254" y1="220.98" x2="243.84" y2="220.98" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="-"/>
 <wire x1="243.84" y1="220.98" x2="243.84" y2="218.44" width="0.1524" layer="91"/>
+<pinref part="U$7" gate="G$1" pin="-"/>
 </segment>
 </net>
 <net name="INTC" class="0">
