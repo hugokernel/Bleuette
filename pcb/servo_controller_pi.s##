@@ -21736,7 +21736,6 @@ Grid 5.00 mm&lt;p&gt;
 <part name="C14" library="rcl" deviceset="CPOL-EU" device="A" value="4.7uf"/>
 <part name="C15" library="rcl" deviceset="CPOL-EU" device="A" value="4.7uf"/>
 <part name="R3" library="rcl" deviceset="R-EU_" device="M0805" value="10"/>
-<part name="SV4" library="con-lstb" deviceset="MA03-1" device=""/>
 <part name="IC6" library="linear" deviceset="LM386?-*" device="M" technology="1"/>
 <part name="1K" library="pot" deviceset="TRIM_EU-" device="3223J"/>
 <part name="C17" library="rcl" deviceset="C-EU" device="C0805" value="47nf"/>
@@ -21859,6 +21858,9 @@ Grid 5.00 mm&lt;p&gt;
 <part name="P+6" library="supply1" deviceset="+5V" device=""/>
 <part name="SV2" library="con-lstb" deviceset="MA05-2" device=""/>
 <part name="IC5" library="adafruit" deviceset="MCP23017" device="SS"/>
+<part name="INL" library="wirepad" deviceset="2,15/1,0" device=""/>
+<part name="INR" library="wirepad" deviceset="2,15/1,0" device=""/>
+<part name="ING" library="wirepad" deviceset="2,15/1,0" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -22115,14 +22117,13 @@ Clock</text>
 <attribute name="NAME" x="323.85" y="115.3414" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="323.85" y="112.522" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="SV4" gate="G$1" x="248.92" y="121.92"/>
 <instance part="IC6" gate="G$1" x="304.8" y="119.38" smashed="yes">
 <attribute name="NAME" x="299.72" y="127" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="304.8" y="125.73" size="1.778" layer="96"/>
 </instance>
-<instance part="1K" gate="1" x="279.4" y="116.84" smashed="yes">
-<attribute name="NAME" x="283.21" y="121.031" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="275.59" y="113.03" size="1.778" layer="96" rot="R90"/>
+<instance part="1K" gate="1" x="279.4" y="116.84" smashed="yes" rot="MR180">
+<attribute name="NAME" x="283.21" y="112.649" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="275.59" y="120.65" size="1.778" layer="96" rot="MR270"/>
 </instance>
 <instance part="C17" gate="G$1" x="322.58" y="104.14" smashed="yes" rot="R90">
 <attribute name="NAME" x="326.136" y="108.839" size="1.778" layer="95" rot="R180"/>
@@ -22440,6 +22441,18 @@ Clock</text>
 </instance>
 <instance part="SV2" gate="G$1" x="337.82" y="68.58"/>
 <instance part="IC5" gate="G$1" x="274.32" y="45.72"/>
+<instance part="INL" gate="1" x="248.92" y="124.46" smashed="yes">
+<attribute name="NAME" x="242.697" y="123.7742" size="1.778" layer="95"/>
+<attribute name="VALUE" x="247.777" y="121.158" size="1.778" layer="96"/>
+</instance>
+<instance part="INR" gate="1" x="248.92" y="121.92" smashed="yes">
+<attribute name="NAME" x="242.697" y="121.2342" size="1.778" layer="95"/>
+<attribute name="VALUE" x="247.777" y="118.618" size="1.778" layer="96"/>
+</instance>
+<instance part="ING" gate="1" x="248.92" y="119.38" smashed="yes">
+<attribute name="NAME" x="242.697" y="118.6942" size="1.778" layer="95"/>
+<attribute name="VALUE" x="247.777" y="116.078" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 <bus name="B$1">
@@ -22792,15 +22805,10 @@ Clock</text>
 <wire x1="294.64" y1="116.84" x2="294.64" y2="101.6" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="SV4" gate="G$1" pin="1"/>
-<wire x1="256.54" y1="119.38" x2="259.08" y2="119.38" width="0.1524" layer="91"/>
 <pinref part="VSS12" gate="G$1" pin="VSS"/>
 <wire x1="259.08" y1="119.38" x2="259.08" y2="101.6" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="VSS11" gate="G$1" pin="VSS"/>
-<pinref part="1K" gate="1" pin="A"/>
-<wire x1="279.4" y1="101.6" x2="279.4" y2="111.76" width="0.1524" layer="91"/>
+<pinref part="ING" gate="1" pin="P"/>
+<wire x1="251.46" y1="119.38" x2="259.08" y2="119.38" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="IC6" gate="G$1" pin="GND"/>
@@ -22943,6 +22951,11 @@ Clock</text>
 <pinref part="VSS47" gate="G$1" pin="VSS"/>
 <wire x1="195.58" y1="27.94" x2="195.58" y2="25.4" width="0.1524" layer="91"/>
 <junction x="195.58" y="27.94"/>
+</segment>
+<segment>
+<pinref part="1K" gate="1" pin="E"/>
+<pinref part="VSS11" gate="G$1" pin="VSS"/>
+<wire x1="279.4" y1="111.76" x2="279.4" y2="101.6" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$25" class="0">
@@ -23632,38 +23645,36 @@ Clock</text>
 <wire x1="274.32" y1="124.46" x2="274.32" y2="119.38" width="0.1524" layer="91"/>
 <wire x1="274.32" y1="119.38" x2="271.78" y2="119.38" width="0.1524" layer="91"/>
 <wire x1="274.32" y1="124.46" x2="279.4" y2="124.46" width="0.1524" layer="91"/>
-<pinref part="1K" gate="1" pin="E"/>
-<wire x1="279.4" y1="121.92" x2="279.4" y2="124.46" width="0.1524" layer="91"/>
 <junction x="274.32" y="124.46"/>
 <wire x1="279.4" y1="124.46" x2="279.4" y2="132.08" width="0.1524" layer="91"/>
 <wire x1="279.4" y1="132.08" x2="287.02" y2="132.08" width="0.1524" layer="91"/>
 <pinref part="R11" gate="G$1" pin="2"/>
 <wire x1="287.02" y1="132.08" x2="287.02" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="1K" gate="1" pin="A"/>
+<wire x1="279.4" y1="124.46" x2="279.4" y2="121.92" width="0.1524" layer="91"/>
 <junction x="279.4" y="124.46"/>
 </segment>
 </net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="SV4" gate="G$1" pin="3"/>
-<wire x1="256.54" y1="124.46" x2="261.62" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="261.62" y1="124.46" x2="261.62" y2="129.54" width="0.1524" layer="91"/>
 <pinref part="C14" gate="G$1" pin="+"/>
 <wire x1="261.62" y1="129.54" x2="264.16" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="INL" gate="1" pin="P"/>
+<wire x1="251.46" y1="124.46" x2="261.62" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$40" class="0">
 <segment>
-<pinref part="SV4" gate="G$1" pin="2"/>
-<wire x1="256.54" y1="121.92" x2="261.62" y2="121.92" width="0.1524" layer="91"/>
 <wire x1="261.62" y1="121.92" x2="261.62" y2="119.38" width="0.1524" layer="91"/>
 <pinref part="C15" gate="G$1" pin="+"/>
 <wire x1="261.62" y1="119.38" x2="264.16" y2="119.38" width="0.1524" layer="91"/>
+<pinref part="INR" gate="1" pin="P"/>
+<wire x1="251.46" y1="121.92" x2="261.62" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$41" class="0">
 <segment>
-<pinref part="1K" gate="1" pin="S"/>
-<wire x1="284.48" y1="116.84" x2="287.02" y2="116.84" width="0.1524" layer="91"/>
 <wire x1="287.02" y1="116.84" x2="292.1" y2="116.84" width="0.1524" layer="91"/>
 <wire x1="292.1" y1="116.84" x2="292.1" y2="121.92" width="0.1524" layer="91"/>
 <pinref part="IC6" gate="G$1" pin="+IN"/>
@@ -23673,6 +23684,8 @@ Clock</text>
 <wire x1="287.02" y1="119.38" x2="287.02" y2="116.84" width="0.1524" layer="91"/>
 <junction x="287.02" y="116.84"/>
 <wire x1="287.02" y1="116.84" x2="287.02" y2="114.3" width="0.1524" layer="91"/>
+<pinref part="1K" gate="1" pin="S"/>
+<wire x1="284.48" y1="116.84" x2="287.02" y2="116.84" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$42" class="0">
