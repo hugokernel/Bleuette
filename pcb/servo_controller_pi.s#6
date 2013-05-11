@@ -22285,7 +22285,7 @@ Clock</text>
 <attribute name="NAME" x="170.18" y="226.695" size="1.778" layer="95" rot="R180"/>
 <attribute name="TP_SIGNAL_NAME" x="154.94" y="222.25" size="1.778" layer="97" rot="R180"/>
 </instance>
-<instance part="T_LVOLTAGE" gate="G$1" x="58.42" y="210.82"/>
+<instance part="T_LVOLTAGE" gate="G$1" x="58.42" y="198.12"/>
 <instance part="P+1" gate="1" x="78.74" y="215.9" smashed="yes">
 <attribute name="VALUE" x="81.28" y="218.44" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -23786,7 +23786,7 @@ Clock</text>
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="R2" gate="G$1" pin="2"/>
 <pinref part="T_LVOLTAGE" gate="G$1" pin="TP"/>
-<wire x1="58.42" y1="208.28" x2="58.42" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="195.58" x2="58.42" y2="193.04" width="0.1524" layer="91"/>
 <junction x="66.04" y="193.04"/>
 <label x="68.58" y="193.04" size="1.778" layer="95"/>
 <pinref part="C28" gate="G$1" pin="2"/>

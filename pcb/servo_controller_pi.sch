@@ -22092,7 +22092,6 @@ Clock</text>
 <wire x1="290.83" y1="134.62" x2="290.83" y2="93.98" width="0.1524" layer="98" style="shortdash"/>
 <wire x1="290.83" y1="93.98" x2="283.21" y2="93.98" width="0.1524" layer="98" style="shortdash"/>
 <text x="276.86" y="135.89" size="1.778" layer="98">One of them</text>
-<text x="214.63" y="266.7" size="3.81" layer="98">Ajouter un selecteur pour CE1</text>
 </plain>
 <instances>
 <instance part="VSS1" gate="G$1" x="88.9" y="120.65"/>

@@ -21852,8 +21852,8 @@ Grid 5.00 mm&lt;p&gt;
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="R1" library="rcl" deviceset="R-EU_" device="M0805" value="3.3k"/>
 <part name="R2" library="rcl" deviceset="R-EU_" device="M0805" value="10k"/>
-<part name="R9" library="rcl" deviceset="R-EU_" device="M0805" value="CALCUL_ME"/>
-<part name="R10" library="rcl" deviceset="R-EU_" device="M0805" value="CALCUL_ME"/>
+<part name="R9" library="rcl" deviceset="R-EU_" device="M0805" value="5k"/>
+<part name="R10" library="rcl" deviceset="R-EU_" device="M0805" value="10k"/>
 <part name="C7" library="rcl" deviceset="C-EU" device="C0805" value="100nf"/>
 <part name="C10" library="rcl" deviceset="C-EU" device="C0805" value="22pf"/>
 <part name="C11" library="rcl" deviceset="C-EU" device="C0805" value="22pf"/>
@@ -22210,12 +22210,12 @@ Clock</text>
 <attribute name="VALUE" x="48.26" y="186.182" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="R9" gate="G$1" x="134.62" y="101.6" smashed="yes" rot="R90">
-<attribute name="NAME" x="140.97" y="105.1814" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="140.97" y="102.362" size="1.778" layer="96" rot="R180"/>
+<attribute name="NAME" x="132.08" y="103.9114" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="132.08" y="101.092" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="R10" gate="G$1" x="134.62" y="86.36" smashed="yes" rot="R90">
-<attribute name="NAME" x="143.51" y="89.9414" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="143.51" y="87.122" size="1.778" layer="96" rot="R180"/>
+<attribute name="NAME" x="132.08" y="88.6714" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="132.08" y="85.852" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="C7" gate="G$1" x="99.06" y="109.22"/>
 <instance part="C10" gate="G$1" x="40.64" y="45.72" rot="R180"/>
