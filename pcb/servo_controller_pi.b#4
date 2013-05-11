@@ -198,6 +198,7 @@ OUT</text>
 <wire x1="27.305" y1="36.195" x2="27.94" y2="36.83" width="0.3048" layer="25"/>
 <wire x1="27.94" y1="36.83" x2="28.575" y2="36.195" width="0.3048" layer="25"/>
 <text x="45.085" y="38.4175" size="1.016" layer="25">3.3V</text>
+<text x="21.9075" y="26.9875" size="1.016" layer="25">VBATT</text>
 </plain>
 <libraries>
 <library name="microchip">
@@ -5908,8 +5909,8 @@ design rules under a new name.</description>
 <wire x1="5.4175" y1="32.305" x2="3.5725" y2="32.305" width="1.016" layer="1"/>
 <wire x1="3.5725" y1="32.305" x2="2.54" y2="33.3375" width="1.016" layer="1"/>
 <contactref element="T_5V" pad="TP"/>
-<wire x1="27.94" y1="35.56" x2="27.94" y2="34.6075" width="0" layer="19" extent="1-1"/>
 <wire x1="10.16" y1="44.45" x2="10.2175" y2="44.45" width="0" layer="19" extent="1-1"/>
+<wire x1="27.94" y1="34.6075" x2="27.94" y2="35.56" width="0.254" layer="1"/>
 </signal>
 <signal name="VDD">
 <contactref element="R1" pad="2"/>

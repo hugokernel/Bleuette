@@ -21996,6 +21996,7 @@ Grid 5.00 mm&lt;p&gt;
 <part name="BATT" library="wirepad" deviceset="2,15/1,0" device=""/>
 <part name="BATT1" library="wirepad" deviceset="2,15/1,0" device=""/>
 <part name="VSS45" library="supply1" deviceset="VSS" device=""/>
+<part name="P+2" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -22100,8 +22101,8 @@ Clock</text>
 <instance part="SX" gate="G$1" x="40.64" y="20.32"/>
 <instance part="SY" gate="G$1" x="78.74" y="20.32" rot="R180"/>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
-<instance part="VSS3" gate="G$1" x="33.02" y="175.26" smashed="yes">
-<attribute name="VALUE" x="35.56" y="172.72" size="1.778" layer="96" rot="R180"/>
+<instance part="VSS3" gate="G$1" x="30.48" y="175.26" smashed="yes">
+<attribute name="VALUE" x="33.02" y="172.72" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="VSS6" gate="G$1" x="50.8" y="175.26" smashed="yes">
 <attribute name="VALUE" x="53.34" y="172.72" size="1.778" layer="96" rot="R180"/>
@@ -22264,8 +22265,8 @@ Clock</text>
 <instance part="VSS35" gate="G$1" x="330.2" y="99.06" smashed="yes">
 <attribute name="VALUE" x="332.74" y="96.52" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="P+12" gate="1" x="33.02" y="198.12" smashed="yes">
-<attribute name="VALUE" x="35.56" y="200.66" size="1.778" layer="96" rot="R180"/>
+<instance part="P+12" gate="1" x="30.48" y="198.12" smashed="yes">
+<attribute name="VALUE" x="33.02" y="200.66" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="C1" gate="G$1" x="88.9" y="208.28"/>
 <instance part="VSS4" gate="G$1" x="88.9" y="198.12" smashed="yes">
@@ -22278,13 +22279,13 @@ Clock</text>
 <attribute name="NAME" x="72.39" y="234.95" size="1.778" layer="95"/>
 <attribute name="TP_SIGNAL_NAME" x="80.01" y="232.41" size="1.778" layer="97"/>
 </instance>
-<instance part="T_5V" gate="G$1" x="40.64" y="198.12"/>
-<instance part="TP1" gate="G$1" x="33.02" y="185.42" rot="R180"/>
+<instance part="T_5V" gate="G$1" x="58.42" y="233.68"/>
+<instance part="TP1" gate="G$1" x="30.48" y="185.42" rot="R180"/>
 <instance part="T_CURRENT" gate="G$1" x="157.48" y="220.98" smashed="yes" rot="R180">
 <attribute name="NAME" x="170.18" y="226.695" size="1.778" layer="95" rot="R180"/>
 <attribute name="TP_SIGNAL_NAME" x="154.94" y="222.25" size="1.778" layer="97" rot="R180"/>
 </instance>
-<instance part="T_LVOLTAGE" gate="G$1" x="58.42" y="210.82"/>
+<instance part="T_LVOLTAGE" gate="G$1" x="58.42" y="198.12"/>
 <instance part="P+1" gate="1" x="78.74" y="215.9" smashed="yes">
 <attribute name="VALUE" x="81.28" y="218.44" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -22609,6 +22610,9 @@ Clock</text>
 </instance>
 <instance part="VSS45" gate="G$1" x="22.86" y="218.44" smashed="yes">
 <attribute name="VALUE" x="25.4" y="215.9" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+2" gate="1" x="66.04" y="233.68" smashed="yes">
+<attribute name="VALUE" x="68.58" y="236.22" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -22953,12 +22957,12 @@ Clock</text>
 </segment>
 <segment>
 <wire x1="22.86" y1="198.12" x2="22.86" y2="180.34" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="180.34" x2="33.02" y2="180.34" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="180.34" x2="30.48" y2="180.34" width="0.1524" layer="91"/>
 <pinref part="VSS3" gate="G$1" pin="VSS"/>
-<wire x1="33.02" y1="180.34" x2="33.02" y2="177.8" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="180.34" x2="30.48" y2="177.8" width="0.1524" layer="91"/>
 <pinref part="TP1" gate="G$1" pin="TP"/>
-<wire x1="33.02" y1="182.88" x2="33.02" y2="180.34" width="0.1524" layer="91"/>
-<junction x="33.02" y="180.34"/>
+<wire x1="30.48" y1="182.88" x2="30.48" y2="180.34" width="0.1524" layer="91"/>
+<junction x="30.48" y="180.34"/>
 <pinref part="SPLY" gate="-2" pin="KL"/>
 <wire x1="22.86" y1="198.12" x2="20.32" y2="198.12" width="0.1524" layer="91"/>
 </segment>
@@ -23171,12 +23175,8 @@ Clock</text>
 <segment>
 <pinref part="P+12" gate="1" pin="+5V"/>
 <wire x1="25.4" y1="203.2" x2="25.4" y2="193.04" width="0.1524" layer="91"/>
-<wire x1="25.4" y1="193.04" x2="33.02" y2="193.04" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="193.04" x2="33.02" y2="193.04" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="193.04" x2="33.02" y2="195.58" width="0.1524" layer="91"/>
-<pinref part="T_5V" gate="G$1" pin="TP"/>
-<wire x1="40.64" y1="195.58" x2="40.64" y2="193.04" width="0.1524" layer="91"/>
-<junction x="33.02" y="193.04"/>
+<wire x1="25.4" y1="193.04" x2="30.48" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="193.04" x2="30.48" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="SPLY" gate="-3" pin="KL"/>
 <wire x1="20.32" y1="203.2" x2="25.4" y2="203.2" width="0.1524" layer="91"/>
 </segment>
@@ -23331,6 +23331,13 @@ Clock</text>
 <wire x1="187.96" y1="30.48" x2="187.96" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="SPI" gate="1" pin="7"/>
 <pinref part="P+20" gate="1" pin="+5V"/>
+</segment>
+<segment>
+<pinref part="T_5V" gate="G$1" pin="TP"/>
+<wire x1="58.42" y1="231.14" x2="58.42" y2="228.6" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="228.6" x2="66.04" y2="228.6" width="0.1524" layer="91"/>
+<pinref part="P+2" gate="1" pin="+5V"/>
+<wire x1="66.04" y1="228.6" x2="66.04" y2="231.14" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VDD" class="0">
@@ -23779,7 +23786,7 @@ Clock</text>
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="R2" gate="G$1" pin="2"/>
 <pinref part="T_LVOLTAGE" gate="G$1" pin="TP"/>
-<wire x1="58.42" y1="208.28" x2="58.42" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="195.58" x2="58.42" y2="193.04" width="0.1524" layer="91"/>
 <junction x="66.04" y="193.04"/>
 <label x="68.58" y="193.04" size="1.778" layer="95"/>
 <pinref part="C28" gate="G$1" pin="2"/>

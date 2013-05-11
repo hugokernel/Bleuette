@@ -21934,7 +21934,7 @@ Grid 5.00 mm&lt;p&gt;
 <part name="VSS57" library="supply1" deviceset="VSS" device=""/>
 <part name="R19" library="rcl" deviceset="R-EU_" device="M0805" value="10"/>
 <part name="P+33" library="supply1" deviceset="+5V" device=""/>
-<part name="J_SERV0" library="jumper" deviceset="SJ" device=""/>
+<part name="J_BATT0" library="jumper" deviceset="SJ" device=""/>
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="AN" library="con-lstb" deviceset="MA04-2" device=""/>
 <part name="P+5" library="supply1" deviceset="+5V" device=""/>
@@ -21989,7 +21989,7 @@ Grid 5.00 mm&lt;p&gt;
 <part name="U2" library="adafruit" deviceset="TXB0108PWR" device=""/>
 <part name="SPI" library="con-lstb" deviceset="MA07-1" device=""/>
 <part name="P+20" library="supply1" deviceset="+5V" device=""/>
-<part name="J_SERV1" library="jumper" deviceset="JP1E" device=""/>
+<part name="J_BATT1" library="jumper" deviceset="JP1E" device=""/>
 <part name="VSS42" library="supply1" deviceset="VSS" device=""/>
 <part name="VSS44" library="supply1" deviceset="VSS" device=""/>
 <part name="RC5" library="testpad" deviceset="TPSQ" device="TP06SQ"/>
@@ -22026,7 +22026,7 @@ Clock</text>
 <wire x1="99.06" y1="189.23" x2="177.8" y2="189.23" width="0.4064" layer="98" style="shortdash"/>
 <text x="182.88" y="248.92" size="5.08" layer="98" font="vector" ratio="20">Level adapter</text>
 <wire x1="172.72" y1="144.78" x2="172.72" y2="93.98" width="0.4064" layer="98" style="shortdash"/>
-<text x="22.86" y="241.3" size="1.778" layer="98">J_SERV0 / J_SERV1 : If servo power is same than battery</text>
+<text x="22.86" y="241.3" size="1.778" layer="98">J_BATT0 / J_BATT1 : If servo power is same than battery</text>
 <text x="307.34" y="139.7" size="2.54" layer="98">Lier INT0 du PIC avec une entrée !</text>
 <text x="289.56" y="165.1" size="2.54" layer="98">INTA : Interrupt from GPA port</text>
 <text x="289.56" y="160.02" size="2.54" layer="98">INTB : Interrupt from GPB port</text>
@@ -22430,7 +22430,7 @@ Clock</text>
 <instance part="P+33" gate="1" x="370.84" y="73.66" smashed="yes">
 <attribute name="VALUE" x="373.38" y="76.2" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="J_SERV0" gate="1" x="38.1" y="205.74" smashed="yes">
+<instance part="J_BATT0" gate="1" x="38.1" y="205.74" smashed="yes">
 <attribute name="NAME" x="33.02" y="208.28" size="1.778" layer="95"/>
 <attribute name="VALUE" x="35.56" y="201.93" size="1.778" layer="96"/>
 </instance>
@@ -22580,8 +22580,8 @@ Clock</text>
 <instance part="P+20" gate="1" x="187.96" y="35.56" smashed="yes">
 <attribute name="VALUE" x="190.5" y="38.1" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="J_SERV1" gate="A" x="36.83" y="218.44" smashed="yes">
-<attribute name="NAME" x="44.45" y="223.52" size="1.778" layer="95" rot="R180"/>
+<instance part="J_BATT1" gate="A" x="36.83" y="218.44" smashed="yes">
+<attribute name="NAME" x="43.18" y="223.52" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="42.545" y="218.44" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="VSS42" gate="G$1" x="63.5" y="172.72" smashed="yes">
@@ -23344,17 +23344,19 @@ Clock</text>
 <pinref part="R1" gate="G$1" pin="2"/>
 <wire x1="48.26" y1="226.06" x2="48.26" y2="205.74" width="0.1524" layer="91"/>
 <junction x="27.94" y="226.06"/>
-<pinref part="J_SERV0" gate="1" pin="2"/>
+<pinref part="J_BATT0" gate="1" pin="2"/>
 <wire x1="48.26" y1="205.74" x2="48.26" y2="203.2" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="205.74" x2="48.26" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="205.74" x2="45.72" y2="205.74" width="0.1524" layer="91"/>
 <junction x="48.26" y="205.74"/>
-<pinref part="J_SERV1" gate="A" pin="2"/>
+<pinref part="J_BATT1" gate="A" pin="2"/>
+<wire x1="45.72" y1="205.74" x2="48.26" y2="205.74" width="0.1524" layer="91"/>
 <wire x1="48.26" y1="205.74" x2="45.72" y2="205.74" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="205.74" x2="45.72" y2="213.36" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="213.36" x2="39.37" y2="213.36" width="0.1524" layer="91"/>
 <wire x1="39.37" y1="213.36" x2="39.37" y2="215.9" width="0.1524" layer="91"/>
 <junction x="48.26" y="205.74"/>
 <pinref part="BATT" gate="1" pin="P"/>
+<junction x="45.72" y="205.74"/>
 </segment>
 </net>
 <net name="UC_RESET" class="0">
@@ -23820,10 +23822,10 @@ Clock</text>
 <segment>
 <wire x1="27.94" y1="205.74" x2="27.94" y2="209.55" width="0.1524" layer="91"/>
 <pinref part="SUPPLY6" gate="G$1" pin="+7V"/>
-<pinref part="J_SERV0" gate="1" pin="1"/>
+<pinref part="J_BATT0" gate="1" pin="1"/>
 <wire x1="27.94" y1="205.74" x2="30.48" y2="205.74" width="0.1524" layer="91"/>
 <junction x="27.94" y="205.74"/>
-<pinref part="J_SERV1" gate="A" pin="1"/>
+<pinref part="J_BATT1" gate="A" pin="1"/>
 <wire x1="30.48" y1="205.74" x2="33.02" y2="205.74" width="0.1524" layer="91"/>
 <wire x1="36.83" y1="215.9" x2="36.83" y2="213.36" width="0.1524" layer="91"/>
 <wire x1="36.83" y1="213.36" x2="30.48" y2="213.36" width="0.1524" layer="91"/>
