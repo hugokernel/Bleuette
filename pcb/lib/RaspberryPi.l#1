@@ -212,6 +212,50 @@
 <pad name="26" x="-3.81" y="24.13" drill="1"/>
 <text x="-35.695" y="21.63" size="1.27" layer="21" ratio="10" rot="R180">1</text>
 </package>
+<package name="RASPBERRY-PI-LIGHT-HOLE">
+<wire x1="43.23" y1="28.135" x2="-41.77" y2="28.135" width="0.127" layer="51"/>
+<wire x1="-41.77" y1="-27.865" x2="43.23" y2="-27.865" width="0.127" layer="51"/>
+<wire x1="43.23" y1="-27.865" x2="43.23" y2="28.135" width="0.127" layer="51"/>
+<wire x1="-40.295" y1="23.785" x2="-38.445" y2="23.785" width="0.127" layer="21"/>
+<wire x1="-38.445" y1="23.785" x2="-38.445" y2="21.935" width="0.127" layer="21" curve="1.965897"/>
+<wire x1="-38.445" y1="21.935" x2="-40.295" y2="21.935" width="0.127" layer="21"/>
+<wire x1="-40.295" y1="21.935" x2="-40.295" y2="23.785" width="0.127" layer="21"/>
+<wire x1="-41.77" y1="-27.865" x2="-41.77" y2="28.135" width="0.127" layer="51"/>
+<wire x1="-40.77" y1="21.635" x2="-7.57" y2="21.635" width="0.127" layer="21"/>
+<wire x1="-7.57" y1="21.635" x2="-7.57" y2="26.635" width="0.127" layer="21"/>
+<wire x1="-7.57" y1="26.635" x2="-40.77" y2="26.635" width="0.127" layer="21"/>
+<wire x1="-40.77" y1="26.635" x2="-40.77" y2="21.635" width="0.127" layer="21"/>
+<wire x1="26.53" y1="28.16" x2="26.63" y2="28.16" width="0.127" layer="51"/>
+<pad name="1" x="-39.37" y="22.86" drill="1" shape="square"/>
+<pad name="2" x="-39.37" y="25.4" drill="1" diameter="1.6764"/>
+<pad name="3" x="-36.83" y="22.86" drill="1"/>
+<pad name="4" x="-36.83" y="25.4" drill="1"/>
+<pad name="5" x="-34.29" y="22.86" drill="1"/>
+<pad name="6" x="-34.29" y="25.4" drill="1" diameter="1.6764"/>
+<pad name="7" x="-31.75" y="22.86" drill="1"/>
+<pad name="8" x="-31.75" y="25.4" drill="1"/>
+<pad name="9" x="-29.21" y="22.86" drill="1"/>
+<pad name="10" x="-29.21" y="25.4" drill="1"/>
+<pad name="11" x="-26.67" y="22.86" drill="1"/>
+<pad name="12" x="-26.67" y="25.4" drill="1"/>
+<pad name="13" x="-24.13" y="22.86" drill="1"/>
+<pad name="14" x="-24.13" y="25.4" drill="1"/>
+<pad name="15" x="-21.59" y="22.86" drill="1"/>
+<pad name="16" x="-21.59" y="25.4" drill="1"/>
+<pad name="17" x="-19.05" y="22.86" drill="1"/>
+<pad name="18" x="-19.05" y="25.4" drill="1"/>
+<pad name="19" x="-16.51" y="22.86" drill="1"/>
+<pad name="20" x="-16.51" y="25.4" drill="1"/>
+<pad name="21" x="-13.97" y="22.86" drill="1"/>
+<pad name="22" x="-13.97" y="25.4" drill="1"/>
+<pad name="23" x="-11.43" y="22.86" drill="1"/>
+<pad name="24" x="-11.43" y="25.4" drill="1"/>
+<pad name="25" x="-8.89" y="22.86" drill="1"/>
+<pad name="26" x="-8.89" y="25.4" drill="1"/>
+<text x="-38.87" y="20.36" size="1.27" layer="21" ratio="10" rot="R180">1</text>
+<hole x="-16.35125" y="-9.8425" drill="3"/>
+<hole x="38.4175" y="15.5575" drill="3"/>
+</package>
 </packages>
 <symbols>
 <symbol name="RASPBERRY-PI">
@@ -294,6 +338,39 @@ The GPIO Connector (P1):&lt;br&gt;
 </technologies>
 </device>
 <device name="LIGHT" package="RASPBERRY-PI-LIGHT">
+<connects>
+<connect gate="G$1" pin="1-+3V3" pad="1"/>
+<connect gate="G$1" pin="10-RX" pad="10"/>
+<connect gate="G$1" pin="11-GPIO0" pad="11"/>
+<connect gate="G$1" pin="12-GPIO1" pad="12"/>
+<connect gate="G$1" pin="13-GPIO2" pad="13"/>
+<connect gate="G$1" pin="14-DNC" pad="14"/>
+<connect gate="G$1" pin="15-GPIO3" pad="15"/>
+<connect gate="G$1" pin="16-GPIO4" pad="16"/>
+<connect gate="G$1" pin="17-DNC" pad="17"/>
+<connect gate="G$1" pin="18-GPIO5" pad="18"/>
+<connect gate="G$1" pin="19-SPI-MOSI" pad="19"/>
+<connect gate="G$1" pin="2-+5V" pad="2"/>
+<connect gate="G$1" pin="20-DNC" pad="20"/>
+<connect gate="G$1" pin="21-SPI-MISO" pad="21"/>
+<connect gate="G$1" pin="22-GPIO6" pad="22"/>
+<connect gate="G$1" pin="23-SPI-SCLK" pad="23"/>
+<connect gate="G$1" pin="24-SPI-CE0-N" pad="24"/>
+<connect gate="G$1" pin="25-DNC" pad="25"/>
+<connect gate="G$1" pin="26-SPI-CE1-N" pad="26"/>
+<connect gate="G$1" pin="3-SDA0" pad="3"/>
+<connect gate="G$1" pin="4-DNC" pad="4"/>
+<connect gate="G$1" pin="5-SCL0" pad="5"/>
+<connect gate="G$1" pin="6-GND" pad="6"/>
+<connect gate="G$1" pin="7-GPIO7" pad="7"/>
+<connect gate="G$1" pin="8-TX" pad="8"/>
+<connect gate="G$1" pin="9-DNC" pad="9"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="LIGHT-HOLE" package="RASPBERRY-PI-LIGHT-HOLE">
 <connects>
 <connect gate="G$1" pin="1-+3V3" pad="1"/>
 <connect gate="G$1" pin="10-RX" pad="10"/>

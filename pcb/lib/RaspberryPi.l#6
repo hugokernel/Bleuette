@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="6.25" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -27,7 +27,7 @@
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="no" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="yes"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="yes"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
@@ -52,7 +52,7 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
@@ -118,15 +118,13 @@
 </package>
 <package name="RASPBERRY-PI-LIGHT">
 <wire x1="41.96" y1="28.135" x2="-43.04" y2="28.135" width="0.127" layer="51"/>
-<wire x1="-43.04" y1="28.135" x2="-43.04" y2="16.635" width="0.127" layer="51"/>
-<wire x1="-43.04" y1="-11.165" x2="-43.04" y2="-27.865" width="0.127" layer="51"/>
 <wire x1="-43.04" y1="-27.865" x2="41.96" y2="-27.865" width="0.127" layer="51"/>
 <wire x1="41.96" y1="-27.865" x2="41.96" y2="28.135" width="0.127" layer="51"/>
 <wire x1="-41.565" y1="23.785" x2="-39.715" y2="23.785" width="0.127" layer="21"/>
 <wire x1="-39.715" y1="23.785" x2="-39.715" y2="21.935" width="0.127" layer="21" curve="1.965897"/>
 <wire x1="-39.715" y1="21.935" x2="-41.565" y2="21.935" width="0.127" layer="21"/>
 <wire x1="-41.565" y1="21.935" x2="-41.565" y2="23.785" width="0.127" layer="21"/>
-<wire x1="-43.04" y1="-11.165" x2="-43.04" y2="16.635" width="0.127" layer="51"/>
+<wire x1="-43.04" y1="-27.865" x2="-43.04" y2="28.135" width="0.127" layer="51"/>
 <wire x1="-42.04" y1="21.635" x2="-8.84" y2="21.635" width="0.127" layer="21"/>
 <wire x1="-8.84" y1="21.635" x2="-8.84" y2="26.635" width="0.127" layer="21"/>
 <wire x1="-8.84" y1="26.635" x2="-42.04" y2="26.635" width="0.127" layer="21"/>
@@ -159,6 +157,7 @@
 <pad name="25" x="-10.16" y="22.86" drill="1"/>
 <pad name="26" x="-10.16" y="25.4" drill="1"/>
 <text x="-40.14" y="20.36" size="1.27" layer="21" ratio="10" rot="R180">1</text>
+<hole x="-17.62125" y="-9.8425" drill="3"/>
 </package>
 </packages>
 <symbols>
