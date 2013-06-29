@@ -20,7 +20,7 @@ SERVO_13 = 8192
 
 class ServoController:
 
-    HEADER = 255
+    HEADER = chr(255)
 
     CMD_INIT      = 'I'
     CMD_PAUSE     = 'P'
@@ -30,34 +30,43 @@ class ServoController:
 
     DELAY_BYTE = 0.002
 
-    def __init__(self):
-        ser = serial.Serial('/dev/ttyAMA0', 9600, timeout = 1)
-        ser.open()
+    ACK = 'O'
+    NACK = 'N'
 
-    def getResponse():
-        return serial.readline()
+    last_status_code = ''
+
+    def __init__(self, device):
+        self.com = serial.Serial(device, 9600, timeout = 1)
+        #ser.open()
+
+    def getResponse(self):
+        return self.com.read(1)
+
+    def getLastStatus(self):
+        return (self.last_status_code == self.ACK)
 
     # Send only one command
-    def command(cmd):
-        ser.write(HEADER)
-        sleep(DELAY_BYTE)
-        ser.write(cmd)
-        sleep(DELAY_BYTE)
+    def command(self, cmd):
+        self.com.write(self.HEADER)
+        sleep(self.DELAY_BYTE)
+        self.com.write(cmd)
+        self.last_status_code = self.getResponse()
+        return self. getLastStatus()
 
-    def init():
-        return command(CMD_INIT)
+    def init(self):
+        return self.command(self.CMD_INIT)
 
     # Pause
-    def pause():
-        return command(CMD_PAUSE)
+    def pause(self):
+        return self.command(self.CMD_PAUSE)
 
     # Resume
-    def resume():
-        return command(CMD_RESUME)
+    def resume(self):
+        return self.command(self.CMD_RESUME)
 
     # Set to 0 all consigne
-    def clear():
-        return command(CMD_CLEAR)
+    def clear(self):
+        return self.command(self.CMD_CLEAR)
 
 '''
     ServoController();
@@ -80,6 +89,6 @@ class ServoController:
 
 if __name__ == '__main__':
 
-    Servo = ServoController()
+    Servo = ServoController('/dev/ttyAMA0')
     print Servo.init()
 
