@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/leonardo/src/bleuette.cpp : src/bleuette.ino
+	@mkdir -p .build/leonardo/src
+	@echo [93msrc/bleuette.ino[0m
+	@/usr/local/bin/ino preproc  -o $@ $^
+
+
+all : .build/leonardo/src/bleuette.cpp
+	@true
+
