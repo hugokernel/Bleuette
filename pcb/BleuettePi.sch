@@ -22051,6 +22051,8 @@ Grid 5.00 mm&lt;p&gt;
 <part name="C15" library="rcl" deviceset="CPOL-EU" device="CT3528" value="4.7uf"/>
 <part name="C20" library="rcl" deviceset="CPOL-EU" device="CT3528" value="10uf"/>
 <part name="C13" library="rcl" deviceset="CPOL-EU" device="CT3528" value="4.7uf"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="M0805" value="10k"/>
+<part name="P+21" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -22667,6 +22669,13 @@ Clock</text>
 <instance part="C15" gate="G$1" x="266.7" y="119.38" rot="R90"/>
 <instance part="C20" gate="G$1" x="360.68" y="116.84"/>
 <instance part="C13" gate="G$1" x="106.68" y="109.22"/>
+<instance part="R4" gate="G$1" x="78.74" y="106.68" smashed="yes" rot="R90">
+<attribute name="NAME" x="76.2" y="108.9914" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="76.2" y="106.172" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+21" gate="1" x="78.74" y="116.84" smashed="yes">
+<attribute name="VALUE" x="81.28" y="119.38" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 <bus name="SS[0..5]">
@@ -23391,6 +23400,11 @@ Clock</text>
 <pinref part="P+2" gate="1" pin="+5V"/>
 <wire x1="66.04" y1="228.6" x2="66.04" y2="231.14" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="P+21" gate="1" pin="+5V"/>
+<wire x1="78.74" y1="114.3" x2="78.74" y2="111.76" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="VDD" class="0">
 <segment>
@@ -23418,11 +23432,15 @@ Clock</text>
 <net name="UC_RESET" class="0">
 <segment>
 <wire x1="68.58" y1="88.9" x2="66.04" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="88.9" x2="66.04" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="83.82" y1="96.52" x2="83.82" y2="129.54" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="96.52" x2="83.82" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="88.9" x2="66.04" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="99.06" x2="83.82" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="99.06" x2="78.74" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="!MCLR/THV"/>
 <pinref part="RST" gate="G$1" pin="TP"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="78.74" y1="99.06" x2="83.82" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="101.6" x2="78.74" y2="99.06" width="0.1524" layer="91"/>
+<junction x="78.74" y="99.06"/>
 </segment>
 </net>
 <net name="VEE" class="0">
@@ -23691,7 +23709,7 @@ Clock</text>
 <pinref part="D2" gate="G$1" pin="C"/>
 </segment>
 </net>
-<net name="N$16" class="0">
+<net name="TX_PIC" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="TX/RC6"/>
 <wire x1="111.76" y1="50.8" x2="124.46" y2="50.8" width="0.1524" layer="91"/>
