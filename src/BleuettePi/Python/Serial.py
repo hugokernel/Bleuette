@@ -1,15 +1,22 @@
 
-import types
+import serial, types
 
 class Serial:
 
     com = None
+
+    HEADER = chr(255)
+
+    MAX_RETRY = 3
 
     CMD_INIT    = 'I'   # Init
     CMD_PAUSE   = 'P'   # Pause all servo
     CMD_RESUME  = 'R'   # Resume from pause
     CMD_CLEAR   = 'C'   # Clear all values
     CMD_SET     = 'S'   # Set consigne
+
+    CMD_CURRENT = 'A'   # Get last current value
+    CMD_STATUS  = 'T'   # Get status
 
     CMD_READAN0 = '0'   # Read analog value 0
     CMD_READAN1 = '1'   # Read analog value 1

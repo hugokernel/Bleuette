@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from Serial import Serial
-import serial, types, time
+import serial, types, time, copy
 from array import array
 
 class Servo(Serial):
@@ -22,14 +22,12 @@ class Servo(Serial):
 
     COUNT = 14
 
-    HEADER = chr(255)
-
-    MAX_RETRY = 3
-
     DELAY_BYTE = 0.002
 
     ACK = 'O'
     NACK = 'N'
+
+    DEBUG = True
 
     last_status_code = ''
 
@@ -72,6 +70,8 @@ class Servo(Serial):
             self.last_status_code = self.getResponse()
 
             if (self.last_status_code == self.ACK):
+                if self.DEBUG:
+                    print "Ack Ok !"
                 self.onboard_values = copy.copy(self.values)
                 break
 
