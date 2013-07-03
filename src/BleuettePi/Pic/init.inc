@@ -15,11 +15,11 @@
 _init
 
 	; Configuration des ports
-	MOVLF   b'00000000', TRISA
+	MOVLF   b'00011111', TRISA
 	MOVLF   b'00000000', TRISB
 	MOVLF   b'10000000', TRISC
 	MOVLF   b'00000000', TRISD
-	MOVLF   b'00000000', TRISE
+	MOVLF   b'00000111', TRISE
 
 	; Initialisation des ports
 	MOVLF   b'00000000', PORTA
@@ -218,6 +218,17 @@ _init
 ;	bsf		IPR2, TMR3IP
 
 
+
+	; Set ADCON0
+  	movlw   b'10000001'
+  	movwf   ADCON0
+	
+	; Set ADCON1
+ 	movlw   b'10000000'
+  	movwf   ADCON1
+
+
+
 	MOVLF	b'10100000', T1CON
 	bsf		PIE1, TMR1IE
 	bsf		IPR1, TMR1IP
@@ -270,29 +281,11 @@ _init
 	bcf		IPR1, TXIP
 	; Fin ajout hugo
 
-;;;;;;;;;;clrf	ADCON0
 
+	movlw 	1
+	movwf 	Current_Max_H
+	clrf 	Current_Max_L
 
-;; SEND A CHAR
-;;	MOVLF	.51, SPBRG
-;	MOVLF	X, SPBRG
-;
-;	MOVLF	b'00100001', TXSTA
-;	MOVLF	b'10110000', RCSTA
-;
-;	bsf		PIE1, RCIE
-;	bcf		IPR1, TXIP
-;
-;	movlw	b'10101010'
-;	movwf	TXREG
+	clrf	Int_Status
 
-
-;	MOVLW	.25 ; Set Baud Rate
-;	MOVWF	SPBRG
-;	MOVLW	0xB0 ; Synchronous Master,8-bit transmit,
-;	MOVWF	TXSTA ; transmitter enabled, low speed mode
-;	BSF		PIE1,TXIE ; Enable transmit interrupts
-;	BSF		PIE1,RCIE ; Enable receive interrupts
-;
-;	MOVLW	0x90 ; 8-bit receive, receiver enabled,
-;	MOVWF	RCSTA ; continuous receive, serial port enabled
+	clrf	PORTC

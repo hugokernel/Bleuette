@@ -51,12 +51,30 @@
 #DEFINE 	COMMAND_RESUME  'R'
 #DEFINE 	COMMAND_CLEAR   'C'
 #DEFINE 	COMMAND_SET     'S'
+#DEFINE 	COMMAND_CURRENT 'A'
+#DEFINE 	COMMAND_STATUS 	'T'
+
 #DEFINE 	COMMAND_READAN0	'0'
 #DEFINE 	COMMAND_READAN1	'1'
 #DEFINE 	COMMAND_READAN2	'2'
 #DEFINE 	COMMAND_READAN3	'3'
 #DEFINE 	COMMAND_READAN4	'4'
 #DEFINE 	COMMAND_READAN5	'5'
+#DEFINE 	COMMAND_READAN6	'6'
+#DEFINE 	COMMAND_READAN7	'7'
+
+#DEFINE 	ADC_AN0 b'00000000'
+#DEFINE 	ADC_AN1 b'00001000'
+#DEFINE 	ADC_AN2 b'00010000'
+#DEFINE 	ADC_AN3 b'00011000'
+#DEFINE 	ADC_AN4 b'00100000'
+#DEFINE 	ADC_AN5 b'00101000'
+#DEFINE 	ADC_AN6 b'00110000'
+#DEFINE 	ADC_AN7 b'00111000'
+
+#DEFINE 	INT_STATUS_MAX_REACHED 	b'00000001'
+
+#DEFINE 	CURRENT_CHANNEL ADC_AN7
 
 	CBLOCK	0x00	; zone access ram de la banque 0
 		servo_cons0 	: 1
@@ -99,6 +117,19 @@
 		buf_PORTC		: 1
 		buf_PORTD		: 1
 		buf_PORTE		: 1
+
+		Adc_Result_H 	: 1
+		Adc_Result_L 	: 1
+
+		Current_Last_H 	: 1
+		Current_Last_L 	: 1
+
+		Current_Max_H 	: 1
+		Current_Max_L 	: 1
+
+		Int_Status 		: 1
+
+		Mac
 
 		phase			: 1		; La phase courante
 		phase_cmpt		: 1		; Phase de comptage
@@ -324,7 +355,7 @@ _intl_usart
 ; 0: Reception de l'entete
 	movlw 	0
 	cpfseq 	received_counter
-	goto 	_intl_usart_received_test_command
+	goto 	_intl_usart_received_test_cmd
 
 	; Test si le premier est bien egal a 255
 	movlw 	HEADER
@@ -333,7 +364,7 @@ _intl_usart
 	goto 	_intl_usart_end
 
 ; 1: Command
-_intl_usart_received_test_command
+_intl_usart_received_test_cmd
 	movlw 	.1
 	cpfseq 	received_counter
 	goto 	_intl_usart_received_test_pos0
@@ -370,10 +401,45 @@ _int1_usart_received_test_pause
 _int1_usart_received_test_resume
 	movlw 	COMMAND_RESUME
 	cpfseq 	RCREG
-	goto 	_int1_usart_received_test_ana0
+	goto 	_int1_usart_received_test_cur
 
 	clrf 	pause_mode
 	goto 	_int1_usart_received_send_ack
+
+; Test for read current
+_int1_usart_received_test_cur
+	movlw 	COMMAND_CURRENT
+	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_stat
+
+	movf	Current_Last_H, W
+	call 	Serial_Send_Delay
+
+	movf	Current_Last_L, W
+	call 	Serial_Send_Delay
+
+	; Checksum calculation
+	movf 	Current_Last_H, W
+	addwf 	Current_Last_L, W
+	call 	Serial_Send
+
+	goto 	_int1_usart_clear
+
+; Test for get status
+_int1_usart_received_test_stat
+	movlw 	COMMAND_STATUS
+	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_ana0
+
+	movf 	Int_Status, W
+	call 	Serial_Send
+
+	clrf 	Current_Last_H
+	clrf	Current_Last_L
+	bcf 	Int_Status, INT_STATUS_MAX_REACHED
+	INT_OFF
+
+	goto 	_int1_usart_clear
 
 ; Test for read analog 0 command
 _int1_usart_received_test_ana0
@@ -381,10 +447,8 @@ _int1_usart_received_test_ana0
 	cpfseq 	RCREG
 	goto 	_int1_usart_received_test_ana1
 
-	; TODO!!
-	SEND '0'
-
-	goto 	_int1_usart_received_send_ack
+	SEND_AD ADC_AN0
+	goto 	_int1_usart_clear
 
 ; Test for read analog 1 command
 _int1_usart_received_test_ana1
@@ -392,10 +456,8 @@ _int1_usart_received_test_ana1
 	cpfseq 	RCREG
 	goto 	_int1_usart_received_test_ana2
 
-	; TODO!!
-	SEND '1'
-
-	goto 	_int1_usart_received_send_ack
+	SEND_AD ADC_AN1
+	goto 	_int1_usart_clear
 
 ; Test for read analog 2 command
 _int1_usart_received_test_ana2
@@ -403,10 +465,8 @@ _int1_usart_received_test_ana2
 	cpfseq 	RCREG
 	goto 	_int1_usart_received_test_ana3
 
-	; TODO!!
-	SEND '2'
-
-	goto 	_int1_usart_received_send_ack
+	SEND_AD ADC_AN2
+	goto 	_int1_usart_clear
 
 ; Test for read analog 3 command
 _int1_usart_received_test_ana3
@@ -414,10 +474,8 @@ _int1_usart_received_test_ana3
 	cpfseq 	RCREG
 	goto 	_int1_usart_received_test_ana4
 
-	; TODO!!
-	SEND '3'
-
-	goto 	_int1_usart_received_send_ack
+	SEND_AD ADC_AN3
+	goto 	_int1_usart_clear
 
 ; Test for read analog 4 command
 _int1_usart_received_test_ana4
@@ -425,21 +483,37 @@ _int1_usart_received_test_ana4
 	cpfseq 	RCREG
 	goto 	_int1_usart_received_test_ana5
 
-	; TODO!!
-	SEND '4'
-
-	goto 	_int1_usart_received_send_ack
+	SEND_AD ADC_AN4
+	goto 	_int1_usart_clear
 
 ; Test for read analog 5 command
 _int1_usart_received_test_ana5
 	movlw 	COMMAND_READAN5
 	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_ana6
+
+	SEND_AD ADC_AN5
+	goto 	_int1_usart_clear
+
+; Test for read analog 6 command
+_int1_usart_received_test_ana6
+	movlw 	COMMAND_READAN6
+	cpfseq 	RCREG
+	goto 	_int1_usart_received_test_ana7
+
+	SEND_AD ADC_AN6
+	goto 	_int1_usart_clear
+
+; Test for read analog 7 command
+_int1_usart_received_test_ana7
+	movlw 	COMMAND_READAN7
+	cpfseq 	RCREG
 	goto 	_int1_usart_received_test_clear
 
-	; TODO!!
-	SEND '5'
-
-	goto 	_int1_usart_received_send_ack
+	bsf 	LATC, 1
+	SEND_AD ADC_AN7
+	bcf 	LATC, 1
+	goto 	_int1_usart_clear
 
 ; Test for clear command
 _int1_usart_received_test_clear
@@ -590,13 +664,13 @@ _intl_usart_received_test_pos12
 _intl_usart_received_test_pos13
 	movlw .15
 	cpfseq received_counter
-	goto _intl_usart_received_test_control
+	goto _intl_usart_received_test_ctrl
 	movf RCREG, W
 	movwf pos_13
 	goto _intl_usart_end
 
 ; 17: Control byte
-_intl_usart_received_test_control
+_intl_usart_received_test_ctrl
 	movf RCREG, W
 	movwf reception_control
 
@@ -651,7 +725,6 @@ bcl_toto
 	bra		bcl_toto
 
 	fill(bra	$ + 2), 64	; 64 -> Passage en repos à l'état bas
-
 
 ; ###########
 ; # PHASE 2 #
@@ -722,6 +795,8 @@ phase3
 ; ###########
 	nop
 phase4
+	call 	Current_Test
+
 	call	clrPort				; Extinction du ou des servos courants
 
 	movf	POSTINC2, W			; Addition de la quantité courante ...
@@ -773,6 +848,8 @@ inth_end
 	bsf		INTCON, GIEH
 	bsf		INTCON, GIEL
 	;goto _intl_usart
+
+	
 
 main
 	; On boucle temps que 18 octets ne sont pas recu
@@ -843,6 +920,7 @@ nack
 	SEND 'N'
 	goto main
 
+	#include "functions.inc"
 
 ; Met toutes les consignes à la valeur voulues (dans WREG)
 setValue
@@ -1000,7 +1078,6 @@ setAllPort
 ; RB0, RB1, RB2, RB3, RB4, RB5, RE0, RE1	-> Servo 8 à 15 
 ; RD0, RD1, RD2, RD3, RD4, RD5, RD6, RD7	-> Servo 16 à 23
 clrPort
-
 	; Si la consigne courante est 0
 	; Le ou les servo(s) restent comme il sont, à 1
 	movf	current_cons, W

@@ -48,4 +48,28 @@ SEND	MACRO   char
 		goto	$ - 2
 		ENDM
 
+; Send AD conversion result
+SEND_AD MACRO 	channel
+		movlw 	channel
+		call 	Adc_Read
+
+		movf	Adc_Result_H, W
+		call 	Serial_Send_Delay
+
+		movf	Adc_Result_L, W
+		call 	Serial_Send_Delay
+
+		; Checksum calculation
+		movf 	Adc_Result_H, W
+		addwf 	Adc_Result_L, W
+		call 	Serial_Send
+		ENDM
+
+INT_ON 	MACRO
+		bsf 	PORTC, 0
+		ENDM
+
+INT_OFF MACRO
+		bcf		PORTC, 0
+		ENDM
 ;	LIST
