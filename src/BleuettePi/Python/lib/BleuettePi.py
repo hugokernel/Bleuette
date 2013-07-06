@@ -1,35 +1,30 @@
 #!/usr/bin/python
 import serial, types, time, struct
-from array import array
 
+from array  import array
 from Serial import Serial
-from Servo import Servo
+from Servo  import Servo
 from Analog import Analog
+from Define import BPi_Cmd
 import RPi.GPIO as GPIO
 
-'''
-import threading, copy
-class MyThread ( threading.Thread ):
-
-    def run ( self ):
-        time.sleep(5)
-        print 'Done'
-'''
-
-class BleuettePi:
+class BleuettePi(Serial):
 
     INTA = 26
     INTB = 15
     INTC = 22
     INTD = 12
 
-    ser = None
+    STATUS_MAX_CURRENT_REACHED = 0
+
+    serial = None
 
     def __init__(self, mixed):
-        self.com = Serial().connect(mixed)
+        self.serial = Serial()
+        self.serial.connect(mixed)
 
-        self.Servo = Servo(self.com)
-        self.Analog = Analog(self.com)
+        self.Servo = Servo(self.serial)
+        self.Analog = Analog(self.serial)
 
         # Init mode
         GPIO.setmode(GPIO.BOARD)
@@ -44,9 +39,6 @@ class BleuettePi:
         GPIO.add_event_detect(self.INTC, GPIO.RISING, callback = self.interrupt, bouncetime = 300)
         GPIO.add_event_detect(self.INTD, GPIO.RISING, callback = self.interrupt, bouncetime = 300)
 
-        while True:
-            time.sleep(20)
-
     def interrupt(self, index):
         if index == self.INTA:
             print "Interrupt from GPA"
@@ -56,16 +48,32 @@ class BleuettePi:
             print "Interrupt from RTC"
         elif index == self.INTD:
             print "Interrupt from PIC !"
-            print self.Analog.status()
+            self.getStatus()
 
-    def getCurrent(self):
-        total = 0;
-        val = BPi.Analog.read(Analog.AN7)
-        val += BPi.Analog.read(Analog.AN7)
-        val += BPi.Analog.read(Analog.AN7)
-        val += BPi.Analog.read(Analog.AN7)
-        val += BPi.Analog.read(Analog.AN7)
-        return val / 5
+    '''
+    def setCurrentAlarmLevel(self, level):
+        print "Level", level
+
+        if level >= 1024:
+            raise Exception('Max current alarm level is 1024 !')
+
+        data = struct.pack("@i", level)
+        level = [ data[0], data[1] ]
+
+        return self.command(BPi_Cmd.SET_MAX, level)
+    '''
+
+    def getStatus(self):
+        self.serial.write(self.HEADER)
+        self.serial.write(BPi_Cmd.STATUS)
+        status = self.serial.read(1)
+
+        if ord(status) & (1 << self.STATUS_MAX_CURRENT_REACHED):
+            print "Max current reached !"
+
+        return status
+
+
 
 class Fake:
     @staticmethod
@@ -73,30 +81,23 @@ class Fake:
         pass
     @staticmethod
     def read(self):
-        pass
+        return 'a'
 
 if __name__ == '__main__':
 
-    BPi = BleuettePi('/dev/ttyAMA0')
-    #BPi = BleuettePi(Fake)
+    #BPi = BleuettePi('/dev/ttyAMA0')
+    BPi = BleuettePi(Fake)
 
-    val = BPi.Analog.status()
+    #print BPi.getStatus()
+    #BPi.Servo.init()
+
+    val = BPi.Analog.readCurrent()
     val = BPi.Analog.read(Analog.AN0)
-    print BPi.Analog.convertInVolt(val)
-
-    '''
-    print "Current:", BPi.Analog.convertInVolt(BPi.Analog.readCurrent())
-
-    value = chr(50)
-    BPi.Servo.setValue(5, value)
-    BPi.Servo.setValue(4, value)
-    BPi.Servo.setValue(3, value)
-#    BPi.Servo.setValue(13, chr(5))
-    #BPi.Servo.setValue(5, chr(1))
-    BPi.Servo.sendValues()
-    '''
+#    print BPi.Analog.convertInVolt(val)
 
     print "Current:", BPi.Analog.convertInVolt(BPi.Analog.readCurrent())
+
+#    print "Current:", BPi.Analog.convertInVolt(BPi.Analog.readCurrent())
 
     #while True:
     #    print BPi.getCurrent()
