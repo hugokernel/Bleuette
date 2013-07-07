@@ -16,13 +16,34 @@ B.BPi.Servo.sendValues()
 '''
 
 
-from Sequencer import sequences
-B.Sequencer.forward(sequences['middle'])
-B.Sequencer.forward(sequences['pushup'])
+from Sequences import Sequences
+B.Sequencer.forward(Sequences['middle'])
+B.BPi.Servo.pause()
 
-time.sleep(2)
+#B.BPi.Accelerometer.realTime()
+B.BPi.Compass.realTime()
 
-B.Sequencer.forward(sequences['middle'])
+sys.exit()
+#B.Sequencer.forward(sequences['pushup'], 4)
+#B.Sequencer.forward(Sequences['walk'], 4)
+
+B.Sequencer.Buffer.push(Sequences['walk'])
+B.Sequencer.Buffer.push(Sequences['walk'])
+B.Sequencer.Buffer.push(Sequences['walk'])
+
+#B.Sequencer.Buffer.forward()
+B.Sequencer.Thread.start()
+
+for i in range(0, 20):
+    time.sleep(0.5)
+    if i == 1:
+        print 'Stop !'
+        B.Sequencer.Thread.stop()
+
+sys.exit()
+
+#time.sleep(2)
+#B.Sequencer.forward(sequences['middle'])
 
 
 #B.BPi.setCurrentAlarmLevel(1000)

@@ -23,12 +23,15 @@ class Servo(Serial):
 
     COUNT = 14
 
-    DEBUG = True
+    DEBUG = False
 
     last_status_code = ''
 
-    values = array('c', [chr(0)] * COUNT)
-    sent_values = array('c', [chr(0)] * COUNT)
+    #values = array('c', [chr(0)] * COUNT)
+    #sent_values = array('c', [chr(0)] * COUNT)
+
+    values = array('h', [0] * COUNT)
+    sent_values = array('h', [0] * COUNT)
 
     def __init__(self, serial):
         self.serial = serial
@@ -43,8 +46,8 @@ class Servo(Serial):
 
             control = 0
             for i in range(0, self.COUNT):
-                self.serial.write(self.values[i])
-                control += ord(self.values[i])
+                self.serial.write(chr(self.values[i]))
+                control += self.values[i]
 
             self.serial.write(chr(control % 256))
 
@@ -80,8 +83,8 @@ class Servo(Serial):
                 self.sent_values[i] = 0
 
     def setValue(self, index, value):
-        if type(value) == types.IntType:
-            value = chr(value)
+        #if type(value) == types.IntType:
+        #    value = chr(value)
         self.values[index] = value
 
     def setValues(self, servos, values):
@@ -92,5 +95,6 @@ class Servo(Serial):
                 v += 1
 
     def dump(self):
-        print self.values
+        print 'Buff values:', self.values
+        print 'Sent values:', self.sent_values
 

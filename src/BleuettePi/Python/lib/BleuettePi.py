@@ -1,12 +1,37 @@
 #!/usr/bin/python
-import serial, types, time, struct
+import sys, serial, types, time, struct
 
 from array  import array
 from Serial import Serial
 from Servo  import Servo
+from drivers.hmc5883l import hmc5883l
+from drivers.ADXL345 import ADXL345
 from Analog import Analog
 from Define import BPi_Cmd
 import RPi.GPIO as GPIO
+
+class BleuettePi_Compass:
+
+    # Declination, ~Paris : 0.7
+    # http://magnetic-declination.com/
+    DECLINATION = (0, 7)
+
+    def realTime(self):
+        compass = hmc5883l(gauss = 4.7, declination = self.DECLINATION)
+        while True:
+            sys.stdout.write("\rHeading: " + compass.degrees(compass.heading()) + "     ")
+            sys.stdout.flush()
+            time.sleep(0.5)
+
+class BleuettePi_Accelerometer:
+    
+    def realTime(self):
+        a = ADXL345()
+        while True:
+            x, y, z = a.scaledAccelCal(10)
+            sys.stdout.write('\rx:%d, y:%d, z:%d            ' % (x, y, x))
+            sys.stdout.flush()
+            time.sleep(0.5)
 
 class BleuettePi(Serial):
 
@@ -18,6 +43,8 @@ class BleuettePi(Serial):
     STATUS_MAX_CURRENT_REACHED = 0
 
     serial = None
+    Compass = None
+    Accelerometer = None
 
     def __init__(self, mixed):
         self.serial = Serial()
@@ -25,6 +52,9 @@ class BleuettePi(Serial):
 
         self.Servo = Servo(self.serial)
         self.Analog = Analog(self.serial)
+
+        self.Compass = BleuettePi_Compass()
+        self.Accelerometer = BleuettePi_Accelerometer()
 
         # Init mode
         GPIO.setmode(GPIO.BOARD)

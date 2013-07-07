@@ -29,6 +29,8 @@ class BPi_Cmd:
         return hasattr(BPi_Cmd, name)
 
 
+DELAY_MIN = 0.2
+
 __      = 230
 PAUSE   = 231
 
