@@ -22100,6 +22100,7 @@ Clock</text>
 <wire x1="290.83" y1="134.62" x2="290.83" y2="93.98" width="0.1524" layer="98" style="shortdash"/>
 <wire x1="290.83" y1="93.98" x2="283.21" y2="93.98" width="0.1524" layer="98" style="shortdash"/>
 <text x="276.86" y="135.89" size="1.778" layer="98">One of them</text>
+<text x="71.12" y="266.7" size="2.54" layer="98">Ajouter un Vref+ / Vref-</text>
 </plain>
 <instances>
 <instance part="VSS1" gate="G$1" x="88.9" y="120.65"/>
@@ -23881,14 +23882,14 @@ Clock</text>
 <wire x1="307.34" y1="111.76" x2="307.34" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$55" class="0">
+<net name="RC4" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="SDI/RC4"/>
 <wire x1="119.38" y1="45.72" x2="111.76" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="RC4" gate="G$1" pin="TP"/>
 </segment>
 </net>
-<net name="N$56" class="0">
+<net name="RC5" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="SDO/RC5"/>
 <wire x1="119.38" y1="48.26" x2="111.76" y2="48.26" width="0.1524" layer="91"/>
@@ -24377,21 +24378,21 @@ Clock</text>
 <wire x1="33.02" y1="60.96" x2="33.02" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$1" class="0">
+<net name="RC1" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="RC1/T1OSI"/>
 <pinref part="RC1" gate="G$1" pin="TP"/>
 <wire x1="66.04" y1="50.8" x2="68.58" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$2" class="0">
+<net name="RC2" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="RC2/CCP1"/>
 <pinref part="RC2" gate="G$1" pin="TP"/>
 <wire x1="66.04" y1="48.26" x2="68.58" y2="48.26" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="RC3" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="RC3/SCK"/>
 <pinref part="RC3" gate="G$1" pin="TP"/>
