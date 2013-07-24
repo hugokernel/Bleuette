@@ -6,6 +6,7 @@ from Serial import Serial
 from Servo  import Servo
 from drivers.hmc5883l import hmc5883l
 from drivers.ADXL345 import ADXL345
+from drivers.Adafruit_MCP230xx import Adafruit_MCP230XX as MCP230XX
 from Analog import Analog
 from Define import BPi_Cmd
 import RPi.GPIO as GPIO
@@ -24,12 +25,38 @@ class BleuettePi_Compass:
             time.sleep(0.5)
 
 class BleuettePi_Accelerometer:
-    
+
     def realTime(self):
         a = ADXL345()
         while True:
             x, y, z = a.scaledAccelCal(10)
             sys.stdout.write('\rx:%d, y:%d, z:%d            ' % (x, y, x))
+            sys.stdout.flush()
+            time.sleep(0.5)
+
+class BleuettePi_GroundSensor:
+
+    ADDRESS = 0x20
+    mcp = None
+
+    def __init__(self):
+        self.mcp = MCP230XX(self.ADDRESS, 16)
+        for i in range(0, 7):
+            self.mcp.config(i, MCP230XX.INPUT)
+            self.mcp.pullup(i, True)
+
+    def get(self):
+        inputs = [ 0, 0, 0, 0, 0, 0, 0 ]
+        for i in range(0, 7):
+            inputs[i] = self.mcp.input(i)
+        return inputs
+
+    def realTime(self):
+        inputs = [ 0, 0, 0, 0, 0, 0, 0 ]
+        while True:
+            for i in range(0, 7):
+                inputs[i] = 'HIGH' if mcp.input(i) else 'LOW '
+            sys.stdout.write('\r0:%s, 1:%s, 2:%s, 3:%s, 4:%s, 5:%s, 6:%s' % (inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5], inputs[6]))
             sys.stdout.flush()
             time.sleep(0.5)
 
@@ -45,6 +72,7 @@ class BleuettePi(Serial):
     serial = None
     Compass = None
     Accelerometer = None
+    GroundSensor = None
 
     def __init__(self, mixed):
         self.serial = Serial()
@@ -55,6 +83,7 @@ class BleuettePi(Serial):
 
         self.Compass = BleuettePi_Compass()
         self.Accelerometer = BleuettePi_Accelerometer()
+        self.GroundSensor = BleuettePi_GroundSensor()
 
         # Init mode
         GPIO.setmode(GPIO.BOARD)

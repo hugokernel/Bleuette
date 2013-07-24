@@ -67,8 +67,9 @@ class Sequencer_Buffer:
     def __init__(self, sequencer):
         self.sequencer = sequencer
 
-    def push(self, seq):
-        self.buffer.append(seq)
+    def push(self, seq, count = 1):
+        for i in range(0, count):
+            self.buffer.append(seq)
 
     def forward(self, count = 1):
         for i in range(0, count):
