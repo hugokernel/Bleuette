@@ -4,16 +4,12 @@ import sys, serial, types, time, struct
 from array  import array
 from Serial import Serial
 from Servo  import Servo
-<<<<<<< HEAD
-=======
-from drivers.hmc5883l import hmc5883l
-from drivers.ADXL345 import ADXL345
-from drivers.Adafruit_MCP230xx import Adafruit_MCP230XX as MCP230XX
->>>>>>> cb2d16248f58be6ecf7a5d1c49b381838f64c911
 from Analog import Analog
 from Define import BPi_Cmd
 
 import config as Config
+
+from drivers.Adafruit_MCP230xx import Adafruit_MCP230XX as MCP230XX
 
 if Config.FAKE_MODE:
     from Fake import GPIO, hmc5883l, ADXL345

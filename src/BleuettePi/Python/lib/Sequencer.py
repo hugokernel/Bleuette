@@ -116,7 +116,7 @@ class Sequencer:
     def forward(self, seq, count = 1):
         for i in range(0, count):
             for s in seq.sequence:
-                print s
+                #print s
                 self.play(s)
 
     def play(self, seq):
@@ -128,7 +128,10 @@ class Sequencer:
 
         if seq[2]:
             seq[2]()
-       
+
+        if self.__callback:
+            self.__callback()
+
         if self.DEBUG:
             self.servo.dump()
             print '--'
