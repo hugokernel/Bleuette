@@ -161,7 +161,7 @@ if (0) {
     piston();
 } else if (0) {
     external();
-} else if (1) {
+} else if (0) {
 
     difference() {
         translate([0, 0, 4]) {

@@ -6,7 +6,7 @@ $fn = 30;
 ARM_THICKNESS = 3.8;
 ARMS_SPACING = 20;
 
-DEBUG = true;
+DEBUG = false;
 
 module spring(only_connection = false) {
     thickness = ARM_THICKNESS;
