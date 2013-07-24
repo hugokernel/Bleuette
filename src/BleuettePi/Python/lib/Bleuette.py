@@ -18,7 +18,7 @@ class Bleuette():
     Sequencer = None
 
     def __init__(self):
-        if Config.SERIAL_DEV:
+        if Config.FAKE_MODE == False:
             self.BPi = BleuettePi(Config.SERIAL_DEV)
         else:
             self.BPi = BleuettePi(Fake)

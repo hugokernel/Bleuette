@@ -82,12 +82,17 @@ class Sequencer:
     Buffer = None
     Thread = None
 
+    __callback = None
+
     DEBUG = True
 
     def __init__(self, servo):
         self.servo = servo
         self.Buffer = Sequencer_Buffer(self)
         self.Thread = Sequencer_Thread(self)
+
+    def setCallback(self, callback):
+        self.__callback = callback
 
     def getValue(self, servo, pos):
         _min = 0
@@ -119,6 +124,9 @@ class Sequencer:
                 self.servo.setValue(i, self.getValue(i, seq[1][i]))
 
         self.servo.sendValues()
+
+        if seq[2]:
+            seq[2]()
        
         if self.DEBUG:
             self.servo.dump()

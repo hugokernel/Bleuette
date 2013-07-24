@@ -4,11 +4,17 @@ import sys, serial, types, time, struct
 from array  import array
 from Serial import Serial
 from Servo  import Servo
-from drivers.hmc5883l import hmc5883l
-from drivers.ADXL345 import ADXL345
 from Analog import Analog
 from Define import BPi_Cmd
-import RPi.GPIO as GPIO
+
+import config as Config
+
+if Config.FAKE_MODE:
+    from Fake import GPIO, hmc5883l, ADXL345
+else:
+    from drivers.hmc5883l import hmc5883l
+    from drivers.ADXL345 import ADXL345
+    import RPi.GPIO as GPIO
 
 class BleuettePi_Compass:
 
