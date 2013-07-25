@@ -4,6 +4,9 @@ from Define import BPi_Cmd
 import serial, types, time, copy
 from array import array
 
+class ServoException(Exception):
+    pass
+
 class Servo(Serial):
 
     _0 = 1
@@ -24,6 +27,7 @@ class Servo(Serial):
     COUNT = 14
 
     DEBUG = False
+    fakemode = False
 
     last_status_code = ''
 
@@ -33,8 +37,10 @@ class Servo(Serial):
     values = array('h', [0] * COUNT)
     sent_values = array('h', [0] * COUNT)
 
-    def __init__(self, serial):
+    def __init__(self, serial, fakemode = False):
         self.serial = serial
+
+        self.fakemode = fakemode
 
     # Servo related method
     def sendValues(self):
@@ -61,7 +67,10 @@ class Servo(Serial):
 
             retry -= 1
             if retry == 0:
-                raise Exception('Unable to communicate !')
+                if self.fakemode:
+                    break
+                else:
+                    raise ServoException('Unable to communicate !')
 
         return self.getLastStatus()
 

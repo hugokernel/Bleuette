@@ -9,14 +9,13 @@ from Define import BPi_Cmd
 
 import config as Config
 
-from drivers.Adafruit_MCP230xx import Adafruit_MCP230XX as MCP230XX
-
 if Config.FAKE_MODE:
-    from Fake import GPIO, hmc5883l, ADXL345
+    from Fake import GPIO, hmc5883l, ADXL345, MCP230XX
 else:
     from drivers.hmc5883l import hmc5883l
     from drivers.ADXL345 import ADXL345
     import RPi.GPIO as GPIO
+    from drivers.Adafruit_MCP230xx import Adafruit_MCP230XX as MCP230XX
 
 class BleuettePi_Compass:
 
@@ -85,7 +84,7 @@ class BleuettePi(Serial):
         self.serial = Serial()
         self.serial.connect(mixed)
 
-        self.Servo = Servo(self.serial)
+        self.Servo = Servo(self.serial, fakemode = Config.FAKE_MODE)
         self.Analog = Analog(self.serial)
 
         self.Compass = BleuettePi_Compass()

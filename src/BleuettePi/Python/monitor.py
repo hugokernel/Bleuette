@@ -1,6 +1,6 @@
 
 import os, sys
-import curses, random
+import curses
 from copy import copy
 from time import sleep
 
@@ -43,7 +43,13 @@ class GroundSensor(Window):
         global B
         inputs = B.BPi.GroundSensor.get()
         self.pad.addstr(2, 3, "Even : %i %i %i" % (inputs[0], inputs[2], inputs[4]))
-        self.pad.addstr(6, 3, "Odd  : %i %i %i" % (inputs[1], inputs[3], inputs[5]))
+        self.pad.addstr(4, 3, "Odd  : %i %i %i" % (inputs[1], inputs[3], inputs[5]))
+        self.pad.refresh(*self.pos)
+
+class Accelerometer(Window):
+
+    def update(self, key = None):
+        self.pad.addstr(2, 3, "X : ?, Y : ?, Z : ?")
         self.pad.refresh(*self.pos)
 
 class Compass(Window):
@@ -52,10 +58,10 @@ class Compass(Window):
         self.pad.addstr(2, 3, "Even : # # #")
         self.pad.refresh(*self.pos)
 
-class Accelerometer(Window):
+class Drive(Window):
 
     def update(self, key = None):
-        self.pad.addstr(2, 3, "Even : # # #")
+        self.pad.addstr(2, 3, "Pouf !")
         self.pad.refresh(*self.pos)
 
 class Info(Window):
@@ -83,11 +89,12 @@ class Info(Window):
 
         self.set(content)
         self.pad.refresh(*self.pos)
-        self.pad.refresh(*self.pos)
 
-def information(string):
+def information(value):
     global info
-    info.pad.addstr(1, 3, string.ljust(info.size[1] - 5))
+    #info.set('%i' % string)
+    info.content = '%i' % value
+#    info.pad.addstr(1, 3, string.ljust(info.size[1] - 5))
 
 def main(stdscr):
     global info
@@ -98,26 +105,35 @@ def main(stdscr):
         mh = int(h / 2)
         mw = int(w / 2)
 
-        info = Info(mw, 3, [ 0, 0, h - 3, mw, h, w ], "Information")
+        infoheight = 3
+        groundsheight = 8
+        compassheight = 20
+        driveheight = 7
+
+        info = Info(mw, infoheight, [ 0, 0, h - infoheight, mw, h, w ], "Information")
         info.update()
 
-        gsens = GroundSensor(mw, mh, [ 0, 0, 0, 0, mh, mw ], "Ground sensor")
+        gsens = GroundSensor(mw, groundsheight, [ 0, 0, 0, 0, mh, mw ], "Ground sensor")
         gsens.update()
 
-        comp = Compass(w, mh - 3, [ 0, 0, mh, 0, h, w ], "Compass")
+        accel = Accelerometer(mw, groundsheight, [ 0, 0, 0, mw, mh, w ], "Accelerometer")
+        accel.update()
+
+        comp = Compass(w, compassheight, [ 0, 0, groundsheight, 0, h, w ], "Compass")
         comp.update()
 
-        accel = Accelerometer(mw, mh, [ 0, 0, 0, mw, mh, w ], "Accelerometer")
-        accel.update()
+        drive = Drive(mw, driveheight, [ 0, 0, compassheight + groundsheight, 0, mh, mw ], "Drive")
+        drive.update()
 
         stdscr.nodelay(True)
         while key != ord('\n'):
-            sleep(0.5)
+            sleep(0.05)
             key = stdscr.getch()
-
+            information(key)
             accel.update(key)
             gsens.update(key)
             comp.update(key)
+            drive.update(key)
             info.update(key)
 
             if key == curses.KEY_RESIZE:
