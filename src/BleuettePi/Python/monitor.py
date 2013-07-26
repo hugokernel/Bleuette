@@ -61,8 +61,42 @@ class Compass(Window):
 class Drive(Window):
 
     def update(self, key = None):
-        self.pad.addstr(2, 3, "Pouf !")
+        self.pad.addstr(2, 3, "Press D to start ! %s")
+        if key == ord('D'):
+            self.run()
         self.pad.refresh(*self.pos)
+
+    i = 0
+    def test(self):
+        self.i += 1
+        self.pod.addstr(1, 2, 'callback ! %i' % self.i)
+        self.pod.refresh(0, 0, 20, 20, 20 + self.oheight, 20 + self.owidth)
+
+    pod = None
+    oheight = 20
+    owidth = 50
+    def run(self):
+        self.pod = curses.newpad(self.oheight, self.owidth)
+        self.pod.border()
+        self.pod.addstr(0, 2, 'Drive', curses.A_BOLD)
+
+
+        self.pod.refresh(0, 0, 20, 20, 20 + self.oheight, 20 + self.owidth)
+
+        key = None
+        self.pod.keypad(1)
+        self.pod.nodelay(True)
+        while key != ord('\n'):
+            key = self.pod.getch()
+
+            self.pod.addstr(1, 2, 'Key: %s  ' % str(key))
+            self.pod.refresh(0, 0, 20, 20, 20 + self.oheight, 20 + self.owidth)
+
+            if key == ord('q'): break
+            elif key == curses.KEY_RIGHT:   B.Drive.update(B.Drive.RIGHT, self.test)
+            elif key == curses.KEY_LEFT:    B.Drive.update(B.Drive.LEFT)
+            elif key == curses.KEY_UP:      B.Drive.update(B.Drive.FORWARD)
+            elif key == curses.KEY_DOWN:    B.Drive.update(B.Drive.REVERSE)
 
 class Info(Window):
 
@@ -108,7 +142,7 @@ def main(stdscr):
         infoheight = 3
         groundsheight = 8
         compassheight = 20
-        driveheight = 7
+        driveheight = 5
 
         info = Info(mw, infoheight, [ 0, 0, h - infoheight, mw, h, w ], "Information")
         info.update()
