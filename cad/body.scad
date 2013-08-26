@@ -54,6 +54,50 @@ THREADED_ROD_Z_POSITION = 1;
  */
 TOOLBOX_SCREW_DIAMETER = 2;
 
+module wifi() {
+    width = 15.5;
+    length = 16.5;
+    height = 18.0;
+    base_diameter = 5.8;
+    base_height = 2;
+    antenna_diameter = 8;
+    antenna_height = 100;
+
+    translate([0, 0, height / 2]) {
+        cube(size = [width, length, height], center = true);
+    }
+
+    translate([0, 0, height + base_height / 2]) {
+        cylinder(r = base_diameter / 2, h = 3, center = true);
+    }
+
+    translate([0, 0, height + base_height + antenna_height / 2]) {
+        cylinder(r = antenna_diameter / 2, h = antenna_height, center = true);
+    }
+}
+
+// Membrane diameter
+SPEAKER_DIAMETER = 45;
+
+module speaker() {
+    diameter = SPEAKER_DIAMETER;
+    hole = 6;
+    thickness = 5;
+
+    cylinder(r = diameter / 2, h = thickness, center = true);
+    child(0);
+
+    for (data = [
+        [0, diameter / 2 + 5, 0],
+        [0, - diameter / 2 - 5, 0],
+    ]) {
+        translate(data) {
+            cylinder(r = hole / 2, h = thickness, center = true);
+
+            child(1);
+        }
+    }
+}
 
 module leg_support(length = 25, width = 30, head_screw_footprint = true) {
 
