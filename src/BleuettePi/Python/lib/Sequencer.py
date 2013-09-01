@@ -116,8 +116,13 @@ class Sequencer:
     def forward(self, seq, count = 1):
         for i in range(0, count):
             for s in seq.sequence:
-                #print s
+                print s
                 self.play(s)
+
+    def reverse(self, seq, count = 1):
+        for i in range(0, count):
+            for s in range(len(seq.sequence) - 1, -1, -1):
+                self.play(seq.sequence[s])
 
     def play(self, seq):
         for i in range(0, len(seq[1])):

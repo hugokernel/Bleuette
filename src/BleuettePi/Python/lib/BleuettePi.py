@@ -24,6 +24,10 @@ class BleuettePi_Compass:
     # http://magnetic-declination.com/
     DECLINATION = (0, 7)
 
+    def get(self):
+        compass = hmc5883l(gauss = 4.7, declination = self.DECLINATION)
+        return compass.degrees(compass.heading())
+
     def realTime(self):
         compass = hmc5883l(gauss = 4.7, declination = self.DECLINATION)
         while True:
@@ -32,6 +36,10 @@ class BleuettePi_Compass:
             time.sleep(0.5)
 
 class BleuettePi_Accelerometer:
+
+    def get(self):
+        a = ADXL345();
+        return a.scaledAccelCal(10);
 
     def realTime(self):
         a = ADXL345()

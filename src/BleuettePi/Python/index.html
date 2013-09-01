@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>tornado WebSocket example</title>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<script>
+
+var ws = null;
+$(document).ready(function(event) {
+
+    $('#btn-left').click(function() {
+        ws.send('left');
+    });
+
+    $('#btn-forward').click(function() {
+        ws.send('forward');
+    });
+
+    $('#btn-right').click(function() {
+        ws.send('right');
+    });
+
+    $('#btn-reverse').click(function() {
+        ws.send('reverse');
+    });
+
+    $('#btn-pushup').click(function() {
+        ws.send('pushup');
+    });
+
+    $('#btn-middle').click(function() {
+        ws.send('middle');
+    });
+
+    ws = new WebSocket('ws://192.168.2.17:8888/ws');
+    var $message = $('#message');
+
+    ws.onopen = function(){
+      $message.attr("class", 'label label-success');
+      $message.text('open');
+    };
+
+    ws.onmessage = function(ev){
+        //console.info(ev.data);
+
+      $message.attr("class", 'label label-info');
+      $message.hide();
+      $message.fadeIn("slow");
+      $message.text('recieved message');
+
+        var json = JSON.parse(ev.data);
+        console.info(json);
+        $('#acc-x').text(json.sensors.accelerometer[0]);
+        $('#acc-y').text(json.sensors.accelerometer[1]);
+        $('#acc-z').text(json.sensors.accelerometer[2]);
+
+
+        for (i = 0; i < 6; i++) {
+            if (json.sensors.ground[i]) {
+                $('#ground-' + i).css('background-color', 'red');
+            } else {
+                $('#ground-' + i).css('background-color', 'green');
+            }
+        }
+
+        $('#current').text(json.sensors.current);
+
+      //var json = JSON.parse(ev.data);
+      $('#' + json.id).hide();
+      $('#' + json.id).fadeIn("slow");
+      $('#' + json.id).text(json.value);
+
+    /*
+      var $rowid = $('#row' + json.id);
+      if(json.value > 500){
+        $rowid.attr("class", "error");
+      }
+      else if(json.value > 200){
+        $rowid.attr("class", "warning");
+      }
+      else{
+        $rowid.attr("class", "");
+      }
+      */
+    };
+    ws.onclose = function(ev){
+      $message.attr("class", 'label label-important');
+      $message.text('closed');
+    };
+    ws.onerror = function(ev){
+      $message.attr("class", 'label label-warning');
+      $message.text('error occurred');
+    };
+});
+
+$(document).keydown(function(event){
+    switch (event.keyCode) {
+        case 37:
+            ws.send("paf");
+            break
+        case 38:
+            moveUp();
+            break;
+        case 39:
+            moveRight();
+            break;
+        case 40:
+            moveDown();
+            break;
+    }
+});
+
+</script>
+
+<style>
+
+table#acc td {
+    width: 33%;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Bleuette interface</h1>
+
+    <p>
+        WebSocket status : <span id="message"></span>
+    </p>
+
+    <div class="row">
+        <div class="span4">
+
+            <h2>Accelerometer</h2>
+
+            <table id="acc" class="table table-bordered">
+                <tr>
+                    <th>x</th>
+                    <th>y</th>
+                    <th>z</th>
+                </tr>
+                <tr>
+                    <td id="acc-x">-</td>
+                    <td id="acc-y">-</td>
+                    <td id="acc-z">-</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="span4">
+
+            <h2>Compass</h2>
+
+            <table id="compass" class="table table-bordered">
+                <tr>
+                    <th>x</th>
+                    <th>y</th>
+                    <th>z</th>
+                </tr>
+                <tr>
+                    <td id="compass-x">-</td>
+                    <td id="compass-y">-</td>
+                    <td id="compass-z">-</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="span4">
+
+            <h2>Ground sensor</h2>
+
+            <table id="ground" class="table table-bordered">
+                <tr>
+                    <td id="ground-0">&nbsp;</th>
+                    <td id="ground-1">&nbsp;</th>
+                    <td id="ground-2">&nbsp;</th>
+                </tr>
+                <tr>
+                    <td id="ground-3">&nbsp;</th>
+                    <td id="ground-4">&nbsp;</th>
+                    <td id="ground-5">&nbsp;</th>
+                </tr>
+            </table>
+
+        </div>
+
+        <p id="current"></p>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-default" id="btn-left">Left</button>
+      <button type="button" class="btn btn-default" id="btn-forward">Forward</button>
+      <button type="button" class="btn btn-default" id="btn-reverse">Reverse</button>
+      <button type="button" class="btn btn-default" id="btn-right">Right</button>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-default" id="btn-pushup">Push up</button>
+      <button type="button" class="btn btn-default" id="btn-middle">Middle</button>
+      <button type="button" class="btn btn-default" id="btn-standby">Stand-by</button>
+    </div>
+    
+</div>
+</body>
+</html>

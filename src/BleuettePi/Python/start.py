@@ -18,10 +18,15 @@ B.BPi.Servo.sendValues()
 
 from Sequences import Sequences
 
+B.BPi.Accelerometer.realTime()
+#B.BPi.Compass.realTime()
+sys.exit()
+
 B.BPi.Servo.resume()
+B.Sequencer.forward(Sequences['walk'], 10)
 B.Sequencer.forward(Sequences['middle'])
 #B.BPi.Servo.pause()
-#sys.exit()
+sys.exit()
 
 #sys.exit(1)
 
@@ -49,8 +54,9 @@ while True:
 '''
 
 B.Sequencer.forward(Sequences['pushup'], 3)
+B.Sequencer.forward(Sequences['walk'], 2)
+B.Sequencer.forward(Sequences['middle'])
 B.BPi.Servo.pause()
-#B.Sequencer.forward(Sequences['walk'], 2)
 sys.exit()
 
 B.Sequencer.Buffer.push(Sequences['walk'], 20)
