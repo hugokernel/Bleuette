@@ -1,15 +1,23 @@
 
+from random import randint
+
 class GPIO:
 
     BOARD = 1
+    IN = 0
+    RISING = 0
+    BOTH = 1
 
-    def setmode(self):
+    @staticmethod
+    def setmode(a):
         pass
 
-    def setup(self):
+    @staticmethod
+    def setup(a, b):
         pass
 
-    def add_event_detect(self):
+    @staticmethod
+    def add_event_detect(a, b, callback, bouncetime):
         pass
 
 class hmc5883l:
@@ -17,4 +25,21 @@ class hmc5883l:
 
 class ADXL345:
     pass
+
+class MCP230XX:
+
+    INPUT = True
+    OUTPUT = False
+
+    def __init__(self, a, b):
+        pass
+
+    def config(self, a, b):
+        pass
+
+    def pullup(self, a, b):
+        pass
+
+    def input(self, a):
+        return randint(0, 1)
 

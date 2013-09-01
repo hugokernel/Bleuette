@@ -1,6 +1,7 @@
 
 from BleuettePi import BleuettePi
 from Sequencer import Sequencer
+from Drive import Drive
 from Analog import Analog
 import config as Config
 
@@ -16,6 +17,7 @@ class Bleuette():
 
     BPi = None
     Sequencer = None
+    Drive = None
 
     def __init__(self):
         if Config.FAKE_MODE == False:
@@ -24,6 +26,7 @@ class Bleuette():
             self.BPi = BleuettePi(Fake)
 
         self.Sequencer = Sequencer(self.BPi.Servo)
+        self.Drive = Drive(self.Sequencer)
 
 if __name__ == '__main__':
     '''

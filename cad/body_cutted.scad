@@ -22,6 +22,33 @@ module body_rotated(support) {
     }
 }
 
+SPEAKER_DIAMETER = 45;
+module speaker_holes() {
+    width_max = 10;
+
+    speaker() {
+        hull() {
+            for (data = [
+                [0, SPEAKER_DIAMETER / 2 - width_max, 0],
+                [0, -SPEAKER_DIAMETER / 2 + width_max, 0]
+                ]) {
+                translate(data) {
+                    cylinder(r = width_max, h = 30);   
+                }
+            }
+        };
+    
+        cylinder(r = 1.7, h = 10);
+    };
+}
+
+module wifi_scaled() {
+    clear_scale = 1.1;
+    scale([clear_scale, clear_scale, 1]) {
+        wifi();
+    }
+}
+
 module show(part, support = false) {
 
     teeths = [TEETHS_COUNT, 10, CLEAR];
@@ -30,9 +57,19 @@ module show(part, support = false) {
     % cube(size = dim, center = true);
 
     if (part == 0) {
-        color("GREEN") intersection() {
-            body_rotated(support);
-            cutter([0, - BODY_LENGTH / (3 * 2), 0], dim, teeths, true);
+        difference() {
+            color("GREEN") intersection() {
+                body_rotated(support);
+                cutter([0, - BODY_LENGTH / (3 * 2), 0], dim, teeths, true);
+            }
+
+            translate([0, -95, -BODY_THICKNESS / 2 - 1]) {
+                speaker_holes();
+            }
+
+            translate([0, -137, -BODY_THICKNESS / 2 - 11]) {
+                wifi_scaled();
+            }
         }
     }
 
@@ -52,9 +89,13 @@ module show(part, support = false) {
     }
 }
 
-//intersection() {
-%    translate([0, -55, 0]) {
+intersection() {
+    %translate([0, -55, 0]) {
         cube(size = [110, 35, 10], center = true);
+    }
+
+    translate([0, -110, 2.5]) {
+        cube(size = [24, 100, 5], center = true);
     }
 
     if (!SUPPORT) {
@@ -63,5 +104,5 @@ module show(part, support = false) {
     } else {
         show(PART, SUPPORT);
     }
-//}
+}
 

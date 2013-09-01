@@ -1,6 +1,6 @@
 
 import os, sys
-import curses, random
+import curses
 from copy import copy
 from time import sleep
 
@@ -43,7 +43,13 @@ class GroundSensor(Window):
         global B
         inputs = B.BPi.GroundSensor.get()
         self.pad.addstr(2, 3, "Even : %i %i %i" % (inputs[0], inputs[2], inputs[4]))
-        self.pad.addstr(6, 3, "Odd  : %i %i %i" % (inputs[1], inputs[3], inputs[5]))
+        self.pad.addstr(4, 3, "Odd  : %i %i %i" % (inputs[1], inputs[3], inputs[5]))
+        self.pad.refresh(*self.pos)
+
+class Accelerometer(Window):
+
+    def update(self, key = None):
+        self.pad.addstr(2, 3, "X : ?, Y : ?, Z : ?")
         self.pad.refresh(*self.pos)
 
 class Compass(Window):
@@ -52,11 +58,45 @@ class Compass(Window):
         self.pad.addstr(2, 3, "Even : # # #")
         self.pad.refresh(*self.pos)
 
-class Accelerometer(Window):
+class Drive(Window):
 
     def update(self, key = None):
-        self.pad.addstr(2, 3, "Even : # # #")
+        self.pad.addstr(2, 3, "Press D to start ! %s")
+        if key == ord('D'):
+            self.run()
         self.pad.refresh(*self.pos)
+
+    i = 0
+    def test(self):
+        self.i += 1
+        self.pod.addstr(1, 2, 'callback ! %i' % self.i)
+        self.pod.refresh(0, 0, 20, 20, 20 + self.oheight, 20 + self.owidth)
+
+    pod = None
+    oheight = 20
+    owidth = 50
+    def run(self):
+        self.pod = curses.newpad(self.oheight, self.owidth)
+        self.pod.border()
+        self.pod.addstr(0, 2, 'Drive', curses.A_BOLD)
+
+
+        self.pod.refresh(0, 0, 20, 20, 20 + self.oheight, 20 + self.owidth)
+
+        key = None
+        self.pod.keypad(1)
+        self.pod.nodelay(True)
+        while key != ord('\n'):
+            key = self.pod.getch()
+
+            self.pod.addstr(1, 2, 'Key: %s  ' % str(key))
+            self.pod.refresh(0, 0, 20, 20, 20 + self.oheight, 20 + self.owidth)
+
+            if key == ord('q'): break
+            elif key == curses.KEY_RIGHT:   B.Drive.update(B.Drive.RIGHT, self.test)
+            elif key == curses.KEY_LEFT:    B.Drive.update(B.Drive.LEFT)
+            elif key == curses.KEY_UP:      B.Drive.update(B.Drive.FORWARD)
+            elif key == curses.KEY_DOWN:    B.Drive.update(B.Drive.REVERSE)
 
 class Info(Window):
 
@@ -83,11 +123,12 @@ class Info(Window):
 
         self.set(content)
         self.pad.refresh(*self.pos)
-        self.pad.refresh(*self.pos)
 
-def information(string):
+def information(value):
     global info
-    info.pad.addstr(1, 3, string.ljust(info.size[1] - 5))
+    #info.set('%i' % string)
+    info.content = '%i' % value
+#    info.pad.addstr(1, 3, string.ljust(info.size[1] - 5))
 
 def main(stdscr):
     global info
@@ -98,26 +139,35 @@ def main(stdscr):
         mh = int(h / 2)
         mw = int(w / 2)
 
-        info = Info(mw, 3, [ 0, 0, h - 3, mw, h, w ], "Information")
+        infoheight = 3
+        groundsheight = 8
+        compassheight = 20
+        driveheight = 5
+
+        info = Info(mw, infoheight, [ 0, 0, h - infoheight, mw, h, w ], "Information")
         info.update()
 
-        gsens = GroundSensor(mw, mh, [ 0, 0, 0, 0, mh, mw ], "Ground sensor")
+        gsens = GroundSensor(mw, groundsheight, [ 0, 0, 0, 0, mh, mw ], "Ground sensor")
         gsens.update()
 
-        comp = Compass(w, mh - 3, [ 0, 0, mh, 0, h, w ], "Compass")
+        accel = Accelerometer(mw, groundsheight, [ 0, 0, 0, mw, mh, w ], "Accelerometer")
+        accel.update()
+
+        comp = Compass(w, compassheight, [ 0, 0, groundsheight, 0, h, w ], "Compass")
         comp.update()
 
-        accel = Accelerometer(mw, mh, [ 0, 0, 0, mw, mh, w ], "Accelerometer")
-        accel.update()
+        drive = Drive(mw, driveheight, [ 0, 0, compassheight + groundsheight, 0, mh, mw ], "Drive")
+        drive.update()
 
         stdscr.nodelay(True)
         while key != ord('\n'):
-            sleep(0.5)
+            sleep(0.05)
             key = stdscr.getch()
-
+            information(key)
             accel.update(key)
             gsens.update(key)
             comp.update(key)
+            drive.update(key)
             info.update(key)
 
             if key == curses.KEY_RESIZE:
