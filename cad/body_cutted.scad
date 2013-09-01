@@ -37,8 +37,13 @@ module speaker_holes() {
                 }
             }
         };
-    
-        cylinder(r = 1.7, h = 10);
+   
+        union() {
+            cylinder(r = 1.7, h = 10);
+            translate([0, 0, BODY_THICKNESS - 3]) {
+                cylinder(r1 = 1.7, r2 = 3.5, h = 2.1);
+            }
+        }
     };
 }
 
@@ -54,7 +59,7 @@ module show(part, support = false) {
     teeths = [TEETHS_COUNT, 10, CLEAR];
     dim = [BODY_WIDTH * 2, BODY_LENGTH, BODY_THICKNESS];
 
-    % cube(size = dim, center = true);
+    //% cube(size = dim, center = true);
 
     if (part == 0) {
         difference() {
@@ -89,13 +94,13 @@ module show(part, support = false) {
     }
 }
 
-intersection() {
+//intersection() {
     %translate([0, -55, 0]) {
-        cube(size = [110, 35, 10], center = true);
+        //cube(size = [110, 35, 10], center = true);
     }
 
     translate([0, -110, 2.5]) {
-        cube(size = [24, 100, 5], center = true);
+        //cube(size = [24, 100, 5], center = true);
     }
 
     if (!SUPPORT) {
@@ -104,5 +109,5 @@ intersection() {
     } else {
         show(PART, SUPPORT);
     }
-}
+//}
 

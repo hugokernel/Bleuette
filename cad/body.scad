@@ -55,16 +55,16 @@ THREADED_ROD_Z_POSITION = 1;
 TOOLBOX_SCREW_DIAMETER = 2;
 
 module wifi() {
-    width = 15.5;
-    length = 16.5;
-    height = 18.0;
+    width = 11.2;
+    length = 16.2;
+    height = 18.25;
     base_diameter = 5.8;
     base_height = 2;
     antenna_diameter = 8;
     antenna_height = 100;
 
     translate([0, 0, height / 2]) {
-        cube(size = [width, length, height], center = true);
+        cube(size = [length, width, height], center = true);
     }
 
     translate([0, 0, height + base_height / 2]) {
@@ -88,8 +88,9 @@ module speaker() {
     child(0);
 
     for (data = [
-        [0, diameter / 2 + 5, 0],
-        [0, - diameter / 2 - 5, 0],
+        //[0, diameter / 2 + 5, 0],
+        [0, 30, 0],
+        [0, -30, 0],
     ]) {
         translate(data) {
             cylinder(r = hole / 2, h = thickness, center = true);
