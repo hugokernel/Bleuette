@@ -4,18 +4,18 @@ import sys, serial, types, time, struct
 from array  import array
 from Serial import Serial
 from Servo  import Servo
-from Analog import Analog
 from Define import BPi_Cmd
 
 import config as Config
 
 if Config.FAKE_MODE:
-    from Fake import GPIO, hmc5883l, ADXL345, MCP230XX
+    from Fake import GPIO, hmc5883l, ADXL345, MCP230XX, Analog
 else:
     from drivers.hmc5883l import hmc5883l
     from drivers.ADXL345 import ADXL345
     import RPi.GPIO as GPIO
     from drivers.Adafruit_MCP230xx import Adafruit_MCP230XX as MCP230XX
+    from Analog import Analog
 
 class BleuettePi_Compass:
 

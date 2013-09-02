@@ -24,7 +24,9 @@ class hmc5883l:
     pass
 
 class ADXL345:
-    pass
+    
+    def scaledAccelCal(self, a):
+        return [0, 1, 2]
 
 class MCP230XX:
 
@@ -41,5 +43,13 @@ class MCP230XX:
         pass
 
     def input(self, a):
-        return randint(0, 1)
+        return 1#return randint(0, 1)
+
+class Analog:
+    
+    def __init__(self, a):
+        pass
+
+    def getCurrent(self):
+        return 0
 

@@ -31,32 +31,48 @@ servo_limits = [
     [ VMIN, VMAX ]
 ]
 
+class SequencerExceptionStop(Exception):
+    pass
+
 class Sequencer_Thread(threading.Thread):
 
     sequencer = None
+    ok = True
 
     def __init__(self, sequencer):
         self.sequencer = sequencer
         threading.Thread.__init__(self)
         self._stopevent = threading.Event()
 
+    #def run(self, callback):
     def run(self):
         i = 0
-        #while not self._stopevent.isSet():
 
-        for line in self.sequencer.Buffer.buffer:
-            for s in line.sequence:
-                print "Play !"
-                if self._stopevent.isSet():
-                    print "Stop event !"
-                    break
-                self.sequencer.play(s)
+        while True:
+            while not self._stopevent.isSet():
+                for line in self.sequencer.Buffer.buffer:
+                    for s in line.sequence.sequence:
+                        print "Play !"
+                        if self._stopevent.isSet():
+                            print "Stop event !"
+                            break
 
-        #   self._stopevent.wait(0.5)
+                        self.sequencer.play(s)
+
+            #if callback:
+            #    callback()
+
+                self._stopevent.wait(0.5)
+
         print "le thread s'est termine proprement"
 
     def stop(self):
         self._stopevent.set()
+
+class Sequencer_Line:
+    sequence = []
+    callback = None
+    reverse = False
 
 class Sequencer_Buffer:
 
@@ -67,15 +83,41 @@ class Sequencer_Buffer:
     def __init__(self, sequencer):
         self.sequencer = sequencer
 
-    def push(self, seq, count = 1):
-        for i in range(0, count):
-            self.buffer.append(seq)
+    def push(self, seq, count = 1, options = {}):
 
+        sline = Sequencer_Line
+        sline.sequence = seq
+
+        if options:
+            if 'callback' in options:
+                sline.callback = options['callback'] 
+            if 'reverse' in options:
+                sline.reverse = options['reverse']
+
+        for i in range(0, count):
+            self.buffer.append(sline)
+
+    def clear(self):
+        self.buffer = []
+
+    def play(self, count = 1):
+        for i in range(0, count):
+            for line in self.buffer.sequence:
+                for s in line.sequence:
+                    if s.reverse:
+                        print "Reverse"
+                        self.sequencer.reverse(s)
+                    else:
+                        print "Forward"
+                        self.sequencer.forward(s)
+
+'''
     def forward(self, count = 1):
         for i in range(0, count):
             for line in self.buffer:
                 for s in line.sequence:
                     self.sequencer.play(s)
+'''
 
 class Sequencer:
 
@@ -83,7 +125,7 @@ class Sequencer:
     Buffer = None
     Thread = None
 
-    __callback = None
+    __callback = []
 
     DEBUG = True
 
@@ -92,8 +134,11 @@ class Sequencer:
         self.Buffer = Sequencer_Buffer(self)
         self.Thread = Sequencer_Thread(self)
 
+    def test(self):
+        self.Thread = Sequencer_Thread(self)
+
     def setCallback(self, callback):
-        self.__callback = callback
+        self.__callback.append(callback)
 
     def getValue(self, servo, pos):
         _min = 0
@@ -116,7 +161,6 @@ class Sequencer:
     def forward(self, seq, count = 1):
         for i in range(0, count):
             for s in seq.sequence:
-                print s
                 self.play(s)
 
     def reverse(self, seq, count = 1):
@@ -135,7 +179,8 @@ class Sequencer:
             seq[2]()
 
         if self.__callback:
-            self.__callback()
+            for c in self.__callback:
+                c()
 
         if self.DEBUG:
             self.servo.dump()
