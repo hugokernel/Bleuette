@@ -4,10 +4,6 @@ var HOST = '192.168.2.17';
 var ws = null;
 $(document).ready(function(event) {
 
-    $('#slide').slider()
-    .on('slide', function(ev){
-    });
-
     $('#btn-left').click(function() {
         ws.send('left');
     });

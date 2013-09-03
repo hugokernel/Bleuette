@@ -1,7 +1,9 @@
 
 import threading
 from Sequences import Sequences
-from Sequencer import SequencerExceptionStop
+
+class DriveThreadException(Exception):
+    pass
 
 class Drive_Thread(threading.Thread):
 
@@ -11,35 +13,40 @@ class Drive_Thread(threading.Thread):
 
     __pause = True
 
+    index = 0
+
     def __init__(self, sequencer):
         self.sequencer = sequencer
         threading.Thread.__init__(self)
         self.event = threading.Event()
 
-        self.sequencer.setCallback(self.testStatus)
+        #self.sequencer.setCallback(self.testStatus)
 
-    def testStatus(self):
+    def testStatus(self, index):
+        if self.index >= len(self.sequence.sequence):
+            self.index = 0
+
+        print "Index:", self.index
         if self.__pause:
-            raise SequencerExceptionStop
+            raise DriveThreadException
 
     def run(self):
         i = 0
 
         while True:
             while not self.__pause:
-                print "Start sequence"
+                print "Start sequence @", self.index
 
                 try:
                     if self.reverse:
-                        self.sequencer.reverse(self.sequence)
+                        self.sequencer.reverse(self.sequence, start_at = self.index, callback = self.testStatus)
                     else:
-                        self.sequencer.forward(self.sequence)
-                except SequencerExceptionStop:
-                    print "Catched !"
+                        self.sequencer.forward(self.sequence, start_at = self.index, callback = self.testStatus)
+                    self.index = 0
+                except DriveThreadException:
+                    break
 
                 self.event.wait(0.05)
-
-        print "Thread stopped !"
 
     def play(self, seq, reverse = False):
         self.sequence = seq
@@ -48,6 +55,7 @@ class Drive_Thread(threading.Thread):
 
     def pause(self):
         self.__pause = True
+        self.index += 1
 
     def resume(self):
         self.__pause = False
@@ -62,6 +70,9 @@ class Drive:
     sequencer = None
 
     thread = None
+
+    index = 0
+    __last_cmd = None
 
     def __init__(self, sequencer):
         self.sequencer = sequencer
@@ -83,6 +94,7 @@ class Drive:
 
     def begin(self, cmd, callback = None):
 
+        print "--------------"
         print "[Begin]"
 
         Commands = {
@@ -96,7 +108,13 @@ class Drive:
         if callback:
             self.sequencer.setCallback(callback)
 
+        if cmd != self.__last_cmd and self.__last_cmd != None:
+            self.thread.index = 0
+            print "Diff"
+
         self.thread.play(Commands[cmd][0], Commands[cmd][1])
+
+        self.__last_cmd = cmd
 
     def end(self):
         print "[End]"

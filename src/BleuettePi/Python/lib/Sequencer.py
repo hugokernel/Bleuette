@@ -31,9 +31,6 @@ servo_limits = [
     [ VMIN, VMAX ]
 ]
 
-class SequencerExceptionStop(Exception):
-    pass
-
 class Sequencer_Thread(threading.Thread):
 
     sequencer = None
@@ -126,6 +123,7 @@ class Sequencer:
     Thread = None
 
     __callback = []
+    __trim = []
 
     DEBUG = True
 
@@ -134,8 +132,13 @@ class Sequencer:
         self.Buffer = Sequencer_Buffer(self)
         self.Thread = Sequencer_Thread(self)
 
+        self.__trim = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+
     def test(self):
         self.Thread = Sequencer_Thread(self)
+
+    def setTrim(self, servo, value):
+        self.__trim[servo] = value
 
     def setCallback(self, callback):
         self.__callback.append(callback)
@@ -158,29 +161,47 @@ class Sequencer:
             if pos >= _min and pos <= _max:
                 return pos
 
-    def forward(self, seq, count = 1):
-        for i in range(0, count):
-            for s in seq.sequence:
-                self.play(s)
+    def forward(self, seq, count = 1, start_at = 0, callback = None):
+        #index = 0
 
-    def reverse(self, seq, count = 1):
+        start_at = min(start_at, len(seq.sequence) - 1)
+
+        for i in range(0, count):
+            #for s in seq.sequence:
+            for p in range(start_at, len(seq.sequence)):
+
+                #self.play(s)
+                self.play(seq.sequence[p])
+
+                # After callback
+                if callback:
+                    callback(p)
+
+                #if self.__callback:
+                #    for c in self.__callback:
+                #        c(index)
+
+                #index += 1
+
+    def reverse(self, seq, count = 1, start_at = 0, callback = None):
         for i in range(0, count):
             for s in range(len(seq.sequence) - 1, -1, -1):
+
                 self.play(seq.sequence[s])
+
+                # After callback
+                if callback:
+                    callback(s)
 
     def play(self, seq):
         for i in range(0, len(seq[1])):
             if seq[1][i] != Define.__:
-                self.servo.setValue(i, self.getValue(i, seq[1][i]))
+                self.servo.setValue(i, self.getValue(i, seq[1][i]) + self.__trim[i])
 
         self.servo.sendValues()
 
         if seq[2]:
             seq[2]()
-
-        if self.__callback:
-            for c in self.__callback:
-                c()
 
         if self.DEBUG:
             self.servo.dump()
