@@ -45,7 +45,7 @@ class Affiche(threading.Thread):
                 }
             }
 
-            if any(map(eq, self.data, self.data_last)) == False:
+            if any(map(eq, self.data, self.data_last)): #== False:
                 self.update()
 
             self._stopevent.wait(0.5)
@@ -165,11 +165,18 @@ app = web.Application([
     (r'/', IndexHandler),
     (r'/ws', SocketHandler),
     (r'/api', ApiHandler),
+<<<<<<< HEAD
     (r'/static/(.*)', web.StaticFileHandler, {'path': './www/'}),
     #(r'/(favicon.ico)', web.StaticFileHandler, {'path': './www/'}),
     #(r'/(ws.js)', web.StaticFileHandler, {'path': './www/'}),
     #(r'/slider', web.StaticFileHandler, {'path': './www/slider/js/'}),
     #(r'/(slider.css)', web.StaticFileHandler, {'path': './www/slider/css/'}),
+=======
+    (r'/(favicon.ico)', web.StaticFileHandler, {'path': './www/'}),
+    (r'/(ws.js)', web.StaticFileHandler, {'path': './www/'}),
+    (r'/(bootstrap-slider.js)', web.StaticFileHandler, {'path': './www/slider/js/'}),
+    (r'/(slider.css)', web.StaticFileHandler, {'path': './www/slider/css/'}),
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
 ])
 
 if __name__ == '__main__':

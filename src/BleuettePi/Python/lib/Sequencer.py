@@ -123,6 +123,7 @@ class Sequencer:
     Thread = None
 
     __callback = []
+    __trim = []
 
     DEBUG = True
 
@@ -131,11 +132,21 @@ class Sequencer:
         self.Buffer = Sequencer_Buffer(self)
         self.Thread = Sequencer_Thread(self)
 
+<<<<<<< HEAD
 #    def test(self):
 #        self.Thread = Sequencer_Thread(self)
 
 #    def setTrim(self, servo, value, update = True):
 #        self.Servo.trim.set(servo, value, update)
+=======
+        self.__trim = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+
+    def test(self):
+        self.Thread = Sequencer_Thread(self)
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
+
+    def setTrim(self, servo, value):
+        self.__trim[servo] = value
 
     def setCallback(self, callback):
         self.__callback.append(callback)
@@ -193,7 +204,11 @@ class Sequencer:
     def play(self, seq):
         for i in range(0, len(seq[1])):
             if seq[1][i] != Define.__:
+<<<<<<< HEAD
                 self.Servo.setValue(i, self.getValue(i, seq[1][i]))
+=======
+                self.servo.setValue(i, self.getValue(i, seq[1][i]) + self.__trim[i])
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
 
         self.__servo.sendValues()
 

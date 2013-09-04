@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 //var HOST = '192.168.2.17';
 var HOST = 'localhost';
 
@@ -118,6 +119,27 @@ $(document).ready(function(event) {
 
     $('.btn-save').click(function() {
         B.sendCmd('config', { action: 'save' });
+=======
+var HOST = '192.168.2.17';
+
+var ws = null;
+$(document).ready(function(event) {
+
+    $('#btn-left').click(function() {
+        ws.send('left');
+    });
+
+    $('#btn-forward').click(function() {
+        ws.send('forward');
+    });
+
+    $('#btn-right').click(function() {
+        ws.send('right');
+    });
+
+    $('#btn-reverse').click(function() {
+        ws.send('reverse');
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
     });
 
     $('#btn-pushup').click(function() {
@@ -135,13 +157,17 @@ $(document).ready(function(event) {
     ws.onopen = function(){
         $message.attr("class", 'label label-success');
         $message.text('open');
+<<<<<<< HEAD
 
         B.sendCmd('config', { action: 'get' });
+=======
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
     };
 
     ws.onmessage = function(ev){
         console.info(ev.data);
 
+<<<<<<< HEAD
         json = JSON.parse(ev.data);
 
         switch (json.type) {
@@ -152,14 +178,20 @@ $(document).ready(function(event) {
         }
 
 /*
+=======
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
         $message.attr("class", 'label label-info');
         $message.hide();
         $message.fadeIn("slow");
         $message.text('recieved message');
 
         var json = JSON.parse(ev.data);
+<<<<<<< HEAD
         //console.info(json);
 
+=======
+        console.info(json);
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
         $('#acc-x').text(json.sensors.accelerometer[0]);
         $('#acc-y').text(json.sensors.accelerometer[1]);
         $('#acc-z').text(json.sensors.accelerometer[2]);
@@ -180,7 +212,10 @@ $(document).ready(function(event) {
       $('#' + json.id).fadeIn("slow");
       $('#' + json.id).text(json.value);
 
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
     /*
       var $rowid = $('#row' + json.id);
       if(json.value > 500){
@@ -206,6 +241,7 @@ $(document).ready(function(event) {
     };
 });
 
+<<<<<<< HEAD
 var keymap = {
     37: 'left',
     38: 'forward',
@@ -220,11 +256,27 @@ $(document).keydown(function(event) {
         case 39:
         case 40:
             B.sendCmd('drive', { status: 'begin', direction: keymap[event.keyCode] });
+=======
+$(document).keydown(function(event) {
+    switch (event.keyCode) {
+        case 37:
+            ws.send("left");
+            break
+        case 38:
+            ws.send("forward");
+            break;
+        case 39:
+            ws.send("right");
+            break;
+        case 40:
+            ws.send("reverse");
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
             break;
     }
 });
 
 $(document).keyup(function(event) {
+<<<<<<< HEAD
     switch (event.keyCode) {
         case 37:
         case 38:
@@ -233,5 +285,8 @@ $(document).keyup(function(event) {
             B.sendCmd('drive', { status: 'end', direction: keymap[event.keyCode] });
             break;
     }
+=======
+    ws.send("release");
+>>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
 });
 
