@@ -33,7 +33,8 @@ class Affiche(threading.Thread):
             acc = B.BPi.Accelerometer.get()
             ground = B.BPi.GroundSensor.get()
 
-            current = B.BPi.Analog.getCurrent()
+            #current = B.BPi.Analog.getCurrent()
+            current = 0
 
             self.data = {
                 'sensors': {
@@ -66,7 +67,7 @@ a.start();
 
 class IndexHandler(web.RequestHandler):
     def get(self):
-        self.render("index.html")
+        self.render("www/index.html")
 
 class SocketHandler(websocket.WebSocketHandler):
 
@@ -80,25 +81,57 @@ class SocketHandler(websocket.WebSocketHandler):
 
         a.update()
 
+    def write(self, data):
+        for c in cl:
+            c.write_message(data)
+
     def on_message(self, message):
         if message != self.last_message or message == 'release':
-            print("Message : " + message)
-            if message == 'forward':
-                B.Drive.forward()
-                #B.Sequencer.forward(Sequences['walk'], 1)
-            elif message == 'reverse':
-                B.Drive.reverse()
-                #B.Sequencer.reverse(Sequences['walk'], 1)
-            elif message == 'left':
-                B.Drive.left()
-            elif message == 'right':
-                B.Drive.right()
-            elif message == 'middle':
-                B.Sequencer.reverse(Sequences['middle'], 1)
-            elif message == 'pushup':
-                B.Sequencer.reverse(Sequences['pushup'], 1)
-            elif message == 'release':
-                B.Drive.end()
+            print message
+
+            data = json.loads(message)
+
+            if data['cmd'] == 'set':
+                if data['type'] == 'trim':
+                    B.Sequencer.Servo.Trim.set(data['servo'], data['value'])
+                    B.Sequencer.Servo.sendValues()
+                elif data['type'] == 'limit':
+                    B.Sequencer.Servo.Limit.set(data['servo'], data['min'], data['max'])
+                    B.Sequencer.Servo.sendValues()
+                elif data['type'] == 'move':
+                    B.Sequencer.Servo.setValue(data['servo'], data['value'])
+                    B.Sequencer.Servo.sendValues()
+            elif data['cmd'] == 'drive':
+
+                if data['status'] == 'begin':
+                    if data['direction'] == 'forward':
+                        B.Drive.forward()
+                    elif data['direction'] == 'reverse':
+                        B.Drive.reverse()
+                    elif data['direction']== 'left':
+                        B.Drive.left()
+                    elif data['direction']== 'right':
+                        B.Drive.right()
+                elif data['status'] == 'end':
+                    B.Drive.end()
+            elif data['cmd'] == 'config':
+                if data['action'] == 'save':
+                    B.Sequencer.Servo.save()
+                elif data['action'] == 'get':
+                    config = {
+                        'type': 'config',
+                        'data': {
+                            'trims': B.Sequencer.Servo.Trim.dump()
+                        }
+                    }
+                    self.write(json.dumps(config))
+            else:
+                print "Unknow command !"
+
+            #elif message == 'middle':
+            #    B.Sequencer.reverse(Sequences['middle'], 1)
+            #elif message == 'pushup':
+            #    B.Sequencer.reverse(Sequences['pushup'], 1)
 
         self.last_message = message
 
@@ -132,8 +165,11 @@ app = web.Application([
     (r'/', IndexHandler),
     (r'/ws', SocketHandler),
     (r'/api', ApiHandler),
-    (r'/(favicon.ico)', web.StaticFileHandler, {'path': './'}),
-    (r'/(ws.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/static/(.*)', web.StaticFileHandler, {'path': './www/'}),
+    #(r'/(favicon.ico)', web.StaticFileHandler, {'path': './www/'}),
+    #(r'/(ws.js)', web.StaticFileHandler, {'path': './www/'}),
+    #(r'/slider', web.StaticFileHandler, {'path': './www/slider/js/'}),
+    #(r'/(slider.css)', web.StaticFileHandler, {'path': './www/slider/css/'}),
 ])
 
 if __name__ == '__main__':

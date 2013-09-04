@@ -1,6 +1,12 @@
 
+var HOST = '192.168.2.17';
+
 var ws = null;
 $(document).ready(function(event) {
+
+    $('#slide').slider()
+    .on('slide', function(ev){
+    });
 
     $('#btn-left').click(function() {
         ws.send('left');
@@ -27,7 +33,7 @@ $(document).ready(function(event) {
     });
 
     //ws = new WebSocket('ws://192.168.2.17:8888/ws');
-    ws = new WebSocket('ws://localhost:8888/ws');
+    ws = new WebSocket('ws://' + HOST + ':8888/ws');
     var $message = $('#message');
 
     ws.onopen = function(){

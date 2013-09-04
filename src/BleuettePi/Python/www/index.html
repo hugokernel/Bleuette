@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bleuette</title>
+
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/slider/css/slider.css" rel="stylesheet">
+
+  <script type="text/javascript" src="/static/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/ws.js"></script>
+  <script type="text/javascript" src="/static/slider/js/bootstrap-slider.js"></script>
+  <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+
+<style>
+
+table#acc td {
+    width: 33%;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Bleuette interface</h1>
+
+    <p>
+        WebSocket status : <span id="message"></span>
+    </p>
+
+    <div class="row">
+        <div class="span4">
+
+            <h2>Accelerometer</h2>
+
+            <table id="acc" class="table table-bordered">
+                <tr>
+                    <th>x</th>
+                    <th>y</th>
+                    <th>z</th>
+                </tr>
+                <tr>
+                    <td id="acc-x">-</td>
+                    <td id="acc-y">-</td>
+                    <td id="acc-z">-</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="span4">
+
+            <h2>Compass</h2>
+
+            <table id="compass" class="table table-bordered">
+                <tr>
+                    <th>x</th>
+                    <th>y</th>
+                    <th>z</th>
+                </tr>
+                <tr>
+                    <td id="compass-x">-</td>
+                    <td id="compass-y">-</td>
+                    <td id="compass-z">-</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="span4">
+
+            <h2>Ground sensor</h2>
+
+            <table id="ground" class="table table-bordered">
+                <tr>
+                    <td id="ground-0">&nbsp;</td>
+                    <td id="ground-1">&nbsp;</td>
+                    <td id="ground-2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td id="ground-3">&nbsp;</td>
+                    <td id="ground-4">&nbsp;</td>
+                    <td id="ground-5">&nbsp;</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <p id="current"></p>
+    </div>
+
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"> <a href="#drive" data-toggle="tab">Drive</a></li>
+        <li><a href="#trim" data-toggle="tab">Trim</a></li>
+        <li><a href="#move" data-toggle="tab">Move</a></li>
+        <li><a href="#limit" data-toggle="tab">Limit</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active " id="drive">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" id="btn-left">Left</button>
+              <button type="button" class="btn btn-default" id="btn-forward">Forward</button>
+              <button type="button" class="btn btn-default" id="btn-reverse">Reverse</button>
+              <button type="button" class="btn btn-default" id="btn-right">Right</button>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" id="btn-pushup">Push up</button>
+              <button type="button" class="btn btn-default" id="btn-middle">Middle</button>
+              <button type="button" class="btn btn-default" id="btn-standby">Stand-by</button>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="trim">
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input id="trim-slide0" class="slider trimh" type="text" data-servo="0" />
+                        <input id="trim-slide1" class="slider trimv" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="trim-slide2" class="slider trimh" type="text" data-servo="1" />
+                        <input id="trim-slide3" class="slider trimv" type="text" data-servo="7" />
+                    </td>
+                    <td>
+                        <input id="trim-slide4" class="slider trimh" type="text" data-servo="2" />
+                        <input id="trim-slide5" class="slider trimv" type="text" data-servo="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="trim-slide6" class="slider trimh" type="text" data-servo="3" />
+                        <input id="trim-slide7" class="slider trimv" type="text" data-servo="9" />
+                    </td>
+                    <td>
+                        <input id="trim-slide8" class="slider trimh" type="text" data-servo="4" />
+                        <input id="trim-slide9" class="slider trimv" type="text" data-servo="10" />
+                    </td>
+                    <td>
+                        <input id="trim-slide10" class="slider trimh" type="text" data-servo="5" />
+                        <input id="trim-slide11" class="slider trimv" type="text" data-servo="11" />
+                    </td>
+                </tr>
+            </table>
+
+            <button type="button" class="btn btn-default btn-save">Save</button>
+        </div>
+
+        <div class="tab-pane" id="move">
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input id="move-slide0" class="slider moveh" type="text" data-servo="0" />
+                        <input id="move-slide1" class="slider movev" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="move-slide2" class="slider moveh" type="text" data-servo="1" />
+                        <input id="move-slide3" class="slider movev" type="text" data-servo="7" />
+                    </td>
+                    <td>
+                        <input id="move-slide4" class="slider moveh" type="text" data-servo="2" />
+                        <input id="move-slide5" class="slider movev" type="text" data-servo="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="move-slide6" class="slider moveh" type="text" data-servo="3" />
+                        <input id="move-slide7" class="slider movev" type="text" data-servo="9" />
+                    </td>
+                    <td>
+                        <input id="move-slide8" class="slider moveh" type="text" data-servo="4" />
+                        <input id="move-slide9" class="slider movev" type="text" data-servo="10" />
+                    </td>
+                    <td>
+                        <input id="move-slide10" class="slider moveh" type="text" data-servo="5" />
+                        <input id="move-slide11" class="slider movev" type="text" data-servo="11" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="tab-pane" id="limit">
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input id="move-slide0" class="slider limith" type="text" data-servo="0" />
+                        <input id="move-slide1" class="slider limitv" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="move-slide2" class="slider limith" type="text" data-servo="1" />
+                        <input id="move-slide3" class="slider limitv" type="text" data-servo="7" />
+                    </td>
+                    <td>
+                        <input id="move-slide4" class="slider limith" type="text" data-servo="2" />
+                        <input id="move-slide5" class="slider limitv" type="text" data-servo="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="move-slide6" class="slider limith" type="text" data-servo="3" />
+                        <input id="move-slide7" class="slider limitv" type="text" data-servo="9" />
+                    </td>
+                    <td>
+                        <input id="move-slide8" class="slider limith" type="text" data-servo="4" />
+                        <input id="move-slide9" class="slider limitv" type="text" data-servo="10" />
+                    </td>
+                    <td>
+                        <input id="move-slide10" class="slider limith" type="text" data-servo="5" />
+                        <input id="move-slide11" class="slider limitv" type="text" data-servo="11" />
+                    </td>
+                </tr>
+            </table>
+
+            <button type="button" class="btn btn-default btn-save">Save</button>
+        </div>
+
+    </ul>
+
+</div>
+
+</div>
+</body>
+</html>
