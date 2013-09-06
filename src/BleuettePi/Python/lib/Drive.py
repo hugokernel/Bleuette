@@ -1,5 +1,5 @@
 
-import threading
+import threading, logging
 from Sequences import Sequences
 
 class DriveThreadException(Exception):
@@ -20,13 +20,13 @@ class Drive_Thread(threading.Thread):
         threading.Thread.__init__(self)
         self.event = threading.Event()
 
-        #self.sequencer.setCallback(self.testStatus)
+        self.logger = logging.getLogger('Drive')
 
     def testStatus(self, index):
         if self.index >= len(self.sequence.sequence):
             self.index = 0
 
-        print "Index:", self.index
+        #print "Index:", self.index
         if self.__pause:
             raise DriveThreadException
 
@@ -35,7 +35,7 @@ class Drive_Thread(threading.Thread):
 
         while True:
             while not self.__pause:
-                print "Start sequence @", self.index
+                self.logger.debug("Start sequence @%i" % self.index)
 
                 try:
                     if self.reverse:
@@ -75,6 +75,8 @@ class Drive:
     __last_cmd = None
 
     def __init__(self, sequencer):
+        self.logger = logging.getLogger('Drive')
+
         self.sequencer = sequencer
 
         self.thread = Drive_Thread(sequencer)
@@ -94,8 +96,7 @@ class Drive:
 
     def begin(self, cmd, callback = None):
 
-        print "--------------"
-        print "[Begin]"
+        self.logger.debug("Begin")
 
         Commands = {
             # id : [ seq, reverse ]
@@ -110,13 +111,12 @@ class Drive:
 
         if cmd != self.__last_cmd and self.__last_cmd != None:
             self.thread.index = 0
-            print "Diff"
 
         self.thread.play(Commands[cmd][0], Commands[cmd][1])
 
         self.__last_cmd = cmd
 
     def end(self):
-        print "[End]"
+        self.logger.debug("End")
         self.thread.pause()
 

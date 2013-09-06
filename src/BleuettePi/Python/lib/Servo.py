@@ -1,58 +1,42 @@
 
 from Serial import Serial
 from Define import BPi_Cmd
-import serial, types, time, copy, json
+import serial, types, time, copy, logging
 from array import array
+from Data import Data
+from Singleton import Singleton
+
+SERVO_COUNT = 14
 
 class ServoException(Exception):
     pass
 
 class Servo_Trim:
-
-    __values = []
-
-    def __init__(self, trims = []):
-        self.__values = [ 0 ] * Servo.COUNT
-
-        if trims:
-            for i in range(0, Servo.COUNT):
-                self.__values[i] = trims[i]
-
-    def dump(self):
-        return self.__values
-
-    def get(self, servo):
-        return self.__values[servo]
-
-    def set(self, servo, value):
-        self.__values[servo] = value
+    values = [ 0 ] * SERVO_COUNT
+    def __call__(self, fn):
+        def wrapper(*args, **kwargs):
+            args = list(args)
+            args[2] += Servo_Trim.values[args[1]]
+            if args[2] < 0:
+                args[2] = 0
+            return fn(*args)
+        return wrapper
 
 class Servo_Limit:
-
-    __limits = []
-
-    def __init__(self, limits = []):
-        self.__limits = [ [ -1 ] * 2 ] * Servo.COUNT
-
-        if limits:
-            for i in range(0, Servo.COUNT):
-                self.__limits[i] = limits[i]
-
-    def dump(self):
-        return self.__limits
-
-    def get(self, servo):
-        return self.__limits[servo]
-
-    def set(self, servo, min, max):
-        self.__limits[servo] = [ min, max ]
+    values = [ [ - 1 ] * 2 ] * SERVO_COUNT
+    def __call__(self, fn):
+        def wrapper(*args, **kwargs):
+            args = list(args)
+            if args[2] > 0:
+                _min, _max = Servo_Limit.values[args[1]]
+                if _min > -1:
+                    args[2] = max(args[2], _min)
+                if _max > -1:
+                    args[2] = min(args[2], _max)
+            return fn(*args)
+        return wrapper
 
 class Servo(Serial):
-
-    FILE = 'servo.json'
-
-    Trim = None
-    Limit = None
 
     _0 = 1
     _1 = 2
@@ -69,7 +53,7 @@ class Servo(Serial):
     _12 = 4096
     _13 = 8192
 
-    COUNT = 14
+    COUNT = SERVO_COUNT
 
     DEBUG = False
     fakemode = False
@@ -82,63 +66,45 @@ class Servo(Serial):
     values = array('h', [0] * COUNT)
     sent_values = array('h', [0] * COUNT)
 
+    __callback = []
+
     def __init__(self, serial, fakemode = False):
+        self.logger = logging.getLogger('Servo')
+
         self.serial = serial
-
-        data = self.load()
-
-        if 'trims' in data:
-            self.Trim = Servo_Trim(data['trims'])
-
-        if 'limits' in data:
-            self.Limit = Servo_Limit(data['limits'])
-
         self.fakemode = fakemode
 
-    def load(self, file = None):
-        try:
-            data = open((file if file else self.FILE), 'r').read()
-            return json.loads(data)
-        except IOError:
-            pass
+    def setCallback(self, callback):
+        self.__callback = callback
 
-    def save(self, file = None):
+    def removeCallback(self):
+        self.__callback = None
 
-        data = {
-            'trims': self.Trim.dump(),
-            'limits': self.Limit.dump()
-        }
-
-        with open((file if file else self.FILE), 'w') as jfile:
-            jfile.write(json.dumps(data))
+    @Servo_Limit()
+    @Servo_Trim()
+    def writeValue(self, index, value):
+        self.serial.write(chr(value))
+        return value
 
     # Servo related method
     def sendValues(self):
         retry = self.MAX_RETRY
 
         while True:
+            values = []
+
             self.serial.write(self.HEADER)
             self.serial.write(BPi_Cmd.SET)
 
             control = 0
             for i in range(0, self.COUNT):
-                value = self.values[i] + self.Trim.get(i)
-                if value < 0:
-                    value = 0
-
-                print "Want to send ", value
-                if value > 0:
-                    _min, _max = self.Limit.get(i)
-
-                    if _min > -1:
-                        value = max(value, _min)
-
-                    if _max > -1:
-                        value = min(value, _max)
-                print "Send ", value
-
-                self.serial.write(chr(value))
+                #self.serial.write(chr(value))
+                value = self.writeValue(i, self.values[i])
+                values.append(value)
                 control += value
+
+            if self.__callback:
+                self.__callback(values)
 
             self.serial.write(chr(control % 256))
 
@@ -146,9 +112,11 @@ class Servo(Serial):
 
             if (self.last_status_code == self.ACK):
                 if self.DEBUG:
-                    print "Ack Ok !"
+                    self.logger.debug('Ack OK !')
                 self.sent_values = copy.copy(self.values)
                 break
+            else:
+                self.logger.warning("Ack KO !")
 
             retry -= 1
             if retry == 0:
@@ -189,6 +157,8 @@ class Servo(Serial):
                 v += 1
 
     def dump(self):
-        print 'Buff values:', self.values
-        print 'Sent values:', self.sent_values
+        self.logger.debug('Buff values: %s' % self.values)
+        self.logger.debug('Sent values: %s' % self.sent_values)
+        #print 'Buff values:', self.values
+        #print 'Sent values:', self.sent_values
 

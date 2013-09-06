@@ -1,7 +1,13 @@
 
-<<<<<<< HEAD
 //var HOST = '192.168.2.17';
 var HOST = 'localhost';
+
+var keymap = {
+    37: 'left',
+    38: 'forward',
+    39: 'right',
+    40: 'reverse'
+};
 
 (function (exports, $) {
 
@@ -10,6 +16,13 @@ var HOST = 'localhost';
         var self = this;
 
         return {
+
+            CMD_SET: 'set',
+            CMD_DRIVE: 'drive',
+            CMD_CONFIG: 'config',
+            CMD_CONTROL: 'control',
+            CMD_SEQUENCE: 'sequence',
+
             config: (function() {
 
                 return {
@@ -43,7 +56,7 @@ $(document).ready(function(event) {
         value: 0,
         orientation: 'horizontal'
     }).on('slide', function(ev) {
-        B.sendCmd('set', { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
+        B.sendCmd(B.CMD_SET, { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
 
     $('.slider.trimv').slider({
@@ -53,7 +66,7 @@ $(document).ready(function(event) {
         value: 0,
         orientation: 'vertical'
     }).on('slide', function(ev) {
-        B.sendCmd('set', { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
+        B.sendCmd(B.CMD_SET, { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
 
     $('.slider.moveh').slider({
@@ -63,7 +76,7 @@ $(document).ready(function(event) {
         value: 128,
         orientation: 'horizontal'
     }).on('slide', function(ev) {
-        B.sendCmd('set', { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
+        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
 
     $('.slider.movev').slider({
@@ -73,7 +86,7 @@ $(document).ready(function(event) {
         value: 128,
         orientation: 'vertical'
     }).on('slide', function(ev) {
-        B.sendCmd('set', { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
+        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
 
     $('.slider.limith').slider({
@@ -83,7 +96,7 @@ $(document).ready(function(event) {
         value: [ 64, 192 ],
         orientation: 'horizontal'
     }).on('slide', function(ev) {
-        B.sendCmd('set', { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
+        B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
     });
 
     $('.slider.limitv').slider({
@@ -93,61 +106,74 @@ $(document).ready(function(event) {
         value: [ 64, 192 ],
         orientation: 'vertical'
     }).on('slide', function(ev) {
-        B.sendCmd('set', { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
+        B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
     });
 
+    $('#speed-slide').slider({
+        min: 0,
+        max: 16,
+        step: 1,
+        value: 16,
+        orientation: 'horizontal'
+    }).on('slide', function(ev) {
+        B.sendCmd(B.CMD_SET, { type: 'speed', value: ev.value });
+    });
 
     $('#tab').tab();
 
-/*
-    $('#btn-left').click(function() {
-        sendCmd('drive', { direction: 'left' });
+    $('#btn-left').mousedown(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'begin', direction: keymap[37] });
+    }).mouseup(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'end', direction: keymap[37] });
     });
 
-    $('#btn-forward').click(function() {
-        sendCmd('drive', { direction: 'forward' });
+    $('#btn-forward').mousedown(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'begin', direction: keymap[38] });
+    }).mouseup(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'end', direction: keymap[38] });
     });
 
-    $('#btn-right').click(function() {
-        sendCmd('drive', { direction: 'right' });
+    $('#btn-right').mousedown(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'begin', direction: keymap[39] });
+    }).mouseup(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'end', direction: keymap[39] });
     });
 
-    $('#btn-reverse').click(function() {
-        sendCmd('drive', { direction: 'reverse' });
-    });
-*/
-
-    $('.btn-save').click(function() {
-        B.sendCmd('config', { action: 'save' });
-=======
-var HOST = '192.168.2.17';
-
-var ws = null;
-$(document).ready(function(event) {
-
-    $('#btn-left').click(function() {
-        ws.send('left');
+    $('#btn-reverse').mousedown(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'begin', direction: keymap[40] });
+    }).mouseup(function() {
+        B.sendCmd(B.CMD_DRIVE, { status: 'end', direction: keymap[40] });
     });
 
-    $('#btn-forward').click(function() {
-        ws.send('forward');
+    $('#livemode').change(function() {
+        B.sendCmd(B.CMD_SET, { type: 'livemode', status: $(this).is(':checked') });
     });
 
-    $('#btn-right').click(function() {
-        ws.send('right');
+    $('#loglevel').change(function() {
+        B.sendCmd(B.CMD_SET, { type: 'loglevel', level: $(this).val() });
     });
 
-    $('#btn-reverse').click(function() {
-        ws.send('reverse');
->>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
+    $('.btn-action').click(function() {
+        switch ($(this).data('action')) {
+            case 'save':
+                B.sendCmd(B.CMD_CONFIG, { action: 'save' });
+                break;
+            case 'reset':
+                B.sendCmd(B.CMD_CONTROL, { action: 'reset' });
+                break;
+        }
     });
 
     $('#btn-pushup').click(function() {
-        ws.send('pushup');
+        B.sendCmd(B.CMD_SEQUENCE, { name: 'pushup' });
     });
 
     $('#btn-middle').click(function() {
-        ws.send('middle');
+        B.sendCmd(B.CMD_SEQUENCE, { name: 'middle' });
+    });
+
+    $('#btn-standby').click(function() {
+        B.sendCmd(B.CMD_SEQUENCE, { name: 'standby' });
     });
 
     //ws = new WebSocket('ws://192.168.2.17:8888/ws');
@@ -157,41 +183,43 @@ $(document).ready(function(event) {
     ws.onopen = function(){
         $message.attr("class", 'label label-success');
         $message.text('open');
-<<<<<<< HEAD
 
-        B.sendCmd('config', { action: 'get' });
-=======
->>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
+        B.sendCmd(B.CMD_CONFIG, { action: 'get' });
     };
 
     ws.onmessage = function(ev){
-        console.info(ev.data);
-
-<<<<<<< HEAD
         json = JSON.parse(ev.data);
-
         switch (json.type) {
-            case 'config':
+            case B.CMD_CONFIG:
                 for (i = 0; i < json.data.trims.length; i++) {
                     $('#trim-slide' + i).slider('setValue', json.data.trims[i]);
                 }
+
+                for (i = 0; i < json.data.limits.length; i++) {
+                    $('#limit-slide' + i).slider('setValue', json.data.limits[i]);
+                }
+                break;
+
+            case 'position':
+                console.info(json.data);
+                for (i = 0; i < json.data.servos.length; i++) {
+                    console.info("Servo " + i + " - " + json.data.servos[i]);
+                    $('#move-slide' + i).slider('setValue', json.data.servos[i]);
+                }
+                break;
+            default:
+                console.info(json);
         }
 
 /*
-=======
->>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
         $message.attr("class", 'label label-info');
         $message.hide();
         $message.fadeIn("slow");
         $message.text('recieved message');
 
         var json = JSON.parse(ev.data);
-<<<<<<< HEAD
         //console.info(json);
 
-=======
-        console.info(json);
->>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
         $('#acc-x').text(json.sensors.accelerometer[0]);
         $('#acc-y').text(json.sensors.accelerometer[1]);
         $('#acc-z').text(json.sensors.accelerometer[2]);
@@ -212,10 +240,7 @@ $(document).ready(function(event) {
       $('#' + json.id).fadeIn("slow");
       $('#' + json.id).text(json.value);
 
-<<<<<<< HEAD
 */
-=======
->>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
     /*
       var $rowid = $('#row' + json.id);
       if(json.value > 500){
@@ -241,52 +266,28 @@ $(document).ready(function(event) {
     };
 });
 
-<<<<<<< HEAD
-var keymap = {
-    37: 'left',
-    38: 'forward',
-    39: 'right',
-    40: 'reverse'
-};
-
+var released = true;
 $(document).keydown(function(event) {
     switch (event.keyCode) {
         case 37:
         case 38:
         case 39:
         case 40:
-            B.sendCmd('drive', { status: 'begin', direction: keymap[event.keyCode] });
-=======
-$(document).keydown(function(event) {
-    switch (event.keyCode) {
-        case 37:
-            ws.send("left");
-            break
-        case 38:
-            ws.send("forward");
-            break;
-        case 39:
-            ws.send("right");
-            break;
-        case 40:
-            ws.send("reverse");
->>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
+            if (released) {
+                B.sendCmd(B.CMD_DRIVE, { status: 'begin', direction: keymap[event.keyCode] });
+                released = false;
+            }
             break;
     }
-});
-
-$(document).keyup(function(event) {
-<<<<<<< HEAD
+}).keyup(function(event) {
     switch (event.keyCode) {
         case 37:
         case 38:
         case 39:
         case 40:
-            B.sendCmd('drive', { status: 'end', direction: keymap[event.keyCode] });
+            released = true;
+            B.sendCmd(B.CMD_DRIVE, { status: 'end', direction: keymap[event.keyCode] });
             break;
     }
-=======
-    ws.send("release");
->>>>>>> 970e657694507e74073de1f1073487c84f4f7bc5
 });
 

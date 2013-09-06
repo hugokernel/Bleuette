@@ -1,12 +1,13 @@
 #!/usr/bin/python
-import sys, serial, types, time, struct
+import sys, serial, types, time, struct, logging
 
 from array  import array
 from Serial import Serial
-from Servo  import Servo
+import Servo
 from Define import BPi_Cmd
 
 import config as Config
+from Data import Data
 
 if Config.FAKE_MODE:
     from Fake import GPIO, hmc5883l, ADXL345, MCP230XX, Analog
@@ -50,11 +51,10 @@ class BleuettePi_Accelerometer:
 
 class BleuettePi_GroundSensor:
 
-    ADDRESS = 0x20
     mcp = None
 
-    def __init__(self):
-        self.mcp = MCP230XX(self.ADDRESS, 16)
+    def __init__(self, mcp):
+        self.mcp = mcp
         for i in range(0, 7):
             self.mcp.config(i, MCP230XX.INPUT)
             self.mcp.pullup(i, True)
@@ -83,21 +83,34 @@ class BleuettePi(Serial):
 
     STATUS_MAX_CURRENT_REACHED = 0
 
+    MCP_ADDRESS = 0x20
+
     serial = None
+    mcp = None
+
+    Servo = None
     Compass = None
     Accelerometer = None
     GroundSensor = None
 
     def __init__(self, mixed):
+        self.logger = logging.getLogger('BleuettePi')
+
         self.serial = Serial()
         self.serial.connect(mixed)
 
-        self.Servo = Servo(self.serial, fakemode = Config.FAKE_MODE)
+        self.mcp = MCP230XX(self.MCP_ADDRESS, 16)
+
+        self.Servo = Servo.Servo(self.serial, fakemode = Config.FAKE_MODE)
+        self.Servo.init()
+        Servo.Servo_Trim.values = Data.Instance().get(['servo', 'trims'])
+        Servo.Servo_Limit.values = Data.Instance().get(['servo', 'limits'])
+
         self.Analog = Analog(self.serial)
 
         self.Compass = BleuettePi_Compass()
         self.Accelerometer = BleuettePi_Accelerometer()
-        self.GroundSensor = BleuettePi_GroundSensor()
+        self.GroundSensor = BleuettePi_GroundSensor(self.mcp)
 
         # Init mode
         GPIO.setmode(GPIO.BOARD)
@@ -114,13 +127,13 @@ class BleuettePi(Serial):
 
     def interrupt(self, index):
         if index == self.INTA:
-            print "Interrupt from GPA"
+            self.logger.info("Interrupt from GPA")
         elif index == self.INTB:
-            print "Interrupt from GPB"
+            self.logger.info("Interrupt from GPB")
         elif index == self.INTC:
-            print "Interrupt from RTC"
+            self.logger.info("Interrupt from RTC")
         elif index == self.INTD:
-            print "Interrupt from PIC !"
+            self.logger.info("Interrupt from PIC")
             self.getStatus()
 
     '''
@@ -136,13 +149,17 @@ class BleuettePi(Serial):
         return self.command(BPi_Cmd.SET_MAX, level)
     '''
 
+    def reset():
+        # Todo !
+        pass
+
     def getStatus(self):
         self.serial.write(self.HEADER)
         self.serial.write(BPi_Cmd.STATUS)
         status = self.serial.read(1)
 
         if ord(status) & (1 << self.STATUS_MAX_CURRENT_REACHED):
-            print "Max current reached !"
+            self.logger.warning("Max current reached !")
 
         return status
 

@@ -2,11 +2,14 @@
 <html>
 <head>
   <title>Bleuette</title>
-  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  <script type="text/javascript" src="ws.js"></script>
-  <script type="text/javascript" src="bootstrap-slider.js"></script>
-  <link href="slider.css" rel="stylesheet">
+
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/slider/css/slider.css" rel="stylesheet">
+
+  <script type="text/javascript" src="/static/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/ws.js"></script>
+  <script type="text/javascript" src="/static/slider/js/bootstrap-slider.js"></script>
+  <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
 
 <style>
 
@@ -71,14 +74,14 @@ table#acc td {
 
             <table id="ground" class="table table-bordered">
                 <tr>
-                    <td id="ground-0">&nbsp;</th>
-                    <td id="ground-1">&nbsp;</th>
-                    <td id="ground-2">&nbsp;</th>
+                    <td id="ground-0">&nbsp;</td>
+                    <td id="ground-1">&nbsp;</td>
+                    <td id="ground-2">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td id="ground-3">&nbsp;</th>
-                    <td id="ground-4">&nbsp;</th>
-                    <td id="ground-5">&nbsp;</th>
+                    <td id="ground-3">&nbsp;</td>
+                    <td id="ground-4">&nbsp;</td>
+                    <td id="ground-5">&nbsp;</td>
                 </tr>
             </table>
 
@@ -87,21 +90,172 @@ table#acc td {
         <p id="current"></p>
     </div>
 
-    <div class="btn-group">
-      <button type="button" class="btn btn-default" id="btn-left">Left</button>
-      <button type="button" class="btn btn-default" id="btn-forward">Forward</button>
-      <button type="button" class="btn btn-default" id="btn-reverse">Reverse</button>
-      <button type="button" class="btn btn-default" id="btn-right">Right</button>
-    </div>
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"> <a href="#drive" data-toggle="tab">Drive</a></li>
+        <li><a href="#trim" data-toggle="tab">Trim</a></li>
+        <li><a href="#move" data-toggle="tab">Move</a></li>
+        <li><a href="#limit" data-toggle="tab">Limit</a></li>
+        <li><a href="#system" data-toggle="tab">System</a></li>
+    </ul>
 
-    <div class="btn-group">
-      <button type="button" class="btn btn-default" id="btn-pushup">Push up</button>
-      <button type="button" class="btn btn-default" id="btn-middle">Middle</button>
-      <button type="button" class="btn btn-default" id="btn-standby">Stand-by</button>
-    </div>
+    <div class="tab-content">
+        <div class="tab-pane active " id="drive">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" id="btn-left">Left</button>
+              <button type="button" class="btn btn-default" id="btn-forward">Forward</button>
+              <button type="button" class="btn btn-default" id="btn-reverse">Reverse</button>
+              <button type="button" class="btn btn-default" id="btn-right">Right</button>
+            </div>
 
-    <input id="slide" type="text" class="span2" value="" data-slider-min="-20" data-slider-max="20" data-slider-step="1" data-slider-value="-14" data-slider-orientation="vertical" data-slider-selection="after"data-slider-tooltip="hide">
-    
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" id="btn-pushup">Push up</button>
+              <button type="button" class="btn btn-default" id="btn-middle">Middle</button>
+              <button type="button" class="btn btn-default" id="btn-standby">Stand-by</button>
+            </div>
+
+            <hr />
+
+            <div class="span1">
+                Speed :
+                <input id="speed-slide" class="slider" type="text" />
+            </div>
+        </div>
+
+        <div class="tab-pane" id="trim">
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input id="trim-slide0" class="slider trimh" type="text" data-servo="0" />
+                        <input id="trim-slide6" class="slider trimv" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="trim-slide1" class="slider trimh" type="text" data-servo="1" />
+                        <input id="trim-slide7" class="slider trimv" type="text" data-servo="7" />
+                    </td>
+                    <td>
+                        <input id="trim-slide2" class="slider trimh" type="text" data-servo="2" />
+                        <input id="trim-slide8" class="slider trimv" type="text" data-servo="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="trim-slide3" class="slider trimh" type="text" data-servo="3" />
+                        <input id="trim-slide9" class="slider trimv" type="text" data-servo="9" />
+                    </td>
+                    <td>
+                        <input id="trim-slide4" class="slider trimh" type="text" data-servo="4" />
+                        <input id="trim-slide10" class="slider trimv" type="text" data-servo="10" />
+                    </td>
+                    <td>
+                        <input id="trim-slide5" class="slider trimh" type="text" data-servo="5" />
+                        <input id="trim-slide11" class="slider trimv" type="text" data-servo="11" />
+                    </td>
+                </tr>
+            </table>
+
+            <button type="button" class="btn btn-default btn-save" data-action="save">Save</button>
+        </div>
+
+        <div class="tab-pane" id="move">
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input id="move-slide0" class="slider moveh" type="text" data-servo="0" />
+                        <input id="move-slide6" class="slider movev" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="move-slide1" class="slider moveh" type="text" data-servo="1" />
+                        <input id="move-slide7" class="slider movev" type="text" data-servo="7" />
+                    </td>
+                    <td>
+                        <input id="move-slide2" class="slider moveh" type="text" data-servo="2" />
+                        <input id="move-slide8" class="slider movev" type="text" data-servo="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="move-slide3" class="slider moveh" type="text" data-servo="3" />
+                        <input id="move-slide9" class="slider movev" type="text" data-servo="9" />
+                    </td>
+                    <td>
+                        <input id="move-slide4" class="slider moveh" type="text" data-servo="4" />
+                        <input id="move-slide10" class="slider movev" type="text" data-servo="10" />
+                    </td>
+                    <td>
+                        <input id="move-slide5" class="slider moveh" type="text" data-servo="5" />
+                        <input id="move-slide11" class="slider movev" type="text" data-servo="11" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="tab-pane" id="limit">
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input id="limit-slide0" class="slider limith" type="text" data-servo="0" />
+                        <input id="limit-slide6" class="slider limitv" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="limit-slide1" class="slider limith" type="text" data-servo="1" />
+                        <input id="limit-slide7" class="slider limitv" type="text" data-servo="7" />
+                    </td>
+                    <td>
+                        <input id="limit-slide2" class="slider limith" type="text" data-servo="2" />
+                        <input id="limit-slide8" class="slider limitv" type="text" data-servo="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="limit-slide3" class="slider limith" type="text" data-servo="3" />
+                        <input id="limit-slide9" class="slider limitv" type="text" data-servo="9" />
+                    </td>
+                    <td>
+                        <input id="limit-slide4" class="slider limith" type="text" data-servo="4" />
+                        <input id="limit-slide10" class="slider limitv" type="text" data-servo="10" />
+                    </td>
+                    <td>
+                        <input id="limit-slide5" class="slider limith" type="text" data-servo="5" />
+                        <input id="limit-slide11" class="slider limitv" type="text" data-servo="11" />
+                    </td>
+                </tr>
+            </table>
+
+            <button type="button" class="btn btn-default btn-action" data-action="save">Save</button>
+        </div>
+
+        <div class="tab-pane" id="system">
+
+            <button type="button" class="btn btn-default btn-action" data-action="reset">Reset</button>
+
+            <hr />
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="0" id="livemode">
+                    Live mode
+                </label>
+            </div>
+
+            <hr />
+
+            <select class="form-control" id="loglevel">
+              <option value="debug">Debug</option>
+              <option value="info">Info</option>
+              <option value="warning">Warning</option>
+              <option value="error">Error</option>
+              <option value="critical">Critical</option>
+            </select>
+
+        </div>
+
+    </ul>
+
+</div>
+
 </div>
 </body>
 </html>
