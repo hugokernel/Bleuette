@@ -26,13 +26,66 @@ class PafHandler(logging.Handler):
         #print record
         for c in cl:
             c.write_message(json.dumps("paf"))
-        
+
 steam_handler = PafHandler()
 steam_handler.setLevel(logging.DEBUG)
 logger.addHandler(steam_handler)
 '''
 
 B = Bleuette()
+
+class Affiche(threading.Thread):
+
+    data = {}
+    data_last = {}
+
+    def __init__(self, nom = ''):
+        threading.Thread.__init__(self)
+        self.nom = nom
+        self._stopevent = threading.Event( )
+
+    def run(self):
+        while not self._stopevent.isSet():
+
+            compass = 0
+
+            acc = B.BPi.Accelerometer.get()
+            ground = B.BPi.GroundSensor.get()
+            compass = B.BPi.Compass.get()
+            #current = B.BPi.Analog.getCurrent()
+            current = 0
+
+            self.data = {
+                'type': 'sensors',
+                'sensors': {
+                    'accelerometer': acc,
+                    'compass': compass,
+                    'ground': ground,
+                    'current': current
+                }
+            }
+
+            #print self.data
+
+            #if any(map(eq, self.data, self.data_last))== False:
+            self.update()
+
+            self._stopevent.wait(0.5)
+
+        print "End of thread !"
+
+    def update(self):
+        for c in cl:
+            c.write_message(json.dumps(self.data))
+
+        self.data_last = copy.copy(self.data)
+
+    def stop(self):
+        self._stopevent.set( )
+
+a = Affiche('Thread A')
+a.daemon = True;
+a.start();
 
 speed = 16
 import Define
@@ -134,7 +187,7 @@ class SocketHandler(websocket.WebSocketHandler):
                     }
                 }
                 self.write(json.dumps(config))
-        
+
         elif data['cmd'] == 'sequence':
 
             if data['name'] == 'middle':
@@ -142,7 +195,18 @@ class SocketHandler(websocket.WebSocketHandler):
             elif data['name'] == 'pushup':
                 B.Sequencer.forward(Sequences['pushup'], 1)
             elif data['name'] == 'standby':
-                B.Sequencer.forward(Sequences['pushup'], 1)
+                B.Sequencer.forward(Sequences['standby'], 1)
+            elif data['name'] == 'release':
+                B.Sequencer.forward(Sequences['release'], 1)
+
+        elif data['cmd'] == 'servo':
+
+            if data['name'] == 'init':
+                B.Sequencer.Servo.init()
+            elif data['name'] == 'pause':
+                B.Sequencer.Servo.pause()
+            elif data['name'] == 'resume':
+                B.Sequencer.Servo.resume()
 
         else:
             logger.warning("Message : %s" % message)

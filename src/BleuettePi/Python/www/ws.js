@@ -1,6 +1,7 @@
 
 //var HOST = '192.168.2.17';
-var HOST = 'localhost';
+var HOST = '192.168.2.24';
+//var HOST = 'localhost';
 
 var keymap = {
     37: 'left',
@@ -12,7 +13,7 @@ var keymap = {
 (function (exports, $) {
 
     exports.Bleuette = function() {
-    
+
         var self = this;
 
         return {
@@ -22,6 +23,7 @@ var keymap = {
             CMD_CONFIG: 'config',
             CMD_CONTROL: 'control',
             CMD_SEQUENCE: 'sequence',
+            CMD_SERVO: 'servo',
 
             config: (function() {
 
@@ -38,7 +40,7 @@ var keymap = {
                 ws.send(JSON.stringify(data));
             }
         }
-        
+
         return self;
     };
 
@@ -52,9 +54,12 @@ $(document).ready(function(event) {
     $('.slider.trimh').slider({
         min: -20,
         max: 20,
-        step: 1,
+        step: 2,
         value: 0,
-        orientation: 'horizontal'
+        orientation: 'horizontal',
+        formater: function(value) {
+            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
+        }
     }).on('slide', function(ev) {
         B.sendCmd(B.CMD_SET, { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
@@ -62,9 +67,12 @@ $(document).ready(function(event) {
     $('.slider.trimv').slider({
         min: -20,
         max: 20,
-        step: 1,
+        step: 2,
         value: 0,
-        orientation: 'vertical'
+        orientation: 'vertical',
+        formater: function(value) {
+            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
+        }
     }).on('slide', function(ev) {
         B.sendCmd(B.CMD_SET, { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
@@ -74,7 +82,10 @@ $(document).ready(function(event) {
         max: 255,
         step: 1,
         value: 128,
-        orientation: 'horizontal'
+        orientation: 'horizontal',
+        formater: function(value) {
+            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
+        }
     }).on('slide', function(ev) {
         B.sendCmd(B.CMD_SET, { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
@@ -84,7 +95,10 @@ $(document).ready(function(event) {
         max: 255,
         step: 1,
         value: 128,
-        orientation: 'vertical'
+        orientation: 'vertical',
+        formater: function(value) {
+            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
+        }
     }).on('slide', function(ev) {
         B.sendCmd(B.CMD_SET, { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
     });
@@ -94,7 +108,10 @@ $(document).ready(function(event) {
         max: 254,
         step: 1,
         value: [ 64, 192 ],
-        orientation: 'horizontal'
+        orientation: 'horizontal',
+        formater: function(value) {
+            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
+        }
     }).on('slide', function(ev) {
         B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
     });
@@ -104,7 +121,10 @@ $(document).ready(function(event) {
         max: 254,
         step: 1,
         value: [ 64, 192 ],
-        orientation: 'vertical'
+        orientation: 'vertical',
+        formater: function(value) {
+            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
+        }
     }).on('slide', function(ev) {
         B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
     });
@@ -164,16 +184,12 @@ $(document).ready(function(event) {
         }
     });
 
-    $('#btn-pushup').click(function() {
-        B.sendCmd(B.CMD_SEQUENCE, { name: 'pushup' });
+    $('.btn-sequence').click(function() {
+        B.sendCmd(B.CMD_SEQUENCE, { name: $(this).data('sequence') });
     });
 
-    $('#btn-middle').click(function() {
-        B.sendCmd(B.CMD_SEQUENCE, { name: 'middle' });
-    });
-
-    $('#btn-standby').click(function() {
-        B.sendCmd(B.CMD_SEQUENCE, { name: 'standby' });
+    $('.btn-servo').click(function() {
+        B.sendCmd(B.CMD_SERVO, { name: $(this).data('command') });
     });
 
     //ws = new WebSocket('ws://192.168.2.17:8888/ws');
@@ -189,6 +205,7 @@ $(document).ready(function(event) {
 
     ws.onmessage = function(ev){
         json = JSON.parse(ev.data);
+        console.info(json);
         switch (json.type) {
             case B.CMD_CONFIG:
                 for (i = 0; i < json.data.trims.length; i++) {
@@ -206,6 +223,24 @@ $(document).ready(function(event) {
                     console.info("Servo " + i + " - " + json.data.servos[i]);
                     $('#move-slide' + i).slider('setValue', json.data.servos[i]);
                 }
+                break;
+            case 'sensors':
+                $('#acc-x').text(json.sensors.accelerometer[0]);
+                $('#acc-y').text(json.sensors.accelerometer[1]);
+                $('#acc-z').text(json.sensors.accelerometer[2]);
+
+                for (i = 0; i < 6; i++) {
+                    if (json.sensors.ground[i]) {
+                        $('#ground-' + i).css('background-color', 'red');
+                    } else {
+                        $('#ground-' + i).css('background-color', 'green');
+                    }
+                }
+
+                $('#compass-heading').text(json.sensors.compass[1]);
+                $('#compass-x').text(json.sensors.compass[0][0]);
+                $('#compass-y').text(json.sensors.compass[0][1]);
+                $('#compass-z').text(json.sensors.compass[0][2]);
                 break;
             default:
                 console.info(json);

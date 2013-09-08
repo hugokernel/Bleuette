@@ -143,7 +143,9 @@ class Sequencer:
     def getValue(self, servo, pos):
         _min = 0
         _max = 0
-        if pos == Define.FRONT or pos == Define.DOWN:
+        if pos == 0:
+            return 0
+        elif pos == Define.FRONT or pos == Define.DOWN:
             return servo_limits[servo][0]
         elif pos == Define.BACK or pos == Define.UP:
             return servo_limits[servo][1]

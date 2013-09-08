@@ -14,6 +14,19 @@ class Seq_StandBy:
         ]
     ]
 
+class Seq_Release:
+    name = "Release"
+    sequence = [
+        [
+            None,
+            [
+                0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0
+            ],
+            None
+        ]
+    ]
+
 class Seq_Middle:
     name = "Middle"
     sequence = [
@@ -339,6 +352,7 @@ class Seq_Linuxfr:
 Sequences = {
     'standby':      Seq_StandBy,
     'middle':       Seq_Middle,
+    'release':      Seq_Release,
     'pushup':       Seq_PushUp,
     'walk':         Seq_Walk,
     'rightturn':    Seq_Right_Turn,

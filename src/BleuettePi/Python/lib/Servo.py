@@ -16,9 +16,10 @@ class Servo_Trim:
     def __call__(self, fn):
         def wrapper(*args, **kwargs):
             args = list(args)
-            args[2] += Servo_Trim.values[args[1]]
-            if args[2] < 0:
-                args[2] = 0
+            if args[2] > 0:
+                args[2] += Servo_Trim.values[args[1]]
+                if args[2] < 0:
+                    args[2] = 0
             return fn(*args)
         return wrapper
 
@@ -35,6 +36,8 @@ class Servo_Limit:
                     args[2] = min(args[2], _max)
             return fn(*args)
         return wrapper
+
+LOCK = False
 
 class Servo(Serial):
 
@@ -88,7 +91,15 @@ class Servo(Serial):
 
     # Servo related method
     def sendValues(self):
+        global LOCK
+
         retry = self.MAX_RETRY
+
+        if LOCK:
+            self.logger.critical('Lock error !')
+            raise ServoException('Lock error !')
+
+        LOCK = True
 
         while True:
             values = []
@@ -124,6 +135,8 @@ class Servo(Serial):
                     break
                 else:
                     raise ServoException('Unable to communicate !')
+
+        LOCK = False
 
         return self.getLastStatus()
 

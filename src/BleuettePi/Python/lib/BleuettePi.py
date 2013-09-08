@@ -24,12 +24,15 @@ class BleuettePi_Compass:
     # http://magnetic-declination.com/
     DECLINATION = (0, 7)
 
+    PORT = 0
+    ADDRESS = 0x1E
+
     def get(self):
-        compass = hmc5883l(gauss = 4.7, declination = self.DECLINATION)
-        return compass.degrees(compass.heading())
+        compass = hmc5883l(port = self.PORT, address = self.ADDRESS, gauss = 4.7, declination = self.DECLINATION)
+        return [ compass.axes(), compass.degrees(compass.heading()) ]
 
     def realTime(self):
-        compass = hmc5883l(gauss = 4.7, declination = self.DECLINATION)
+        compass = hmc5883l(port = self.PORT, address = self.ADDRESS, gauss = 4.7, declination = self.DECLINATION)
         while True:
             sys.stdout.write("\rHeading: " + compass.degrees(compass.heading()) + "     ")
             sys.stdout.flush()

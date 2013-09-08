@@ -66,6 +66,9 @@ table#acc td {
                 </tr>
             </table>
 
+            <p>
+                <strong>Heading :</strong> <span id="compass-heading"></span>
+            </p>
         </div>
 
         <div class="span4">
@@ -74,14 +77,14 @@ table#acc td {
 
             <table id="ground" class="table table-bordered">
                 <tr>
-                    <td id="ground-0">&nbsp;</td>
                     <td id="ground-1">&nbsp;</td>
-                    <td id="ground-2">&nbsp;</td>
+                    <td id="ground-3">&nbsp;</td>
+                    <td id="ground-5">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td id="ground-3">&nbsp;</td>
+                    <td id="ground-0">&nbsp;</td>
+                    <td id="ground-2">&nbsp;</td>
                     <td id="ground-4">&nbsp;</td>
-                    <td id="ground-5">&nbsp;</td>
                 </tr>
             </table>
 
@@ -100,17 +103,29 @@ table#acc td {
 
     <div class="tab-content">
         <div class="tab-pane active " id="drive">
+            Drive :
             <div class="btn-group">
-              <button type="button" class="btn btn-default" id="btn-left">Left</button>
-              <button type="button" class="btn btn-default" id="btn-forward">Forward</button>
-              <button type="button" class="btn btn-default" id="btn-reverse">Reverse</button>
-              <button type="button" class="btn btn-default" id="btn-right">Right</button>
+                <button type="button" class="btn btn-default" id="btn-left">Left</button>
+                <button type="button" class="btn btn-default" id="btn-forward">Forward</button>
+                <button type="button" class="btn btn-default" id="btn-reverse">Reverse</button>
+                <button type="button" class="btn btn-default" id="btn-right">Right</button>
             </div>
 
+            Sequence :
             <div class="btn-group">
-              <button type="button" class="btn btn-default" id="btn-pushup">Push up</button>
-              <button type="button" class="btn btn-default" id="btn-middle">Middle</button>
-              <button type="button" class="btn btn-default" id="btn-standby">Stand-by</button>
+                <button type="button" class="btn btn-default btn-sequence" id="btn-pushup" data-sequence="pushup">Push up</button>
+                <button type="button" class="btn btn-default btn-sequence" id="btn-middle" data-sequence="middle">Middle</button>
+                <button type="button" class="btn btn-default btn-sequence" id="btn-standby" data-sequence="standby">Stand-by</button>
+                <button type="button" class="btn btn-default btn-sequence" id="btn-release" data-sequence="release">Release</button>
+            </div>
+
+            <hr />
+
+            Servo :
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-servo" data-command="init">Init</button>
+                <button type="button" class="btn btn-default btn-servo" data-command="pause">Pause</button>
+                <button type="button" class="btn btn-default btn-servo" data-command="resume">Resume</button>
             </div>
 
             <hr />
@@ -126,30 +141,30 @@ table#acc td {
             <table class="table table-bordered">
                 <tr>
                     <td>
-                        <input id="trim-slide0" class="slider trimh" type="text" data-servo="0" />
-                        <input id="trim-slide6" class="slider trimv" type="text" data-servo="6" />
-                    </td>
-                    <td>
                         <input id="trim-slide1" class="slider trimh" type="text" data-servo="1" />
                         <input id="trim-slide7" class="slider trimv" type="text" data-servo="7" />
                     </td>
-                    <td>
-                        <input id="trim-slide2" class="slider trimh" type="text" data-servo="2" />
-                        <input id="trim-slide8" class="slider trimv" type="text" data-servo="8" />
-                    </td>
-                </tr>
-                <tr>
                     <td>
                         <input id="trim-slide3" class="slider trimh" type="text" data-servo="3" />
                         <input id="trim-slide9" class="slider trimv" type="text" data-servo="9" />
                     </td>
                     <td>
-                        <input id="trim-slide4" class="slider trimh" type="text" data-servo="4" />
-                        <input id="trim-slide10" class="slider trimv" type="text" data-servo="10" />
-                    </td>
-                    <td>
                         <input id="trim-slide5" class="slider trimh" type="text" data-servo="5" />
                         <input id="trim-slide11" class="slider trimv" type="text" data-servo="11" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="trim-slide0" class="slider trimh" type="text" data-servo="0" />
+                        <input id="trim-slide6" class="slider trimv" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="trim-slide2" class="slider trimh" type="text" data-servo="2" />
+                        <input id="trim-slide8" class="slider trimv" type="text" data-servo="8" />
+                    </td>
+                    <td>
+                        <input id="trim-slide4" class="slider trimh" type="text" data-servo="4" />
+                        <input id="trim-slide10" class="slider trimv" type="text" data-servo="10" />
                     </td>
                 </tr>
             </table>
@@ -162,30 +177,30 @@ table#acc td {
             <table class="table table-bordered">
                 <tr>
                     <td>
-                        <input id="move-slide0" class="slider moveh" type="text" data-servo="0" />
-                        <input id="move-slide6" class="slider movev" type="text" data-servo="6" />
-                    </td>
-                    <td>
                         <input id="move-slide1" class="slider moveh" type="text" data-servo="1" />
                         <input id="move-slide7" class="slider movev" type="text" data-servo="7" />
                     </td>
-                    <td>
-                        <input id="move-slide2" class="slider moveh" type="text" data-servo="2" />
-                        <input id="move-slide8" class="slider movev" type="text" data-servo="8" />
-                    </td>
-                </tr>
-                <tr>
                     <td>
                         <input id="move-slide3" class="slider moveh" type="text" data-servo="3" />
                         <input id="move-slide9" class="slider movev" type="text" data-servo="9" />
                     </td>
                     <td>
-                        <input id="move-slide4" class="slider moveh" type="text" data-servo="4" />
-                        <input id="move-slide10" class="slider movev" type="text" data-servo="10" />
-                    </td>
-                    <td>
                         <input id="move-slide5" class="slider moveh" type="text" data-servo="5" />
                         <input id="move-slide11" class="slider movev" type="text" data-servo="11" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="move-slide0" class="slider moveh" type="text" data-servo="0" />
+                        <input id="move-slide6" class="slider movev" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="move-slide2" class="slider moveh" type="text" data-servo="2" />
+                        <input id="move-slide8" class="slider movev" type="text" data-servo="8" />
+                    </td>
+                    <td>
+                        <input id="move-slide4" class="slider moveh" type="text" data-servo="4" />
+                        <input id="move-slide10" class="slider movev" type="text" data-servo="10" />
                     </td>
                 </tr>
             </table>
@@ -196,30 +211,30 @@ table#acc td {
             <table class="table table-bordered">
                 <tr>
                     <td>
-                        <input id="limit-slide0" class="slider limith" type="text" data-servo="0" />
-                        <input id="limit-slide6" class="slider limitv" type="text" data-servo="6" />
-                    </td>
-                    <td>
                         <input id="limit-slide1" class="slider limith" type="text" data-servo="1" />
                         <input id="limit-slide7" class="slider limitv" type="text" data-servo="7" />
                     </td>
-                    <td>
-                        <input id="limit-slide2" class="slider limith" type="text" data-servo="2" />
-                        <input id="limit-slide8" class="slider limitv" type="text" data-servo="8" />
-                    </td>
-                </tr>
-                <tr>
                     <td>
                         <input id="limit-slide3" class="slider limith" type="text" data-servo="3" />
                         <input id="limit-slide9" class="slider limitv" type="text" data-servo="9" />
                     </td>
                     <td>
-                        <input id="limit-slide4" class="slider limith" type="text" data-servo="4" />
-                        <input id="limit-slide10" class="slider limitv" type="text" data-servo="10" />
-                    </td>
-                    <td>
                         <input id="limit-slide5" class="slider limith" type="text" data-servo="5" />
                         <input id="limit-slide11" class="slider limitv" type="text" data-servo="11" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="limit-slide0" class="slider limith" type="text" data-servo="0" />
+                        <input id="limit-slide6" class="slider limitv" type="text" data-servo="6" />
+                    </td>
+                    <td>
+                        <input id="limit-slide2" class="slider limith" type="text" data-servo="2" />
+                        <input id="limit-slide8" class="slider limitv" type="text" data-servo="8" />
+                    </td>
+                    <td>
+                        <input id="limit-slide4" class="slider limith" type="text" data-servo="4" />
+                        <input id="limit-slide10" class="slider limitv" type="text" data-servo="10" />
                     </td>
                 </tr>
             </table>
