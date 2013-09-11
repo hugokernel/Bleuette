@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import json
 import threading
-from tornado import websocket, web, ioloop
+from tornado import websocket, web, ioloop, template
 from operator import eq
 
 import os, sys, time, copy, logging
@@ -12,25 +12,63 @@ from Bleuette import Bleuette
 from Data import Data
 from Sequences import Sequences
 import Drive
+import config as Config
+from RainbowHandler import RainbowLoggingHandler
 
 cl = []
 
+
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
 
-'''
-class PafHandler(logging.Handler):
+def getLevel(st):
+    if st == 'debug':
+        return logging.DEBUG
+    elif st == 'info':
+        return logging.INFO
+    elif st == 'warning':
+        return logging.WARNING
+    elif st == 'error':
+        return logging.ERROR
+    elif st == 'critical':
+        return logging.CRITICAL
+
+rainbowHandler = RainbowLoggingHandler(sys.stdout)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+rainbowHandler.setFormatter(formatter)
+logger.addHandler(rainbowHandler)
+#logger.setLevel(getLevel(Data.Instance().get(['log', 'default'])))
+
+
+class JsHandler(logging.Handler):
     def __init__(self):
-            logging.Handler.__init__(self)
-    def emit(self, record):
-        #print record
-        for c in cl:
-            c.write_message(json.dumps("paf"))
+        logging.Handler.__init__(self)
+        self.propagate = True
 
-steam_handler = PafHandler()
-steam_handler.setLevel(logging.DEBUG)
-logger.addHandler(steam_handler)
-'''
+    def emit(self, record):
+
+        data = {
+            'type': 'log',
+            'data': {
+                'name':         record.name,
+                'levelno':      record.levelno,
+                'levelname':    record.levelname,
+                'pathname':     record.pathname,
+                'lineno':       record.lineno,
+                'args':         record.args,
+                'msg':          record.msg
+            }
+        }
+
+        for c in cl:
+            c.write_message(json.dumps(data))
+
+jsHandler = JsHandler()
+jsHandler.setLevel(logging.DEBUG)
+logger.addHandler(jsHandler)
+logger.setLevel(logging.DEBUG)
+#ogger.setLevel(getLevel(Data.Instance().get(['log', 'js'])))
+
+
 
 B = Bleuette()
 
@@ -96,7 +134,13 @@ B.Sequencer.addCallback(delay)
 
 class IndexHandler(web.RequestHandler):
     def get(self):
-        self.render("www/index.html")
+
+        var = dict(
+            Sequences = Sequences,
+            Config = Config
+        )
+
+        self.render("www/index.html", **var)
 
 class SocketHandler(websocket.WebSocketHandler):
 
@@ -146,16 +190,26 @@ class SocketHandler(websocket.WebSocketHandler):
                 else:
                     B.Sequencer.Servo.removeCallback()
             elif data['type'] == 'loglevel':
+
+                if data['which'] == 'js':
+                    _logger = jsHandler
+                    #Data.Instance().set(['log', 'js'], data['level'])
+                else:
+                    _logger = rainbowHandler
+                    #Data.Instance().set(['log', 'default'], data['level'])
+                print(data);
+                #Data.Instance().save()
+
                 if data['level'] == 'debug':
-                    logger.setLevel(logging.DEBUG)
+                    _logger.setLevel(logging.DEBUG)
                 elif data['level'] == 'info':
-                    logger.setLevel(logging.INFO)
+                    _logger.setLevel(logging.INFO)
                 elif data['level'] == 'warning':
-                    logger.setLevel(logging.WARNING)
+                    _logger.setLevel(logging.WARNING)
                 elif data['level'] == 'error':
-                    logger.setLevel(logging.ERROR)
+                    _logger.setLevel(logging.ERROR)
                 elif data['level'] == 'warning':
-                    logger.setLevel(logging.CRITICAL)
+                    _logger.setLevel(logging.CRITICAL)
 
             #print logger.getEffectiveLevel()
 
@@ -187,6 +241,11 @@ class SocketHandler(websocket.WebSocketHandler):
                     }
                 }
                 self.write(json.dumps(config))
+
+        elif data['cmd'] == 'control':
+
+            if data['action'] == 'reset':
+                B.BPi.reset()
 
         elif data['cmd'] == 'sequence':
 

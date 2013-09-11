@@ -31,8 +31,6 @@ class Data:
         else:
             self.__data[key[0]] = data
 
-        print self.__data
-
     def save(self, file = None):
         with open((file if file else self.FILE), 'w') as jfile:
             jfile.write(json.dumps(self.__data))

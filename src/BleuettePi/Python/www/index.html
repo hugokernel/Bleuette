@@ -3,13 +3,18 @@
 <head>
   <title>Bleuette</title>
 
-  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/static/slider/css/slider.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/slider/css/slider.css" rel="stylesheet">
 
-  <script type="text/javascript" src="/static/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/ws.js"></script>
-  <script type="text/javascript" src="/static/slider/js/bootstrap-slider.js"></script>
-  <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/ws.js"></script>
+    <script type="text/javascript" src="/static/slider/js/bootstrap-slider.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/dygraph-combined.js"></script>
+
+    <!-- Todo: Import ! -->
+    <script src="http://threejs.org/build/three.min.js"></script>
+    <script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
 
 <style>
 
@@ -17,7 +22,29 @@ table#acc td {
     width: 33%;
 }
 
+#canvas {
+    background-color: #000;
+    width: 640px;
+    height: 480px;
+    border: 1px solid black;
+    margin: 100px;
+    padding: 0px;
+    position: relative; /* fixed or static */
+}
+
 </style>
+
+<script>
+
+var B;
+$(document).ready(function(event) {
+    B = new Bleuette;
+    B.host = '{{Config.HOST}}';
+    B.fakeMode = '{{Config.FAKE_MODE}}';
+    B.init();
+});
+
+</script>
 
 </head>
 <body>
@@ -27,6 +54,9 @@ table#acc td {
 
     <p>
         WebSocket status : <span id="message"></span>
+        {% if Config.FAKE_MODE %}
+            <strong class="text-info">Fake mode</strong>
+        {% end %}
     </p>
 
     <div class="row">
@@ -94,10 +124,12 @@ table#acc td {
     </div>
 
     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-        <li class="active"> <a href="#drive" data-toggle="tab">Drive</a></li>
+        <li class="active"><a href="#drive" data-toggle="tab">Drive</a></li>
         <li><a href="#trim" data-toggle="tab">Trim</a></li>
         <li><a href="#move" data-toggle="tab">Move</a></li>
+        <li><a href="#simulation" data-toggle="tab">Simulation</a></li>
         <li><a href="#limit" data-toggle="tab">Limit</a></li>
+        <li><a href="#sensors" data-toggle="tab">Sensors</a></li>
         <li><a href="#system" data-toggle="tab">System</a></li>
     </ul>
 
@@ -111,6 +143,8 @@ table#acc td {
                 <button type="button" class="btn btn-default" id="btn-right">Right</button>
             </div>
 
+            <hr />
+
             Sequence :
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-sequence" id="btn-pushup" data-sequence="pushup">Push up</button>
@@ -118,6 +152,12 @@ table#acc td {
                 <button type="button" class="btn btn-default btn-sequence" id="btn-standby" data-sequence="standby">Stand-by</button>
                 <button type="button" class="btn btn-default btn-sequence" id="btn-release" data-sequence="release">Release</button>
             </div>
+
+            <select>
+                {% for Sequence in Sequences %}
+                    <option value={{ Sequence }}"">{{ Sequence }}</option>
+                {% end %}
+            </select>
 
             <hr />
 
@@ -174,6 +214,9 @@ table#acc td {
 
         <div class="tab-pane" id="move">
 
+            <p id="simulation">Start !</p>
+            <div id="canvas"></div>
+
             <table class="table table-bordered">
                 <tr>
                     <td>
@@ -204,6 +247,10 @@ table#acc td {
                     </td>
                 </tr>
             </table>
+        </div>
+
+        <div class="tab-pane" id="simulation">
+
         </div>
 
         <div class="tab-pane" id="limit">
@@ -242,9 +289,17 @@ table#acc td {
             <button type="button" class="btn btn-default btn-action" data-action="save">Save</button>
         </div>
 
+        <div class="tab-pane" id="sensors">
+
+            <div id="accelerometer-graph"></div>
+
+            <div id="compass-graph"></div>
+
+        </div>
+
         <div class="tab-pane" id="system">
 
-            <button type="button" class="btn btn-default btn-action" data-action="reset">Reset</button>
+            <button type="button" class="btn btn-default btn-action" data-action="reset">Hard reset</button>
 
             <hr />
 
@@ -257,7 +312,25 @@ table#acc td {
 
             <hr />
 
+            <h4>Logger</h4>
+
+            <p>
+                Default :
+            </p>
+
             <select class="form-control" id="loglevel">
+              <option value="debug">Debug</option>
+              <option value="info">Info</option>
+              <option value="warning">Warning</option>
+              <option value="error">Error</option>
+              <option value="critical">Critical</option>
+            </select>
+
+            <p>
+                Js :
+            </p>
+
+            <select class="form-control" id="jsloglevel">
               <option value="debug">Debug</option>
               <option value="info">Info</option>
               <option value="warning">Warning</option>

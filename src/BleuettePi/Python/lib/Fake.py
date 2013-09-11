@@ -21,7 +21,18 @@ class GPIO:
         pass
 
 class hmc5883l:
-    pass
+
+    def __init__(self, port=1, address=0x1E, gauss=1.3, declination=(0,0)):
+        pass
+
+    def axes(self):
+        return (0, 0, 0)
+
+    def heading(self):
+        return (0, 0)
+
+    def degrees(self, (degrees, minutes)):
+        return ""
 
 class ADXL345:
     

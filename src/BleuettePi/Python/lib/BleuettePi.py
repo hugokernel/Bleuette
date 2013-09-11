@@ -40,9 +40,16 @@ class BleuettePi_Compass:
 
 class BleuettePi_Accelerometer:
 
+    a = None
+
+    def __init__(self):
+        self.a = ADXL345();
+        self.a.setgScale2()
+        self.a.quickCalibrate()
+
     def get(self):
-        a = ADXL345();
-        return a.scaledAccelCal(10);
+        #return self.a.scaledAccelCal(10);
+        return self.a.readAccelCal();
 
     def realTime(self):
         a = ADXL345()
@@ -88,6 +95,8 @@ class BleuettePi(Serial):
 
     MCP_ADDRESS = 0x20
 
+    RESET_PIN = 14
+
     serial = None
     mcp = None
 
@@ -128,6 +137,10 @@ class BleuettePi(Serial):
         GPIO.add_event_detect(self.INTC, GPIO.RISING, callback = self.interrupt, bouncetime = 300)
         GPIO.add_event_detect(self.INTD, GPIO.RISING, callback = self.interrupt, bouncetime = 300)
 
+        self.mcp.config(self.RESET_PIN, MCP230XX.OUTPUT)
+        #self.mcp.pullup(self.RESET_PIN, True)
+        self.mcp.output(self.RESET_PIN, 1)
+
     def interrupt(self, index):
         if index == self.INTA:
             self.logger.info("Interrupt from GPA")
@@ -152,9 +165,12 @@ class BleuettePi(Serial):
         return self.command(BPi_Cmd.SET_MAX, level)
     '''
 
-    def reset():
-        # Todo !
-        pass
+    def reset(self):
+        self.mcp.output(self.RESET_PIN, 0)
+        time.sleep(1)
+        self.mcp.output(self.RESET_PIN, 1)
+        time.sleep(1)
+        self.Servo.init()
 
     def getStatus(self):
         self.serial.write(self.HEADER)
