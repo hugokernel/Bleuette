@@ -6,6 +6,8 @@ var keymap = {
     40: 'reverse'
 };
 
+var cad = null;
+
 (function (exports, $) {
 
     exports.Bleuette = function() {
@@ -116,8 +118,11 @@ var keymap = {
                             for (i = 0; i < 6; i++) {
                                 if (json.sensors.ground[i]) {
                                     $('#ground-' + i).css('background-color', 'red');
+
+                                    cad.leg.setColor(i + 5, 0xff0000);
                                 } else {
                                     $('#ground-' + i).css('background-color', 'green');
+                                    cad.leg.setColor(i + 5, 0x00ff00);
                                 }
                             }
 
@@ -209,121 +214,294 @@ var keymap = {
                         info.style.backgroundColor = 'transparent';
                         info.style.zIndex = '1';
                         info.style.fontFamily = 'Monospace';
-                        info.innerHTML = 'Drag mouse to rotate camera';
+                        //info.innerHTML = 'Drag mouse to rotate camera';
                         document.body.appendChild( info );
 
+/*
                         // renderer
-                        renderer = new THREE.CanvasRenderer();
+                        //renderer = new THREE.CanvasRenderer();
+                        renderer = new THREE.WebGLRenderer();
                         renderer.setSize( window.innerWidth, window.innerHeight );
                         renderer.physicallyBasedShading = true;
 
                         //document.getElementById('render').appendChild(renderer.domElement);
-
+*/
                         container = document.getElementById( 'canvas' );
-                        document.body.appendChild( container );
+                        //document.body.appendChild( container );
 
+                        //renderer = new THREE.CanvasRenderer();
                         renderer = new THREE.WebGLRenderer();
-                        renderer.setSize( 640, 480 );
+                        renderer.setSize(640, 480);
                         container.appendChild( renderer.domElement );
 
                         //document.body.appendChild( renderer.domElement );
 
                         // scene
                         scene = new THREE.Scene();
-                        
+
+                        //light = new THREE.AmbientLight(0x00000);
+                        //scene.add(light);
+                        //var ambientLight = new THREE.AmbientLight(0x0000c1);
+                        //scene.add(ambientLight);
+                        var light = new THREE.PointLight(0xffffc1);
+                        light.position.set(10, 10, 10);
+                        light.add(new THREE.AxisHelper(20));
+                        scene.add(light);
+
                         // camera
-                        camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 100 );
-                        camera.position.set( 20, 20, 20 );
+                        camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 100);
+                        camera.position.set(20, 20, 20);
 
                         // controls
-                        controls = new THREE.OrbitControls( camera );
-                        
+                        controls = new THREE.OrbitControls(camera, container);
+
                         // axes
-                        scene.add( new THREE.AxisHelper( 20 ) );
+                        scene.add(new THREE.AxisHelper(20));
 
                         // geometry
-                        var geometry = new THREE.CubeGeometry( 2, 2, 2 );
-                        
-                        body = new THREE.CubeGeometry( 10, 2, 5 );
-                        bodyMaterial = new THREE.MeshBasicMaterial( {
-                            color: 0x00ff00, 
-                            wireframe: true
-                        } );
-                        
+                        var geometry = new THREE.CubeGeometry(2, 2, 2);
+
                         // material
-                        var material = new THREE.MeshBasicMaterial( {
-                            color: 0xffffff, 
+                        /*
+                        var material = new THREE.MeshBasicMaterial({
+                            color: 0xffffff,
                             wireframe: true
-                        } );
-                        
+                        });
+                        */
                         // parent
                         parent = new THREE.Object3D();
-                        scene.add( parent );
+                        scene.add(parent);
 
+/*
                         leg = function(pos) {
-                            legGeo = new THREE.CubeGeometry( 1, 1, 4 );
-                            legMaterial = new THREE.MeshBasicMaterial( {
-                                color: 0xff0000, 
+                            legGeo = new THREE.CubeGeometry(1, 1, 4);
+                            legMaterial = new THREE.MeshBasicMaterial({
+                                color: 0xff0000,
                                 wireframe: false
-                            } );
-                            
+                            });
+
                             l = new THREE.Object3D();
                             l.position.x = pos.x;
                             l.position.y = pos.y;
                             l.position.z = pos.z;
                             //l.rotation.x = 5;
                             parent.add(l);
-                            
+
                             m = new THREE.Mesh(legGeo, legMaterial);
                             if (pos.z == 2.5)
                                 m.position.z = 2;
                             else
-                            m.position.z = -2;
-                            l.add(m);
-                            
+                                m.position.z = -2;
+                                l.add(m);
+
                             return l;
                         };
-                        
-                        // pivots
-                        var bodyTruc = new THREE.Object3D();
-                        parent.add(bodyTruc)
+*/
 
-                        // mesh
-                        var bodyMesh = new THREE.Mesh( body, bodyMaterial );
-                        bodyTruc.add(bodyMesh)
-                        
+                        cube = function(w, l, h, parent, color) {
+                            color = color || 0x000000;
+                            geo = new THREE.CubeGeometry(w, l, h);
+                            mat = new THREE.MeshBasicMaterial({
+                                color: color,
+                                wireframe: false
+                            });
+
+                            obj = new THREE.Object3D();
+                            parent.add(obj);
+                            mesh = new THREE.Mesh(geo, mat);
+                            obj.add(mesh)
+
+                            //obj.add(new THREE.AxisHelper(20));
+
+                            return { obj: obj, mesh: mesh };
+                        };
+
+                        cad = (function() {
+                            return {
+
+                                body: (function() {
+
+                                    return {
+                                        make: function() {
+                                            geo = new THREE.CubeGeometry(15, 1, 6);
+                                            material = new THREE.MeshLambertMaterial({ color: 'blue', ambient: 'blue' });
+                                            
+                                            /*
+                                            material = new THREE.MeshBasicMaterial({
+                                                color: 0x00ff00,
+                                                wireframe: false
+                                            });
+                                            */
+
+                                            obj = new THREE.Object3D();
+                                            parent.add(obj)
+
+                                            mesh = new THREE.Mesh(geo, material);
+                                            obj.add(mesh)
+
+                                            return obj;
+                                        },
+
+                                        create: function() {
+                                            obj = this.make();
+                                            obj.position.y = 0.5;
+                                            //obj = this.make();
+                                            //obj.position.y = 1;
+                                        }
+                                    };
+
+                                })(),
+
+                                leg: (function() {
+
+                                    return {
+
+                                        positions: [
+                                            [ -5, 0.5, 3, 0 ],
+                                            [ 0, 0.5, 3, 0 ],
+                                            [ 5, 0.5, 3, 0 ],
+
+                                            [ -5, 0.5, -3, Math.PI ],
+                                            [ 0, 0.5, -3, Math.PI ],
+                                            [ 5, 0.5, -3, Math.PI ],
+                                        ],
+
+                                        data: {},
+
+                                        get: function(index) {
+                                            return this.data[index];
+                                        },
+
+                                        create: function(index, x, y, z, value) {
+                                            armh = cube(0.5, 0.5, 3, parent, 'yellow');
+                                            armh.obj.position.x = x;
+                                            armh.obj.position.y = y;
+                                            armh.obj.position.z = z;
+
+                                            armh.obj.rotation.y = value;
+                                            armh.mesh.position.z = 1.5;
+                                            this.data[index] = armh;
+
+                                            armv = cube(0.5, 0.5, 3, armh.mesh, 'green');
+                                            armv.obj.position.y = 0;
+                                            armv.obj.position.z = 1.5;
+                                            armv.mesh.position.z = 1.5;
+
+                                            this.data[index + 6] = armv;
+                                        },
+
+                                        createAll: function() {
+                                            for (i = 0; i < this.positions.length; i++) {
+                                                position = this.positions[i];
+                                                this.create(i, position[0], position[1], position[2], position[3]);
+                                            }
+                                        },
+
+                                        setV: function(index, value) {
+                                            //console.info(index);
+                                            //console.info(this.data);
+                                            if (index >= 3) {
+                                                value += Math.PI;
+                                            }
+                                            this.data[index].obj.rotation.x = value;// += 0.01;
+                                        },
+
+                                        setH: function(index, value) {
+                                            if (index >= 3) {
+                                                value -= Math.PI;
+                                            }
+                                            this.data[index].obj.rotation.y = value; // += 0.01;
+                                        },
+
+                                        setColor: function(index, color) {
+                                            this.data[index].mesh.material.color.setHex(color);
+                                        }
+                                    }
+                                })(),
+
+                            }
+                        })();
+
+                        cad.body.create();
+                        cad.leg.createAll();
+/*
+                        leg.create(0, 5, 0, 3, 0);
+                        leg.create(1, 0, 0, 3, 0);
+                        data = leg.create(2, -5, 0, 3, 0);
+                        A = data[0];
+                        AA = data[1];
+
+                        leg.create(3, -5, 0, -3, Math.PI);
+                        leg.create(4, 0, 0, -3, Math.PI);
+                        leg.create(5, 5, 0, -3, Math.PI);
+*/
+
+/*
+                        A = cube(0.5, 0.5, 3, parent);
+                        A[0].position.x = -5;
+                        A[0].position.y = 0;
+                        A[0].position.z = 3;
+                        A[1].position.z = 1.5;
+
+                        AA = cube(0.5, 0.5, 3, A[1]);
+                        AA[0].position.y = 0;
+                        AA[0].position.z = 1.5;
+                        AA[1].position.z = 1.5;
+*/
+
+
+/*
                         this.legs[0] = leg({ x: -3, y: 0, z: 2.5 });
                         this.legs[1] = leg({ x: 0, y: 0, z: 2.5 });
                         this.legs[2] = leg({ x: 3, y: 0, z: 2.5 });
-                        
+
                         this.legs[3] = leg({ x: -3, y: 0, z: -2.5 });
                         this.legs[4] = leg({ x: 0, y: 0, z: -2.5 });
                         this.legs[5] = leg({ x: 3, y: 0, z: -2.5 });
+*/
                     },
 
                     setLegRotation: function(servo, value) {
 
-                        coeff = 1.4 / 255;
+                        // 0    -> -0.5
+                        // 128  -> 0
+                        // 255  -> 0.5
+
+                        // 0
+
+
                         //console.info("Coeff: " + coeff);
-                        //console.info("Value: " + coeff * json.data.servos[i]);
 
                         // Horizontal
-                        if (servo <= 2) {
-                            B.simulation.legs[i].rotation.y = coeff * json.data.servos[i] - 1.4/2;
-                        } else {
-                            B.simulation.legs[i - 3].rotation.x = coeff * json.data.servos[i] - 1.4/2;
-                        }
+                        if (servo <= 5) {
+                            //B.simulation.legs[i].rotation.y = coeff * json.data.servos[i] - 1.4/2;
+                            max = 0.9;
+                            coeff = max / 128;
 
+                            //console.info("Servo:" + servo + ", value: " + value + ", sent:" + (coeff * value - max));
+                            value = coeff * value - max;
+
+                            if (servo >= 3) {
+                                value = -value;
+                            }
+
+                            cad.leg.setH(servo, value);
+                        } else {
+                            value = -value;
+                            max = 1;
+                            coeff = max / 128;
+
+                            //console.info("Servo:" + servo + ", value: " + value + ", sent:" + (coeff * value - max));
+                            value = coeff * value - max;
+                            cad.leg.setV(servo, value);
+                            //B.simulation.legs[i - 3].rotation.x = coeff * json.data.servos[i] - 1.4/2;
+                        }
                     },
 
                     animate: function() {
 
                         requestAnimationFrame(B.simulation.animate);
 
-                        //leg0.rotation.y += 0.01;
-                        //leg3.rotation.y -= 0.01;
-                        //leg0.rotation.x += 0.01;
-                        
                         controls.update();
 
                         renderer.render(scene, camera);
@@ -339,11 +517,6 @@ var keymap = {
 })(this, jQuery);
 
 $(document).ready(function(event) {
-
-    $('#simulation').click(function() {
-        B.simulation.init();
-        B.simulation.animate();
-    });
 
     $('.slider.trimh').slider({
         min: -20,
@@ -434,6 +607,24 @@ $(document).ready(function(event) {
     });
 
     $('#tab').tab();
+
+    var initialized = false;
+    //$('a#tab-simulation[data-toggle="tab"]').on('shown', function (e) {
+    $('#3dview-handler').click(function() {
+
+        $("#popup-3dview").dialog({
+            dialogClass: "no-close",
+            resizable: false,
+            create: function() {
+                if (!initialized) {
+                    B.sendCmd(B.CMD_SET, { type: 'livemode', status: true });
+                    B.simulation.init();
+                    B.simulation.animate();
+                    initialized = true;
+                }
+            }
+        });
+    });
 
     $('#btn-left').mousedown(function() {
         B.sendCmd(B.CMD_DRIVE, { status: 'begin', direction: keymap[37] });

@@ -39,6 +39,15 @@ class ADXL345:
     def scaledAccelCal(self, a):
         return [0, 1, 2]
 
+    def setgScale2(self):
+        pass
+
+    def quickCalibrate(self):
+        pass
+
+    def readAccelCal(self):
+        return (0, 0, 0)
+
 class MCP230XX:
 
     INPUT = True
@@ -54,7 +63,11 @@ class MCP230XX:
         pass
 
     def input(self, a):
-        return 1#return randint(0, 1)
+        #return 1
+        return randint(0, 1)
+
+    def output(self, a, b):
+        pass
 
 class Analog:
     

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bleuette</title>
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="slider/css/slider.css" rel="stylesheet">
+
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="ws.js"></script>
+    <script type="text/javascript" src="slider/js/bootstrap-slider.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="dygraph-combined.js"></script>
+
+    <!-- Todo: Import ! -->
+    <script src="http://threejs.org/build/three.min.js"></script>
+    <script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
+
+<style>
+
+table#acc td {
+    width: 33%;
+}
+
+#canvas {
+    background-color: white;
+    /*
+    width: 640px;
+    height: 520px;
+    */
+    border: 1px solid black;
+    margin: 50px 30%;
+    padding: 0px;
+    position: relative; /* fixed or static */
+}
+
+</style>
+
+<script>
+
+var B;
+$(document).ready(function(event) {
+    B = new Bleuette;
+    B.host = '{{Config.HOST}}';
+    B.fakeMode = '{{Config.FAKE_MODE}}';
+    B.init();
+
+    B.simulation.init();
+    B.simulation.animate();
+});
+
+</script>
+
+</head>
+<body>
+
+    <div class="tab-pane" id="simulation">
+        <div id="canvas"></div>
+    </div>
+
+</body>
+</html>

@@ -7,14 +7,15 @@
     <link href="/static/slider/css/slider.css" rel="stylesheet">
 
     <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/static/ws.js"></script>
     <script type="text/javascript" src="/static/slider/js/bootstrap-slider.js"></script>
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/dygraph-combined.js"></script>
 
     <!-- Todo: Import ! -->
-    <script src="http://threejs.org/build/three.min.js"></script>
-    <script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script type="text/javascript" src="/static/three.min.js"></script>
+    <script type="text/javascript" src="/static/OrbitControls.js"></script>
 
 <style>
 
@@ -23,13 +24,16 @@ table#acc td {
 }
 
 #canvas {
-    background-color: #000;
+    background-color: white;
     width: 640px;
     height: 480px;
     border: 1px solid black;
-    margin: 100px;
+    margin: 0 30%;
     padding: 0px;
-    position: relative; /* fixed or static */
+}
+
+#popup-3dview {
+    display: none;
 }
 
 </style>
@@ -49,6 +53,11 @@ $(document).ready(function(event) {
 </head>
 <body>
 
+<div id="popup-3dview">
+    <div id="canvas"></div>
+</div>
+
+
 <div class="container">
     <h1>Bleuette interface</h1>
 
@@ -57,6 +66,7 @@ $(document).ready(function(event) {
         {% if Config.FAKE_MODE %}
             <strong class="text-info">Fake mode</strong>
         {% end %}
+        <a href="#" id="3dview-handler">3D view</a>
     </p>
 
     <div class="row">
@@ -127,7 +137,6 @@ $(document).ready(function(event) {
         <li class="active"><a href="#drive" data-toggle="tab">Drive</a></li>
         <li><a href="#trim" data-toggle="tab">Trim</a></li>
         <li><a href="#move" data-toggle="tab">Move</a></li>
-        <li><a href="#simulation" data-toggle="tab">Simulation</a></li>
         <li><a href="#limit" data-toggle="tab">Limit</a></li>
         <li><a href="#sensors" data-toggle="tab">Sensors</a></li>
         <li><a href="#system" data-toggle="tab">System</a></li>
@@ -214,9 +223,6 @@ $(document).ready(function(event) {
 
         <div class="tab-pane" id="move">
 
-            <p id="simulation">Start !</p>
-            <div id="canvas"></div>
-
             <table class="table table-bordered">
                 <tr>
                     <td>
@@ -247,10 +253,6 @@ $(document).ready(function(event) {
                     </td>
                 </tr>
             </table>
-        </div>
-
-        <div class="tab-pane" id="simulation">
-
         </div>
 
         <div class="tab-pane" id="limit">
