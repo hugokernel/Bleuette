@@ -5,11 +5,14 @@
 
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/slider/css/slider.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/jquery-ui.min.css">
 
     <script type="text/javascript" src="/static/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/static/ws.js"></script>
+    <!--
     <script type="text/javascript" src="/static/slider/js/bootstrap-slider.js"></script>
+    -->
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/dygraph-combined.js"></script>
 
@@ -190,30 +193,72 @@ $(document).ready(function(event) {
             <table class="table table-bordered">
                 <tr>
                     <td>
-                        <input id="trim-slide1" class="slider trimh" type="text" data-servo="1" />
-                        <input id="trim-slide7" class="slider trimv" type="text" data-servo="7" />
+                        <p>
+                            Horizontal Servo 1 :
+                            <div id="trim-slide1" class="slide trim trimh" data-type="trim" data-servo="1"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 7 :
+                            <div id="trim-slide7" class="slide trim trimv" data-type="trim" data-servo="7"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="trim-slide3" class="slider trimh" type="text" data-servo="3" />
-                        <input id="trim-slide9" class="slider trimv" type="text" data-servo="9" />
+                        <p>
+                            Horizontal Servo 3 :
+                            <div id="trim-slide3" class="slide trim trimh" data-type="trim" data-servo="3"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 9 :
+                            <div id="trim-slide9" class="slide trim trimv" data-type="trim" data-servo="9"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="trim-slide5" class="slider trimh" type="text" data-servo="5" />
-                        <input id="trim-slide11" class="slider trimv" type="text" data-servo="11" />
+                        <p>
+                            Horizontal Servo 5 :
+                            <div id="trim-slide5" class="slide trim trimh" data-type="trim" data-servo="5"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 11 :
+                            <div id="trim-slide11" class="slide trim trimv" data-type="trim" data-servo="11"></div>
+                        </p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input id="trim-slide0" class="slider trimh" type="text" data-servo="0" />
-                        <input id="trim-slide6" class="slider trimv" type="text" data-servo="6" />
+                        <p>
+                            Horizontal Servo 0 :
+                            <div id="trim-slide0" class="slide trim trimh" data-type="trim" data-servo="0"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 6 :
+                            <div id="trim-slide6" class="slide trim trimv" data-type="trim" data-servo="7"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="trim-slide2" class="slider trimh" type="text" data-servo="2" />
-                        <input id="trim-slide8" class="slider trimv" type="text" data-servo="8" />
+                        <p>
+                            Horizontal Servo 2 :
+                            <div id="trim-slide2" class="slide trim trimh" data-type="trim" data-servo="2"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 8 :
+                            <div id="trim-slide8" class="slide trim trimv" data-type="trim" data-servo="8"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="trim-slide4" class="slider trimh" type="text" data-servo="4" />
-                        <input id="trim-slide10" class="slider trimv" type="text" data-servo="10" />
+                        <p>
+                            Horizontal Servo 4 :
+                            <div id="trim-slide4" class="slide trim trimh" data-type="trim" data-servo="4"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 10 :
+                            <div id="trim-slide10" class="slide trim trimv" data-type="trim" data-servo="10"></div>
+                        </p>
                     </td>
                 </tr>
             </table>
@@ -226,30 +271,72 @@ $(document).ready(function(event) {
             <table class="table table-bordered">
                 <tr>
                     <td>
-                        <input id="move-slide1" class="slider moveh" type="text" data-servo="1" />
-                        <input id="move-slide7" class="slider movev" type="text" data-servo="7" />
+                        <p>
+                            Horizontal Servo 1 :
+                            <div id="move-slide1" class="slide move moveh" data-servo="1"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 7 :
+                            <div id="move-slide7" class="slide move movev" data-servo="7"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="move-slide3" class="slider moveh" type="text" data-servo="3" />
-                        <input id="move-slide9" class="slider movev" type="text" data-servo="9" />
+                        <p>
+                            Horizontal Servo 3 :
+                            <div id="move-slide3" class="slide move moveh" data-servo="3"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 9 :
+                            <div id="move-slide9" class="slide move movev" data-servo="9"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="move-slide5" class="slider moveh" type="text" data-servo="5" />
-                        <input id="move-slide11" class="slider movev" type="text" data-servo="11" />
+                        <p>
+                            Horizontal Servo 5 :
+                            <div id="move-slide5" class="slide move moveh" data-servo="5"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 11 :
+                            <div id="move-slide11" class="slide move movev" data-servo="11"></div>
+                        </p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input id="move-slide0" class="slider moveh" type="text" data-servo="0" />
-                        <input id="move-slide6" class="slider movev" type="text" data-servo="6" />
+                        <p>
+                            Horizontal Servo 0 :
+                            <div id="move-slide0" class="slide move moveh" data-servo="0"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 6 :
+                            <div id="move-slide6" class="slide move movev" data-servo="6"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="move-slide2" class="slider moveh" type="text" data-servo="2" />
-                        <input id="move-slide8" class="slider movev" type="text" data-servo="8" />
+                        <p>
+                            Horizontal Servo 2 :
+                            <div id="move-slide2" class="slide move moveh" data-servo="2"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 8 :
+                            <div id="move-slide8" class="slide move movev" data-servo="8"></div>
+                        </p>
                     </td>
                     <td>
-                        <input id="move-slide4" class="slider moveh" type="text" data-servo="4" />
-                        <input id="move-slide10" class="slider movev" type="text" data-servo="10" />
+                        <p>
+                            Horizontal Servo 4 :
+                            <div id="move-slide4" class="slide move moveh" data-servo="4"></div>
+                        </p>
+
+                        <p>
+                            Vertical Servo 10 :
+                            <div id="move-slide10" class="slide move movev" data-servo="10"></div>
+                        </p>
                     </td>
                 </tr>
             </table>

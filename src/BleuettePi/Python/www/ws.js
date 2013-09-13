@@ -85,6 +85,7 @@ var cad = null;
                     //console.info(json);
                     switch (json.type) {
                         case B.CMD_CONFIG:
+                        /*
                             for (i = 0; i < json.data.trims.length; i++) {
                                 $('#trim-slide' + i).slider('setValue', json.data.trims[i]);
                             }
@@ -92,14 +93,17 @@ var cad = null;
                             for (i = 0; i < json.data.limits.length; i++) {
                                 $('#limit-slide' + i).slider('setValue', json.data.limits[i]);
                             }
+                            */
                             break;
 
                         case 'position':
                             for (i = 0; i < json.data.servos.length; i++) {
+                                /*
                                 $('#move-slide' + i).slider('setValue', json.data.servos[i]);
+                                */
 
                                 //if (i == 0) {
-                                    B.simulation.setLegRotation(i, json.data.servos[i]);
+                                    B.simulation.setServoPosition(i, json.data.servos[i]);
                                     /*
                                     coeff = 1.4 / 255;
                                     console.info("Coeff: " + coeff);
@@ -119,10 +123,15 @@ var cad = null;
                                 if (json.sensors.ground[i]) {
                                     $('#ground-' + i).css('background-color', 'red');
 
-                                    cad.leg.setColor(i + 5, 0xff0000);
+                                    if (cad) {
+                                        cad.leg.setColor(i + 5, 0xff0000);
+                                    }
                                 } else {
                                     $('#ground-' + i).css('background-color', 'green');
-                                    cad.leg.setColor(i + 5, 0x00ff00);
+
+                                    if (cad) {
+                                        cad.leg.setColor(i + 5, 0x00ff00);
+                                    }
                                 }
                             }
 
@@ -229,8 +238,8 @@ var cad = null;
                         container = document.getElementById( 'canvas' );
                         //document.body.appendChild( container );
 
-                        //renderer = new THREE.CanvasRenderer();
-                        renderer = new THREE.WebGLRenderer();
+                        renderer = new THREE.CanvasRenderer();
+                        //renderer = new THREE.WebGLRenderer();
                         renderer.setSize(640, 480);
                         container.appendChild( renderer.domElement );
 
@@ -358,11 +367,12 @@ var cad = null;
 
                                         positions: [
                                             [ -5, 0.5, 3, 0 ],
-                                            [ 0, 0.5, 3, 0 ],
-                                            [ 5, 0.5, 3, 0 ],
-
                                             [ -5, 0.5, -3, Math.PI ],
+
+                                            [ 0, 0.5, 3, 0 ],
                                             [ 0, 0.5, -3, Math.PI ],
+
+                                            [ 5, 0.5, 3, 0 ],
                                             [ 5, 0.5, -3, Math.PI ],
                                         ],
 
@@ -398,19 +408,18 @@ var cad = null;
                                         },
 
                                         setV: function(index, value) {
-                                            //console.info(index);
-                                            //console.info(this.data);
-                                            if (index >= 3) {
+                                            if (!(index % 1)) {
                                                 value += Math.PI;
                                             }
-                                            this.data[index].obj.rotation.x = value;// += 0.01;
+                                            console.info(value);
+                                            this.data[index].obj.rotation.x = value;
                                         },
 
                                         setH: function(index, value) {
-                                            if (index >= 3) {
+                                            if (index % 2) {
                                                 value -= Math.PI;
                                             }
-                                            this.data[index].obj.rotation.y = value; // += 0.01;
+                                            this.data[index].obj.rotation.y = value;
                                         },
 
                                         setColor: function(index, color) {
@@ -461,7 +470,7 @@ var cad = null;
 */
                     },
 
-                    setLegRotation: function(servo, value) {
+                    setServoPosition: function(servo, value) {
 
                         // 0    -> -0.5
                         // 128  -> 0
@@ -481,18 +490,18 @@ var cad = null;
                             //console.info("Servo:" + servo + ", value: " + value + ", sent:" + (coeff * value - max));
                             value = coeff * value - max;
 
-                            if (servo >= 3) {
+                            if (servo % 2) {
                                 value = -value;
                             }
 
                             cad.leg.setH(servo, value);
                         } else {
-                            value = -value;
+                            //value = -value;
                             max = 1;
                             coeff = max / 128;
 
                             //console.info("Servo:" + servo + ", value: " + value + ", sent:" + (coeff * value - max));
-                            value = coeff * value - max;
+                            value = coeff * value + max + 2;
                             cad.leg.setV(servo, value);
                             //B.simulation.legs[i - 3].rotation.x = coeff * json.data.servos[i] - 1.4/2;
                         }
@@ -518,6 +527,57 @@ var cad = null;
 
 $(document).ready(function(event) {
 
+    $('.slide.trim').slider({
+        min: -20,
+        max: 20,
+        step: 1,
+        value: 0,
+        orientation: 'horizontal',
+        slide: function(ev, ui) {
+            servo = $(this).data('servo');
+            value = ui.value;
+
+            if (servo % 2) {
+                value = -value;
+            }
+
+            B.sendCmd(B.CMD_SET, { type: 'trim', servo: servo, value: value });
+        }
+    }).dblclick(function() {
+        $(this).slider('value', 0);
+        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 0 });
+    });
+
+    $('.slide.move').slider({
+        min: 0,
+        max: 254,
+        step: 1,
+        value: 128,
+        orientation: 'horizontal',
+        slide: function(ev, ui) {
+            servo = $(this).data('servo');
+            value = ui.value;
+
+            console.info('before:' + value);
+            if (servo == 3 || servo == 10 || servo == 5) {
+                if (value > 128) {
+                    offset = value - 128;
+                    value = 128 - offset;
+                } else {
+                    offset = 128 - value;
+                    value = 128 + offset;
+                }
+            }
+            console.info('after:' + value);
+
+            B.sendCmd(B.CMD_SET, { type: 'position', servo: servo, value: value });
+        }
+    }).dblclick(function() {
+        $(this).slider('value', 128);
+        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 128 });
+    });
+
+/*
     $('.slider.trimh').slider({
         min: -20,
         max: 20,
@@ -605,6 +665,7 @@ $(document).ready(function(event) {
     }).on('slide', function(ev) {
         B.sendCmd(B.CMD_SET, { type: 'speed', value: ev.value });
     });
+*/
 
     $('#tab').tab();
 

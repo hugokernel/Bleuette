@@ -1,7 +1,7 @@
 
 SERIAL_DEV='/dev/ttyAMA0'
 
-FAKE_MODE=True
+FAKE_MODE=False
 
 if FAKE_MODE:
     HOST='localhost'
