@@ -82,7 +82,6 @@ var cad = null;
 
                 self.ws.onmessage = function(ev){
                     json = JSON.parse(ev.data);
-                    //console.info(json);
                     switch (json.type) {
                         case B.CMD_CONFIG:
                         /*
@@ -97,7 +96,8 @@ var cad = null;
                             break;
 
                         case 'position':
-                            for (i = 0; i < json.data.servos.length; i++) {
+                    //console.info(json.data.servos);
+                            for (i = 0; i < 12; i++) {
                                 /*
                                 $('#move-slide' + i).slider('setValue', json.data.servos[i]);
                                 */
@@ -411,7 +411,6 @@ var cad = null;
                                             if (!(index % 1)) {
                                                 value += Math.PI;
                                             }
-                                            console.info(value);
                                             this.data[index].obj.rotation.x = value;
                                         },
 
@@ -494,6 +493,8 @@ var cad = null;
                                 value = -value;
                             }
 
+                            //if (servo == 1)
+                            console.info('h:' + servo + '=' + value);
                             cad.leg.setH(servo, value);
                         } else {
                             //value = -value;
@@ -575,6 +576,21 @@ $(document).ready(function(event) {
     }).dblclick(function() {
         $(this).slider('value', 128);
         B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 128 });
+    });
+
+    $('.slide.limit').slider({
+        range: true,
+        min: 0,
+        max: 254,
+        step: 1,
+        values: [ 64, 192 ],
+        orientation: 'horizontal',
+        slide: function(ev, ui) {
+            B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(this).data('servo'), min: ui.values[0], max: ui.values[1] });
+        }
+    }).dblclick(function() {
+        $(this).slider('values', [ 64, 192 ]);
+        //B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 0 });
     });
 
 /*
@@ -676,6 +692,7 @@ $(document).ready(function(event) {
         $("#popup-3dview").dialog({
             dialogClass: "no-close",
             resizable: false,
+            width: 660,
             create: function() {
                 if (!initialized) {
                     B.sendCmd(B.CMD_SET, { type: 'livemode', status: true });
