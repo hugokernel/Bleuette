@@ -3,16 +3,16 @@
 <head>
   <title>Bleuette</title>
 
-    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/slider/css/slider.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/jquery-ui.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" media="all" type="text/css">
+    <link rel="stylesheet" href="/static/jquery-ui.min.css" media="all" type="text/css">
+    <link rel="stylesheet" href="/static/jquery.pnotify.default.css" media="all" type="text/css">
+    <link rel="stylesheet" href="/static/jquery.pnotify.default.icons.css" media="all" type="text/css" />
 
     <script type="text/javascript" src="/static/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.pnotify.min.js"></script> 
+    <script type="text/javascript" src="/static/jquery.mousewheel.js"></script> 
     <script type="text/javascript" src="/static/ws.js"></script>
-    <!--
-    <script type="text/javascript" src="/static/slider/js/bootstrap-slider.js"></script>
-    -->
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/dygraph-combined.js"></script>
 
@@ -43,6 +43,12 @@ table#acc td {
 .tab-pane .row {
     margin-bottom: 50px;
     margin-top: 10px;
+}
+
+.slider-tip {
+    opacity:1;
+    bottom:120%;
+    margin-left: -1.36em;
 }
 
 </style>
@@ -190,7 +196,7 @@ $(document).ready(function(event) {
 
             <div class="span1">
                 Speed :
-                <input id="speed-slide" class="slider" type="text" />
+                <div id="speed-slide" class="slider"></div>
             </div>
         </div>
 
@@ -343,7 +349,7 @@ $(document).ready(function(event) {
                 </div>
             </div>
 
-            <button type="button" class="btn btn-default btn-save" data-action="save">Save</button>
+            <button type="button" class="btn btn-action btn-save" data-action="save">Save</button>
         </div>
 
         <div class="tab-pane" id="limit">

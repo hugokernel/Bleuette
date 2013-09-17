@@ -171,104 +171,108 @@ class SocketHandler(websocket.WebSocketHandler):
 
         import Servo
 
-        if data['cmd'] == 'set':
-            if data['type'] == 'trim':
-                Servo.Servo_Trim.values[data['servo']] = data['value'];
-                B.Sequencer.Servo.sendValues()
-            elif data['type'] == 'limit':
-                Servo.Servo_Limit.values[data['servo']] = [ data['min'], data['max'] ];
-                B.Sequencer.Servo.sendValues()
-            elif data['type'] == 'position':
-                B.Sequencer.Servo.setValue(data['servo'], data['value'])
-                B.Sequencer.Servo.sendValues()
-            elif data['type'] == 'speed':
-                global speed
-                speed = data['value']
-            elif data['type'] == 'livemode':
-                if data['status']:
-                    B.Sequencer.Servo.setCallback(self.livemode)
-                else:
-                    B.Sequencer.Servo.removeCallback()
-            elif data['type'] == 'loglevel':
+        try:
+            if data['cmd'] == 'set':
+                if data['type'] == 'trim':
+                    Servo.Servo_Trim.values[data['servo']] = data['value'];
+                    B.Sequencer.Servo.sendValues()
+                elif data['type'] == 'limit':
+                    Servo.Servo_Limit.values[data['servo']] = [ data['min'], data['max'] ];
+                    B.Sequencer.Servo.sendValues()
+                elif data['type'] == 'position':
+                    B.Sequencer.Servo.setValue(data['servo'], data['value'])
+                    B.Sequencer.Servo.sendValues()
+                elif data['type'] == 'speed':
+                    global speed
+                    speed = data['value']
+                elif data['type'] == 'livemode':
+                    if data['status']:
+                        B.Sequencer.Servo.setCallback(self.livemode)
+                    else:
+                        B.Sequencer.Servo.removeCallback()
+                elif data['type'] == 'loglevel':
 
-                if data['which'] == 'js':
-                    _logger = jsHandler
-                    #Data.Instance().set(['log', 'js'], data['level'])
-                else:
-                    _logger = rainbowHandler
-                    #Data.Instance().set(['log', 'default'], data['level'])
-                print(data);
-                #Data.Instance().save()
+                    if data['which'] == 'js':
+                        _logger = jsHandler
+                        #Data.Instance().set(['log', 'js'], data['level'])
+                    else:
+                        _logger = rainbowHandler
+                        #Data.Instance().set(['log', 'default'], data['level'])
+                    print(data);
+                    #Data.Instance().save()
 
-                if data['level'] == 'debug':
-                    _logger.setLevel(logging.DEBUG)
-                elif data['level'] == 'info':
-                    _logger.setLevel(logging.INFO)
-                elif data['level'] == 'warning':
-                    _logger.setLevel(logging.WARNING)
-                elif data['level'] == 'error':
-                    _logger.setLevel(logging.ERROR)
-                elif data['level'] == 'warning':
-                    _logger.setLevel(logging.CRITICAL)
+                    if data['level'] == 'debug':
+                        _logger.setLevel(logging.DEBUG)
+                    elif data['level'] == 'info':
+                        _logger.setLevel(logging.INFO)
+                    elif data['level'] == 'warning':
+                        _logger.setLevel(logging.WARNING)
+                    elif data['level'] == 'error':
+                        _logger.setLevel(logging.ERROR)
+                    elif data['level'] == 'warning':
+                        _logger.setLevel(logging.CRITICAL)
 
-            #print logger.getEffectiveLevel()
+                #print logger.getEffectiveLevel()
 
-        elif data['cmd'] == 'drive':
+            elif data['cmd'] == 'drive':
 
-            if data['status'] == 'begin':
-                if data['direction'] == 'forward':
-                    B.Drive.forward()
-                elif data['direction'] == 'reverse':
-                    B.Drive.reverse()
-                elif data['direction']== 'left':
-                    B.Drive.left()
-                elif data['direction']== 'right':
-                    B.Drive.right()
-            elif data['status'] == 'end':
-                B.Drive.end()
+                if data['status'] == 'begin':
+                    if data['direction'] == 'forward':
+                        B.Drive.forward()
+                    elif data['direction'] == 'reverse':
+                        B.Drive.reverse()
+                    elif data['direction']== 'left':
+                        B.Drive.left()
+                    elif data['direction']== 'right':
+                        B.Drive.right()
+                elif data['status'] == 'end':
+                    B.Drive.end()
 
-        elif data['cmd'] == 'config':
-            if data['action'] == 'save':
-                Data.Instance().set(['servo', 'trims'], Servo.Servo_Trim.values)
-                Data.Instance().set(['servo', 'limits'], Servo.Servo_Limit.values)
-                Data.Instance().save()
-            elif data['action'] == 'get':
-                config = {
-                    'type': 'config',
-                    'data': {
-                        'trims':    Data.Instance().get(['servo', 'trims']),
-                        'limits':   Data.Instance().get(['servo', 'limits'])
+            elif data['cmd'] == 'config':
+                if data['action'] == 'save':
+                    Data.Instance().set(['servo', 'trims'], Servo.Servo_Trim.values)
+                    Data.Instance().set(['servo', 'limits'], Servo.Servo_Limit.values)
+                    Data.Instance().save()
+                elif data['action'] == 'get':
+                    config = {
+                        'type': 'config',
+                        'data': {
+                            'trims':    Data.Instance().get(['servo', 'trims']),
+                            'limits':   Data.Instance().get(['servo', 'limits'])
+                        }
                     }
-                }
-                self.write(json.dumps(config))
+                    self.write(json.dumps(config))
 
-        elif data['cmd'] == 'control':
+            elif data['cmd'] == 'control':
 
-            if data['action'] == 'reset':
-                B.BPi.reset()
+                if data['action'] == 'reset':
+                    B.BPi.reset()
 
-        elif data['cmd'] == 'sequence':
+            elif data['cmd'] == 'sequence':
 
-            if data['name'] == 'middle':
-                B.Sequencer.forward(Sequences['middle'], 1)
-            elif data['name'] == 'pushup':
-                B.Sequencer.forward(Sequences['pushup'], 1)
-            elif data['name'] == 'standby':
-                B.Sequencer.forward(Sequences['standby'], 1)
-            elif data['name'] == 'release':
-                B.Sequencer.forward(Sequences['release'], 1)
+                if data['name'] == 'middle':
+                    B.Sequencer.forward(Sequences['middle'], 1)
+                elif data['name'] == 'pushup':
+                    B.Sequencer.forward(Sequences['pushup'], 1)
+                elif data['name'] == 'standby':
+                    B.Sequencer.forward(Sequences['standby'], 1)
+                elif data['name'] == 'release':
+                    B.Sequencer.forward(Sequences['release'], 1)
 
-        elif data['cmd'] == 'servo':
+            elif data['cmd'] == 'servo':
 
-            if data['name'] == 'init':
-                B.Sequencer.Servo.init()
-            elif data['name'] == 'pause':
-                B.Sequencer.Servo.pause()
-            elif data['name'] == 'resume':
-                B.Sequencer.Servo.resume()
+                if data['name'] == 'init':
+                    B.Sequencer.Servo.init()
+                elif data['name'] == 'pause':
+                    B.Sequencer.Servo.pause()
+                elif data['name'] == 'resume':
+                    B.Sequencer.Servo.resume()
 
-        else:
-            logger.warning("Message : %s" % message)
+            else:
+                logger.warning("Message : %s" % message)
+
+        except Exception, e:
+            logger.critical("Exception ! " + str(e));
 
     def on_close(self):
         if self in cl:

@@ -84,34 +84,20 @@ var cad = null;
                     json = JSON.parse(ev.data);
                     switch (json.type) {
                         case B.CMD_CONFIG:
-                        /*
                             for (i = 0; i < json.data.trims.length; i++) {
-                                $('#trim-slide' + i).slider('setValue', json.data.trims[i]);
+                                $('#trim-slide' + i).slider('value', json.data.trims[i]);
                             }
 
                             for (i = 0; i < json.data.limits.length; i++) {
-                                $('#limit-slide' + i).slider('setValue', json.data.limits[i]);
+                                $('#limit-slide' + i).slider('values', json.data.limits[i]);
                             }
-                            */
                             break;
 
                         case 'position':
-                    //console.info(json.data.servos);
                             for (i = 0; i < 12; i++) {
-                                /*
-                                $('#move-slide' + i).slider('setValue', json.data.servos[i]);
-                                */
+                                $('#move-slide' + i).slider('value', servoPos(i, json.data.servos[i], 128));
 
-                                //if (i == 0) {
-                                    B.simulation.setServoPosition(i, json.data.servos[i]);
-                                    /*
-                                    coeff = 1.4 / 255;
-                                    console.info("Coeff: " + coeff);
-                                    B.simulation.legs[i].rotation.y = coeff * json.data.servos[i] - 1.4/2;
-                                    console.info("Value: " + coeff * json.data.servos[i]);
-                                    */
-                                //}
-//                                leg3.rotation.y -= 0.01;
+                                B.simulation.setServoPosition(i, json.data.servos[i]);
                             }
                             break;
                         case 'sensors':
@@ -163,6 +149,11 @@ var cad = null;
                                 case 'ERROR':
                                 case 'CRITICAL':
                                     console.error('[' + json.data.levelname + '] ' + json.data.msg);
+                                    $.pnotify({
+                                        title: 'Error !',
+                                        text: '[' + json.data.levelname + '] ' + json.data.msg,
+                                        type: 'error'
+                                    });
                                     break;
                                 default:
                                     alert('Log level error unknow ' + json.data.levelname + ' !');
@@ -495,7 +486,9 @@ var cad = null;
 
                             //if (servo == 1)
                             console.info('h:' + servo + '=' + value);
-                            cad.leg.setH(servo, value);
+                            if (cad) {
+                                cad.leg.setH(servo, value);
+                            }
                         } else {
                             //value = -value;
                             max = 1;
@@ -503,7 +496,10 @@ var cad = null;
 
                             //console.info("Servo:" + servo + ", value: " + value + ", sent:" + (coeff * value - max));
                             value = coeff * value + max + 2;
-                            cad.leg.setV(servo, value);
+
+                            if (cad) {
+                                cad.leg.setV(servo, value);
+                            }
                             //B.simulation.legs[i - 3].rotation.x = coeff * json.data.servos[i] - 1.4/2;
                         }
                     },
@@ -526,7 +522,37 @@ var cad = null;
 
 })(this, jQuery);
 
+
+var servoPos = function(servo, value, scale, callback) {
+
+    // Disabled mode
+    if (1) {
+        return value;
+    }
+
+    if (servo == 1 || servo == 3 || servo == 10 || servo == 5) {
+        if (callback) {
+            return callback(value);
+        } else {
+            if (value > scale) {
+                offset = value - scale;
+                value = scale - offset;
+            } else {
+                offset = scale - value;
+                value = scale + offset;
+            }
+        }
+    }
+    return value;
+};
+
 $(document).ready(function(event) {
+
+    $.pnotify.defaults.styling = "bootstrap";
+    $.pnotify({
+        title: 'Hi',
+        text: 'Welcome !',
+    });
 
     $('.slide.trim').slider({
         min: -20,
@@ -535,18 +561,31 @@ $(document).ready(function(event) {
         value: 0,
         orientation: 'horizontal',
         slide: function(ev, ui) {
+            $(this).children('.ui-slider-handle').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.value + '</div></div>');
+
             servo = $(this).data('servo');
             value = ui.value;
 
-            if (servo % 2) {
-                value = -value;
-            }
+//            if (servo % 2) {
+//                value = -value;
+//            }
+
+            console.info('before:' + value);
+            value = servoPos(servo, value, 0, function() {
+                return value = -value;   
+            });
+            console.info('after:' + value);
+            //value -= 20;
 
             B.sendCmd(B.CMD_SET, { type: 'trim', servo: servo, value: value });
         }
     }).dblclick(function() {
         $(this).slider('value', 0);
         B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 0 });
+    }).mousewheel(function(e, delta) {
+        $(this).slider('value', $(this).slider('value') + delta);
+        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: $(this).slider('value') + delta });
+        return false;
     });
 
     $('.slide.move').slider({
@@ -556,26 +595,23 @@ $(document).ready(function(event) {
         value: 128,
         orientation: 'horizontal',
         slide: function(ev, ui) {
+            $(this).children('.ui-slider-handle').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.value + '</div></div>');
             servo = $(this).data('servo');
             value = ui.value;
 
-            console.info('before:' + value);
-            if (servo == 3 || servo == 10 || servo == 5) {
-                if (value > 128) {
-                    offset = value - 128;
-                    value = 128 - offset;
-                } else {
-                    offset = 128 - value;
-                    value = 128 + offset;
-                }
-            }
-            console.info('after:' + value);
+            //console.info('before:' + value);
+            value = servoPos(servo, value, 128);
+            //console.info('after:' + value);
 
             B.sendCmd(B.CMD_SET, { type: 'position', servo: servo, value: value });
         }
     }).dblclick(function() {
         $(this).slider('value', 128);
         B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 128 });
+    }).mousewheel(function(e, delta) {
+        $(this).slider('value', $(this).slider('value') + delta);
+        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: $(this).slider('value') + delta });
+        return false;
     });
 
     $('.slide.limit').slider({
@@ -586,102 +622,30 @@ $(document).ready(function(event) {
         values: [ 64, 192 ],
         orientation: 'horizontal',
         slide: function(ev, ui) {
+            $(this).children('.ui-slider-handle:first').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.values[0] + '</div></div>');
+            $(this).children('.ui-slider-handle:last').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.values[1] + '</div></div>');
             B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(this).data('servo'), min: ui.values[0], max: ui.values[1] });
         }
     }).dblclick(function() {
         $(this).slider('values', [ 64, 192 ]);
         //B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 0 });
     });
-
-/*
-    $('.slider.trimh').slider({
-        min: -20,
-        max: 20,
-        step: 2,
-        value: 0,
-        orientation: 'horizontal',
-        formater: function(value) {
-            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
-        }
-    }).on('slide', function(ev) {
-        B.sendCmd(B.CMD_SET, { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
+    /*.mousewheel(function(e, delta) {
+        $(this).slider('value', $(this).slider('value') + delta);
+        return false;
     });
-
-    $('.slider.trimv').slider({
-        min: -20,
-        max: 20,
-        step: 2,
-        value: 0,
-        orientation: 'vertical',
-        formater: function(value) {
-            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
-        }
-    }).on('slide', function(ev) {
-        B.sendCmd(B.CMD_SET, { type: 'trim', servo: $(ev.currentTarget).data('servo'), value: ev.value });
-    });
-
-    $('.slider.moveh').slider({
-        min: 0,
-        max: 255,
-        step: 1,
-        value: 128,
-        orientation: 'horizontal',
-        formater: function(value) {
-            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
-        }
-    }).on('slide', function(ev) {
-        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
-    });
-
-    $('.slider.movev').slider({
-        min: 0,
-        max: 255,
-        step: 1,
-        value: 128,
-        orientation: 'vertical',
-        formater: function(value) {
-            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
-        }
-    }).on('slide', function(ev) {
-        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(ev.currentTarget).data('servo'), value: ev.value });
-    });
-
-    $('.slider.limith').slider({
-        min: 0,
-        max: 254,
-        step: 1,
-        value: [ 64, 192 ],
-        orientation: 'horizontal',
-        formater: function(value) {
-            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
-        }
-    }).on('slide', function(ev) {
-        B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
-    });
-
-    $('.slider.limitv').slider({
-        min: 0,
-        max: 254,
-        step: 1,
-        value: [ 64, 192 ],
-        orientation: 'vertical',
-        formater: function(value) {
-            return 'Servo ' + $(this.element).data('servo') + ' : ' + value;
-        }
-    }).on('slide', function(ev) {
-        B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(ev.currentTarget).data('servo'), min: ev.value[0], max: ev.value[1] });
-    });
+    */
 
     $('#speed-slide').slider({
         min: 0,
         max: 16,
         step: 1,
         value: 16,
-        orientation: 'horizontal'
-    }).on('slide', function(ev) {
-        B.sendCmd(B.CMD_SET, { type: 'speed', value: ev.value });
+        orientation: 'horizontal',
+        slide: function(ev, ui) {
+            B.sendCmd(B.CMD_SET, { type: 'speed', value: ui.value });
+        }
     });
-*/
 
     $('#tab').tab();
 
