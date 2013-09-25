@@ -8,519 +8,162 @@ var keymap = {
 
 var cad = null;
 
-(function (exports, $) {
+var slide = (function() {
 
-    exports.Bleuette = function() {
+    var timeoutHdl = {};
 
-        var self = this;
-
-        return {
-
-            host: '',
-            fakeMode: false,
-
-            CMD_SET: 'set',
-            CMD_DRIVE: 'drive',
-            CMD_CONFIG: 'config',
-            CMD_CONTROL: 'control',
-            CMD_SEQUENCE: 'sequence',
-            CMD_SERVO: 'servo',
-
-            init: function() {
-
-                self.ws = new WebSocket('ws://' + this.host + ':8888/ws');
-                var $message = $('#message');
-
-                var agraph = new Dygraph(document.getElementById("accelerometer-graph"), [ [0, 0, 0, 0 ] ], {
-                    //drawPoints: true,
-                    //showRoller: true,
-                    valueRange: [ -5000, 5000],
-                    labels: ['Unit', 'z', 'y', 'z']
-                });
-
-                var cgraph = new Dygraph(document.getElementById("compass-graph"), [ [0, 0, 0, 0 ] ], {
-                    //drawPoints: true,
-                    //showRoller: true,
-                    valueRange: [ 0, 360],
-                    labels: ['Unit', 'Heading']
-                });
-
-                fifo = function(size) {
-                    return {
-                        data: [],
-                        size: size,
-                        _total: 0,
-
-                        add: function(item) {
-                            if (this.data.length > this.size) {
-                                this.data.shift();
-                            }
-
-                            this.data.push(item);
-                            this._total++;
-                        },
-
-                        get: function() {
-                            return this.data;
-                        },
-
-                        total: function() {
-                            return this._total;
-                        }
-                    }
-                };
-
-                var afifo = new fifo(20);
-                var cfifo = new fifo(20);
-
-                self.ws.onopen = function(){
-                    $message.attr("class", 'label label-success');
-                    $message.text('open');
-
-                    B.sendCmd(B.CMD_CONFIG, { action: 'get' });
-                };
-
-                self.ws.onmessage = function(ev){
-                    json = JSON.parse(ev.data);
-                    switch (json.type) {
-                        case B.CMD_CONFIG:
-                            for (i = 0; i < json.data.trims.length; i++) {
-                                $('#trim-slide' + i).slider('value', json.data.trims[i]);
-                            }
-
-                            for (i = 0; i < json.data.limits.length; i++) {
-                                $('#limit-slide' + i).slider('values', json.data.limits[i]);
-                            }
-                            break;
-
-                        case 'position':
-                            for (i = 0; i < 12; i++) {
-                                $('#move-slide' + i).slider('value', servoPos(i, json.data.servos[i], 128));
-
-                                B.simulation.setServoPosition(i, json.data.servos[i]);
-                            }
-                            break;
-                        case 'sensors':
-                            $('#acc-x').text(json.sensors.accelerometer[0]);
-                            $('#acc-y').text(json.sensors.accelerometer[1]);
-                            $('#acc-z').text(json.sensors.accelerometer[2]);
-
-                            for (i = 0; i < 6; i++) {
-                                if (json.sensors.ground[i]) {
-                                    $('#ground-' + i).css('background-color', 'red');
-
-                                    if (cad) {
-                                        cad.leg.setColor(i + 5, 0xff0000);
-                                    }
-                                } else {
-                                    $('#ground-' + i).css('background-color', 'green');
-
-                                    if (cad) {
-                                        cad.leg.setColor(i + 5, 0x00ff00);
-                                    }
-                                }
-                            }
-
-                            $('#compass-heading').text(json.sensors.compass[1]);
-                            $('#compass-x').text(json.sensors.compass[0][0]);
-                            $('#compass-y').text(json.sensors.compass[0][1]);
-                            $('#compass-z').text(json.sensors.compass[0][2]);
-
-
-                            afifo.add([afifo.total(), json.sensors.accelerometer[0], json.sensors.accelerometer[1], json.sensors.accelerometer[2]])
-                            agraph.updateOptions({ 'file': afifo.get() });
-
-                            heading = json.sensors.compass[1].split('°');
-                            cfifo.add([cfifo.total(), heading[0] ]);
-                            cgraph.updateOptions({ 'file': cfifo.get() });
-                            break;
-                        case 'log':
-
-                            switch(json.data.levelname) {
-                                case 'DEBUG':
-                                    console.debug('[' + json.data.levelname + '] ' + json.data.msg);
-                                    break;
-                                case 'WARNING':
-                                    console.warn('[' + json.data.levelname + '] ' + json.data.msg);
-                                    break;
-                                case 'INFO':
-                                    console.info('[' + json.data.levelname + '] ' + json.data.msg);
-                                    break;
-                                case 'ERROR':
-                                case 'CRITICAL':
-                                    console.error('[' + json.data.levelname + '] ' + json.data.msg);
-                                    $.pnotify({
-                                        title: 'Error !',
-                                        text: '[' + json.data.levelname + '] ' + json.data.msg,
-                                        type: 'error'
-                                    });
-                                    break;
-                                default:
-                                    alert('Log level error unknow ' + json.data.levelname + ' !');
-                            }
-
-                            break;
-                        default:
-                            console.info(json);
-                    }
-                };
-
-                self.ws.onclose = function(ev){
-                    $message.attr("class", 'label label-important');
-                    $message.text('closed');
-                };
-
-                self.ws.onerror = function(ev){
-                    $message.attr("class", 'label label-warning');
-                    $message.text('error occurred');
-                };
-            },
-
-            config: (function() {
-
-                return {
-                    received: function(data) {
-                        alert('received!');
-                    }
-                }
-            })(),
-
-            sendCmd: function(cmd, data) {
-                data = data || {};
-                data['cmd'] = cmd;
-                self.ws.send(JSON.stringify(data));
-            },
-
-            simulation: (function() {
-
-                //var parent, renderer, scene, camera, controls;
-
-                //var bodyTruc, leg0, leg1, leg2, leg3, leg4, leg5;
-
-                return {
-
-                    legs: [],
-
-                    init: function() {
-
-                        // info
-                        info = document.createElement( 'div' );
-                        info.style.position = 'absolute';
-                        info.style.top = '30px';
-                        info.style.width = '100%';
-                        info.style.textAlign = 'center';
-                        info.style.color = '#fff';
-                        info.style.fontWeight = 'bold';
-                        info.style.backgroundColor = 'transparent';
-                        info.style.zIndex = '1';
-                        info.style.fontFamily = 'Monospace';
-                        //info.innerHTML = 'Drag mouse to rotate camera';
-                        document.body.appendChild( info );
-
-/*
-                        // renderer
-                        //renderer = new THREE.CanvasRenderer();
-                        renderer = new THREE.WebGLRenderer();
-                        renderer.setSize( window.innerWidth, window.innerHeight );
-                        renderer.physicallyBasedShading = true;
-
-                        //document.getElementById('render').appendChild(renderer.domElement);
-*/
-                        container = document.getElementById( 'canvas' );
-                        //document.body.appendChild( container );
-
-                        renderer = new THREE.CanvasRenderer();
-                        //renderer = new THREE.WebGLRenderer();
-                        renderer.setSize(640, 480);
-                        container.appendChild( renderer.domElement );
-
-                        //document.body.appendChild( renderer.domElement );
-
-                        // scene
-                        scene = new THREE.Scene();
-
-                        //light = new THREE.AmbientLight(0x00000);
-                        //scene.add(light);
-                        //var ambientLight = new THREE.AmbientLight(0x0000c1);
-                        //scene.add(ambientLight);
-                        var light = new THREE.PointLight(0xffffc1);
-                        light.position.set(10, 10, 10);
-                        light.add(new THREE.AxisHelper(20));
-                        scene.add(light);
-
-                        // camera
-                        camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 100);
-                        camera.position.set(20, 20, 20);
-
-                        // controls
-                        controls = new THREE.OrbitControls(camera, container);
-
-                        // axes
-                        scene.add(new THREE.AxisHelper(20));
-
-                        // geometry
-                        var geometry = new THREE.CubeGeometry(2, 2, 2);
-
-                        // material
-                        /*
-                        var material = new THREE.MeshBasicMaterial({
-                            color: 0xffffff,
-                            wireframe: true
-                        });
-                        */
-                        // parent
-                        parent = new THREE.Object3D();
-                        scene.add(parent);
-
-/*
-                        leg = function(pos) {
-                            legGeo = new THREE.CubeGeometry(1, 1, 4);
-                            legMaterial = new THREE.MeshBasicMaterial({
-                                color: 0xff0000,
-                                wireframe: false
-                            });
-
-                            l = new THREE.Object3D();
-                            l.position.x = pos.x;
-                            l.position.y = pos.y;
-                            l.position.z = pos.z;
-                            //l.rotation.x = 5;
-                            parent.add(l);
-
-                            m = new THREE.Mesh(legGeo, legMaterial);
-                            if (pos.z == 2.5)
-                                m.position.z = 2;
-                            else
-                                m.position.z = -2;
-                                l.add(m);
-
-                            return l;
-                        };
-*/
-
-                        cube = function(w, l, h, parent, color) {
-                            color = color || 0x000000;
-                            geo = new THREE.CubeGeometry(w, l, h);
-                            mat = new THREE.MeshBasicMaterial({
-                                color: color,
-                                wireframe: false
-                            });
-
-                            obj = new THREE.Object3D();
-                            parent.add(obj);
-                            mesh = new THREE.Mesh(geo, mat);
-                            obj.add(mesh)
-
-                            //obj.add(new THREE.AxisHelper(20));
-
-                            return { obj: obj, mesh: mesh };
-                        };
-
-                        cad = (function() {
-                            return {
-
-                                body: (function() {
-
-                                    return {
-                                        make: function() {
-                                            geo = new THREE.CubeGeometry(15, 1, 6);
-                                            material = new THREE.MeshLambertMaterial({ color: 'blue', ambient: 'blue' });
-                                            
-                                            /*
-                                            material = new THREE.MeshBasicMaterial({
-                                                color: 0x00ff00,
-                                                wireframe: false
-                                            });
-                                            */
-
-                                            obj = new THREE.Object3D();
-                                            parent.add(obj)
-
-                                            mesh = new THREE.Mesh(geo, material);
-                                            obj.add(mesh)
-
-                                            return obj;
-                                        },
-
-                                        create: function() {
-                                            obj = this.make();
-                                            obj.position.y = 0.5;
-                                            //obj = this.make();
-                                            //obj.position.y = 1;
-                                        }
-                                    };
-
-                                })(),
-
-                                leg: (function() {
-
-                                    return {
-
-                                        positions: [
-                                            [ -5, 0.5, 3, 0 ],
-                                            [ -5, 0.5, -3, Math.PI ],
-
-                                            [ 0, 0.5, 3, 0 ],
-                                            [ 0, 0.5, -3, Math.PI ],
-
-                                            [ 5, 0.5, 3, 0 ],
-                                            [ 5, 0.5, -3, Math.PI ],
-                                        ],
-
-                                        data: {},
-
-                                        get: function(index) {
-                                            return this.data[index];
-                                        },
-
-                                        create: function(index, x, y, z, value) {
-                                            armh = cube(0.5, 0.5, 3, parent, 'yellow');
-                                            armh.obj.position.x = x;
-                                            armh.obj.position.y = y;
-                                            armh.obj.position.z = z;
-
-                                            armh.obj.rotation.y = value;
-                                            armh.mesh.position.z = 1.5;
-                                            this.data[index] = armh;
-
-                                            armv = cube(0.5, 0.5, 3, armh.mesh, 'green');
-                                            armv.obj.position.y = 0;
-                                            armv.obj.position.z = 1.5;
-                                            armv.mesh.position.z = 1.5;
-
-                                            this.data[index + 6] = armv;
-                                        },
-
-                                        createAll: function() {
-                                            for (i = 0; i < this.positions.length; i++) {
-                                                position = this.positions[i];
-                                                this.create(i, position[0], position[1], position[2], position[3]);
-                                            }
-                                        },
-
-                                        setV: function(index, value) {
-                                            if (!(index % 1)) {
-                                                value += Math.PI;
-                                            }
-                                            this.data[index].obj.rotation.x = value;
-                                        },
-
-                                        setH: function(index, value) {
-                                            if (index % 2) {
-                                                value -= Math.PI;
-                                            }
-                                            this.data[index].obj.rotation.y = value;
-                                        },
-
-                                        setColor: function(index, color) {
-                                            this.data[index].mesh.material.color.setHex(color);
-                                        }
-                                    }
-                                })(),
-
-                            }
-                        })();
-
-                        cad.body.create();
-                        cad.leg.createAll();
-/*
-                        leg.create(0, 5, 0, 3, 0);
-                        leg.create(1, 0, 0, 3, 0);
-                        data = leg.create(2, -5, 0, 3, 0);
-                        A = data[0];
-                        AA = data[1];
-
-                        leg.create(3, -5, 0, -3, Math.PI);
-                        leg.create(4, 0, 0, -3, Math.PI);
-                        leg.create(5, 5, 0, -3, Math.PI);
-*/
-
-/*
-                        A = cube(0.5, 0.5, 3, parent);
-                        A[0].position.x = -5;
-                        A[0].position.y = 0;
-                        A[0].position.z = 3;
-                        A[1].position.z = 1.5;
-
-                        AA = cube(0.5, 0.5, 3, A[1]);
-                        AA[0].position.y = 0;
-                        AA[0].position.z = 1.5;
-                        AA[1].position.z = 1.5;
-*/
-
-
-/*
-                        this.legs[0] = leg({ x: -3, y: 0, z: 2.5 });
-                        this.legs[1] = leg({ x: 0, y: 0, z: 2.5 });
-                        this.legs[2] = leg({ x: 3, y: 0, z: 2.5 });
-
-                        this.legs[3] = leg({ x: -3, y: 0, z: -2.5 });
-                        this.legs[4] = leg({ x: 0, y: 0, z: -2.5 });
-                        this.legs[5] = leg({ x: 3, y: 0, z: -2.5 });
-*/
-                    },
-
-                    setServoPosition: function(servo, value) {
-
-                        // 0    -> -0.5
-                        // 128  -> 0
-                        // 255  -> 0.5
-
-                        // 0
-
-
-                        //console.info("Coeff: " + coeff);
-
-                        // Horizontal
-                        if (servo <= 5) {
-                            //B.simulation.legs[i].rotation.y = coeff * json.data.servos[i] - 1.4/2;
-                            max = 0.9;
-                            coeff = max / 128;
-
-                            //console.info("Servo:" + servo + ", value: " + value + ", sent:" + (coeff * value - max));
-                            value = coeff * value - max;
-
-                            if (servo % 2) {
-                                value = -value;
-                            }
-
-                            //if (servo == 1)
-                            console.info('h:' + servo + '=' + value);
-                            if (cad) {
-                                cad.leg.setH(servo, value);
-                            }
-                        } else {
-                            //value = -value;
-                            max = 1;
-                            coeff = max / 128;
-
-                            //console.info("Servo:" + servo + ", value: " + value + ", sent:" + (coeff * value - max));
-                            value = coeff * value + max + 2;
-
-                            if (cad) {
-                                cad.leg.setV(servo, value);
-                            }
-                            //B.simulation.legs[i - 3].rotation.x = coeff * json.data.servos[i] - 1.4/2;
-                        }
-                    },
-
-                    animate: function() {
-
-                        requestAnimationFrame(B.simulation.animate);
-
-                        controls.update();
-
-                        renderer.render(scene, camera);
-                    }
-                };
-
-            })()
+    var tooltip = function(value0, value1) {
+        $(this).children('.ui-slider-handle:first').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + value0 + '</div></div>');
+        if (value1) {
+            $(this).children('.ui-slider-handle:last').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + value1 + '</div></div>');
         }
-
-        return self;
     };
 
-})(this, jQuery);
+    var set = function(type, index, value) {
+        $('#' + type + '-slide' + index).slider((type == 'limit' ? 'values' : 'value'), value);
+
+        if (type == 'limit') {
+            $('#limit-' + index).html(value[0] + ', ' + value[1]).css('color', 'red');
+        } else {
+            $('#' + type + '-' + index).html(value).css('color', 'red');
+        }
+
+        clearTimeout(timeoutHdl['#' + type + '-' + index]);
+        timeoutHdl['#' + type + '-' + index] = setTimeout(function() {
+            $('#' + type + '-' + index).animate({ color: 'black' }, 300);
+        }, 700);
+    };
+
+    return {
+
+        init: function() {
+
+            $('.slide.move').slider({
+                min: 0,
+                max: 254,
+                step: 1,
+                value: 128,
+                orientation: 'horizontal',
+                slide: function(ev, ui) {
+                    //tooltip.call(this, ui.value);
+                    servo = $(this).data('servo');
+
+                    value = servoPos(servo, ui.value, 128);
+
+                    set('move', servo, value);
+
+                    B.sendCmd(B.CMD_SERVO, { action: 'position', servo: servo, value: value });
+                }
+            }).dblclick(function() {
+                set('move', $(this).data('servo'), 128);
+                B.sendCmd(B.CMD_SERVO, { action: 'position', servo: $(this).data('servo'), value: 128 });
+            }).mousewheel(function(e, delta) {
+                //tooltip.call(this, $(this).slider('value') + delta);
+                set('move', $(this).data('servo'), $(this).slider('value') + delta);
+                B.sendCmd(B.CMD_SERVO, { action: 'position', servo: $(this).data('servo'), value: $(this).slider('value') + delta });
+                return false;
+            });
+
+            $('.slide.trim').slider({
+                min: -20,
+                max: 20,
+                step: 1,
+                value: 0,
+                orientation: 'horizontal',
+                slide: function(ev, ui) {
+                    tooltip.call(this, ui.value);
+
+                    servo = $(this).data('servo');
+                    value = ui.value;
+
+                    set('trim', servo, value);
+
+                    value = servoPos(servo, value, 0, function() {
+                        return value = -value;
+                    });
+
+                    B.sendCmd(B.CMD_SERVO, { action: 'trim', servo: servo, value: value });
+                }
+            }).dblclick(function() {
+                set('trim', $(this).data('servo'), 0);
+                B.sendCmd(B.CMD_SERVO, { action: 'position', servo: $(this).data('servo'), value: 0 });
+            }).mousewheel(function(e, delta) {
+                //tooltip.call(this, $(this).slider('value') + delta);
+                set('trim', $(this).data('servo'), $(this).slider('value') + delta);
+                B.sendCmd(B.CMD_SERVO, { action: 'position', servo: $(this).data('servo'), value: $(this).slider('value') + delta });
+                return false;
+            });
+
+            $('.slide.limit').slider({
+                range: true,
+                min: 0,
+                max: 254,
+                step: 1,
+                values: [ 64, 192 ],
+                orientation: 'horizontal',
+                slide: function(ev, ui) {
+                    set('limit', $(this).data('servo'), ui.values);
+                    B.sendCmd(B.CMD_SERVO, { action: 'limit', servo: $(this).data('servo'), min: ui.values[0], max: ui.values[1] });
+                }
+            }).dblclick(function() {
+                set('limit', $(this).data('servo'), [ 64, 192 ]);
+            });
+            /*.mousewheel(function(e, delta) {
+                $(this).slider('value', $(this).slider('value') + delta);
+                return false;
+            });
+            */
+
+            $('#speed-slide').slider({
+                min: 0,
+                max: 16,
+                step: 1,
+                value: 16,
+                orientation: 'horizontal',
+                slide: function(ev, ui) {
+                    B.sendCmd(B.CMD_SERVO, { action: 'speed', value: ui.value });
+                }
+            });
+        },
+
+        set: set
+    };
+
+})();
+
+fifo = function(size) {
+    return {
+        data: [],
+        size: size,
+        _total: 0,
+
+        add: function(item) {
+            if (this.data.length > this.size) {
+                this.data.shift();
+            }
+
+            this.data.push(item);
+            this._total++;
+        },
+
+        get: function(indexed) {
+            if (indexed) {
+                data = [];
+                for (i = 0; i < this.data.length; i++) {
+                    data.push([i, this.data[i]]);
+                }
+                return data;
+            } else {
+                return this.data;
+            }
+        },
+
+        total: function() {
+            return this._total;
+        }
+    }
+};
+
 
 
 var servoPos = function(servo, value, scale, callback) {
@@ -546,7 +189,334 @@ var servoPos = function(servo, value, scale, callback) {
     return value;
 };
 
+var aplot;
+var cplot;
+
+var afifo;
+var cfifo;
+
+var Events = {};
+
 $(document).ready(function(event) {
+
+    smokesignals.convert(Events);
+
+    Events.on('servo.received', function(data) {
+        for (i = 0; i < data.trims.length; i++) {
+            slide.set('trim', i, data.trims[i]);
+        }
+
+        for (i = 0; i < data.limits.length; i++) {
+            slide.set('limit', i, data.limits[i]);
+        }
+    });
+
+    Events.on('position.received', function(servos) {
+        for (i = 0; i < 12; i++) {
+            slide.set('move', i, servoPos(i, servos[i], 128));
+
+            B.simulation.setServoPosition(i, servos[i]);
+        }
+    });
+
+    var sensorsReveived = function(sensors) {
+
+        $('#acc-x').text(sensors.accelerometer[0]);
+        $('#acc-y').text(sensors.accelerometer[1]);
+        $('#acc-z').text(sensors.accelerometer[2]);
+
+        for (i = 0; i < 6; i++) {
+            if (sensors.ground[i]) {
+                $('#ground-' + i).css('background-color', 'red');
+
+                if (cad) {
+                    cad.leg.setColor(i + 5, 0xff0000);
+                }
+            } else {
+                $('#ground-' + i).css('background-color', 'green');
+
+                if (cad) {
+                    cad.leg.setColor(i + 5, 0x00ff00);
+                }
+            }
+        }
+
+        $('#compass-heading').text(sensors.compass[1]);
+        $('#compass-x').text(sensors.compass[0][0]);
+        $('#compass-y').text(sensors.compass[0][1]);
+        $('#compass-z').text(sensors.compass[0][2]);
+
+        $('#current').text(sensors.current);
+        $('#batteryVoltage').text(sensors.batteryVoltage);
+    };
+
+    Events.on('sensors.received', sensorsReveived);
+
+    Events.on('tab.loaded:sensors', function() {
+
+        series = [{
+            label: 'X',
+            data: [],
+            lines: {
+                fill: true
+            }
+        }, {
+            label: 'Y',
+            data: [],
+            lines: {
+                fill: true
+            }
+        }, {
+            label: 'Z',
+            data: [],
+            lines: {
+                fill: true
+            }
+        }];
+
+        optionsa = {
+            grid: {
+                borderWidth: 1,
+                minBorderMargin: 20,
+                labelMargin: 10,
+                backgroundColor: {
+                    colors: ["#fff", "#e4f4f4"]
+                },
+                margin: {
+                    top: 8,
+                    bottom: 20,
+                    left: 20
+                },
+                markings: function(axes) {
+                    var markings = [];
+                    var xaxis = axes.xaxis;
+                    for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 2) {
+                        markings.push({ xaxis: { from: x, to: x + xaxis.tickSize }, color: "rgba(232, 232, 255, 0.2)" });
+                    }
+                    return markings;
+                }
+            },
+            xaxis: {
+                min: 0,
+                max: 20
+                /*
+                tickFormatter: function() {
+                    return "";
+                }
+                */
+            },
+            yaxis: {
+                min: -1000,
+                max: 1000
+            },
+            legend: {
+                show: true
+            }
+        };
+
+        optionsc = {
+            grid: {
+                borderWidth: 1,
+                minBorderMargin: 20,
+                labelMargin: 10,
+                backgroundColor: {
+                    colors: ["#fff", "#e4f4f4"]
+                },
+                margin: {
+                    top: 8,
+                    bottom: 20,
+                    left: 20
+                },
+                markings: function(axes) {
+                    var markings = [];
+                    var xaxis = axes.xaxis;
+                    for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 2) {
+                        markings.push({ xaxis: { from: x, to: x + xaxis.tickSize }, color: "rgba(232, 232, 255, 0.2)" });
+                    }
+                    return markings;
+                }
+            },
+            xaxis: {
+                min: 0,
+                max: 20
+                /*
+                tickFormatter: function() {
+                    return "";
+                }
+                */
+            },
+            yaxis: {
+                min: -900,
+                max: 900
+            },
+            legend: {
+                show: true
+            }
+        };
+
+        aplot = $.plot($("#accelerometer-graph"), series, optionsa);
+        cplot = $.plot($("#compass-graph"), series, optionsc);
+
+        //$("<div class='axisLabel yaxisLabel'></div>").text("Accelerometer").appendTo(container);
+        //yaxisLabel.css("margin-top", yaxisLabel.width() / 2 - 20);
+
+        afifo = [ new fifo(20), new fifo(20), new fifo(20) ];
+        cfifo = [ new fifo(20), new fifo(20), new fifo(20) ];
+
+        Events.on('sensors.received', function(sensors) {
+
+            afifo[0].add(json.sensors.accelerometer[0]);
+            afifo[1].add(json.sensors.accelerometer[1]);
+            afifo[2].add(json.sensors.accelerometer[2]);
+
+            aplot.setData([
+                afifo[0].get(true),
+                afifo[1].get(true),
+                afifo[2].get(true),
+            ]);
+            aplot.draw();
+
+            cfifo[0].add(json.sensors.compass[0][0]);
+            cfifo[1].add(json.sensors.compass[0][1]);
+            cfifo[2].add(json.sensors.compass[0][2]);
+
+            cplot.setData([
+                cfifo[0].get(true),
+                cfifo[1].get(true),
+                cfifo[2].get(true),
+            ]);
+            cplot.draw();
+        });
+
+    }).on('tab.unloaded:sensors', function() {
+        Events.off('sensors.received').on('sensors.received', sensorsReveived);
+    });
+
+    Events.on('tab.loaded:legs', function() {
+
+        var x = 15;
+
+        series = [];
+        for (i = 0; i < 12; i++) {
+            series.push({
+                label: i,
+                data: [],
+                lines: {
+                    fill: true
+                }
+            });
+        }
+
+/*
+        series = [{
+            label: '0',
+            data: [],
+            lines: {
+                fill: true
+            },
+            curvedLines: {
+                apply:true
+            }
+        }, {
+            label: '1',
+            data: [],
+            lines: {
+                fill: true
+            },
+            curvedLines: {
+                apply:true
+            }
+        }, ];
+*/
+
+        options = {
+            grid: {
+                borderWidth: 1,
+                minBorderMargin: 20,
+                labelMargin: 10,
+                backgroundColor: {
+                    colors: ["#fff", "#e4f4f4"]
+                },
+                margin: {
+                    top: 8,
+                    bottom: 20,
+                    left: 20
+                },
+                markings: function(axes) {
+                    var markings = [];
+                    var xaxis = axes.xaxis;
+                    for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 2) {
+                        markings.push({ xaxis: { from: x, to: x + xaxis.tickSize }, color: "rgba(232, 232, 255, 0.2)" });
+                    }
+                    return markings;
+                }
+            },
+            xaxis: {
+                min: 0,
+                max: x
+            },
+            yaxis: {
+                min: 0,
+                max: 255
+            },
+            legend: {
+                show: true
+            }
+        };
+
+        var splot = $.plot($("#legs-graph"), series, options);
+
+        sfifo = [
+            new fifo(x), new fifo(x), new fifo(x), new fifo(x),
+            new fifo(x), new fifo(x), new fifo(x), new fifo(x),
+            new fifo(x), new fifo(x), new fifo(x), new fifo(x),
+        ];
+
+        Events.on('position.received', function(servos) {
+
+            data = [];
+            for (i = 0; i < 12; i++) {
+                sfifo[i].add(servos[i]);
+//                data[i] = sfifo[i].get(true);
+            }
+
+/*
+            for (ii = 0; ii < 12; ii++) {
+                //data.push([sfifo[i].get(true)]);
+                data[ii] = sfifo[ii].get(true);
+                console.info('i:' + ii);
+                console.info(data);
+                alert('p[af');
+                break;
+            }
+*/
+            data = [
+                sfifo[0].get(true),
+                sfifo[1].get(true),
+                sfifo[2].get(true),
+                sfifo[3].get(true),
+                sfifo[4].get(true),
+                sfifo[5].get(true),
+                sfifo[6].get(true),
+                sfifo[7].get(true),
+                sfifo[8].get(true),
+                sfifo[9].get(true),
+                sfifo[10].get(true),
+                sfifo[11].get(true),
+            ];
+
+            console.info(data);
+
+            splot.setData(data);
+            splot.draw();
+        });
+
+    }).on('tab.unloaded:sensors', function() {
+        Events.off('sensors.received').on('sensors.received', sensorsReveived);
+    });
+
+
+    slide.init();
 
     $.pnotify.defaults.styling = "bootstrap";
     $.pnotify({
@@ -554,100 +524,18 @@ $(document).ready(function(event) {
         text: 'Welcome !',
     });
 
-    $('.slide.trim').slider({
-        min: -20,
-        max: 20,
-        step: 1,
-        value: 0,
-        orientation: 'horizontal',
-        slide: function(ev, ui) {
-            $(this).children('.ui-slider-handle').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.value + '</div></div>');
-
-            servo = $(this).data('servo');
-            value = ui.value;
-
-//            if (servo % 2) {
-//                value = -value;
-//            }
-
-            console.info('before:' + value);
-            value = servoPos(servo, value, 0, function() {
-                return value = -value;   
-            });
-            console.info('after:' + value);
-            //value -= 20;
-
-            B.sendCmd(B.CMD_SET, { type: 'trim', servo: servo, value: value });
-        }
-    }).dblclick(function() {
-        $(this).slider('value', 0);
-        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 0 });
-    }).mousewheel(function(e, delta) {
-        $(this).slider('value', $(this).slider('value') + delta);
-        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: $(this).slider('value') + delta });
-        return false;
-    });
-
-    $('.slide.move').slider({
-        min: 0,
-        max: 254,
-        step: 1,
-        value: 128,
-        orientation: 'horizontal',
-        slide: function(ev, ui) {
-            $(this).children('.ui-slider-handle').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.value + '</div></div>');
-            servo = $(this).data('servo');
-            value = ui.value;
-
-            //console.info('before:' + value);
-            value = servoPos(servo, value, 128);
-            //console.info('after:' + value);
-
-            B.sendCmd(B.CMD_SET, { type: 'position', servo: servo, value: value });
-        }
-    }).dblclick(function() {
-        $(this).slider('value', 128);
-        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 128 });
-    }).mousewheel(function(e, delta) {
-        $(this).slider('value', $(this).slider('value') + delta);
-        B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: $(this).slider('value') + delta });
-        return false;
-    });
-
-    $('.slide.limit').slider({
-        range: true,
-        min: 0,
-        max: 254,
-        step: 1,
-        values: [ 64, 192 ],
-        orientation: 'horizontal',
-        slide: function(ev, ui) {
-            $(this).children('.ui-slider-handle:first').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.values[0] + '</div></div>');
-            $(this).children('.ui-slider-handle:last').html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.values[1] + '</div></div>');
-            B.sendCmd(B.CMD_SET, { type: 'limit', servo: $(this).data('servo'), min: ui.values[0], max: ui.values[1] });
-        }
-    }).dblclick(function() {
-        $(this).slider('values', [ 64, 192 ]);
-        //B.sendCmd(B.CMD_SET, { type: 'position', servo: $(this).data('servo'), value: 0 });
-    });
-    /*.mousewheel(function(e, delta) {
-        $(this).slider('value', $(this).slider('value') + delta);
-        return false;
-    });
-    */
-
-    $('#speed-slide').slider({
-        min: 0,
-        max: 16,
-        step: 1,
-        value: 16,
-        orientation: 'horizontal',
-        slide: function(ev, ui) {
-            B.sendCmd(B.CMD_SET, { type: 'speed', value: ui.value });
+/*
+    $('#tab').tab({
+        activate: function(event, ui) {
+            alert('paf');
         }
     });
+*/
 
-    $('#tab').tab();
+    $('ul#tabs a[data-toggle="tab"]').on('shown', function (e) {
+        Events.emit('tab.unloaded:' + $(e.relatedTarget).data('name'));
+        Events.emit('tab.loaded:' + $(e.target).data('name'));
+    })
 
     var initialized = false;
     //$('a#tab-simulation[data-toggle="tab"]').on('shown', function (e) {
@@ -707,7 +595,7 @@ $(document).ready(function(event) {
     $('.btn-action').click(function() {
         switch ($(this).data('action')) {
             case 'save':
-                B.sendCmd(B.CMD_CONFIG, { action: 'save' });
+                B.sendCmd(B.CMD_SERVO, { action: 'save' });
                 break;
             case 'reset':
                 B.sendCmd(B.CMD_CONTROL, { action: 'reset' });
@@ -720,7 +608,7 @@ $(document).ready(function(event) {
     });
 
     $('.btn-servo').click(function() {
-        B.sendCmd(B.CMD_SERVO, { name: $(this).data('command') });
+        B.sendCmd(B.CMD_SERVO, { action: $(this).data('command') });
     });
 });
 

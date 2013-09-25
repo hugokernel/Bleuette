@@ -1,7 +1,7 @@
 
+import serial, types, time, copy, logging, threading
 from Serial import Serial
 from Define import BPi_Cmd
-import serial, types, time, copy, logging
 from array import array
 from Data import Data
 from Singleton import Singleton
@@ -37,6 +37,69 @@ class Servo_Limit:
             return fn(*args)
         return wrapper
 
+# Run in background and send target value when possible
+class Servo_Sequencer(threading.Thread):
+
+    BUFFER_SIZE = 100
+
+    event = None
+
+    __servo = None
+
+    __values = []
+    __buffer = []
+
+    __contextManagerMode = False
+
+    def __init__(self, servo):
+        self.__servo = servo
+
+        threading.Thread.__init__(self)
+        self.event = threading.Event()
+
+        self.logger = logging.getLogger('Servo sequencer')
+
+    def run(self):
+        i = 0
+
+        while True: #not self.__pause:
+
+            if len(self.__buffer):
+                v = self.__buffer.pop()
+                if v:
+                    if len(v) == 2:
+                        #self.logger.debug('Standard value')
+                        self.__servo.setValue(v[0], v[1])
+                        self.__servo.sendValues()
+                    else:
+                        #self.logger.debug('Transaction')
+                        for i in range(0, len(v)):
+                            self.__servo.setValue(i, v[i])
+                        self.__servo.sendValues()
+
+            self.event.wait(0.005)
+
+    def __enter__(self):
+        self.__contextManagerMode = True
+        self.__values = self.__servo.getValues()
+        return self
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        self.__contextManagerMode = False
+        self.__buffer.append(self.__values);
+
+    def setPosition(self, index, value):
+        if len(self.__buffer) <= self.BUFFER_SIZE:
+            if self.__contextManagerMode:
+                self.__values[index] = value
+            else:
+                self.__buffer.append([ index, value ]);
+        else:
+            self.logger.error('Buffer full : Skip value !')
+
+    #def stop(self):
+    #    self._stopevent.set()
+
 LOCK = False
 
 class Servo(Serial):
@@ -63,11 +126,8 @@ class Servo(Serial):
 
     last_status_code = ''
 
-    #values = array('c', [chr(0)] * COUNT)
-    #sent_values = array('c', [chr(0)] * COUNT)
-
-    values = array('h', [0] * COUNT)
-    sent_values = array('h', [0] * COUNT)
+    __values = array('h', [0] * COUNT)
+    __sent_values = array('h', [0] * COUNT)
 
     __callback = []
 
@@ -96,7 +156,6 @@ class Servo(Serial):
         retry = self.MAX_RETRY
 
         if LOCK:
-            self.logger.critical('Lock error !')
             raise ServoException('Lock error !')
 
         LOCK = True
@@ -109,8 +168,7 @@ class Servo(Serial):
 
             control = 0
             for i in range(0, self.COUNT):
-                #self.serial.write(chr(value))
-                value = self.writeValue(i, self.values[i])
+                value = self.writeValue(i, self.__values[i])
                 values.append(value)
                 control += value
 
@@ -121,10 +179,10 @@ class Servo(Serial):
 
             self.last_status_code = self.getResponse()
 
-            if (self.last_status_code == self.ACK):
+            if self.last_status_code == self.ACK or self.fakemode:
                 if self.DEBUG:
                     self.logger.debug('Ack OK !')
-                self.sent_values = copy.copy(self.values)
+                self.__sent_values = copy.copy(self.__values)
                 break
             else:
                 self.logger.warning("Ack KO !")
@@ -141,26 +199,26 @@ class Servo(Serial):
         return self.getLastStatus()
 
     def init(self):
-        return self.command(BPi_Cmd.INIT)
+        return self.serial.command(BPi_Cmd.INIT)
 
     # Pause
     def pause(self):
-        return self.command(BPi_Cmd.PAUSE)
+        return self.serial.command(BPi_Cmd.PAUSE)
 
     # Resume
     def resume(self):
-        return self.command(BPi_Cmd.RESUME)
+        return self.serial.command(BPi_Cmd.RESUME)
 
     # Set to 0 all consigne
     def clear(self):
         if self.command(BPi_Cmd.CLEAR) == self.ACK:
             for i in xrange(0, self.COUNT):
-                self.sent_values[i] = 0
+                self.__sent_values[i] = 0
 
     def setValue(self, index, value):
         #if type(value) == types.IntType:
         #    value = chr(value)
-        self.values[index] = value
+        self.__values[index] = value
 
     def setValues(self, servos, values):
         v = 0
@@ -169,9 +227,11 @@ class Servo(Serial):
                 self.setValue(i, values[v])
                 v += 1
 
-    def dump(self):
-        self.logger.debug('Buff values: %s' % self.values)
-        self.logger.debug('Sent values: %s' % self.sent_values)
-        #print 'Buff values:', self.values
-        #print 'Sent values:', self.sent_values
+    def getValues(self):
+        return self.__sent_values
+
+    def dump(self, allval = False):
+        self.logger.debug('Sent values: %s' % self.__sent_values)
+        if allval:
+            self.logger.debug('Buff values: %s' % self.__values)
 

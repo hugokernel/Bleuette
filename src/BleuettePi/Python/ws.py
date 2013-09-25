@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath('lib'))
 from Bleuette import Bleuette
 from Data import Data
 from Sequences import Sequences
-import Drive
+import Servo
 import config as Config
 from RainbowHandler import RainbowLoggingHandler
 
@@ -72,45 +72,50 @@ logger.setLevel(logging.DEBUG)
 
 B = Bleuette()
 
-class Affiche(threading.Thread):
+class Bleuette_Thread(threading.Thread):
 
     data = {}
     data_last = {}
 
-    def __init__(self, nom = ''):
+    def __init__(self):
         threading.Thread.__init__(self)
-        self.nom = nom
-        self._stopevent = threading.Event( )
+        self._stopevent = threading.Event()
+
+    def sendSensors(self):
+        compass = 0
+
+        acc = B.BPi.Accelerometer.get()
+        ground = B.BPi.GroundSensor.get()
+        compass = B.BPi.Compass.get()
+        #current = '%.1f' % round(B.BPi.Analog.getCurrent(), 2)
+        #batteryVoltage = '%.1f' % round(B.BPi.Analog.read(6), 2)
+        current = 0
+        batteryVoltage = 0
+
+        self.data = {
+            'type': 'sensors',
+            'sensors': {
+                'accelerometer':    acc,
+                'compass':          compass,
+                'ground':           ground,
+                'current':          current,
+                'batteryVoltage':   batteryVoltage
+            }
+        }
+
+        #if any(map(eq, self.data, self.data_last))== False:
+        self.update()
 
     def run(self):
         while not self._stopevent.isSet():
 
-            compass = 0
+            # Handle sensors
+            self.sendSensors()
 
-            acc = B.BPi.Accelerometer.get()
-            ground = B.BPi.GroundSensor.get()
-            compass = B.BPi.Compass.get()
-            #current = B.BPi.Analog.getCurrent()
-            current = 0
+            # Handle servos value
+            #self.servos()
 
-            self.data = {
-                'type': 'sensors',
-                'sensors': {
-                    'accelerometer': acc,
-                    'compass': compass,
-                    'ground': ground,
-                    'current': current
-                }
-            }
-
-            #print self.data
-
-            #if any(map(eq, self.data, self.data_last))== False:
-            self.update()
-
-            self._stopevent.wait(0.5)
-
-        print "End of thread !"
+            self._stopevent.wait(0.1)
 
     def update(self):
         for c in cl:
@@ -119,11 +124,11 @@ class Affiche(threading.Thread):
         self.data_last = copy.copy(self.data)
 
     def stop(self):
-        self._stopevent.set( )
+        self._stopevent.set()
 
-a = Affiche('Thread A')
-a.daemon = True;
-a.start();
+Bt = Bleuette_Thread()
+Bt.daemon = True;
+Bt.start();
 
 speed = 16
 import Define
@@ -169,23 +174,16 @@ class SocketHandler(websocket.WebSocketHandler):
 
         data = json.loads(message)
 
-        import Servo
+        CMD_SET = 'set'
+        CMD_DRIVE = 'drive'
+        CMD_CONFIG = 'config'
+        CMD_CONTROL = 'control'
+        CMD_SEQUENCE = 'sequence'
+        CMD_SERVO = 'servo'
 
         try:
-            if data['cmd'] == 'set':
-                if data['type'] == 'trim':
-                    Servo.Servo_Trim.values[data['servo']] = data['value'];
-                    B.Sequencer.Servo.sendValues()
-                elif data['type'] == 'limit':
-                    Servo.Servo_Limit.values[data['servo']] = [ data['min'], data['max'] ];
-                    B.Sequencer.Servo.sendValues()
-                elif data['type'] == 'position':
-                    B.Sequencer.Servo.setValue(data['servo'], data['value'])
-                    B.Sequencer.Servo.sendValues()
-                elif data['type'] == 'speed':
-                    global speed
-                    speed = data['value']
-                elif data['type'] == 'livemode':
+            if data['cmd'] == CMD_SET:
+                if data['type'] == 'livemode':
                     if data['status']:
                         B.Sequencer.Servo.setCallback(self.livemode)
                     else:
@@ -214,7 +212,7 @@ class SocketHandler(websocket.WebSocketHandler):
 
                 #print logger.getEffectiveLevel()
 
-            elif data['cmd'] == 'drive':
+            elif data['cmd'] == CMD_DRIVE:
 
                 if data['status'] == 'begin':
                     if data['direction'] == 'forward':
@@ -228,27 +226,14 @@ class SocketHandler(websocket.WebSocketHandler):
                 elif data['status'] == 'end':
                     B.Drive.end()
 
-            elif data['cmd'] == 'config':
-                if data['action'] == 'save':
-                    Data.Instance().set(['servo', 'trims'], Servo.Servo_Trim.values)
-                    Data.Instance().set(['servo', 'limits'], Servo.Servo_Limit.values)
-                    Data.Instance().save()
-                elif data['action'] == 'get':
-                    config = {
-                        'type': 'config',
-                        'data': {
-                            'trims':    Data.Instance().get(['servo', 'trims']),
-                            'limits':   Data.Instance().get(['servo', 'limits'])
-                        }
-                    }
-                    self.write(json.dumps(config))
-
-            elif data['cmd'] == 'control':
+            elif data['cmd'] == CMD_CONFIG:
+                pass
+            elif data['cmd'] == CMD_CONTROL:
 
                 if data['action'] == 'reset':
                     B.BPi.reset()
 
-            elif data['cmd'] == 'sequence':
+            elif data['cmd'] == CMD_SEQUENCE:
 
                 if data['name'] == 'middle':
                     B.Sequencer.forward(Sequences['middle'], 1)
@@ -259,14 +244,39 @@ class SocketHandler(websocket.WebSocketHandler):
                 elif data['name'] == 'release':
                     B.Sequencer.forward(Sequences['release'], 1)
 
-            elif data['cmd'] == 'servo':
+            elif data['cmd'] == CMD_SERVO:
 
-                if data['name'] == 'init':
+                if data['action'] == 'init':
                     B.Sequencer.Servo.init()
-                elif data['name'] == 'pause':
+                elif data['action'] == 'pause':
                     B.Sequencer.Servo.pause()
-                elif data['name'] == 'resume':
+                elif data['action'] == 'resume':
                     B.Sequencer.Servo.resume()
+                elif data['action'] == 'save':
+                    Data.Instance().set(['servo', 'trims'], Servo.Servo_Trim.values)
+                    Data.Instance().set(['servo', 'limits'], Servo.Servo_Limit.values)
+                    Data.Instance().save()
+                elif data['action'] == 'trim':
+                    with B.Sequencer.ServoSeq:
+                        Servo.Servo_Trim.values[data['servo']] = data['value'];
+                elif data['action'] == 'limit':
+                    with B.Sequencer.ServoSeq:
+                        Servo.Servo_Limit.values[data['servo']] = [ data['min'], data['max'] ];
+                elif data['action'] == 'position':
+                    with B.Sequencer.ServoSeq:
+                        B.Sequencer.ServoSeq.setPosition(data['servo'], data['value'])
+                elif data['action'] == 'speed':
+                    global speed
+                    speed = data['value']
+                elif data['action'] == 'get':
+                    config = {
+                        'type': CMD_SERVO,
+                        'data': {
+                            'trims':    Data.Instance().get(['servo', 'trims']),
+                            'limits':   Data.Instance().get(['servo', 'limits'])
+                        }
+                    }
+                    self.write(json.dumps(config))
 
             else:
                 logger.warning("Message : %s" % message)

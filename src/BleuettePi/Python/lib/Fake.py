@@ -26,10 +26,10 @@ class hmc5883l:
         pass
 
     def axes(self):
-        return (0, 0, 0)
+        return (randint(0, 10), randint(0, 10), randint(0, 10))
 
     def heading(self):
-        return (0, 0)
+        return (randint(0, 260), randint(0, 260))
 
     def degrees(self, (degrees, minutes)):
         return ""
@@ -46,7 +46,7 @@ class ADXL345:
         pass
 
     def readAccelCal(self):
-        return (0, 0, 0)
+        return (randint(0, 10), randint(0, 10), randint(0, 10))
 
 class MCP230XX:
 
@@ -75,5 +75,8 @@ class Analog:
         pass
 
     def getCurrent(self):
-        return 0
+        return 1 + 0.1 * randint(0, 5)
+
+    def read(self, index):
+        return 11 + 0.1 * randint(0, 1)
 

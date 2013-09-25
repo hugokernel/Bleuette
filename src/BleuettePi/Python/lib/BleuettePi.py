@@ -18,6 +18,8 @@ else:
     from drivers.Adafruit_MCP230xx import Adafruit_MCP230XX as MCP230XX
     from Analog import Analog
 
+logger = logging.getLogger('BleuettePi')
+
 class BleuettePi_Compass:
 
     # Declination, ~Paris : 0.7
@@ -28,8 +30,11 @@ class BleuettePi_Compass:
     ADDRESS = 0x1E
 
     def get(self):
-        compass = hmc5883l(port = self.PORT, address = self.ADDRESS, gauss = 4.7, declination = self.DECLINATION)
-        return [ compass.axes(), compass.degrees(compass.heading()) ]
+        try:
+            compass = hmc5883l(port = self.PORT, address = self.ADDRESS, gauss = 4.7, declination = self.DECLINATION)
+            return [ compass.axes(), compass.degrees(compass.heading()) ]
+        except Exception, e:
+            logger.critical("Exception ! " + str(e));       
 
     def realTime(self):
         compass = hmc5883l(port = self.PORT, address = self.ADDRESS, gauss = 4.7, declination = self.DECLINATION)
@@ -115,6 +120,7 @@ class BleuettePi(Serial):
 
         self.Servo = Servo.Servo(self.serial, fakemode = Config.FAKE_MODE)
         self.Servo.init()
+
         Servo.Servo_Trim.values = Data.Instance().get(['servo', 'trims'])
         Servo.Servo_Limit.values = Data.Instance().get(['servo', 'limits'])
 

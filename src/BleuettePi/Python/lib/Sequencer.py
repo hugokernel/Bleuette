@@ -2,6 +2,8 @@
 import threading, time
 import Sequences
 import Define
+import Servo
+
 #from Define import __, PAUSE, FRONT, BACK, DOWN, UP, MID, DELAY_MIN
 
 HMIN    = 85
@@ -61,7 +63,7 @@ class Sequencer_Thread(threading.Thread):
 
                 self._stopevent.wait(0.5)
 
-        print "le thread s'est termine proprement"
+        print "End of Thread"
 
     def stop(self):
         self._stopevent.set()
@@ -119,6 +121,8 @@ class Sequencer_Buffer:
 class Sequencer:
 
     Servo = None
+    ServoSeq = None
+
     Buffer = None
     Thread = None
 
@@ -130,6 +134,10 @@ class Sequencer:
         self.Servo = servo
         self.Buffer = Sequencer_Buffer(self)
         self.Thread = Sequencer_Thread(self)
+
+        self.ServoSeq = Servo.Servo_Sequencer(self.Servo)
+        self.ServoSeq.daemon = True;
+        self.ServoSeq.start()
 
 #    def test(self):
 #        self.Thread = Sequencer_Thread(self)
@@ -193,11 +201,14 @@ class Sequencer:
                         c(s, seq.sequence)
 
     def play(self, seq):
-        for i in range(0, len(seq[1])):
-            if seq[1][i] != Define.__:
-                self.Servo.setValue(i, self.getValue(i, seq[1][i]))
 
-        self.Servo.sendValues()
+        with self.ServoSeq as servoSeq:
+            for i in range(0, len(seq[1])):
+                if seq[1][i] != Define.__:
+                    servoSeq.setPosition(i, self.getValue(i, seq[1][i]))
+
+        #self.Servo.setValue(i, self.getValue(i, seq[1][i]))
+        #self.Servo.sendValues()
 
         if seq[2]:
             seq[2]()
