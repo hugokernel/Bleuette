@@ -87,10 +87,10 @@ class Bleuette_Thread(threading.Thread):
         acc = B.BPi.Accelerometer.get()
         ground = B.BPi.GroundSensor.get()
         compass = B.BPi.Compass.get()
-        #current = '%.1f' % round(B.BPi.Analog.getCurrent(), 2)
-        #batteryVoltage = '%.1f' % round(B.BPi.Analog.read(6), 2)
-        current = 0
-        batteryVoltage = 0
+        current = '%.1f' % round(B.BPi.Analog.getCurrent(), 2)
+        batteryVoltage = '%.1f' % round(B.BPi.Analog.read('6'), 2)
+        #current = 0
+        #batteryVoltage = 0
 
         self.data = {
             'type': 'sensors',
@@ -115,7 +115,7 @@ class Bleuette_Thread(threading.Thread):
             # Handle servos value
             #self.servos()
 
-            self._stopevent.wait(0.1)
+            self._stopevent.wait(0.5)
 
     def update(self):
         for c in cl:

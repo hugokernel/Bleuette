@@ -50,5 +50,5 @@ class Serial:
                 self.serial.write(p)
 
         self.last_status_code = self.getResponse()
-        return self. getLastStatus()
+        return self.getLastStatus()
 

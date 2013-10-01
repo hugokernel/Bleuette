@@ -76,6 +76,10 @@ table#acc td {
     float: right;
 }
 
+#legs-selector {
+    height: 150px;
+}
+
 </style>
 
 <script>
@@ -471,6 +475,14 @@ $(document).ready(function(event) {
 
         <div class="tab-pane" id="sensors">
 
+            <div id="voltage-graph" class="left" style="width:400px;height:300px">
+                Voltage
+            </div>
+
+            <div id="current-graph" class="right" style="width:400px;height:300px">
+                Current
+            </div>
+
             <div id="accelerometer-graph" class="left" style="width:400px;height:300px">
                 Accelerometer
             </div>
@@ -483,9 +495,24 @@ $(document).ready(function(event) {
 
         <div class="tab-pane" id="legs">
 
-            <div id="legs-graph" class="left" style="width:800px;height:400px">
+            <div id="legs-graph" class="left" style="width:900px;height:400px">
                 Legs
             </div>
+
+            <select id="legs-selector" multiple="multiple">
+                <option value="0" selected="selected">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+            </select>
 
         </div>
 

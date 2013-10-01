@@ -100,6 +100,19 @@ class Servo_Sequencer(threading.Thread):
     #def stop(self):
     #    self._stopevent.set()
 
+'''
+# Use :
+Servo = Servo.Servo(Serial)
+Servo.init()
+
+ServoSeq = Servo_Sequencer(Servo)
+ServoSeq.daemon = True;
+ServoSeq.start()
+
+with ServoSeq:
+    ServoSeq.setPosition(data['servo'], data['value'])
+'''
+
 LOCK = False
 
 class Servo(Serial):

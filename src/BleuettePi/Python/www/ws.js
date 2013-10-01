@@ -189,12 +189,6 @@ var servoPos = function(servo, value, scale, callback) {
     return value;
 };
 
-var aplot;
-var cplot;
-
-var afifo;
-var cfifo;
-
 var Events = {};
 
 $(document).ready(function(event) {
@@ -274,7 +268,7 @@ $(document).ready(function(event) {
             }
         }];
 
-        optionsa = {
+        options = {
             grid: {
                 borderWidth: 1,
                 minBorderMargin: 20,
@@ -314,78 +308,86 @@ $(document).ready(function(event) {
             }
         };
 
-        optionsc = {
-            grid: {
-                borderWidth: 1,
-                minBorderMargin: 20,
-                labelMargin: 10,
-                backgroundColor: {
-                    colors: ["#fff", "#e4f4f4"]
-                },
-                margin: {
-                    top: 8,
-                    bottom: 20,
-                    left: 20
-                },
-                markings: function(axes) {
-                    var markings = [];
-                    var xaxis = axes.xaxis;
-                    for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 2) {
-                        markings.push({ xaxis: { from: x, to: x + xaxis.tickSize }, color: "rgba(232, 232, 255, 0.2)" });
-                    }
-                    return markings;
-                }
-            },
-            xaxis: {
-                min: 0,
-                max: 20
-                /*
-                tickFormatter: function() {
-                    return "";
-                }
-                */
-            },
-            yaxis: {
-                min: -900,
-                max: 900
-            },
-            legend: {
-                show: true
-            }
+        accelOptions = {};
+        $.extend(accelOptions, options);
+        accelOptions.yaxis = {
+            min: -1000,
+            max: 1000
         };
 
-        aplot = $.plot($("#accelerometer-graph"), series, optionsa);
-        cplot = $.plot($("#compass-graph"), series, optionsc);
+        compassOptions = {};
+        $.extend(compassOptions, options);
+        compassOptions.yaxis = {
+            min: -900,
+            max: 900
+        };
+
+        currentOptions = {};
+        $.extend(currentOptions, options);
+        currentOptions.yaxis = {
+            min: 0,
+            max: 5
+        };
+
+        voltageOptions = {};
+        $.extend(voltageOptions, options);
+        voltageOptions.yaxis = {
+            min: 0,
+            max: 12
+        };
+
+        var accelPlot = $.plot($("#accelerometer-graph"), series, accelOptions);
+        var compassPlot = $.plot($("#compass-graph"), series, compassOptions);
+        var currentPlot = $.plot($("#current-graph"), series, currentOptions);
+        var voltagePlot = $.plot($("#voltage-graph"), series, voltageOptions);
 
         //$("<div class='axisLabel yaxisLabel'></div>").text("Accelerometer").appendTo(container);
         //yaxisLabel.css("margin-top", yaxisLabel.width() / 2 - 20);
 
-        afifo = [ new fifo(20), new fifo(20), new fifo(20) ];
-        cfifo = [ new fifo(20), new fifo(20), new fifo(20) ];
+        var accelFifo = [ new fifo(20), new fifo(20), new fifo(20) ];
+        var compassFifo = [ new fifo(20), new fifo(20), new fifo(20) ];
+        var currentFifo = new fifo(20);
+        var voltageFifo = new fifo(20);
 
         Events.on('sensors.received', function(sensors) {
 
-            afifo[0].add(json.sensors.accelerometer[0]);
-            afifo[1].add(json.sensors.accelerometer[1]);
-            afifo[2].add(json.sensors.accelerometer[2]);
+            // Accelerometer
+            accelFifo[0].add(json.sensors.accelerometer[0]);
+            accelFifo[1].add(json.sensors.accelerometer[1]);
+            accelFifo[2].add(json.sensors.accelerometer[2]);
 
-            aplot.setData([
-                afifo[0].get(true),
-                afifo[1].get(true),
-                afifo[2].get(true),
+            accelPlot.setData([
+                accelFifo[0].get(true),
+                accelFifo[1].get(true),
+                accelFifo[2].get(true),
             ]);
-            aplot.draw();
+            accelPlot.draw();
 
-            cfifo[0].add(json.sensors.compass[0][0]);
-            cfifo[1].add(json.sensors.compass[0][1]);
-            cfifo[2].add(json.sensors.compass[0][2]);
+            // Compas
+            compassFifo[0].add(json.sensors.compass[0][0]);
+            compassFifo[1].add(json.sensors.compass[0][1]);
+            compassFifo[2].add(json.sensors.compass[0][2]);
 
-            cplot.setData([
-                cfifo[0].get(true),
-                cfifo[1].get(true),
-                cfifo[2].get(true),
+            compassPlot.setData([
+                compassFifo[0].get(true),
+                compassFifo[1].get(true),
+                compassFifo[2].get(true),
             ]);
-            cplot.draw();
+            compassPlot.draw();
+
+            // Voltage
+            voltageFifo.add(json.sensors.batteryVoltage);
+            voltagePlot.setData([
+                voltageFifo.get(true)
+            ]);
+            voltagePlot.draw();
+
+            // Current
+            currentFifo.add(json.sensors.current);
+            currentPlot.setData([
+                currentFifo.get(true)
+            ]);
+            currentPlot.draw();
         });
 
     }).on('tab.unloaded:sensors', function() {
@@ -476,7 +478,11 @@ $(document).ready(function(event) {
 
             data = [];
             for (i = 0; i < 12; i++) {
-                sfifo[i].add(servos[i]);
+                if ($.inArray(String(i), $('#legs-selector').val()) > -1) {
+                    sfifo[i].add(servos[i]);
+                } else {
+                    sfifo[i].add(-1);
+                }
 //                data[i] = sfifo[i].get(true);
             }
 

@@ -34,7 +34,7 @@ class BleuettePi_Compass:
             compass = hmc5883l(port = self.PORT, address = self.ADDRESS, gauss = 4.7, declination = self.DECLINATION)
             return [ compass.axes(), compass.degrees(compass.heading()) ]
         except Exception, e:
-            logger.critical("Exception ! " + str(e));       
+            logger.critical("Exception ! " + str(e));
 
     def realTime(self):
         compass = hmc5883l(port = self.PORT, address = self.ADDRESS, gauss = 4.7, declination = self.DECLINATION)
@@ -171,6 +171,7 @@ class BleuettePi(Serial):
         return self.command(BPi_Cmd.SET_MAX, level)
     '''
 
+    # Hard reset
     def reset(self):
         self.mcp.output(self.RESET_PIN, 0)
         time.sleep(1)
