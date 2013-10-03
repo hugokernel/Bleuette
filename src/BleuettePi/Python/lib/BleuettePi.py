@@ -110,11 +110,11 @@ class BleuettePi(Serial):
     Accelerometer = None
     GroundSensor = None
 
-    def __init__(self, mixed):
+    def __init__(self, serialDev):
         self.logger = logging.getLogger('BleuettePi')
 
         self.serial = Serial()
-        self.serial.connect(mixed)
+        self.serial.connect(serialDev)
 
         self.mcp = MCP230XX(self.MCP_ADDRESS, 16)
 

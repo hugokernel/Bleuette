@@ -3,15 +3,8 @@ from BleuettePi import BleuettePi
 from Sequencer import Sequencer
 from Drive import Drive
 from Analog import Analog
+from Fake import SerialFake
 import config as Config
-
-class Fake:
-    @staticmethod
-    def write(self):
-        pass
-    @staticmethod
-    def read(self):
-        return 'a'
 
 class Bleuette():
 
@@ -23,7 +16,7 @@ class Bleuette():
         if Config.FAKE_MODE == False:
             self.BPi = BleuettePi(Config.SERIAL_DEV)
         else:
-            self.BPi = BleuettePi(Fake)
+            self.BPi = BleuettePi(SerialFake)
 
         self.Sequencer = Sequencer(self.BPi.Servo)
         self.Drive = Drive(self.Sequencer)

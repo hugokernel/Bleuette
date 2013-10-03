@@ -17,12 +17,12 @@ class Serial:
     def __init__(self):
         pass
 
-    def connect(self, mixed):
-        if type(mixed) == types.StringType:
-            self.serial = serial.Serial(mixed, 9600, timeout = 1)
+    def connect(self, serialDev):
+        if type(serialDev) == types.StringType:
+            self.serial = serial.Serial(serialDev, 9600, timeout = 1)
         else:
             print 'Serial Object'
-            self.serial = mixed
+            self.serial = serialDev
 
         #ser.open()
 

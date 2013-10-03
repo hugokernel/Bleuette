@@ -1,6 +1,14 @@
 
 from random import randint
 
+class SerialFake:
+    @staticmethod
+    def write(self):
+        pass
+    @staticmethod
+    def read(self):
+        return 'a'
+
 class GPIO:
 
     BOARD = 1
