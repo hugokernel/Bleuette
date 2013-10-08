@@ -61,11 +61,12 @@ _Serial_Send_Delay
 
 Current_Test
 	INT_OFF
-;	btfsc 	Int_Status, INT_STATUS_MAX_REACHED
-;	goto 	_Current_Test_Exit
+	;btfsc 	Int_Status, INT_STATUS_MAX_CURRENT_REACHED
+	;goto 	_Current_Test_Exit
 
 	; Read current value just before stop port !
-	movlw 	ADC_AN0;CURRENT_CHANNEL
+	;movlw 	ADC_AN0;CURRENT_CHANNEL
+	movlw 	CURRENT_CHANNEL
 	call 	Adc_Read
 	movff 	Adc_Result_H, Current_Last_H
 	movff 	Adc_Result_L, Current_Last_L
@@ -100,7 +101,8 @@ _Current_Test_H
 	cpfseq 	Current_Last_H
 	bra 	$ + 4
 
-	goto 	_Current_Test_L
+	goto 	_Current_Test_Alert
+	;goto 	_Current_Test_L
 
 	movf 	Current_Max_H, W
 	cpfslt 	Current_Last_H
@@ -127,7 +129,7 @@ _Current_Test_L
 	goto 	_Current_Test_Exit
 
 _Current_Test_Alert
-	bsf 	Int_Status, INT_STATUS_MAX_REACHED
+	bsf 	Int_Status, INT_STATUS_MAX_CURRENT_REACHED
 	INT_ON
 _Current_Test_Exit
 	return
