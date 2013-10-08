@@ -1,5 +1,5 @@
 
-import serial, types, struct
+import serial, types, struct, time
 
 class Serial:
 
@@ -19,7 +19,7 @@ class Serial:
 
     def connect(self, serialDev):
         if type(serialDev) == types.StringType:
-            self.serial = serial.Serial(serialDev, 9600, timeout = 1)
+            self.serial = serial.Serial(serialDev, 19200, timeout = 1)
         else:
             print 'Serial Object'
             self.serial = serialDev
@@ -30,6 +30,8 @@ class Serial:
 
     def write(self, data):
         self.serial.write(data)
+        #time.sleep(0.0004)
+        time.sleep(0.0008)
 
     def read(self, count):
         return self.serial.read(count)
