@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bleuette</title>
+
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" media="all" type="text/css">
+    <link rel="stylesheet" href="/static/jquery-ui.min.css" media="all" type="text/css">
+    <link rel="stylesheet" href="/static/jquery.pnotify.default.css" media="all" type="text/css">
+    <link rel="stylesheet" href="/static/jquery.pnotify.default.icons.css" media="all" type="text/css" />
+
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.pnotify.min.js"></script> 
+    <script type="text/javascript" src="/static/jquery.mousewheel.js"></script> 
+    <script type="text/javascript" src="/static/bleuette.js"></script>
+    <script type="text/javascript" src="/static/ws.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/smokesignals.js"></script>
+
+    <script type="text/javascript" src="/static/flot/jquery.flot.js"></script>
+    <script type="text/javascript" src="/static/curvedLines.js"></script>
+
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/static/flot/excanvas.js"></script><![endif]-->
+
+    <!-- Todo: Import ! -->
+    <script type="text/javascript" src="/static/three.min.js"></script>
+    <script type="text/javascript" src="/static/OrbitControls.js"></script>
+
+<style>
+
+table#acc td {
+    width: 33%;
+}
+
+#canvas {
+/*
+    width: 640px;
+    height: 480px;
+    border: 1px solid black;
+    margin: 0 30%;
+    padding: 0px;
+*/
+}
+
+#popup-3dview {
+    display: none;
+}
+
+.tab-pane .row {
+    margin-bottom: 50px;
+    margin-top: 10px;
+}
+
+.slider-tip {
+    opacity:1;
+    bottom:120%;
+    margin-left: -1.36em;
+}
+
+.slide-value {
+    padding: 2px;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    background-color: #EEE;
+}
+
+.tab-content {
+    overflow: visible !important;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+#legs-selector {
+    height: 150px;
+}
+
+</style>
+
+<script>
+
+var B;
+$(document).ready(function(event) {
+    B = new Bleuette;
+    B.host = '{{Config.HOST}}';
+    B.fakeMode = '{{Config.FAKE_MODE}}';
+    B.init();
+});
+
+</script>
+
+</head>
+<body>
+
+<div id="popup-3dview">
+    <div id="canvas"></div>
+</div>
+
+
+<div class="container">
+    <h1>Bleuette interface</h1>
+
+    <p>
+        WebSocket status : <span id="message"></span>
+        {% if Config.FAKE_MODE %}
+            <strong class="text-info">Fake mode</strong>
+        {% end %}
+        <a href="#" id="3dview-handler">3D view</a>
+    </p>
+
+    <div class="row">
+
+        <div class="span2">
+
+            <h2>Power</h2>
+
+            <p>
+                <strong>Voltage :</strong> <span id="batteryVoltage"></span>V
+            </p>
+
+            <p>
+                <strong>Current :</strong> <span id="current"></span>A
+            </p>
+        </div>
+
+        <div class="span3">
+
+            <h2>Accelerometer</h2>
+
+            <table id="acc" class="table table-bordered">
+                <tr>
+                    <th>x</th>
+                    <th>y</th>
+                    <th>z</th>
+                </tr>
+                <tr>
+                    <td id="acc-x">-</td>
+                    <td id="acc-y">-</td>
+                    <td id="acc-z">-</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="span3">
+
+            <h2>Compass</h2>
+
+            <table id="compass" class="table table-bordered">
+                <tr>
+                    <th>x</th>
+                    <th>y</th>
+                    <th>z</th>
+                </tr>
+                <tr>
+                    <td id="compass-x">-</td>
+                    <td id="compass-y">-</td>
+                    <td id="compass-z">-</td>
+                </tr>
+            </table>
+
+            <p>
+                <strong>Heading :</strong> <span id="compass-heading"></span>
+            </p>
+        </div>
+
+        <div class="span3">
+
+            <h2>Ground</h2>
+
+            <table id="ground" class="table table-bordered">
+                <tr>
+                    <td id="ground-1">&nbsp;</td>
+                    <td id="ground-3">&nbsp;</td>
+                    <td id="ground-5">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td id="ground-0">&nbsp;</td>
+                    <td id="ground-2">&nbsp;</td>
+                    <td id="ground-4">&nbsp;</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <p id="current"></p>
+    </div>
+
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"><a href="#drive" data-toggle="tab" data-name="drive">Drive</a></li>
+        <li><a href="#move" data-toggle="tab" data-name="move">Move</a></li>
+        <li><a href="#trim" data-toggle="tab" data-name="trim">Trim</a></li>
+        <li><a href="#limit" data-toggle="tab" data-name="limit">Limit</a></li>
+        <li><a href="#sensors" data-toggle="tab" data-name="sensors">Sensors</a></li>
+        <li><a href="#legs" data-toggle="tab" data-name="legs">Legs</a></li>
+        <li><a href="#system" data-toggle="tab" data-name="system">System</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active " id="drive">
+            Drive :
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" id="btn-left">Left</button>
+                <button type="button" class="btn btn-default" id="btn-forward">Forward</button>
+                <button type="button" class="btn btn-default" id="btn-reverse">Reverse</button>
+                <button type="button" class="btn btn-default" id="btn-right">Right</button>
+            </div>
+
+            <hr />
+
+            Sequence :
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-sequence" id="btn-pushup" data-sequence="pushup">Push up</button>
+                <button type="button" class="btn btn-default btn-sequence" id="btn-middle" data-sequence="middle">Middle</button>
+                <button type="button" class="btn btn-default btn-sequence" id="btn-standby" data-sequence="standby">Stand-by</button>
+                <button type="button" class="btn btn-default btn-sequence" id="btn-release" data-sequence="release">Release</button>
+            </div>
+
+            <select>
+                {% for Sequence in Sequences %}
+                    <option value={{ Sequence }}"">{{ Sequence }}</option>
+                {% end %}
+            </select>
+
+            <hr />
+
+            Servo :
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-servo" data-command="init">Init</button>
+                <button type="button" class="btn btn-default btn-servo" data-command="pause">Pause</button>
+                <button type="button" class="btn btn-default btn-servo" data-command="resume">Resume</button>
+            </div>
+
+            <hr />
+
+            <div class="span1">
+                Speed :
+                <div id="speed-slide" class="slider"></div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="move">
+
+            <div class="row">
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 1 : <span class="slide-value" id="move-1">128</span>
+                        <div id="move-slide1" class="slide move" data-servo="1"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 7 : <span class="slide-value" id="move-7">128</span>
+                        <div id="move-slide7" class="slide move" data-servo="7"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 3 : <span class="slide-value" id="move-3">128</span>
+                        <div id="move-slide3" class="slide move" data-servo="3"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 9 : <span class="slide-value" id="move-9">128</span>
+                        <div id="move-slide9" class="slide move" data-servo="9"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 5 : <span class="slide-value" id="move-5">128</span>
+                        <div id="move-slide5" class="slide move" data-servo="5"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 11 : <span class="slide-value" id="move-11">128</span>
+                        <div id="move-slide11" class="slide move" data-servo="11"></div>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 0 : <span class="slide-value" id="move-0">128</span>
+                        <div id="move-slide0" class="slide move" data-servo="0"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 6 : <span class="slide-value" id="move-6">128</span>
+                        <div id="move-slide6" class="slide move" data-servo="6"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 2 : <span class="slide-value" id="move-2">128</span>
+                        <div id="move-slide2" class="slide move" data-servo="2"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 8 : <span class="slide-value" id="move-8">128</span>
+                        <div id="move-slide8" class="slide move" data-servo="8"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 4 : <span class="slide-value" id="move-4">128</span>
+                        <div id="move-slide4" class="slide move" data-servo="4"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 10 : <span class="slide-value" id="move-10">128</span>
+                        <div id="move-slide10" class="slide move" data-servo="10"></div>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="trim">
+
+            <div class="row">
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 1 : <span class="slide-value" id="trim-1">0</span>
+                        <div id="trim-slide1" class="slide trim" data-type="trim" data-servo="1"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 7 : <span class="slide-value" id="trim-7">0</span>
+                        <div id="trim-slide7" class="slide trim" data-type="trim" data-servo="7"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 3 : <span class="slide-value" id="trim-3">0</span>
+                        <div id="trim-slide3" class="slide trim" data-type="trim" data-servo="3"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 9 : <span class="slide-value" id="trim-9">0</span>
+                        <div id="trim-slide9" class="slide trim" data-type="trim" data-servo="9"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 5 : <span class="slide-value" id="trim-5">0</span>
+                        <div id="trim-slide5" class="slide trim" data-type="trim" data-servo="5"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 11 : <span class="slide-value" id="trim-11">0</span>
+                        <div id="trim-slide11" class="slide trim" data-type="trim" data-servo="11"></div>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 0 : <span class="slide-value" id="trim-0">0</span>
+                        <div id="trim-slide0" class="slide trim" data-type="trim" data-servo="0"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 6 : <span class="slide-value" id="trim-6">0</span>
+                        <div id="trim-slide6" class="slide trim" data-type="trim" data-servo="7"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 2 : <span class="slide-value" id="trim-2">0</span>
+                        <div id="trim-slide2" class="slide trim" data-type="trim" data-servo="2"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 8 : <span class="slide-value" id="trim-8">0</span>
+                        <div id="trim-slide8" class="slide trim" data-type="trim" data-servo="8"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 4 : <span class="slide-value" id="trim-4">0</span>
+                        <div id="trim-slide4" class="slide trim" data-type="trim" data-servo="4"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 10 : <span class="slide-value" id="trim-10">0</span>
+                        <div id="trim-slide10" class="slide trim" data-type="trim" data-servo="10"></div>
+                    </p>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-action btn-save" data-action="save">Save</button>
+        </div>
+
+        <div class="tab-pane" id="limit">
+
+            <div class="row">
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 1 : <span class="slide-value" id="limit-1">64, 192</span>
+                        <div id="limit-slide1" class="slide limit" data-servo="1"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 7 : <span class="slide-value" id="limit-7">64, 192</span>
+                        <div id="limit-slide7" class="slide limit" data-servo="7"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 3 : <span class="slide-value" id="limit-3">64, 192</span>
+                        <div id="limit-slide3" class="slide limit" data-servo="3"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 9 : <span class="slide-value" id="limit-9">64, 192</span>
+                        <div id="limit-slide9" class="slide limit" data-servo="9"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 5 : <span class="slide-value" id="limit-5">64, 192</span>
+                        <div id="limit-slide5" class="slide limit" data-servo="5"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 11 : <span class="slide-value" id="limit-11">64, 192</span>
+                        <div id="limit-slide11" class="slide limit" data-servo="11"></div>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 0 : <span class="slide-value" id="limit-0">64, 192</span>
+                        <div id="limit-slide0" class="slide limit" data-servo="0"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 6 : <span class="slide-value" id="limit-6">64, 192</span>
+                        <div id="limit-slide6" class="slide limit" data-servo="6"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 2 : <span class="slide-value" id="limit-2">64, 192</span>
+                        <div id="limit-slide2" class="slide limit" data-servo="2"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 8 : <span class="slide-value" id="limit-8">64, 192</span>
+                        <div id="limit-slide8" class="slide limit" data-servo="8"></div>
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        Horizontal Servo 4 : <span class="slide-value" id="limit-4">64, 192</span>
+                        <div id="limit-slide4" class="slide limit" data-servo="4"></div>
+                    </p>
+
+                    <p>
+                        Vertical Servo 10 : <span class="slide-value" id="limit-10">64, 192</span>
+                        <div id="limit-slide10" class="slide limit" data-servo="10"></div>
+                    </p>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-default btn-action" data-action="save">Save</button>
+        </div>
+
+        <div class="tab-pane" id="sensors">
+
+            <div id="voltage-graph" class="left" style="width:400px;height:300px">
+                Voltage
+            </div>
+
+            <div id="current-graph" class="right" style="width:400px;height:300px">
+                Current
+            </div>
+
+            <div id="accelerometer-graph" class="left" style="width:400px;height:300px">
+                Accelerometer
+            </div>
+
+            <div id="compass-graph" class="right" style="width:400px;height:300px">
+                Compass
+            </div>
+
+        </div>
+
+        <div class="tab-pane" id="legs">
+
+            <div id="legs-graph" class="left" style="width:900px;height:400px">
+                Legs
+            </div>
+
+            <select id="legs-selector" multiple="multiple">
+                <option value="0" selected="selected">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+            </select>
+
+        </div>
+
+        <div class="tab-pane" id="system">
+
+            <button type="button" class="btn btn-default btn-action" data-action="reset">Hard reset</button>
+
+            <hr />
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="0" id="livemode">
+                    Live mode
+                </label>
+            </div>
+
+            <hr />
+
+            <h4>Logger</h4>
+
+            <p>
+                Default :
+            </p>
+
+            <select class="form-control" id="loglevel">
+              <option value="debug">Debug</option>
+              <option value="info">Info</option>
+              <option value="warning">Warning</option>
+              <option value="error">Error</option>
+              <option value="critical">Critical</option>
+            </select>
+
+            <p>
+                Js :
+            </p>
+
+            <select class="form-control" id="jsloglevel">
+              <option value="debug">Debug</option>
+              <option value="info">Info</option>
+              <option value="warning">Warning</option>
+              <option value="error">Error</option>
+              <option value="critical">Critical</option>
+            </select>
+
+        </div>
+
+    </ul>
+
+</div>
+
+</div>
+</body>
+</html>

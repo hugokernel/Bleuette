@@ -1,0 +1,186 @@
+<!-- From http://jsfiddle.net/hbt9c/61/ -->
+<html>
+
+<head>
+    <link href="http://localhost:8888/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost:8888/static/slider/css/slider.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://localhost:8888/static/jquery.min.js"></script>
+    <script type="text/javascript" src="http://localhost:8888/static/slider/js/bootstrap-slider.js"></script>
+    <script type="text/javascript" src="http://localhost:8888/static/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="http://threejs.org/build/three.min.js"></script>
+    <script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
+
+</head>
+
+<style>
+body {
+	margin: 0px;
+	overflow: hidden;
+}
+
+#canvas {
+    background-color: #000;
+    width: 640px;
+    height: 480px;
+    border: 1px solid black;
+    margin: 100px;
+    padding: 0px;
+    position: static; /* fixed or static */
+    top: 100px;
+    left: 100px;
+}
+
+</style>
+
+<body>
+
+        <div id="canvas"></div>
+
+                <input id="slide" class="slider" type="text" />
+
+<script>
+var parent, renderer, scene, camera, controls;
+
+var bodyTruc, leg0, leg1, leg2, leg3, leg4, leg5;
+
+init();
+animate();
+
+$('.slider').slider({
+    min: -1.4,
+    max: 1.4,
+    step: .1,
+    value: 0,
+    orientation: 'horizontal',
+}).on('slide', function(ev) {
+    console.info('Slide : ' + ev.value);
+    leg4.rotation.y = ev.value;
+    leg5.rotation.x = ev.value;
+});
+
+function init() {
+
+	// info
+	info = document.createElement( 'div' );
+	info.style.position = 'absolute';
+	info.style.top = '30px';
+	info.style.width = '100%';
+	info.style.textAlign = 'center';
+	info.style.color = '#fff';
+	info.style.fontWeight = 'bold';
+	info.style.backgroundColor = 'transparent';
+	info.style.zIndex = '1';
+	info.style.fontFamily = 'Monospace';
+	info.innerHTML = 'Drag mouse to rotate camera';
+	document.body.appendChild( info );
+
+	// renderer
+	renderer = new THREE.CanvasRenderer();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.physicallyBasedShading = true;
+
+    //document.getElementById('render').appendChild(renderer.domElement);
+
+    container = document.getElementById( 'canvas' );
+    document.body.appendChild( container );
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( 640, 480 );
+    container.appendChild( renderer.domElement );
+
+	//document.body.appendChild( renderer.domElement );
+
+	// scene
+	scene = new THREE.Scene();
+	
+	// camera
+	camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 100 );
+	camera.position.set( 20, 20, 20 );
+
+	// controls
+	controls = new THREE.OrbitControls( camera );
+	
+	// axes
+	scene.add( new THREE.AxisHelper( 20 ) );
+
+	// geometry
+	var geometry = new THREE.CubeGeometry( 2, 2, 2 );
+    
+    body = new THREE.CubeGeometry( 10, 2, 5 );
+    bodyMaterial = new THREE.MeshBasicMaterial( {
+		color: 0x00ff00, 
+		wireframe: true
+	} );
+	
+	// material
+	var material = new THREE.MeshBasicMaterial( {
+		color: 0xffffff, 
+        wireframe: true
+	} );
+	
+	// parent
+	parent = new THREE.Object3D();
+	scene.add( parent );
+
+    leg = function(pos) {
+        legGeo = new THREE.CubeGeometry( 1, 1, 4 );
+        legMaterial = new THREE.MeshBasicMaterial( {
+            color: 0xff0000, 
+            wireframe: false
+        } );
+        
+        l = new THREE.Object3D();
+        l.position.x = pos.x;
+        l.position.y = pos.y;
+        l.position.z = pos.z;
+        //l.rotation.x = 5;
+        parent.add(l);
+        
+        m = new THREE.Mesh(legGeo, legMaterial);
+        if (pos.z == 2.5)
+            m.position.z = 2;
+        else
+        m.position.z = -2;
+        l.add(m);
+        
+        return l;
+    };
+    
+	// pivots
+    var bodyTruc = new THREE.Object3D();
+    parent.add(bodyTruc)
+
+	// mesh
+    var bodyMesh = new THREE.Mesh( body, bodyMaterial );
+    bodyTruc.add(bodyMesh)
+    
+    leg0 = leg({ x: -3, y: 0, z: 2.5 });
+    leg1 = leg({ x: 0, y: 0, z: 2.5 });
+    leg2 = leg({ x: 3, y: 0, z: 2.5 });
+    
+    leg3 = leg({ x: -3, y: 0, z: -2.5 });
+    leg4 = leg({ x: 0, y: 0, z: -2.5 });
+    leg5 = leg({ x: 3, y: 0, z: -2.5 });
+}
+
+function animate() {
+
+	requestAnimationFrame( animate );
+
+	leg0.rotation.y += 0.01;
+    leg3.rotation.y -= 0.01;
+    //leg0.rotation.x += 0.01;
+    
+	controls.update();
+
+	renderer.render( scene, camera );
+
+}
+
+</script>
+
+</body>
+
+</html>

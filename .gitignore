@@ -2,3 +2,4 @@ src/Ino/.build
 *.b#*
 *.s#*
 *.l#*
+*.pyc
