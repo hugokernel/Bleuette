@@ -51,8 +51,10 @@
 #DEFINE 	COMMAND_RESUME  'R'
 #DEFINE 	COMMAND_CLEAR   'C'
 #DEFINE 	COMMAND_SET     'S'
-#DEFINE 	COMMAND_CURRENT 'A'
-#DEFINE 	COMMAND_STATUS 	'T'
+
+#DEFINE 	COMMAND_CURRENT 'A' ; Get last current value
+#DEFINE 	COMMAND_STATUS 	'T' ; Get status
+#DEFINE 	COMMAND_SET_MAX 'M' ; Set max current limit
 
 #DEFINE 	COMMAND_READAN0	'0'
 #DEFINE 	COMMAND_READAN1	'1'
@@ -72,7 +74,8 @@
 #DEFINE 	ADC_AN6 b'00110000'
 #DEFINE 	ADC_AN7 b'00111000'
 
-#DEFINE 	INT_STATUS_MAX_REACHED 	b'00000001'
+; Status bits
+#DEFINE 	INT_STATUS_MAX_CURRENT_REACHED 0
 
 #DEFINE 	CURRENT_CHANNEL ADC_AN7
 
@@ -134,6 +137,11 @@
 		phase			: 1		; La phase courante
 		phase_cmpt		: 1		; Phase de comptage
 
+		; In case of multiple byte command
+		;Current_Cmd 	: 1 	; Current command received from Serial
+		;Count_Arg 		: 1
+		;Arg0 			: 1
+		;Arg1 			: 1
 
 		; Variables spécifiques pour le tri
 		var_min 		: 1
@@ -356,12 +364,39 @@ _intl_usart
 	movlw 	0
 	cpfseq 	received_counter
 	goto 	_intl_usart_received_test_cmd
+	;goto 	_int1_usart_received_test_setmax
 
 	; Test si le premier est bien egal a 255
 	movlw 	HEADER
 	cpfseq 	RCREG
 	goto 	_int1_usart_clear
 	goto 	_intl_usart_end
+
+; +------------------+
+; | Multiple command |
+; +------------------+
+
+; Test for pause command
+;_int1_usart_received_test_setmax
+
+	; First, test if Current_Cmd is set
+;	movlw	0
+;	tstfsz 	Current_Cmd
+;	goto 	_int1_uart_multiple
+;	goto 	_intl_usart_received_test_cmd
+
+	; Is Set Max command ?
+;	movlw 	Current_Cmd
+;	cpfseq 	COMMAND_SET_MAX
+;	goto 	_intl_usart_received_test_cmd
+
+	; Wait for 2 args
+;	movlw 	1
+;	cpfsgt 	Arg_Count
+;	goto 	_intl_usart_received_test_cmd
+
+	;goto 	_int1_usart_received_send_ack
+
 
 ; 1: Command
 _intl_usart_received_test_cmd
@@ -436,7 +471,7 @@ _int1_usart_received_test_stat
 
 	clrf 	Current_Last_H
 	clrf	Current_Last_L
-	bcf 	Int_Status, INT_STATUS_MAX_REACHED
+	bcf 	Int_Status, INT_STATUS_MAX_CURRENT_REACHED
 	INT_OFF
 
 	goto 	_int1_usart_clear
@@ -528,10 +563,10 @@ _int1_usart_received_test_clear
 	goto 	_int1_usart_received_send_ack
 
 	; Si command n'est pas egal a 1, on clear et on quitte
-	movlw .1
-	cpfseq RCREG
-	goto _int1_usart_clear
-	goto _intl_usart_end
+;	movlw .1
+;	cpfseq RCREG
+;	goto _int1_usart_clear
+;	goto _intl_usart_end
 
 _int1_usart_received_send_ack
 	SEND 'O'
@@ -795,8 +830,6 @@ phase3
 ; ###########
 	nop
 phase4
-	call 	Current_Test
-
 	call	clrPort				; Extinction du ou des servos courants
 
 	movf	POSTINC2, W			; Addition de la quantité courante ...
@@ -852,6 +885,8 @@ inth_end
 	
 
 main
+	call 	Current_Test
+
 	; On boucle temps que 18 octets ne sont pas recu
 	movlw .17
 	cpfseq received_counter
