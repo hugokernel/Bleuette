@@ -162,6 +162,9 @@ class Servo(Serial):
         self.serial.write(chr(value))
         return value
 
+    def needSync(self):
+        return (self.__values != self.__sent_values)
+
     # Servo related method
     def sendValues(self):
         global LOCK
