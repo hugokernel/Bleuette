@@ -259,11 +259,27 @@ _init
 	#define 	BAUD	.9600
 	#define		XTAL	.40000000
 	#define		X		((XTAL / BAUD) / 64) - 1
+;	MOVLF	X, SPBRG
 
 ;messg X
 
-	MOVLF	.64, SPBRG
-;	MOVLF	X, SPBRG
+	; 64 : 9600baud OK
+	;MOVLF	.64, SPBRG
+
+	; 32 : 19200baud OK
+	MOVLF	.32, SPBRG
+
+	; 7 : 76.8 (78.13)
+	;MOVLF 	.7, SPBRG
+	;bcf TXSTA, BRGH
+
+	; 32 : 19200baud, BRGH = 1
+	;MOVLF	.129, SPBRG
+	;bsf		TXSTA, BRGH
+
+	; 25 : 96k, BRGH = 1
+	;MOVLF 	.25, SPBRG
+	;bsf		TXSTA, BRGH
 
 	bcf		TXSTA, SYNC
 
@@ -281,10 +297,16 @@ _init
 	bcf		IPR1, TXIP
 	; Fin ajout hugo
 
+;	clrf 	Current_Cmd
+;	clrf 	Arg_Count
+;	clrf 	Arg0
+;	clrf 	Arg1
 
-	movlw 	1
+	movlw 	0b00000011
 	movwf 	Current_Max_H
-	clrf 	Current_Max_L
+
+	movlw 	0b00000000
+	movwf 	Current_Max_L
 
 	clrf	Int_Status
 

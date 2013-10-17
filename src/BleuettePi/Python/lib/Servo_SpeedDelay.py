@@ -37,6 +37,7 @@ class Servo_SpeedDelay(threading.Thread):
         counter = 0
         while self.__stop == False:
 
+<<<<<<< HEAD
             modified = []
             for (i, val) in enumerate(self.__values):
 
@@ -71,6 +72,51 @@ class Servo_SpeedDelay(threading.Thread):
                         self.__callback(i)
 
                 self.event.wait(0.005)
+=======
+            newvalue = False
+
+            for (i, val) in enumerate(self.__values):
+                modified = False
+
+                #if val.current != val.setpoint and val.speed == 0:
+                if val.speed == 0:
+                #    #self.logger.info('Current: %i, Setpoint: %i' % (val.current, val.setpoint))
+                    if val.current != val.setpoint:
+                        modified = newvalue = True
+
+                    val.current = val.setpoint
+                #    #self.logger.info('Current: %i, Setpoint: %i' % (val.current, val.setpoint))
+                #    self.event.wait(1)
+
+                if val.setpoint and val.speed and (counter % val.speed) == 0:
+                    if val.current < val.setpoint:
+                        modified = newvalue = True
+                        val.current += 1
+
+                    if val.current > val.setpoint:
+                        modified = newvalue = True
+                        val.current -= 1
+
+                    #self.logger.info("PAF %i" % i)
+                    #self.logger.debug("Servo %i : %s" % (i, val))
+                   # self.logger.info(''.join([ ' %0.3i' % self.__values[i].current for i in range(0, len(self.__values))]))
+                    #self.event.wait(1)
+
+                self.__servo.setValue(i, int(val.current))
+
+                # Test if setpoint is reached ?
+                if modified == True and val.current == val.setpoint and self.__callback:
+                    self.__callback(i)
+
+                #self.logger.debug("Servo %i : %s" % (i, val))
+
+            # Sent if new value
+            if newvalue:
+                #self.logger.info(''.join([ ' %0.3i' % self.__values[i].current for i in range(0, len(self.__values))]))
+                self.__servo.sendValues()
+                #self.event.wait(0.3)
+                #self.event.wait(1)
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 
             #self.logger.debug('Wait !')
             #self.event.wait(0.0001)

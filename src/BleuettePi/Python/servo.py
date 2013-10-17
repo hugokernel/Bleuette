@@ -7,7 +7,10 @@ from Servo import Servo, Servo_Sequencer, SERVO_COUNT
 from RainbowHandler import RainbowLoggingHandler
 from Fake import SerialFake
 from Serial import Serial
+<<<<<<< HEAD
 import config as Config
+=======
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 
 Log = None
 
@@ -71,7 +74,11 @@ class Control(Window):
         self.pad = curses.newpad(height, width)
         self.pad.border()
         self.pad.addstr(0, 2, "Control", curses.A_BOLD)
+<<<<<<< HEAD
         self.pad.addstr(9, 2, "Left/Right : Select servo, Up/Down : Value, Page Up/Down : Speed, a: Toggle auto mode", curses.A_BOLD)
+=======
+        self.pad.addstr(8, 2, "Left/Right : Select servo, Up/Down : Value, Page Up/Down : Speed, a: Toggle auto mode", curses.A_BOLD)
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 
     def setSetting(setting):
         self.setting = setting
@@ -100,12 +107,19 @@ class Control(Window):
         elif key == ord('a'):
             if AUTO:
                 logger.info("Mode auto : Off")
+<<<<<<< HEAD
                 [ sspeed.setPosition(i, 128) for i in range(0, 14) ]
                 #[ sspeed.setPosition(i, sspeed.getPosition(i)) for i in range(0, 14) ]
+=======
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
                 AUTO = False
             else:
                 logger.info("Mode auto : On")
                 [ sspeed.setPosition(i, 80) for i in range(0, 14) ]
+<<<<<<< HEAD
+=======
+                [ sspeed.setSpeed(i, i * 7) for i in range(0, 14) ]
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
                 AUTO = True
 
         if setting.setpoint > 255:
@@ -121,11 +135,18 @@ class Control(Window):
         #values = sspeed.getCurrentValue()
         values = sspeed.getValues()
 
+<<<<<<< HEAD
         self.pad.addstr(2, 3, 'Servo  : %i, Value: %i, Speed: %i         ' % (setting.servo, setting.setpoint, setting.speed))
         self.pad.addstr(4, 3, 'Servos : ' + ''.join([ ' %0.2i ' % i for i in range(0, len(values)) ]))
         self.pad.addstr(5, 3, 'Goal   : ' + ''.join([ ' %0.3i' % values[i].setpoint for i in range(0, len(values)) ]))
         self.pad.addstr(6, 3, 'Current: ' + ''.join([ ' %0.3i' % values[i].current for i in range(0, len(values)) ]))
         self.pad.addstr(7, 3, 'Speed  : ' + ''.join([ ' %0.3i' % values[i].speed for i in range(0, len(values)) ]))
+=======
+        self.pad.addstr(2, 3, 'Servo: %i, Value: %i, Speed: %i         ' % (setting.servo, setting.setpoint, setting.speed))
+        self.pad.addstr(4, 3, 'Servos: ' + ''.join([ ' %0.2i ' % i for i in range(0, len(values)) ]))
+        self.pad.addstr(5, 3, 'Values: ' + ''.join([ ' %0.3i' % values[i].current for i in range(0, len(values)) ]))
+        self.pad.addstr(6, 3, 'Speed : ' + ''.join([ ' %0.3i' % values[i].speed for i in range(0, len(values)) ]))
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
         self.pad.refresh(*self.pos)
 
 class LogPad(Window):
@@ -168,7 +189,11 @@ class LogPad(Window):
 def main(stdscr):
     global control, Log
 
+<<<<<<< HEAD
     controlSize = 12
+=======
+    controlSize = 11
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 
     key = None
     #while key != ord('\n'):
@@ -195,15 +220,28 @@ def main(stdscr):
     stdscr.refresh()
     #stdscr.getch()
 
+<<<<<<< HEAD
 if Config.FAKE_MODE:
     obj = SerialFake
 else:
     obj = '/dev/ttyAMA0'
+=======
+if True:
+    obj = '/dev/ttyAMA0'
+    fake = False
+else:
+    obj = SerialFake
+    fake = True
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 
 serial = Serial()
 serial.connect(obj)
 
+<<<<<<< HEAD
 servo = Servo(serial, fakemode = Config.FAKE_MODE)
+=======
+servo = Servo(serial, fakemode = fake)
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 servo.init()
 
 #ServoSeq = Servo_Sequencer(servo)
@@ -214,8 +252,11 @@ servo.init()
 sspeed = Servo_SpeedDelay(servo)
 sspeed.start()
 
+<<<<<<< HEAD
 [ sspeed.setSpeed(i, i * 7) for i in range(0, 14) ]
 
+=======
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 #values = sspeed.getCurrentValue()
 #print values
 #sys.exit()
@@ -224,12 +265,22 @@ AUTO = False
 
 def test(index):
     global sspeed
+<<<<<<< HEAD
     logger.info("Servo %i reached position (auto mode: %i)" % (index, AUTO))
     if AUTO:
+=======
+    if AUTO:
+        logger.info("Servo %i reached position !" % index)
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
         if sspeed.getPosition(index) == 160:
             sspeed.setPosition(index, 80)
         else:
             sspeed.setPosition(index, 160)
+<<<<<<< HEAD
+=======
+    else:
+        logger.info("Servo %i reached position !" % index)
+>>>>>>> e9ffd7ef371450a29e24962357af5942710c8547
 
 sspeed.setCallback(2, test)
 sspeed.setGlobalSpeed(1)
