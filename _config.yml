@@ -1,0 +1,38 @@
+## githubiverse-template by Gary Hodgson
+## license: GPL3
+##
+## The data below is left as an example.  Please change each entry to match your requirements. 
+## 
+
+## Uses distinct namespace. Jekyll settings should go at the root level.
+githubiverse:
+    ## Metadata
+    title: "Bleuette hexapod"
+    author: Charles R.
+    license: GPL3
+    tags: [hexapod, robot, 3d]
+
+    ## Github project parameters.
+    github:
+        base: https://github.com/
+        user: hugokernel
+        repository: Bleuette
+        branch: master
+
+    ## The names of directories where any images, source and stl files associated with the project can be found.
+    img_dir: export/img
+    stl_dir: export/stl
+    src_dir: cad
+
+    ## The headline image
+    lead_image: thumbs/bleuette.png?raw=true
+    show_lead_image: true
+
+    ## Optional. When uncommented appends the content of the file defined here to the project description.  Any text in index.md, after the yaml header, will be shown first.
+    description_file: README.md
+
+    ## Preview the first STL in the list when the page loads.
+    autoload_stl: true
+
+    ## Show a github "fork me" ribbon in the top righthand corner of the page.
+    show_forkme_ribbon: true
