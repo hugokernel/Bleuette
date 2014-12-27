@@ -7,11 +7,10 @@ $fn = 50;
 
 DEBUG = false;
 
-/**
- *  Body information
+/**kljkljlnljn
+ *  Body informationkljjkljk
  */
-BODY_WIDTH = 100;
-BODY_LENGTH = 320;
+BODY_WID
 BODY_THICKNESS = 6;
 
 /**
